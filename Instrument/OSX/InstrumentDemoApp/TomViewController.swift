@@ -58,26 +58,26 @@ class TomViewController : NSViewController {
     }
     
     func embedPluginView() {
-        /*
-         NSURL *builtInPlugInURL = [[NSBundle mainBundle] builtInPlugInsURL];
-         NSURL *pluginURL = [builtInPlugInURL URLByAppendingPathComponent: @"InstrumentDemoAppExtension.appex"];
-         NSBundle *appExtensionBundle = [NSBundle bundleWithURL: pluginURL];
-         
-         auV3ViewController = [[InstrumentDemoViewController alloc] initWithNibName: @"InstrumentDemoViewController" bundle: appExtensionBundle];
-         
-         NSView *view = auV3ViewController.view;
-         view.frame = _containerView.bounds;
-         
-         [_containerView addSubview: view];
-         
-         view.translatesAutoresizingMaskIntoConstraints = NO;
-         
-         NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-[view]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(view)];
-         [_containerView addConstraints: constraints];
-         
-         constraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-[view]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(view)];
-         [_containerView addConstraints: constraints];
-         */
+        guard let containerView = containerView else { return }
+        let builtInPlugInURL = Bundle.main.builtInPlugInsURL!
+        let pluginUrl = builtInPlugInURL.appendingPathComponent("InstrumentDemoAppExtension.appex")
+        let appExtensionBundle = Bundle.init(url: pluginUrl)
+        let auV3ViewController = InstrumentDemoViewController(nibName: "InstrumentDemoViewController", bundle: appExtensionBundle)
+        
+        let view = auV3ViewController.view
+        view.frame = containerView.bounds
+        containerView.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constraints = [
+            view.topAnchor.constraint(equalTo: containerView.topAnchor),
+            view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     public func fourCC(_ string: String) -> UInt32 {
