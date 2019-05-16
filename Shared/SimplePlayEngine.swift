@@ -86,7 +86,7 @@ public class SimplePlayEngine : NSObject {
 	private var isPlaying = false
 
 	/// Callback to tell UI when new components are found.
-	private let componentsFoundCallback: ((Void) -> Void)?
+	private let componentsFoundCallback: (() -> Void)?
 
     /// Serializes all access to `availableAudioUnits`.
 	private let availableAudioUnitsAccessQueue = DispatchQueue(label: "SimplePlayEngine.availableAudioUnitsAccessQueue")
@@ -129,7 +129,7 @@ public class SimplePlayEngine : NSObject {
 
     // MARK: Initialization
     
-	public init(componentType inComponentType: UInt32, componentsFoundCallback inComponentsFoundCallback: ((Void) -> Void)? = nil) {
+	public init(componentType inComponentType: UInt32, componentsFoundCallback inComponentsFoundCallback: (() -> Void)? = nil) {
 		
 		if inComponentType != kAudioUnitType_Effect && inComponentType != kAudioUnitType_MusicDevice {
 			componentType = kAudioUnitType_Effect // alternatively, could fail here.
@@ -162,7 +162,7 @@ public class SimplePlayEngine : NSObject {
 
         #if os(iOS)
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
         }
         catch {
             fatalError("Can't set Audio Session category.")
@@ -335,11 +335,11 @@ public class SimplePlayEngine : NSObject {
 	
     // MARK: AudioUnit Selection
     
-	public func selectAudioUnitComponent(_ component: AVAudioUnitComponent?, completionHandler: @escaping (Void) -> Void) {
+	public func selectAudioUnitComponent(_ component: AVAudioUnitComponent?, completionHandler: @escaping () -> Void) {
         selectAudioUnitWithComponentDescription(component?.audioComponentDescription, completionHandler: completionHandler)
 	}
 	
-    public func selectAudioUnitWithComponentDescription2(_ componentDescription: AudioComponentDescription, completionHandler: @escaping ((Void) -> Void)) {
+    public func selectAudioUnitWithComponentDescription2(_ componentDescription: AudioComponentDescription, completionHandler: @escaping (() -> Void)) {
 		self.selectAudioUnitWithComponentDescription(componentDescription, completionHandler:completionHandler)
 	}
 	
@@ -347,7 +347,7 @@ public class SimplePlayEngine : NSObject {
 		Asynchronously begin changing the engine's installed unit, and call the
         supplied completion handler when the operation is complete.
 	*/
-    public func selectAudioUnitWithComponentDescription(_ componentDescription: AudioComponentDescription?, completionHandler: @escaping ((Void) -> Void)) {
+    public func selectAudioUnitWithComponentDescription(_ componentDescription: AudioComponentDescription?, completionHandler: @escaping (() -> Void)) {
 		// Internal function to resume playing and call the completion handler.
 		func done() {
 			if isEffect() && isPlaying {

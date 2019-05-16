@@ -100,11 +100,11 @@ class ViewController: UIViewController {
         
         // Present the view controller's view.
         if let view = filterDemoViewController.view {
-            addChildViewController(filterDemoViewController)
+            addChild(filterDemoViewController)
             view.frame = auContainerView.bounds
             
             auContainerView.addSubview(view)
-            filterDemoViewController.didMove(toParentViewController: self)
+            filterDemoViewController.didMove(toParent: self)
         }
 	}
 	
@@ -183,7 +183,7 @@ class ViewController: UIViewController {
 
         let titleText = isPlaying ? "Stop" : "Play"
 
-		playButton.setTitle(titleText, for: UIControlState())
+        playButton.setTitle(titleText, for: UIControl.State())
 	}
 	
 	@IBAction func changedCutoff(_ sender: AnyObject?) {

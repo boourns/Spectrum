@@ -62,7 +62,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         let frequencies = filterView.frequencyDataForDrawing()
         
         // Get the corresponding magnitudes from the AU.
-        let magnitudes = audioUnit.magnitudes(forFrequencies: frequencies as [NSNumber]!).map { $0.doubleValue }
+        let magnitudes = audioUnit.magnitudes(forFrequencies: frequencies as [NSNumber]).map { $0.doubleValue }
         
         filterView.setMagnitudes(magnitudes)
     }

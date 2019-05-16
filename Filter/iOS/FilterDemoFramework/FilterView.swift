@@ -335,7 +335,7 @@ class FilterView: UIView {
                 labelLayer.fontSize = 14
                 labelLayer.contentsScale = scale
                 labelLayer.foregroundColor = UIColor(white: 0.1, alpha: 1.0).cgColor
-                labelLayer.alignmentMode = kCAAlignmentRight
+                labelLayer.alignmentMode = CATextLayerAlignmentMode.right
                 
                 dbLabels.append(labelLayer)
                 containerLayer.addSublayer(labelLayer)
@@ -377,7 +377,7 @@ class FilterView: UIView {
             labelLayer.font = UIFont.systemFont(ofSize: 14).fontName as CFTypeRef
             labelLayer.foregroundColor = UIColor(white: 0.1, alpha: 1.0).cgColor
             labelLayer.fontSize = 14
-            labelLayer.alignmentMode = kCAAlignmentCenter
+            labelLayer.alignmentMode = CATextLayerAlignmentMode.center
             labelLayer.contentsScale = scale
             labelLayer.anchorPoint = CGPoint.zero
             

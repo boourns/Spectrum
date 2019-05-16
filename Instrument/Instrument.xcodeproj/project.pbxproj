@@ -15,7 +15,6 @@
 		301C50751BD988A90095C100 /* InstrumentDemoViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C891B9517A50081EA80 /* InstrumentDemoViewController+AUAudioUnitFactory.swift */; };
 		306CFC8B1C5815010028386F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 306CFC8A1C5815010028386F /* AppDelegate.m */; };
 		306CFC8E1C5815010028386F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 306CFC8D1C5815010028386F /* main.m */; };
-		306CFC911C5815010028386F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 306CFC901C5815010028386F /* ViewController.m */; };
 		306CFC931C5815010028386F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 306CFC921C5815010028386F /* Assets.xcassets */; };
 		306CFC961C5815010028386F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 306CFC941C5815010028386F /* Main.storyboard */; };
 		306CFC9B1C58169F0028386F /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
@@ -50,6 +49,8 @@
 		B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C831CA0966600902296 /* InstrumentDemo.mm */; };
 		B5234C8C1CA096B200902296 /* InstrumentDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = B5234C891CA096B200902296 /* InstrumentDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5234C8D1CA096B200902296 /* InstrumentDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C8A1CA096B200902296 /* InstrumentDemo.mm */; };
+		E216B0E0228CD67B006ECCBC /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
+		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,8 +147,6 @@
 		306CFC891C5815010028386F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		306CFC8A1C5815010028386F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		306CFC8D1C5815010028386F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		306CFC8F1C5815010028386F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		306CFC901C5815010028386F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		306CFC921C5815010028386F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		306CFC951C5815010028386F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		306CFC971C5815010028386F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -185,6 +184,7 @@
 		B5234C891CA096B200902296 /* InstrumentDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentDemo.h; sourceTree = "<group>"; };
 		B5234C8A1CA096B200902296 /* InstrumentDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentDemo.mm; sourceTree = "<group>"; };
 		B5234C8B1CA096B200902296 /* InstrumentDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentDSPKernel.hpp; sourceTree = "<group>"; };
+		E216B0DF228CD67B006ECCBC /* TomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,9 +253,8 @@
 			children = (
 				306CFC891C5815010028386F /* AppDelegate.h */,
 				306CFC8A1C5815010028386F /* AppDelegate.m */,
-				306CFC8F1C5815010028386F /* ViewController.h */,
-				306CFC901C5815010028386F /* ViewController.m */,
 				306CFC921C5815010028386F /* Assets.xcassets */,
+				E216B0DF228CD67B006ECCBC /* TomViewController.swift */,
 				306CFC941C5815010028386F /* Main.storyboard */,
 				306CFC971C5815010028386F /* Info.plist */,
 				306CFC8C1C5815010028386F /* Supporting Files */,
@@ -586,8 +585,10 @@
 				TargetAttributes = {
 					306CFC861C5815010028386F = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = YC8HZ62228;
 					};
 					306CFCD81C5841E40028386F = {
+						DevelopmentTeam = YC8HZ62228;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -596,6 +597,7 @@
 					};
 					92A10CC41B9521320081EA80 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = YC8HZ62228;
 					};
 					92A10CE01B9521B00081EA80 = {
 						CreatedOnToolsVersion = 7.0;
@@ -603,6 +605,7 @@
 					};
 					92A10CF11B9521F50081EA80 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = YC8HZ62228;
 					};
 				};
 			};
@@ -611,6 +614,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -687,7 +691,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				306CFC911C5815010028386F /* ViewController.m in Sources */,
+				E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */,
 				306CFC8E1C5815010028386F /* main.m in Sources */,
 				306CFC8B1C5815010028386F /* AppDelegate.m in Sources */,
 				306CFC9B1C58169F0028386F /* SimplePlayEngine.swift in Sources */,
@@ -718,6 +722,7 @@
 			files = (
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,
+				E216B0E0228CD67B006ECCBC /* TomViewController.swift in Sources */,
 				92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -828,7 +833,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -853,7 +858,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoAppOSX";
 				PRODUCT_NAME = InstrumentDemoApp;
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -879,7 +884,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -898,7 +903,7 @@
 				PRODUCT_NAME = InstrumentDemoApp;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1035,7 +1040,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1086,7 +1091,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1181,7 +1186,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1206,7 +1211,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoApp";
 				PRODUCT_NAME = InstrumentDemoApp;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -1233,7 +1238,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1252,7 +1257,7 @@
 				PRODUCT_NAME = InstrumentDemoApp;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1395,7 +1400,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1447,7 +1452,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
