@@ -8,7 +8,7 @@
 
 #import "InstrumentDemo.h"
 #import <AVFoundation/AVFoundation.h>
-#import "InstrumentDSPKernel.hpp"
+#import "PlaitsDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
 
 @interface AUv3InstrumentDemo ()
@@ -24,7 +24,7 @@
 
 @implementation AUv3InstrumentDemo {
 	// C++ members need to be ivars; they would be copied on access if they were properties.
-    InstrumentDSPKernel _kernel;
+    PlaitsDSPKernel _kernel;
 	BufferedOutputBus _outputBusBuffer;
 }
 @synthesize parameterTree = _parameterTree;
@@ -77,7 +77,7 @@
                                                               busses: @[_outputBus]];
 
 	// Make a local pointer to the kernel to avoid capturing self.
-	__block InstrumentDSPKernel *instrumentKernel = &_kernel;
+	__block PlaitsDSPKernel *instrumentKernel = &_kernel;
 
 	// implementorValueObserver is called when a parameter changes value.
 	_parameterTree.implementorValueObserver = ^(AUParameter *param, AUValue value) {
@@ -144,7 +144,7 @@
 		Capture in locals to avoid ObjC member lookups. If "self" is captured in
         render, we're doing it wrong.
 	*/
-	__block InstrumentDSPKernel *state = &_kernel;
+	__block PlaitsDSPKernel *state = &_kernel;
     
     return ^AUAudioUnitStatus(
 			 AudioUnitRenderActionFlags *actionFlags,
