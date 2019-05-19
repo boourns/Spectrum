@@ -14,10 +14,17 @@
 
 const double kTwoPi = 2.0 * M_PI;
 const size_t kAudioBlockSize = 24;
+const size_t kPolyphony = 8;
 
 enum {
     InstrumentParamAttack = 0,
     InstrumentParamRelease = 1
+};
+
+enum {
+    NoteStateUnused = 0,
+    NoteStatePlaying = 1,
+    NoteStateReleasing = 2
 };
 
 static inline double pow2(double x) {
@@ -47,67 +54,52 @@ static inline double panValue(double x)
 class PlaitsDSPKernel : public DSPKernel {
 public:
     // MARK: Types
-    struct NoteState {
-        NoteState* next;
-        NoteState* prev;
-        PlaitsDSPKernel* kernel;
+    struct VoiceState {
+        unsigned int state;
+        PlaitsDSPKernel *kernel;
         
-        enum { stageOff, stageAttack, stageSustain, stageRelease };
-        double oscFreq = 0.;
-        double oscPhase = 0.;
-        double envLevel = 0.;
-        double envSlope = 0.;
-        double ampL = 0.;
-        double ampR = 0.;
+        char ram_block[16 * 1024];
+        uint8_t note;
+        plaits::Voice::Frame frames[kAudioBlockSize];
+        size_t plaitsFramesIndex;
+        plaits::Voice *voice;
+        plaits::Modulations modulations;
+        plaits::Patch patch;
         
-        int stage = stageOff;
-        int envRampSamples = 0;
+        void Init() {
+            voice = new plaits::Voice();
+            stmlib::BufferAllocator allocator(ram_block, 16384);
+            voice->Init(&allocator);
+            plaitsFramesIndex = kAudioBlockSize;
+        }
         
         void clear() {
-            stage = stageOff;
-            envLevel = 0.;
-            oscPhase = 0.;
+            modulations.trigger = 0.0f;
+            state = NoteStateUnused;
         }
         
         // linked list management
-        void remove() {
-            if (prev) prev->next = next;
-            else kernel->playingNotes = next;
-            
-            if (next) next->prev = prev;
-            
-            prev = next = nullptr;
-            
-            --kernel->playingNotesCount;
+        void release() {
+            modulations.trigger = 0.0f;
+            state = NoteStateReleasing;
         }
         
         void add() {
-            prev = nullptr;
-            next = kernel->playingNotes;
-            if (next) next->prev = this;
-            kernel->playingNotes = this;
-            ++kernel->playingNotesCount;
+            modulations.trigger = 1.0f;
+            state = NoteStatePlaying;
         }
         
         void noteOn(int noteNumber, int velocity)
         {
             if (velocity == 0) {
-                if (stage == stageAttack || stage == stageSustain) {
-                    stage = stageRelease;
-                    envRampSamples = kernel->releaseSamples;
-                    envSlope = -envLevel / envRampSamples;
+                if (state == NoteStatePlaying) {
+                    release();
                 }
             } else {
-                if (stage == stageOff) { add(); }
-                oscFreq = noteToHz(noteNumber) * kernel->frequencyScale;
-                double pan = (noteNumber - 66.) / 42.; // pan from note number
-                double amp = pow2(velocity / 127.) * .2; // amplitude from velocity
-                ampL = amp * panValue(-pan);
-                ampR = amp * panValue(pan);
-                oscPhase = 0.;
-                stage = stageAttack;
-                envRampSamples = kernel->attackSamples;
-                envSlope = (1.0 - envLevel) / envRampSamples;
+                memcpy(&patch, &kernel->patch, sizeof(plaits::Patch));
+                patch.note = float(noteNumber);
+                note = noteNumber;
+                add();
             }
         }
         
@@ -115,57 +107,15 @@ public:
         {
             int framesRemaining = n;
             while (framesRemaining) {
-                switch (stage) {
-                    case stageOff :
-                        NSLog(@"stageOff on playingNotes list!");
-                        return;
-                    case stageAttack : {
-                        int framesThisTime = std::min(framesRemaining, envRampSamples);
-                        for (int i = 0; i < framesThisTime; ++i) {
-                            double x = envLevel * pow3(sin(oscPhase)); // cubing the sine adds 3rd harmonic.
-                            *outL++ += ampL * x;
-                            *outR++ += ampR * x;
-                            envLevel += envSlope;
-                            oscPhase += oscFreq;
-                            if (oscPhase >= kTwoPi) oscPhase -= kTwoPi;
-                        }
-                        framesRemaining -= framesThisTime;
-                        envRampSamples -= framesThisTime;
-                        if (envRampSamples == 0) {
-                            stage = stageSustain;
-                        }
-                        break;
-                    }
-                    case stageSustain : {
-                        for (int i = 0; i < framesRemaining; ++i) {
-                            double x = pow3(sin(oscPhase));
-                            *outL++ += ampL * x;
-                            *outR++ += ampR * x;
-                            oscPhase += oscFreq;
-                            if (oscPhase >= kTwoPi) oscPhase -= kTwoPi;
-                        }
-                        return;
-                    }
-                    case stageRelease : {
-                        int framesThisTime = std::min(framesRemaining, envRampSamples);
-                        for (int i = 0; i < framesThisTime; ++i) {
-                            double x = envLevel * pow3(sin(oscPhase));
-                            *outL++ += ampL * x;
-                            *outR++ += ampR * x;
-                            envLevel += envSlope;
-                            oscPhase += oscFreq;
-                        }
-                        envRampSamples -= framesThisTime;
-                        if (envRampSamples == 0) {
-                            clear();
-                            remove();
-                        }
-                        return;
-                    }
-                    default:
-                        NSLog(@"bad stage on playingNotes list!");
-                        return;
+                if (plaitsFramesIndex >= kAudioBlockSize) {
+                    voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
+                    plaitsFramesIndex = 0;
                 }
+                
+                *outL++ += ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
+                *outR++ += ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
+                plaitsFramesIndex++;
+                framesRemaining--;
             }
         }
         
@@ -176,21 +126,17 @@ public:
     
     PlaitsDSPKernel()
     {
-        noteStates.resize(128);
-        for (NoteState& state : noteStates) {
-            state.kernel = this;
+        voices.resize(kPolyphony);
+        for (VoiceState& voice : voices) {
+            voice.kernel = this;
+            voice.Init();
         }
     }
     
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
-        plaitsFramesIndex = kAudioBlockSize;
-        
-        frequencyScale = 2. * M_PI / sampleRate;
-        stmlib::BufferAllocator allocator(ram_block, 16384);
-        voice.Init(&allocator);
-        
-        patch.engine = 4;
+
+        patch.engine = 1;
         patch.note = 48.0f;
         patch.harmonics = 0.3f;
         patch.timbre = 0.7f;
@@ -207,22 +153,19 @@ public:
         modulations.note = 0.0f;
         modulations.harmonics = 0.0f;
         modulations.morph = 0.0;
-        modulations.level = 1.0f;
+        modulations.level = 0.0f;
         modulations.trigger = 0.0f;
         modulations.frequency_patched = false;
         modulations.timbre_patched = false;
         modulations.morph_patched = false;
         modulations.trigger_patched = true;
-        modulations.level_patched = true;
+        modulations.level_patched = false;
     }
     
     void reset() {
-        for (NoteState& state : noteStates) {
+        for (VoiceState& state : voices) {
             state.clear();
         }
-        playingNotes = nullptr;
-        playingNotesCount = 0;
-        
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
@@ -260,6 +203,31 @@ public:
         outBufferListPtr = outBufferList;
     }
     
+    VoiceState *voiceForNote(uint8_t note) {
+        for (int i = 0; i < kPolyphony; i++) {
+            if (voices[i].note == note) {
+                return &voices[i];
+            }
+        }
+        return nullptr;
+    }
+    
+    VoiceState *freeVoice() {
+        for (int i = 0; i < kPolyphony; i++) {
+            if (voices[i].state == NoteStateUnused) {
+                return &voices[i];
+            }
+        }
+        for (int i = 0; i < kPolyphony; i++) {
+            if (voices[i].state == NoteStateReleasing) {
+                return &voices[i];
+            }
+        }
+        VoiceState *stolen = &voices[stolenVoice];
+        stolenVoice = (stolenVoice + 1) % kPolyphony;
+        return stolen;
+    }
+    
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
         if (midiEvent.length != 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
@@ -268,30 +236,35 @@ public:
             case 0x80 : { // note off
                 uint8_t note = midiEvent.data[1];
                 if (note > 127) break;
-                noteStates[note].noteOn(note, 0);
+                VoiceState *voice = voiceForNote(note);
+                if (voice) {
+                    voice->release();
+                }
+                
                 modulations.trigger = 0.0f;
-
                 break;
             }
             case 0x90 : { // note on
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
-                noteStates[note].noteOn(note, veloc);
-                modulations.trigger = 1.0f;
-
+                VoiceState *voice = voiceForNote(note);
+                if (voice) {
+                    voice->noteOn(note, veloc);
+                } else {
+                    voice = freeVoice();
+                    if (voice) {
+                        voice->noteOn(note, veloc);
+                    }
+                }
                 break;
             }
             case 0xB0 : { // control
                 uint8_t num = midiEvent.data[1];
                 if (num == 123) { // all notes off
-                    NoteState* noteState = playingNotes;
-                    while (noteState) {
-                        noteState->clear();
-                        noteState = noteState->next;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].clear();
                     }
-                    playingNotes = nullptr;
-                    playingNotesCount = 0;
                 }
                 break;
             }
@@ -299,50 +272,38 @@ public:
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
-        
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
         
-//        NoteState* noteState = playingNotes;
-//        while (noteState) {
-//            noteState->run(frameCount, outL, outR);
-//            noteState = noteState->next;
-//        }
-        AUAudioFrameCount i = 0;
-        while (i < frameCount) {
-            if (plaitsFramesIndex >= kAudioBlockSize) {
-                voice.Render(patch, modulations, &frames[0], kAudioBlockSize);
-                plaitsFramesIndex = 0;
+        int playingNotes = 0;
+        for (int i = 0; i < kPolyphony; i++) {
+            if (voices[i].state != NoteStateUnused) {
+                playingNotes++;
+                voices[i].run(frameCount, outL, outR);
             }
-            
-            outL[i] = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
-            outR[i] = ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
-            plaitsFramesIndex++;
-            i++;
+        }
+        
+        if (playingNotes > 0) {
+            for (int i = 0; i < frameCount; i++) {
+                outL[i] *= 0.1f;
+                outR[i] *= 0.1f;
+            }
         }
     }
     
     // MARK: Member Variables
     
 private:
-    std::vector<NoteState> noteStates;
+    std::vector<VoiceState> voices;
     
     float sampleRate = 44100.0;
-    double frequencyScale = 2. * M_PI / sampleRate;
     
     AudioBufferList* outBufferListPtr = nullptr;
     
 public:
-    
-    NoteState* playingNotes = nullptr;
-    int playingNotesCount = 0;
-    
-    char ram_block[16 * 1024];
-    plaits::Voice::Frame frames[kAudioBlockSize];
-    size_t plaitsFramesIndex;
-    plaits::Voice voice;
     plaits::Modulations modulations;
     plaits::Patch patch;
+    int stolenVoice = 0;
     
     // Parameters.
     float attack = .01f;
@@ -350,7 +311,6 @@ public:
     
     int attackSamples   = sampleRate * attack;
     int releaseSamples  = sampleRate * release;
-    
 };
 
 #endif /* PlaitsDSPKernel_h */
