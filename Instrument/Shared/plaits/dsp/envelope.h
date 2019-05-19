@@ -115,6 +115,10 @@ class DecayEnvelope {
   inline void Process(float decay) {
     value_ *= (1.0f - decay);
   }
+    
+    inline bool Finished() {
+        return value_ == 0.0f;
+    }
   
   inline float value() const { return value_; }
   

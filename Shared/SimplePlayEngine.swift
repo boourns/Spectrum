@@ -502,6 +502,8 @@ internal class InstrumentPlayer : NSObject {
                     cbytes[2] = 0    // note off
                     self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
                     
+                    usleep(useconds_t(0.2 * 1e6))
+
                     i += 2
                     if i >= 24 {
                         i = -12

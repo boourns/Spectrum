@@ -47,25 +47,31 @@
                                       kAudioUnitParameterFlag_IsReadable |
                                       kAudioUnitParameterFlag_DisplayLogarithmic;
     
-	AUParameter *attackParam = [AUParameterTree createParameterWithIdentifier:@"attack" name:@"Attack"
-			address:InstrumentParamAttack
-			min:0.001 max:10.0 unit:kAudioUnitParameterUnit_Seconds unitName:nil
+    enum {
+        PlaitsParamTimbre = 0,
+        PlaitsParamHarmonics = 1,
+        PlaitsParamMorph = 2,
+        PlaitsParamAlgorithm = 3,
+        PlaitsParamDecay = 4
+    };
+    
+	AUParameter *timbreParam = [AUParameterTree createParameterWithIdentifier:@"timbre" name:@"Timbre"
+			address:PlaitsParamTimbre
+			min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
 			flags: flags valueStrings:nil dependentParameters:nil];
 	
-	// Create a parameter object for the release time.
-	AUParameter *releaseParam = [AUParameterTree createParameterWithIdentifier:@"release" name:@"Release"
-			address:InstrumentParamRelease
-			min:0.001 max:10.0 unit:kAudioUnitParameterUnit_Seconds unitName:nil
+	AUParameter *harmonicsParam = [AUParameterTree createParameterWithIdentifier:@"harmonics" name:@"Harmonics"
+			address:PlaitsParamHarmonics
+			min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
 			flags: flags valueStrings:nil dependentParameters:nil];
 	
-	// Initialize the parameter values.
-	attackParam.value = 0.01;
-	releaseParam.value = 0.1;
-	_kernel.setParameter(InstrumentParamAttack, attackParam.value);
-	_kernel.setParameter(InstrumentParamRelease, releaseParam.value);
+    AUParameter *morphParam = [AUParameterTree createParameterWithIdentifier:@"morph" name:@"Morph"
+            address:PlaitsParamMorph
+            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+            flags: flags valueStrings:nil dependentParameters:nil];
 	
 	// Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[attackParam, releaseParam]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[timbreParam, harmonicsParam, morphParam]];
 
 	// Create the output bus.
 	_outputBusBuffer.init(defaultFormat, 2);
@@ -94,9 +100,10 @@
 		AUValue value = valuePtr == nil ? param.value : *valuePtr;
 	
 		switch (param.address) {
-			case InstrumentParamAttack:
-			case InstrumentParamRelease:
-				return [NSString stringWithFormat:@"%.3f", value];
+			case PlaitsParamTimbre:
+			case PlaitsParamHarmonics:
+            case PlaitsParamMorph:
+				return [NSString stringWithFormat:@"%.1f", value];
 			
 			default:
 				return @"?";

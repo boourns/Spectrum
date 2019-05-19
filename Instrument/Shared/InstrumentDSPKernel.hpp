@@ -271,7 +271,7 @@ public:
 
 		NoteState* noteState = playingNotes;
 		while (noteState) {
-			noteState->run(frameCount, outL, outR);
+			//noteState->run(frameCount, outL, outR);
 			noteState = noteState->next;
 		}
 		

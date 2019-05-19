@@ -17,8 +17,11 @@ const size_t kAudioBlockSize = 24;
 const size_t kPolyphony = 8;
 
 enum {
-    InstrumentParamAttack = 0,
-    InstrumentParamRelease = 1
+    PlaitsParamTimbre = 0,
+    PlaitsParamHarmonics = 1,
+    PlaitsParamMorph = 2,
+    PlaitsParamAlgorithm = 3,
+    PlaitsParamDecay = 4
 };
 
 enum {
@@ -76,17 +79,20 @@ public:
         void clear() {
             modulations.trigger = 0.0f;
             state = NoteStateUnused;
+            NSLog(@"Clear");
         }
         
         // linked list management
         void release() {
             modulations.trigger = 0.0f;
             state = NoteStateReleasing;
+            NSLog(@"Release");
         }
         
         void add() {
             modulations.trigger = 1.0f;
             state = NoteStatePlaying;
+            NSLog(@"Add");
         }
         
         void noteOn(int noteNumber, int velocity)
@@ -97,6 +103,9 @@ public:
                 }
             } else {
                 memcpy(&patch, &kernel->patch, sizeof(plaits::Patch));
+                memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
+                
+                NSLog(@"Here");
                 patch.note = float(noteNumber);
                 note = noteNumber;
                 add();
@@ -170,27 +179,47 @@ public:
     
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
-            case InstrumentParamAttack:
-                attack = clamp(value, 0.001f, 10.f);
-                attackSamples = sampleRate * attack;
+            case PlaitsParamTimbre:
+                patch.timbre = clamp(value, 0.0f, 1.0f);
                 break;
                 
-            case InstrumentParamRelease:
-                release = clamp(value, 0.001f, 10.f);
-                releaseSamples = sampleRate * release;
+            case PlaitsParamHarmonics:
+                patch.harmonics = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamMorph:
+                patch.morph = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamAlgorithm:
+                patch.engine = (int) (clamp(value, 0.0f, 1.0f) * (float) plaits::kMaxEngines);
+                break;
+                
+            case PlaitsParamDecay:
+                patch.decay = clamp(value, 0.0f, 1.0f);
                 break;
         }
     }
     
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
-            case InstrumentParamAttack:
-                return attack;
+            case PlaitsParamTimbre:
+                return patch.timbre;
                 
-            case InstrumentParamRelease:
-                return release;
+            case PlaitsParamHarmonics:
+                return patch.harmonics;
                 
-            default: return 0.0f;
+            case PlaitsParamMorph:
+                return patch.morph;
+                
+            case PlaitsParamAlgorithm:
+                return ((float) patch.engine) / ((float) plaits::kMaxEngines);
+                
+            case PlaitsParamDecay:
+                return patch.decay;
+                
+            default:
+                return 0.0f;
         }
     }
     
@@ -304,13 +333,6 @@ public:
     plaits::Modulations modulations;
     plaits::Patch patch;
     int stolenVoice = 0;
-    
-    // Parameters.
-    float attack = .01f;
-    float release = .1f;
-    
-    int attackSamples   = sampleRate * attack;
-    int releaseSamples  = sampleRate * release;
 };
 
 #endif /* PlaitsDSPKernel_h */

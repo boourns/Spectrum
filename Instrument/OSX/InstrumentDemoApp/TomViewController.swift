@@ -62,8 +62,10 @@ class TomViewController : NSViewController {
         let builtInPlugInURL = Bundle.main.builtInPlugInsURL!
         let pluginUrl = builtInPlugInURL.appendingPathComponent("InstrumentDemoAppExtension.appex")
         let appExtensionBundle = Bundle.init(url: pluginUrl)
-        let auV3ViewController = InstrumentDemoViewController(nibName: "InstrumentDemoViewController", bundle: appExtensionBundle)
-        
+//        let auV3ViewController = InstrumentDemoViewController(nibName: "InstrumentDemoViewController", bundle: appExtensionBundle)
+        let auV3ViewController = InstrumentDemoViewController(nibName: nil, bundle: nil)
+        addChild(auV3ViewController)
+      
         let view = auV3ViewController.view
         view.frame = containerView.bounds
         containerView.addSubview(view)
