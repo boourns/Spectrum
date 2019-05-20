@@ -92,11 +92,11 @@ class ViewController: UIViewController {
         
         // Present the view controller's view.
         if let view = filterDemoViewController.view {
-            addChildViewController(filterDemoViewController)
+          addChild(filterDemoViewController)
             view.frame = auContainerView.bounds
             
             auContainerView.addSubview(view)
-            filterDemoViewController.didMove(toParentViewController: self)
+          filterDemoViewController.didMove(toParent: self)
         }
 	}
 	
@@ -111,8 +111,8 @@ class ViewController: UIViewController {
         let audioUnit = playEngine.testAudioUnit as! AUv3InstrumentDemo
         filterDemoViewController.audioUnit = audioUnit
         
-        attackParameter = parameterTree.value(forKey: "attack") as? AUParameter
-        releaseParameter = parameterTree.value(forKey: "release") as? AUParameter
+        attackParameter = parameterTree.value(forKey: "timbre") as? AUParameter
+        releaseParameter = parameterTree.value(forKey: "harmonics") as? AUParameter
         
         parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [unowned self] address, value in
             /*

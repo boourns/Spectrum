@@ -62,8 +62,8 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
 	func connectViewWithAU() {
 		guard let paramTree = audioUnit?.parameterTree else { return }
 
-		attackParameter = paramTree.value(forKey: "attack") as? AUParameter
-		releaseParameter = paramTree.value(forKey: "release") as? AUParameter
+		attackParameter = paramTree.value(forKey: "timbre") as? AUParameter
+		releaseParameter = paramTree.value(forKey: "harmonics") as? AUParameter
 
 		parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
@@ -83,13 +83,16 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
 	}
     
     func updateAttack() {
-        attackTextField.text = attackParameter!.string(fromValue: nil)
-        attackSlider.value = (log10(attackParameter!.value) + 3.0) * 100.0
+      guard let param = attackParameter else { return }
+        attackTextField.text = param.string(fromValue: nil)
+        attackSlider.value = (log10(param.value) + 3.0) * 100.0
     }
     
     func updateRelease() {
-        releaseTextField.text = releaseParameter!.string(fromValue: nil)
-        releaseSlider.value = (log10(releaseParameter!.value) + 3.0) * 100.0
+      guard let param = releaseParameter else { return }
+
+        releaseTextField.text = param.string(fromValue: nil)
+        releaseSlider.value = (log10(param.value) + 3.0) * 100.0
     }
     
     // MARK:

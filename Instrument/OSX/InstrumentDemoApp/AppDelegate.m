@@ -12,6 +12,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+  [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"NSApplicationCrashOnExceptions": @YES }];
+  
+
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

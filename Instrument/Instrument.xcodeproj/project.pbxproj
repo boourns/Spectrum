@@ -44,8 +44,120 @@
 		B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C831CA0966600902296 /* InstrumentDemo.mm */; };
 		B5234C8C1CA096B200902296 /* InstrumentDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = B5234C891CA096B200902296 /* InstrumentDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5234C8D1CA096B200902296 /* InstrumentDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C8A1CA096B200902296 /* InstrumentDemo.mm */; };
-		E216B0E0228CD67B006ECCBC /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
-		E22476D22290F48500F9450C /* InstrumentDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22476D12290F48500F9450C /* InstrumentDemoViewController.swift */; };
+		E2154AA8229249AA00CEED2E /* PlaitsDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */; };
+		E2154AA9229249AA00CEED2E /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2C229249AA00CEED2E /* resources.h */; };
+		E2154AAA229249AA00CEED2E /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2D229249AA00CEED2E /* makefile */; };
+		E2154AAB229249AA00CEED2E /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = E2154A2E229249AA00CEED2E /* __init__.py */; };
+		E2154AAC229249AA00CEED2E /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2F229249AA00CEED2E /* resources.cc */; };
+		E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A30229249AA00CEED2E /* pot_controller.h */; };
+		E2154AAE229249AA00CEED2E /* fx_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A33229249AA00CEED2E /* fx_engine.h */; };
+		E2154AAF229249AA00CEED2E /* low_pass_gate.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A34229249AA00CEED2E /* low_pass_gate.h */; };
+		E2154AB0229249AA00CEED2E /* overdrive.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A35229249AA00CEED2E /* overdrive.h */; };
+		E2154AB1229249AA00CEED2E /* sample_rate_reducer.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A36229249AA00CEED2E /* sample_rate_reducer.h */; };
+		E2154AB2229249AA00CEED2E /* diffuser.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A37229249AA00CEED2E /* diffuser.h */; };
+		E2154AB3229249AA00CEED2E /* hi_hat.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A39229249AA00CEED2E /* hi_hat.h */; };
+		E2154AB4229249AA00CEED2E /* analog_snare_drum.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A3A229249AA00CEED2E /* analog_snare_drum.h */; };
+		E2154AB5229249AA00CEED2E /* synthetic_bass_drum.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A3B229249AA00CEED2E /* synthetic_bass_drum.h */; };
+		E2154AB6229249AA00CEED2E /* analog_bass_drum.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A3C229249AA00CEED2E /* analog_bass_drum.h */; };
+		E2154AB7229249AA00CEED2E /* synthetic_snare_drum.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A3D229249AA00CEED2E /* synthetic_snare_drum.h */; };
+		E2154AB8229249AA00CEED2E /* voice.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A3E229249AA00CEED2E /* voice.cc */; };
+		E2154AB9229249AA00CEED2E /* lpc_speech_synth_phonemes.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A40229249AA00CEED2E /* lpc_speech_synth_phonemes.cc */; };
+		E2154ABA229249AA00CEED2E /* naive_speech_synth.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A41229249AA00CEED2E /* naive_speech_synth.h */; };
+		E2154ABB229249AA00CEED2E /* lpc_speech_synth_controller.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A42229249AA00CEED2E /* lpc_speech_synth_controller.cc */; };
+		E2154ABC229249AA00CEED2E /* lpc_speech_synth.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A43229249AA00CEED2E /* lpc_speech_synth.cc */; };
+		E2154ABD229249AA00CEED2E /* naive_speech_synth.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A44229249AA00CEED2E /* naive_speech_synth.cc */; };
+		E2154ABE229249AA00CEED2E /* lpc_speech_synth_words.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A45229249AA00CEED2E /* lpc_speech_synth_words.cc */; };
+		E2154ABF229249AA00CEED2E /* sam_speech_synth.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A46229249AA00CEED2E /* sam_speech_synth.cc */; };
+		E2154AC0229249AA00CEED2E /* lpc_speech_synth_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A47229249AA00CEED2E /* lpc_speech_synth_controller.h */; };
+		E2154AC1229249AA00CEED2E /* lpc_speech_synth.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A48229249AA00CEED2E /* lpc_speech_synth.h */; };
+		E2154AC2229249AA00CEED2E /* lpc_speech_synth_words.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A49229249AA00CEED2E /* lpc_speech_synth_words.h */; };
+		E2154AC3229249AA00CEED2E /* sam_speech_synth.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A4A229249AA00CEED2E /* sam_speech_synth.h */; };
+		E2154AC4229249AA00CEED2E /* smooth_random_generator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A4C229249AA00CEED2E /* smooth_random_generator.h */; };
+		E2154AC5229249AA00CEED2E /* fractal_random_generator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A4D229249AA00CEED2E /* fractal_random_generator.h */; };
+		E2154AC6229249AA00CEED2E /* clocked_noise.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A4E229249AA00CEED2E /* clocked_noise.h */; };
+		E2154AC7229249AA00CEED2E /* particle.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A4F229249AA00CEED2E /* particle.h */; };
+		E2154AC8229249AA00CEED2E /* dust.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A50229249AA00CEED2E /* dust.h */; };
+		E2154AC9229249AA00CEED2E /* variable_shape_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A52229249AA00CEED2E /* variable_shape_oscillator.h */; };
+		E2154ACA229249AA00CEED2E /* wavetable_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A53229249AA00CEED2E /* wavetable_oscillator.h */; };
+		E2154ACB229249AA00CEED2E /* z_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A54229249AA00CEED2E /* z_oscillator.h */; };
+		E2154ACC229249AA00CEED2E /* string_synth_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A55229249AA00CEED2E /* string_synth_oscillator.h */; };
+		E2154ACD229249AA00CEED2E /* oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A56229249AA00CEED2E /* oscillator.h */; };
+		E2154ACE229249AA00CEED2E /* formant_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A57229249AA00CEED2E /* formant_oscillator.h */; };
+		E2154ACF229249AA00CEED2E /* variable_saw_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A58229249AA00CEED2E /* variable_saw_oscillator.h */; };
+		E2154AD0229249AA00CEED2E /* harmonic_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A59229249AA00CEED2E /* harmonic_oscillator.h */; };
+		E2154AD1229249AA00CEED2E /* grainlet_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A5A229249AA00CEED2E /* grainlet_oscillator.h */; };
+		E2154AD2229249AA00CEED2E /* sine_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A5B229249AA00CEED2E /* sine_oscillator.h */; };
+		E2154AD3229249AA00CEED2E /* vosim_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A5C229249AA00CEED2E /* vosim_oscillator.h */; };
+		E2154AD4229249AA00CEED2E /* string.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A5E229249AA00CEED2E /* string.cc */; };
+		E2154AD5229249AA00CEED2E /* resonator.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A5F229249AA00CEED2E /* resonator.cc */; };
+		E2154AD6229249AA00CEED2E /* string_voice.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A60229249AA00CEED2E /* string_voice.cc */; };
+		E2154AD7229249AA00CEED2E /* modal_voice.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A61229249AA00CEED2E /* modal_voice.cc */; };
+		E2154AD8229249AA00CEED2E /* modal_voice.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A62229249AA00CEED2E /* modal_voice.h */; };
+		E2154AD9229249AA00CEED2E /* delay_line.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A63229249AA00CEED2E /* delay_line.h */; };
+		E2154ADA229249AA00CEED2E /* string_voice.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A64229249AA00CEED2E /* string_voice.h */; };
+		E2154ADB229249AA00CEED2E /* audiostring.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A65229249AA00CEED2E /* audiostring.h */; };
+		E2154ADC229249AA00CEED2E /* resonator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A66229249AA00CEED2E /* resonator.h */; };
+		E2154ADD229249AA00CEED2E /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A67229249AA00CEED2E /* dsp.h */; };
+		E2154ADE229249AA00CEED2E /* voice.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A68229249AA00CEED2E /* voice.h */; };
+		E2154ADF229249AA00CEED2E /* envelope.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A69229249AA00CEED2E /* envelope.h */; };
+		E2154AE0229249AA00CEED2E /* fm_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A6B229249AA00CEED2E /* fm_engine.cc */; };
+		E2154AE1229249AA00CEED2E /* string_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A6C229249AA00CEED2E /* string_engine.h */; };
+		E2154AE2229249AA00CEED2E /* speech_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A6D229249AA00CEED2E /* speech_engine.h */; };
+		E2154AE3229249AA00CEED2E /* wavetable_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A6E229249AA00CEED2E /* wavetable_engine.h */; };
+		E2154AE4229249AA00CEED2E /* fm_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A6F229249AA00CEED2E /* fm_engine.h */; };
+		E2154AE5229249AA00CEED2E /* engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A70229249AA00CEED2E /* engine.h */; };
+		E2154AE6229249AA00CEED2E /* chord_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A71229249AA00CEED2E /* chord_engine.h */; };
+		E2154AE7229249AA00CEED2E /* modal_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A72229249AA00CEED2E /* modal_engine.h */; };
+		E2154AE8229249AA00CEED2E /* snare_drum_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A73229249AA00CEED2E /* snare_drum_engine.h */; };
+		E2154AE9229249AA00CEED2E /* noise_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A74229249AA00CEED2E /* noise_engine.h */; };
+		E2154AEA229249AA00CEED2E /* swarm_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A75229249AA00CEED2E /* swarm_engine.cc */; };
+		E2154AEB229249AA00CEED2E /* wavetable_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A76229249AA00CEED2E /* wavetable_engine.cc */; };
+		E2154AEC229249AA00CEED2E /* particle_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A77229249AA00CEED2E /* particle_engine.cc */; };
+		E2154AED229249AA00CEED2E /* virtual_analog_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A78229249AA00CEED2E /* virtual_analog_engine.h */; };
+		E2154AEE229249AA00CEED2E /* noise_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A79229249AA00CEED2E /* noise_engine.cc */; };
+		E2154AEF229249AA00CEED2E /* hi_hat_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A7A229249AA00CEED2E /* hi_hat_engine.cc */; };
+		E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A7B229249AA00CEED2E /* chord_engine.cc */; };
+		E2154AF1229249AA00CEED2E /* waveshaping_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A7C229249AA00CEED2E /* waveshaping_engine.cc */; };
+		E2154AF2229249AA00CEED2E /* particle_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A7D229249AA00CEED2E /* particle_engine.h */; };
+		E2154AF3229249AA00CEED2E /* string_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A7E229249AA00CEED2E /* string_engine.cc */; };
+		E2154AF4229249AA00CEED2E /* modal_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A7F229249AA00CEED2E /* modal_engine.cc */; };
+		E2154AF5229249AA00CEED2E /* additive_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A80229249AA00CEED2E /* additive_engine.h */; };
+		E2154AF6229249AA00CEED2E /* hi_hat_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A81229249AA00CEED2E /* hi_hat_engine.h */; };
+		E2154AF7229249AA00CEED2E /* grain_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A82229249AA00CEED2E /* grain_engine.cc */; };
+		E2154AF8229249AA00CEED2E /* bass_drum_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A83229249AA00CEED2E /* bass_drum_engine.cc */; };
+		E2154AF9229249AA00CEED2E /* bass_drum_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A84229249AA00CEED2E /* bass_drum_engine.h */; };
+		E2154AFA229249AA00CEED2E /* speech_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A85229249AA00CEED2E /* speech_engine.cc */; };
+		E2154AFB229249AA00CEED2E /* grain_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A86229249AA00CEED2E /* grain_engine.h */; };
+		E2154AFC229249AA00CEED2E /* additive_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A87229249AA00CEED2E /* additive_engine.cc */; };
+		E2154AFD229249AA00CEED2E /* virtual_analog_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A88229249AA00CEED2E /* virtual_analog_engine.cc */; };
+		E2154AFE229249AA00CEED2E /* waveshaping_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A89229249AA00CEED2E /* waveshaping_engine.h */; };
+		E2154AFF229249AA00CEED2E /* snare_drum_engine.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A8A229249AA00CEED2E /* snare_drum_engine.cc */; };
+		E2154B00229249AA00CEED2E /* swarm_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A8B229249AA00CEED2E /* swarm_engine.h */; };
+		E2154B01229249AA00CEED2E /* ring_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A8E229249AA00CEED2E /* ring_buffer.h */; };
+		E2154B02229249AA00CEED2E /* gate_flags.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A8F229249AA00CEED2E /* gate_flags.h */; };
+		E2154B03229249AA00CEED2E /* stream_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A90229249AA00CEED2E /* stream_buffer.h */; };
+		E2154B04229249AA00CEED2E /* random.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A91229249AA00CEED2E /* random.cc */; };
+		E2154B05229249AA00CEED2E /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A92229249AA00CEED2E /* dsp.h */; };
+		E2154B06229249AA00CEED2E /* murmurhash3.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A93229249AA00CEED2E /* murmurhash3.h */; };
+		E2154B07229249AA00CEED2E /* buffer_allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A94229249AA00CEED2E /* buffer_allocator.h */; };
+		E2154B08229249AA00CEED2E /* crc32.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A95229249AA00CEED2E /* crc32.h */; };
+		E2154B09229249AA00CEED2E /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A96229249AA00CEED2E /* random.h */; };
+		E2154B0A229249AA00CEED2E /* stmlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A97229249AA00CEED2E /* stmlib.h */; };
+		E2154B0B229249AA00CEED2E /* atan_approximations.py in Resources */ = {isa = PBXBuildFile; fileRef = E2154A99229249AA00CEED2E /* atan_approximations.py */; };
+		E2154B0C229249AA00CEED2E /* atan.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A9A229249AA00CEED2E /* atan.cc */; };
+		E2154B0D229249AA00CEED2E /* parameter_interpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9B229249AA00CEED2E /* parameter_interpolator.h */; };
+		E2154B0E229249AA00CEED2E /* sample_rate_converter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9C229249AA00CEED2E /* sample_rate_converter.h */; };
+		E2154B0F229249AA00CEED2E /* rsqrt.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9D229249AA00CEED2E /* rsqrt.h */; };
+		E2154B10229249AA00CEED2E /* hysteresis_quantizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9E229249AA00CEED2E /* hysteresis_quantizer.h */; };
+		E2154B11229249AA00CEED2E /* atan.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9F229249AA00CEED2E /* atan.h */; };
+		E2154B12229249AA00CEED2E /* polyblep.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA0229249AA00CEED2E /* polyblep.h */; };
+		E2154B13229249AA00CEED2E /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA1229249AA00CEED2E /* dsp.h */; };
+		E2154B14229249AA00CEED2E /* delay_line.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA2229249AA00CEED2E /* delay_line.h */; };
+		E2154B15229249AA00CEED2E /* cosine_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA3229249AA00CEED2E /* cosine_oscillator.h */; };
+		E2154B16229249AA00CEED2E /* filter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA4229249AA00CEED2E /* filter.h */; };
+		E2154B17229249AA00CEED2E /* limiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA5229249AA00CEED2E /* limiter.h */; };
+		E2154B18229249AA00CEED2E /* units.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA6229249AA00CEED2E /* units.h */; };
+		E2154B19229249AA00CEED2E /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154AA7229249AA00CEED2E /* units.cc */; };
 		E22476D422917EF300F9450C /* InstrumentDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22476D12290F48500F9450C /* InstrumentDemoViewController.swift */; };
 		E22476D62291834600F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22476D52291834600F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift */; };
 		E22476D72291837900F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C891B9517A50081EA80 /* InstrumentDemoViewController+AUAudioUnitFactory.swift */; };
@@ -404,6 +516,121 @@
 		B5234C891CA096B200902296 /* InstrumentDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentDemo.h; sourceTree = "<group>"; };
 		B5234C8A1CA096B200902296 /* InstrumentDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentDemo.mm; sourceTree = "<group>"; };
 		B5234C8B1CA096B200902296 /* InstrumentDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentDSPKernel.hpp; sourceTree = "<group>"; };
+		E2154A29229248A700CEED2E /* InstrumentDemoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InstrumentDemoApp.entitlements; sourceTree = "<group>"; };
+		E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
+		E2154A2C229249AA00CEED2E /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
+		E2154A2D229249AA00CEED2E /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		E2154A2E229249AA00CEED2E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		E2154A2F229249AA00CEED2E /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
+		E2154A30229249AA00CEED2E /* pot_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pot_controller.h; sourceTree = "<group>"; };
+		E2154A33229249AA00CEED2E /* fx_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fx_engine.h; sourceTree = "<group>"; };
+		E2154A34229249AA00CEED2E /* low_pass_gate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = low_pass_gate.h; sourceTree = "<group>"; };
+		E2154A35229249AA00CEED2E /* overdrive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = overdrive.h; sourceTree = "<group>"; };
+		E2154A36229249AA00CEED2E /* sample_rate_reducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sample_rate_reducer.h; sourceTree = "<group>"; };
+		E2154A37229249AA00CEED2E /* diffuser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diffuser.h; sourceTree = "<group>"; };
+		E2154A39229249AA00CEED2E /* hi_hat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hi_hat.h; sourceTree = "<group>"; };
+		E2154A3A229249AA00CEED2E /* analog_snare_drum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analog_snare_drum.h; sourceTree = "<group>"; };
+		E2154A3B229249AA00CEED2E /* synthetic_bass_drum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = synthetic_bass_drum.h; sourceTree = "<group>"; };
+		E2154A3C229249AA00CEED2E /* analog_bass_drum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analog_bass_drum.h; sourceTree = "<group>"; };
+		E2154A3D229249AA00CEED2E /* synthetic_snare_drum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = synthetic_snare_drum.h; sourceTree = "<group>"; };
+		E2154A3E229249AA00CEED2E /* voice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = voice.cc; sourceTree = "<group>"; };
+		E2154A40229249AA00CEED2E /* lpc_speech_synth_phonemes.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lpc_speech_synth_phonemes.cc; sourceTree = "<group>"; };
+		E2154A41229249AA00CEED2E /* naive_speech_synth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = naive_speech_synth.h; sourceTree = "<group>"; };
+		E2154A42229249AA00CEED2E /* lpc_speech_synth_controller.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lpc_speech_synth_controller.cc; sourceTree = "<group>"; };
+		E2154A43229249AA00CEED2E /* lpc_speech_synth.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lpc_speech_synth.cc; sourceTree = "<group>"; };
+		E2154A44229249AA00CEED2E /* naive_speech_synth.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = naive_speech_synth.cc; sourceTree = "<group>"; };
+		E2154A45229249AA00CEED2E /* lpc_speech_synth_words.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lpc_speech_synth_words.cc; sourceTree = "<group>"; };
+		E2154A46229249AA00CEED2E /* sam_speech_synth.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sam_speech_synth.cc; sourceTree = "<group>"; };
+		E2154A47229249AA00CEED2E /* lpc_speech_synth_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lpc_speech_synth_controller.h; sourceTree = "<group>"; };
+		E2154A48229249AA00CEED2E /* lpc_speech_synth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lpc_speech_synth.h; sourceTree = "<group>"; };
+		E2154A49229249AA00CEED2E /* lpc_speech_synth_words.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lpc_speech_synth_words.h; sourceTree = "<group>"; };
+		E2154A4A229249AA00CEED2E /* sam_speech_synth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sam_speech_synth.h; sourceTree = "<group>"; };
+		E2154A4C229249AA00CEED2E /* smooth_random_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smooth_random_generator.h; sourceTree = "<group>"; };
+		E2154A4D229249AA00CEED2E /* fractal_random_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fractal_random_generator.h; sourceTree = "<group>"; };
+		E2154A4E229249AA00CEED2E /* clocked_noise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = clocked_noise.h; sourceTree = "<group>"; };
+		E2154A4F229249AA00CEED2E /* particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particle.h; sourceTree = "<group>"; };
+		E2154A50229249AA00CEED2E /* dust.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dust.h; sourceTree = "<group>"; };
+		E2154A52229249AA00CEED2E /* variable_shape_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = variable_shape_oscillator.h; sourceTree = "<group>"; };
+		E2154A53229249AA00CEED2E /* wavetable_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wavetable_oscillator.h; sourceTree = "<group>"; };
+		E2154A54229249AA00CEED2E /* z_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_oscillator.h; sourceTree = "<group>"; };
+		E2154A55229249AA00CEED2E /* string_synth_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_synth_oscillator.h; sourceTree = "<group>"; };
+		E2154A56229249AA00CEED2E /* oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oscillator.h; sourceTree = "<group>"; };
+		E2154A57229249AA00CEED2E /* formant_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = formant_oscillator.h; sourceTree = "<group>"; };
+		E2154A58229249AA00CEED2E /* variable_saw_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = variable_saw_oscillator.h; sourceTree = "<group>"; };
+		E2154A59229249AA00CEED2E /* harmonic_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = harmonic_oscillator.h; sourceTree = "<group>"; };
+		E2154A5A229249AA00CEED2E /* grainlet_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grainlet_oscillator.h; sourceTree = "<group>"; };
+		E2154A5B229249AA00CEED2E /* sine_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sine_oscillator.h; sourceTree = "<group>"; };
+		E2154A5C229249AA00CEED2E /* vosim_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vosim_oscillator.h; sourceTree = "<group>"; };
+		E2154A5E229249AA00CEED2E /* string.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string.cc; sourceTree = "<group>"; };
+		E2154A5F229249AA00CEED2E /* resonator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resonator.cc; sourceTree = "<group>"; };
+		E2154A60229249AA00CEED2E /* string_voice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_voice.cc; sourceTree = "<group>"; };
+		E2154A61229249AA00CEED2E /* modal_voice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = modal_voice.cc; sourceTree = "<group>"; };
+		E2154A62229249AA00CEED2E /* modal_voice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = modal_voice.h; sourceTree = "<group>"; };
+		E2154A63229249AA00CEED2E /* delay_line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = delay_line.h; sourceTree = "<group>"; };
+		E2154A64229249AA00CEED2E /* string_voice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_voice.h; sourceTree = "<group>"; };
+		E2154A65229249AA00CEED2E /* audiostring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = audiostring.h; sourceTree = "<group>"; };
+		E2154A66229249AA00CEED2E /* resonator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resonator.h; sourceTree = "<group>"; };
+		E2154A67229249AA00CEED2E /* dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
+		E2154A68229249AA00CEED2E /* voice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = voice.h; sourceTree = "<group>"; };
+		E2154A69229249AA00CEED2E /* envelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = envelope.h; sourceTree = "<group>"; };
+		E2154A6B229249AA00CEED2E /* fm_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fm_engine.cc; sourceTree = "<group>"; };
+		E2154A6C229249AA00CEED2E /* string_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_engine.h; sourceTree = "<group>"; };
+		E2154A6D229249AA00CEED2E /* speech_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speech_engine.h; sourceTree = "<group>"; };
+		E2154A6E229249AA00CEED2E /* wavetable_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wavetable_engine.h; sourceTree = "<group>"; };
+		E2154A6F229249AA00CEED2E /* fm_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fm_engine.h; sourceTree = "<group>"; };
+		E2154A70229249AA00CEED2E /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = engine.h; sourceTree = "<group>"; };
+		E2154A71229249AA00CEED2E /* chord_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chord_engine.h; sourceTree = "<group>"; };
+		E2154A72229249AA00CEED2E /* modal_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = modal_engine.h; sourceTree = "<group>"; };
+		E2154A73229249AA00CEED2E /* snare_drum_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = snare_drum_engine.h; sourceTree = "<group>"; };
+		E2154A74229249AA00CEED2E /* noise_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = noise_engine.h; sourceTree = "<group>"; };
+		E2154A75229249AA00CEED2E /* swarm_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = swarm_engine.cc; sourceTree = "<group>"; };
+		E2154A76229249AA00CEED2E /* wavetable_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wavetable_engine.cc; sourceTree = "<group>"; };
+		E2154A77229249AA00CEED2E /* particle_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particle_engine.cc; sourceTree = "<group>"; };
+		E2154A78229249AA00CEED2E /* virtual_analog_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = virtual_analog_engine.h; sourceTree = "<group>"; };
+		E2154A79229249AA00CEED2E /* noise_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = noise_engine.cc; sourceTree = "<group>"; };
+		E2154A7A229249AA00CEED2E /* hi_hat_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hi_hat_engine.cc; sourceTree = "<group>"; };
+		E2154A7B229249AA00CEED2E /* chord_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = chord_engine.cc; sourceTree = "<group>"; };
+		E2154A7C229249AA00CEED2E /* waveshaping_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = waveshaping_engine.cc; sourceTree = "<group>"; };
+		E2154A7D229249AA00CEED2E /* particle_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particle_engine.h; sourceTree = "<group>"; };
+		E2154A7E229249AA00CEED2E /* string_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_engine.cc; sourceTree = "<group>"; };
+		E2154A7F229249AA00CEED2E /* modal_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = modal_engine.cc; sourceTree = "<group>"; };
+		E2154A80229249AA00CEED2E /* additive_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = additive_engine.h; sourceTree = "<group>"; };
+		E2154A81229249AA00CEED2E /* hi_hat_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hi_hat_engine.h; sourceTree = "<group>"; };
+		E2154A82229249AA00CEED2E /* grain_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grain_engine.cc; sourceTree = "<group>"; };
+		E2154A83229249AA00CEED2E /* bass_drum_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bass_drum_engine.cc; sourceTree = "<group>"; };
+		E2154A84229249AA00CEED2E /* bass_drum_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bass_drum_engine.h; sourceTree = "<group>"; };
+		E2154A85229249AA00CEED2E /* speech_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = speech_engine.cc; sourceTree = "<group>"; };
+		E2154A86229249AA00CEED2E /* grain_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grain_engine.h; sourceTree = "<group>"; };
+		E2154A87229249AA00CEED2E /* additive_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = additive_engine.cc; sourceTree = "<group>"; };
+		E2154A88229249AA00CEED2E /* virtual_analog_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = virtual_analog_engine.cc; sourceTree = "<group>"; };
+		E2154A89229249AA00CEED2E /* waveshaping_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = waveshaping_engine.h; sourceTree = "<group>"; };
+		E2154A8A229249AA00CEED2E /* snare_drum_engine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = snare_drum_engine.cc; sourceTree = "<group>"; };
+		E2154A8B229249AA00CEED2E /* swarm_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swarm_engine.h; sourceTree = "<group>"; };
+		E2154A8E229249AA00CEED2E /* ring_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ring_buffer.h; sourceTree = "<group>"; };
+		E2154A8F229249AA00CEED2E /* gate_flags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gate_flags.h; sourceTree = "<group>"; };
+		E2154A90229249AA00CEED2E /* stream_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream_buffer.h; sourceTree = "<group>"; };
+		E2154A91229249AA00CEED2E /* random.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = random.cc; sourceTree = "<group>"; };
+		E2154A92229249AA00CEED2E /* dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
+		E2154A93229249AA00CEED2E /* murmurhash3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = murmurhash3.h; sourceTree = "<group>"; };
+		E2154A94229249AA00CEED2E /* buffer_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer_allocator.h; sourceTree = "<group>"; };
+		E2154A95229249AA00CEED2E /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32.h; sourceTree = "<group>"; };
+		E2154A96229249AA00CEED2E /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = random.h; sourceTree = "<group>"; };
+		E2154A97229249AA00CEED2E /* stmlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stmlib.h; sourceTree = "<group>"; };
+		E2154A99229249AA00CEED2E /* atan_approximations.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = atan_approximations.py; sourceTree = "<group>"; };
+		E2154A9A229249AA00CEED2E /* atan.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = atan.cc; sourceTree = "<group>"; };
+		E2154A9B229249AA00CEED2E /* parameter_interpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameter_interpolator.h; sourceTree = "<group>"; };
+		E2154A9C229249AA00CEED2E /* sample_rate_converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sample_rate_converter.h; sourceTree = "<group>"; };
+		E2154A9D229249AA00CEED2E /* rsqrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rsqrt.h; sourceTree = "<group>"; };
+		E2154A9E229249AA00CEED2E /* hysteresis_quantizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hysteresis_quantizer.h; sourceTree = "<group>"; };
+		E2154A9F229249AA00CEED2E /* atan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atan.h; sourceTree = "<group>"; };
+		E2154AA0229249AA00CEED2E /* polyblep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = polyblep.h; sourceTree = "<group>"; };
+		E2154AA1229249AA00CEED2E /* dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
+		E2154AA2229249AA00CEED2E /* delay_line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = delay_line.h; sourceTree = "<group>"; };
+		E2154AA3229249AA00CEED2E /* cosine_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cosine_oscillator.h; sourceTree = "<group>"; };
+		E2154AA4229249AA00CEED2E /* filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filter.h; sourceTree = "<group>"; };
+		E2154AA5229249AA00CEED2E /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
+		E2154AA6229249AA00CEED2E /* units.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = units.h; sourceTree = "<group>"; };
+		E2154AA7229249AA00CEED2E /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
 		E216B0DF228CD67B006ECCBC /* TomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomViewController.swift; sourceTree = "<group>"; };
 		E22476D12290F48500F9450C /* InstrumentDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentDemoViewController.swift; sourceTree = "<group>"; };
 		E22476D52291834600F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstrumentDemoViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
@@ -672,6 +899,7 @@
 		91D3DA0B1B023C03008FFFBB = {
 			isa = PBXGroup;
 			children = (
+				E2154A29229248A700CEED2E /* InstrumentDemoApp.entitlements */,
 				3E8E032C1B16387D0011624B /* README.md */,
 				30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */,
 				30AEE0F91BA3513800302EB1 /* Instrument (OS X) */,
@@ -746,6 +974,9 @@
 		B5234C811CA0963600902296 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E2154A2B229249AA00CEED2E /* plaits */,
+				E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */,
+				E2154A8C229249AA00CEED2E /* stmlib */,
 				B5234C821CA0966600902296 /* InstrumentDemo.h */,
 				B5234C831CA0966600902296 /* InstrumentDemo.mm */,
 				B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */,
@@ -766,6 +997,213 @@
 			);
 			name = Shared;
 			path = ../../Shared;
+			sourceTree = "<group>";
+		};
+		E2154A2B229249AA00CEED2E /* plaits */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A2C229249AA00CEED2E /* resources.h */,
+				E2154A2D229249AA00CEED2E /* makefile */,
+				E2154A2E229249AA00CEED2E /* __init__.py */,
+				E2154A2F229249AA00CEED2E /* resources.cc */,
+				E2154A30229249AA00CEED2E /* pot_controller.h */,
+				E2154A31229249AA00CEED2E /* dsp */,
+			);
+			path = plaits;
+			sourceTree = "<group>";
+		};
+		E2154A31229249AA00CEED2E /* dsp */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A32229249AA00CEED2E /* fx */,
+				E2154A38229249AA00CEED2E /* drums */,
+				E2154A3E229249AA00CEED2E /* voice.cc */,
+				E2154A3F229249AA00CEED2E /* speech */,
+				E2154A4B229249AA00CEED2E /* noise */,
+				E2154A51229249AA00CEED2E /* oscillator */,
+				E2154A5D229249AA00CEED2E /* physical_modelling */,
+				E2154A67229249AA00CEED2E /* dsp.h */,
+				E2154A68229249AA00CEED2E /* voice.h */,
+				E2154A69229249AA00CEED2E /* envelope.h */,
+				E2154A6A229249AA00CEED2E /* engine */,
+			);
+			path = dsp;
+			sourceTree = "<group>";
+		};
+		E2154A32229249AA00CEED2E /* fx */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A33229249AA00CEED2E /* fx_engine.h */,
+				E2154A34229249AA00CEED2E /* low_pass_gate.h */,
+				E2154A35229249AA00CEED2E /* overdrive.h */,
+				E2154A36229249AA00CEED2E /* sample_rate_reducer.h */,
+				E2154A37229249AA00CEED2E /* diffuser.h */,
+			);
+			path = fx;
+			sourceTree = "<group>";
+		};
+		E2154A38229249AA00CEED2E /* drums */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A39229249AA00CEED2E /* hi_hat.h */,
+				E2154A3A229249AA00CEED2E /* analog_snare_drum.h */,
+				E2154A3B229249AA00CEED2E /* synthetic_bass_drum.h */,
+				E2154A3C229249AA00CEED2E /* analog_bass_drum.h */,
+				E2154A3D229249AA00CEED2E /* synthetic_snare_drum.h */,
+			);
+			path = drums;
+			sourceTree = "<group>";
+		};
+		E2154A3F229249AA00CEED2E /* speech */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A40229249AA00CEED2E /* lpc_speech_synth_phonemes.cc */,
+				E2154A41229249AA00CEED2E /* naive_speech_synth.h */,
+				E2154A42229249AA00CEED2E /* lpc_speech_synth_controller.cc */,
+				E2154A43229249AA00CEED2E /* lpc_speech_synth.cc */,
+				E2154A44229249AA00CEED2E /* naive_speech_synth.cc */,
+				E2154A45229249AA00CEED2E /* lpc_speech_synth_words.cc */,
+				E2154A46229249AA00CEED2E /* sam_speech_synth.cc */,
+				E2154A47229249AA00CEED2E /* lpc_speech_synth_controller.h */,
+				E2154A48229249AA00CEED2E /* lpc_speech_synth.h */,
+				E2154A49229249AA00CEED2E /* lpc_speech_synth_words.h */,
+				E2154A4A229249AA00CEED2E /* sam_speech_synth.h */,
+			);
+			path = speech;
+			sourceTree = "<group>";
+		};
+		E2154A4B229249AA00CEED2E /* noise */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A4C229249AA00CEED2E /* smooth_random_generator.h */,
+				E2154A4D229249AA00CEED2E /* fractal_random_generator.h */,
+				E2154A4E229249AA00CEED2E /* clocked_noise.h */,
+				E2154A4F229249AA00CEED2E /* particle.h */,
+				E2154A50229249AA00CEED2E /* dust.h */,
+			);
+			path = noise;
+			sourceTree = "<group>";
+		};
+		E2154A51229249AA00CEED2E /* oscillator */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A52229249AA00CEED2E /* variable_shape_oscillator.h */,
+				E2154A53229249AA00CEED2E /* wavetable_oscillator.h */,
+				E2154A54229249AA00CEED2E /* z_oscillator.h */,
+				E2154A55229249AA00CEED2E /* string_synth_oscillator.h */,
+				E2154A56229249AA00CEED2E /* oscillator.h */,
+				E2154A57229249AA00CEED2E /* formant_oscillator.h */,
+				E2154A58229249AA00CEED2E /* variable_saw_oscillator.h */,
+				E2154A59229249AA00CEED2E /* harmonic_oscillator.h */,
+				E2154A5A229249AA00CEED2E /* grainlet_oscillator.h */,
+				E2154A5B229249AA00CEED2E /* sine_oscillator.h */,
+				E2154A5C229249AA00CEED2E /* vosim_oscillator.h */,
+			);
+			path = oscillator;
+			sourceTree = "<group>";
+		};
+		E2154A5D229249AA00CEED2E /* physical_modelling */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A5E229249AA00CEED2E /* string.cc */,
+				E2154A5F229249AA00CEED2E /* resonator.cc */,
+				E2154A60229249AA00CEED2E /* string_voice.cc */,
+				E2154A61229249AA00CEED2E /* modal_voice.cc */,
+				E2154A62229249AA00CEED2E /* modal_voice.h */,
+				E2154A63229249AA00CEED2E /* delay_line.h */,
+				E2154A64229249AA00CEED2E /* string_voice.h */,
+				E2154A65229249AA00CEED2E /* audiostring.h */,
+				E2154A66229249AA00CEED2E /* resonator.h */,
+			);
+			path = physical_modelling;
+			sourceTree = "<group>";
+		};
+		E2154A6A229249AA00CEED2E /* engine */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A6B229249AA00CEED2E /* fm_engine.cc */,
+				E2154A6C229249AA00CEED2E /* string_engine.h */,
+				E2154A6D229249AA00CEED2E /* speech_engine.h */,
+				E2154A6E229249AA00CEED2E /* wavetable_engine.h */,
+				E2154A6F229249AA00CEED2E /* fm_engine.h */,
+				E2154A70229249AA00CEED2E /* engine.h */,
+				E2154A71229249AA00CEED2E /* chord_engine.h */,
+				E2154A72229249AA00CEED2E /* modal_engine.h */,
+				E2154A73229249AA00CEED2E /* snare_drum_engine.h */,
+				E2154A74229249AA00CEED2E /* noise_engine.h */,
+				E2154A75229249AA00CEED2E /* swarm_engine.cc */,
+				E2154A76229249AA00CEED2E /* wavetable_engine.cc */,
+				E2154A77229249AA00CEED2E /* particle_engine.cc */,
+				E2154A78229249AA00CEED2E /* virtual_analog_engine.h */,
+				E2154A79229249AA00CEED2E /* noise_engine.cc */,
+				E2154A7A229249AA00CEED2E /* hi_hat_engine.cc */,
+				E2154A7B229249AA00CEED2E /* chord_engine.cc */,
+				E2154A7C229249AA00CEED2E /* waveshaping_engine.cc */,
+				E2154A7D229249AA00CEED2E /* particle_engine.h */,
+				E2154A7E229249AA00CEED2E /* string_engine.cc */,
+				E2154A7F229249AA00CEED2E /* modal_engine.cc */,
+				E2154A80229249AA00CEED2E /* additive_engine.h */,
+				E2154A81229249AA00CEED2E /* hi_hat_engine.h */,
+				E2154A82229249AA00CEED2E /* grain_engine.cc */,
+				E2154A83229249AA00CEED2E /* bass_drum_engine.cc */,
+				E2154A84229249AA00CEED2E /* bass_drum_engine.h */,
+				E2154A85229249AA00CEED2E /* speech_engine.cc */,
+				E2154A86229249AA00CEED2E /* grain_engine.h */,
+				E2154A87229249AA00CEED2E /* additive_engine.cc */,
+				E2154A88229249AA00CEED2E /* virtual_analog_engine.cc */,
+				E2154A89229249AA00CEED2E /* waveshaping_engine.h */,
+				E2154A8A229249AA00CEED2E /* snare_drum_engine.cc */,
+				E2154A8B229249AA00CEED2E /* swarm_engine.h */,
+			);
+			path = engine;
+			sourceTree = "<group>";
+		};
+		E2154A8C229249AA00CEED2E /* stmlib */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A8D229249AA00CEED2E /* utils */,
+				E2154A97229249AA00CEED2E /* stmlib.h */,
+				E2154A98229249AA00CEED2E /* dsp */,
+			);
+			path = stmlib;
+			sourceTree = "<group>";
+		};
+		E2154A8D229249AA00CEED2E /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A8E229249AA00CEED2E /* ring_buffer.h */,
+				E2154A8F229249AA00CEED2E /* gate_flags.h */,
+				E2154A90229249AA00CEED2E /* stream_buffer.h */,
+				E2154A91229249AA00CEED2E /* random.cc */,
+				E2154A92229249AA00CEED2E /* dsp.h */,
+				E2154A93229249AA00CEED2E /* murmurhash3.h */,
+				E2154A94229249AA00CEED2E /* buffer_allocator.h */,
+				E2154A95229249AA00CEED2E /* crc32.h */,
+				E2154A96229249AA00CEED2E /* random.h */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		E2154A98229249AA00CEED2E /* dsp */ = {
+			isa = PBXGroup;
+			children = (
+				E2154A99229249AA00CEED2E /* atan_approximations.py */,
+				E2154A9A229249AA00CEED2E /* atan.cc */,
+				E2154A9B229249AA00CEED2E /* parameter_interpolator.h */,
+				E2154A9C229249AA00CEED2E /* sample_rate_converter.h */,
+				E2154A9D229249AA00CEED2E /* rsqrt.h */,
+				E2154A9E229249AA00CEED2E /* hysteresis_quantizer.h */,
+				E2154A9F229249AA00CEED2E /* atan.h */,
+				E2154AA0229249AA00CEED2E /* polyblep.h */,
+				E2154AA1229249AA00CEED2E /* dsp.h */,
+				E2154AA2229249AA00CEED2E /* delay_line.h */,
+				E2154AA3229249AA00CEED2E /* cosine_oscillator.h */,
+				E2154AA4229249AA00CEED2E /* filter.h */,
+				E2154AA5229249AA00CEED2E /* limiter.h */,
+				E2154AA6229249AA00CEED2E /* units.h */,
+				E2154AA7229249AA00CEED2E /* units.cc */,
+			);
+			path = dsp;
 			sourceTree = "<group>";
 		};
 		E2254379228F9FD300D72092 /* plaits */ = {
@@ -1072,88 +1510,168 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2154B11229249AA00CEED2E /* atan.h in Headers */,
 				E22544AE228F9FD300D72092 /* dsp.h in Headers */,
 				E2254442228F9FD300D72092 /* variable_saw_oscillator.h in Headers */,
 				E22544D0228F9FD300D72092 /* filter.h in Headers */,
+				E2154AE4229249AA00CEED2E /* fm_engine.h in Headers */,
 				E2254434228F9FD300D72092 /* dust.h in Headers */,
+				E2154B0F229249AA00CEED2E /* rsqrt.h in Headers */,
 				92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */,
+				E2154ADF229249AA00CEED2E /* envelope.h in Headers */,
 				E2254418228F9FD300D72092 /* naive_speech_synth.h in Headers */,
 				E2254404228F9FD300D72092 /* overdrive.h in Headers */,
+				E2154B06229249AA00CEED2E /* murmurhash3.h in Headers */,
+				E2154B07229249AA00CEED2E /* buffer_allocator.h in Headers */,
 				E22544A4228F9FD300D72092 /* swarm_engine.h in Headers */,
+				E2154B16229249AA00CEED2E /* filter.h in Headers */,
 				E2254454228F9FD300D72092 /* modal_voice.h in Headers */,
 				E2254448228F9FD300D72092 /* sine_oscillator.h in Headers */,
+				E2154B18229249AA00CEED2E /* units.h in Headers */,
+				E2154ACA229249AA00CEED2E /* wavetable_oscillator.h in Headers */,
 				E2254428228F9FD300D72092 /* lpc_speech_synth_words.h in Headers */,
+				E2154AB3229249AA00CEED2E /* hi_hat.h in Headers */,
+				E2154AC5229249AA00CEED2E /* fractal_random_generator.h in Headers */,
+				E2154AA9229249AA00CEED2E /* resources.h in Headers */,
 				E22543F6228F9FD300D72092 /* resources.h in Headers */,
 				E22544D4228F9FD300D72092 /* units.h in Headers */,
 				E2254490228F9FD300D72092 /* hi_hat_engine.h in Headers */,
+				E2154ADD229249AA00CEED2E /* dsp.h in Headers */,
+				E2154B09229249AA00CEED2E /* random.h in Headers */,
+				E2154ACC229249AA00CEED2E /* string_synth_oscillator.h in Headers */,
+				E2154AB0229249AA00CEED2E /* overdrive.h in Headers */,
 				E2254456228F9FD300D72092 /* delay_line.h in Headers */,
+				E2154AD9229249AA00CEED2E /* delay_line.h in Headers */,
+				E2154AD8229249AA00CEED2E /* modal_voice.h in Headers */,
 				E2254446228F9FD300D72092 /* grainlet_oscillator.h in Headers */,
+				E2154AF6229249AA00CEED2E /* hi_hat_engine.h in Headers */,
+				E2154B08229249AA00CEED2E /* crc32.h in Headers */,
 				E2254460228F9FD300D72092 /* voice.h in Headers */,
 				E22544C2228F9FD300D72092 /* rsqrt.h in Headers */,
 				E2254444228F9FD300D72092 /* harmonic_oscillator.h in Headers */,
+				E2154AF9229249AA00CEED2E /* bass_drum_engine.h in Headers */,
 				E225440E228F9FD300D72092 /* synthetic_bass_drum.h in Headers */,
+				E2154ADC229249AA00CEED2E /* resonator.h in Headers */,
+				E2154AC4229249AA00CEED2E /* smooth_random_generator.h in Headers */,
+				E2154AC2229249AA00CEED2E /* lpc_speech_synth_words.h in Headers */,
+				E2154AE6229249AA00CEED2E /* chord_engine.h in Headers */,
 				E22544BE228F9FD300D72092 /* parameter_interpolator.h in Headers */,
 				E2254424228F9FD300D72092 /* lpc_speech_synth_controller.h in Headers */,
+				E2154AB4229249AA00CEED2E /* analog_snare_drum.h in Headers */,
+				E2154ADE229249AA00CEED2E /* voice.h in Headers */,
 				E22544B4228F9FD300D72092 /* crc32.h in Headers */,
 				E22544CE228F9FD300D72092 /* cosine_oscillator.h in Headers */,
+				E2154AE8229249AA00CEED2E /* snare_drum_engine.h in Headers */,
+				E2154AD2229249AA00CEED2E /* sine_oscillator.h in Headers */,
 				E2254430228F9FD300D72092 /* clocked_noise.h in Headers */,
+				E2154B12229249AA00CEED2E /* polyblep.h in Headers */,
 				E2254400228F9FD300D72092 /* fx_engine.h in Headers */,
 				E225443A228F9FD300D72092 /* z_oscillator.h in Headers */,
+				E2154AC3229249AA00CEED2E /* sam_speech_synth.h in Headers */,
 				E2254472228F9FD300D72092 /* modal_engine.h in Headers */,
+				E2154AAF229249AA00CEED2E /* low_pass_gate.h in Headers */,
 				E225446E228F9FD300D72092 /* engine.h in Headers */,
+				E2154AC8229249AA00CEED2E /* dust.h in Headers */,
 				E2254410228F9FD300D72092 /* analog_bass_drum.h in Headers */,
+				E2154AD1229249AA00CEED2E /* grainlet_oscillator.h in Headers */,
 				E2254432228F9FD300D72092 /* particle.h in Headers */,
 				E225445C228F9FD300D72092 /* audiostring.h in Headers */,
+				E2154B17229249AA00CEED2E /* limiter.h in Headers */,
+				E2154ACE229249AA00CEED2E /* formant_oscillator.h in Headers */,
+				E2154AFB229249AA00CEED2E /* grain_engine.h in Headers */,
+				E2154AB1229249AA00CEED2E /* sample_rate_reducer.h in Headers */,
+				E2154AD3229249AA00CEED2E /* vosim_oscillator.h in Headers */,
 				E225442C228F9FD300D72092 /* smooth_random_generator.h in Headers */,
+				E2154AE3229249AA00CEED2E /* wavetable_engine.h in Headers */,
 				E2254412228F9FD300D72092 /* synthetic_snare_drum.h in Headers */,
+				E2154AA8229249AA00CEED2E /* PlaitsDSPKernel.hpp in Headers */,
+				E2154AE2229249AA00CEED2E /* speech_engine.h in Headers */,
+				E2154AFE229249AA00CEED2E /* waveshaping_engine.h in Headers */,
 				E225445E228F9FD300D72092 /* dsp.h in Headers */,
 				E2254438228F9FD300D72092 /* wavetable_oscillator.h in Headers */,
 				E2254474228F9FD300D72092 /* snare_drum_engine.h in Headers */,
 				92A10D131B9528B20081EA80 /* InstrumentDemoFramework.h in Headers */,
 				E225443E228F9FD300D72092 /* oscillator.h in Headers */,
+				E2154ACB229249AA00CEED2E /* z_oscillator.h in Headers */,
 				E2254406228F9FD300D72092 /* sample_rate_reducer.h in Headers */,
+				E2154AC1229249AA00CEED2E /* lpc_speech_synth.h in Headers */,
+				E2154AD0229249AA00CEED2E /* harmonic_oscillator.h in Headers */,
 				E22544AA228F9FD300D72092 /* stream_buffer.h in Headers */,
+				E2154B14229249AA00CEED2E /* delay_line.h in Headers */,
 				E225443C228F9FD300D72092 /* string_synth_oscillator.h in Headers */,
 				E2254488228F9FD300D72092 /* particle_engine.h in Headers */,
+				E2154AE7229249AA00CEED2E /* modal_engine.h in Headers */,
+				E2154AC7229249AA00CEED2E /* particle.h in Headers */,
 				B5234C851CA0966600902296 /* InstrumentDemo.h in Headers */,
 				E2254462228F9FD300D72092 /* envelope.h in Headers */,
+				E2154B03229249AA00CEED2E /* stream_buffer.h in Headers */,
 				E2254468228F9FD300D72092 /* speech_engine.h in Headers */,
 				E225442A228F9FD300D72092 /* sam_speech_synth.h in Headers */,
+				E2154AE5229249AA00CEED2E /* engine.h in Headers */,
+				E2154B0A229249AA00CEED2E /* stmlib.h in Headers */,
+				E2154AB7229249AA00CEED2E /* synthetic_snare_drum.h in Headers */,
+				E2154ADA229249AA00CEED2E /* string_voice.h in Headers */,
+				E2154B01229249AA00CEED2E /* ring_buffer.h in Headers */,
+				E2154AC0229249AA00CEED2E /* lpc_speech_synth_controller.h in Headers */,
 				E22544C4228F9FD300D72092 /* hysteresis_quantizer.h in Headers */,
+				E2154B15229249AA00CEED2E /* cosine_oscillator.h in Headers */,
+				E2154B0D229249AA00CEED2E /* parameter_interpolator.h in Headers */,
 				E2254402228F9FD300D72092 /* low_pass_gate.h in Headers */,
 				E22543FE228F9FD300D72092 /* pot_controller.h in Headers */,
 				E22544D2228F9FD300D72092 /* limiter.h in Headers */,
+				E2154AB2229249AA00CEED2E /* diffuser.h in Headers */,
+				E2154B02229249AA00CEED2E /* gate_flags.h in Headers */,
 				E225447E228F9FD300D72092 /* virtual_analog_engine.h in Headers */,
 				92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */,
 				E2254496228F9FD300D72092 /* bass_drum_engine.h in Headers */,
 				E2254470228F9FD300D72092 /* chord_engine.h in Headers */,
 				E22544A0228F9FD300D72092 /* waveshaping_engine.h in Headers */,
+				E2154AC6229249AA00CEED2E /* clocked_noise.h in Headers */,
+				E2154AF2229249AA00CEED2E /* particle_engine.h in Headers */,
+				E2154AF5229249AA00CEED2E /* additive_engine.h in Headers */,
+				E2154AE1229249AA00CEED2E /* string_engine.h in Headers */,
 				E22544C6228F9FD300D72092 /* atan.h in Headers */,
+				E2154B13229249AA00CEED2E /* dsp.h in Headers */,
+				E2154AC9229249AA00CEED2E /* variable_shape_oscillator.h in Headers */,
 				E2254466228F9FD300D72092 /* string_engine.h in Headers */,
 				E22544A8228F9FD300D72092 /* gate_flags.h in Headers */,
+				E2154B05229249AA00CEED2E /* dsp.h in Headers */,
+				E2154AE9229249AA00CEED2E /* noise_engine.h in Headers */,
 				E2254436228F9FD300D72092 /* variable_shape_oscillator.h in Headers */,
+				E2154B0E229249AA00CEED2E /* sample_rate_converter.h in Headers */,
 				E2254458228F9FD300D72092 /* string_voice.h in Headers */,
 				E22544C0228F9FD300D72092 /* sample_rate_converter.h in Headers */,
 				E2254476228F9FD300D72092 /* noise_engine.h in Headers */,
 				E225444A228F9FD300D72092 /* vosim_oscillator.h in Headers */,
 				E225446A228F9FD300D72092 /* wavetable_engine.h in Headers */,
+				E2154AAE229249AA00CEED2E /* fx_engine.h in Headers */,
+				E2154ADB229249AA00CEED2E /* audiostring.h in Headers */,
 				E22544C8228F9FD300D72092 /* polyblep.h in Headers */,
 				E2254408228F9FD300D72092 /* diffuser.h in Headers */,
 				E225440A228F9FD300D72092 /* hi_hat.h in Headers */,
 				E2254440228F9FD300D72092 /* formant_oscillator.h in Headers */,
 				E22544B2228F9FD300D72092 /* buffer_allocator.h in Headers */,
+				E2154AB5229249AA00CEED2E /* synthetic_bass_drum.h in Headers */,
 				E22544A6228F9FD300D72092 /* ring_buffer.h in Headers */,
 				E22544B8228F9FD300D72092 /* stmlib.h in Headers */,
+				E2154AED229249AA00CEED2E /* virtual_analog_engine.h in Headers */,
 				E225445A228F9FD300D72092 /* resonator.h in Headers */,
 				E2254426228F9FD300D72092 /* lpc_speech_synth.h in Headers */,
 				E22544B6228F9FD300D72092 /* random.h in Headers */,
 				E225440C228F9FD300D72092 /* analog_snare_drum.h in Headers */,
 				E22544CA228F9FD300D72092 /* dsp.h in Headers */,
+				E2154ACF229249AA00CEED2E /* variable_saw_oscillator.h in Headers */,
 				E22544B0228F9FD300D72092 /* murmurhash3.h in Headers */,
+				E2154B10229249AA00CEED2E /* hysteresis_quantizer.h in Headers */,
 				E225446C228F9FD300D72092 /* fm_engine.h in Headers */,
+				E2154B00229249AA00CEED2E /* swarm_engine.h in Headers */,
 				E225448E228F9FD300D72092 /* additive_engine.h in Headers */,
+				E2154AB6229249AA00CEED2E /* analog_bass_drum.h in Headers */,
 				E225449A228F9FD300D72092 /* grain_engine.h in Headers */,
 				E225442E228F9FD300D72092 /* fractal_random_generator.h in Headers */,
+				E2154ACD229249AA00CEED2E /* oscillator.h in Headers */,
+				E2154ABA229249AA00CEED2E /* naive_speech_synth.h in Headers */,
+				E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */,
 				E22544CC228F9FD300D72092 /* delay_line.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1286,6 +1804,11 @@
 					306CFC861C5815010028386F = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = YC8HZ62228;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
 					};
 					306CFCD81C5841E40028386F = {
 						DevelopmentTeam = YC8HZ62228;
@@ -1374,6 +1897,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E22544BA228F9FD300D72092 /* atan_approximations.py in Resources */,
+				E2154AAB229249AA00CEED2E /* __init__.py in Resources */,
+				E2154B0B229249AA00CEED2E /* atan_approximations.py in Resources */,
 				E22543FA228F9FD300D72092 /* __init__.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1456,9 +1981,7 @@
 			files = (
 				E22476D62291834600F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift in Sources */,
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
-				E22476D22290F48500F9450C /* InstrumentDemoViewController.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,
-				E216B0E0228CD67B006ECCBC /* TomViewController.swift in Sources */,
 				92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1467,41 +1990,73 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2154AF8229249AA00CEED2E /* bass_drum_engine.cc in Sources */,
 				E2254422228F9FD300D72092 /* sam_speech_synth.cc in Sources */,
+				E2154AF7229249AA00CEED2E /* grain_engine.cc in Sources */,
 				E22544AC228F9FD300D72092 /* random.cc in Sources */,
+				E2154AE0229249AA00CEED2E /* fm_engine.cc in Sources */,
+				E2154AAA229249AA00CEED2E /* makefile in Sources */,
 				E225444C228F9FD300D72092 /* string.cc in Sources */,
+				E2154AD7229249AA00CEED2E /* modal_voice.cc in Sources */,
+				E2154B04229249AA00CEED2E /* random.cc in Sources */,
 				E225441A228F9FD300D72092 /* lpc_speech_synth_controller.cc in Sources */,
 				E225447C228F9FD300D72092 /* particle_engine.cc in Sources */,
+				E2154ABD229249AA00CEED2E /* naive_speech_synth.cc in Sources */,
+				E2154AB8229249AA00CEED2E /* voice.cc in Sources */,
+				E2154AB9229249AA00CEED2E /* lpc_speech_synth_phonemes.cc in Sources */,
+				E2154AFF229249AA00CEED2E /* snare_drum_engine.cc in Sources */,
+				E2154ABB229249AA00CEED2E /* lpc_speech_synth_controller.cc in Sources */,
 				E22544D6228F9FD300D72092 /* units.cc in Sources */,
+				E2154AF4229249AA00CEED2E /* modal_engine.cc in Sources */,
 				E2254494228F9FD300D72092 /* bass_drum_engine.cc in Sources */,
 				E2254416228F9FD300D72092 /* lpc_speech_synth_phonemes.cc in Sources */,
 				E225447A228F9FD300D72092 /* wavetable_engine.cc in Sources */,
 				E225449C228F9FD300D72092 /* additive_engine.cc in Sources */,
 				E2254492228F9FD300D72092 /* grain_engine.cc in Sources */,
 				E2254452228F9FD300D72092 /* modal_voice.cc in Sources */,
+				E2154AF1229249AA00CEED2E /* waveshaping_engine.cc in Sources */,
+				E2154AFC229249AA00CEED2E /* additive_engine.cc in Sources */,
+				E2154AD6229249AA00CEED2E /* string_voice.cc in Sources */,
+				E2154ABE229249AA00CEED2E /* lpc_speech_synth_words.cc in Sources */,
 				E2254484228F9FD300D72092 /* chord_engine.cc in Sources */,
 				92A10D181B95291B0081EA80 /* DSPKernel.mm in Sources */,
 				E2254478228F9FD300D72092 /* swarm_engine.cc in Sources */,
 				E22544A2228F9FD300D72092 /* snare_drum_engine.cc in Sources */,
 				92A10D141B9528B60081EA80 /* InstrumentDemoViewController.swift in Sources */,
 				E2254486228F9FD300D72092 /* waveshaping_engine.cc in Sources */,
+				E2154AEC229249AA00CEED2E /* particle_engine.cc in Sources */,
+				E2154AEF229249AA00CEED2E /* hi_hat_engine.cc in Sources */,
+				E2154ABF229249AA00CEED2E /* sam_speech_synth.cc in Sources */,
 				E2254420228F9FD300D72092 /* lpc_speech_synth_words.cc in Sources */,
 				E225444E228F9FD300D72092 /* resonator.cc in Sources */,
 				E225441C228F9FD300D72092 /* lpc_speech_synth.cc in Sources */,
 				E2254464228F9FD300D72092 /* fm_engine.cc in Sources */,
+				E2154AD5229249AA00CEED2E /* resonator.cc in Sources */,
+				E2154AFD229249AA00CEED2E /* virtual_analog_engine.cc in Sources */,
+				E2154AEE229249AA00CEED2E /* noise_engine.cc in Sources */,
 				E2254450228F9FD300D72092 /* string_voice.cc in Sources */,
 				E2254414228F9FD300D72092 /* voice.cc in Sources */,
+				E2154AFA229249AA00CEED2E /* speech_engine.cc in Sources */,
 				E225441E228F9FD300D72092 /* naive_speech_synth.cc in Sources */,
 				E225448A228F9FD300D72092 /* string_engine.cc in Sources */,
 				E22543F8228F9FD300D72092 /* makefile in Sources */,
+				E2154AEB229249AA00CEED2E /* wavetable_engine.cc in Sources */,
+				E2154B0C229249AA00CEED2E /* atan.cc in Sources */,
 				E225448C228F9FD300D72092 /* modal_engine.cc in Sources */,
 				E2254480228F9FD300D72092 /* noise_engine.cc in Sources */,
+				E2154AEA229249AA00CEED2E /* swarm_engine.cc in Sources */,
 				E22543FC228F9FD300D72092 /* resources.cc in Sources */,
+				E2154AD4229249AA00CEED2E /* string.cc in Sources */,
+				E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */,
 				E2254498228F9FD300D72092 /* speech_engine.cc in Sources */,
 				E2254482228F9FD300D72092 /* hi_hat_engine.cc in Sources */,
 				B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */,
 				E225449E228F9FD300D72092 /* virtual_analog_engine.cc in Sources */,
+				E2154AAC229249AA00CEED2E /* resources.cc in Sources */,
+				E2154ABC229249AA00CEED2E /* lpc_speech_synth.cc in Sources */,
+				E2154AF3229249AA00CEED2E /* string_engine.cc in Sources */,
 				E22544BC228F9FD300D72092 /* atan.cc in Sources */,
+				E2154B19229249AA00CEED2E /* units.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1628,6 +2183,7 @@
 				PRODUCT_NAME = InstrumentDemoApp;
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1739,6 +2295,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1852,6 +2409,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -2114,6 +2672,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../Instrument/Shared,
+					../Instrument/Shared,
+					Instrument/Shared,
+				);
 				INFOPLIST_FILE = iOS/InstrumentDemoFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2124,7 +2687,7 @@
 				PRODUCT_NAME = InstrumentDemoFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2169,6 +2732,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../Instrument/Shared,
+					../Instrument/Shared,
+					Instrument/Shared,
+				);
 				INFOPLIST_FILE = iOS/InstrumentDemoFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2179,7 +2747,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2234,7 +2802,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2279,7 +2847,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
