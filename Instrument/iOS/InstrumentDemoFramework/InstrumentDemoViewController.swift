@@ -11,38 +11,34 @@ import CoreAudioKit
 
 public class InstrumentDemoViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
-    
-	@IBOutlet var attackSlider: UISlider!
-	@IBOutlet var releaseSlider: UISlider!
-
-	@IBOutlet var attackTextField: UITextField!
-	@IBOutlet var releaseTextField: UITextField!
 	
-    /*
-		When this view controller is instantiated within the InstrumentDemoApp, its 
-        audio unit is created independently, and passed to the view controller here.
-	*/
     public var audioUnit: AUv3InstrumentDemo? {
-        didSet {
-			/*
-				We may be on a dispatch worker queue processing an XPC request at 
-                this time, and quite possibly the main queue is busy creating the 
-                view. To be thread-safe, dispatch onto the main queue.
-				
-				It's also possible that we are already on the main queue, so to
-                protect against deadlock in that case, dispatch asynchronously.
-			*/
-			DispatchQueue.main.async {
-				if self.isViewLoaded {
-					self.connectViewWithAU()
-				}
-			}
+      didSet {
+        DispatchQueue.main.async {
+          if self.isViewLoaded {
+            self.connectViewWithAU()
+          }
         }
+      }
     }
-	
-    var attackParameter: AUParameter?
-	var releaseParameter: AUParameter?
+  
 	var parameterObserverToken: AUParameterObserverToken?
+  let stack = UIStackView()
+  
+  public override func loadView() {
+    super.loadView()
+    stack.axis = .vertical
+    view.addSubview(stack)
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    
+    let constraints = [
+      stack.topAnchor.constraint(equalTo: view.topAnchor),
+      stack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      stack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ]
+    
+    NSLayoutConstraint.activate(constraints)
+  }
 	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
@@ -61,54 +57,57 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
 	*/
 	func connectViewWithAU() {
 		guard let paramTree = audioUnit?.parameterTree else { return }
+    
+    let groupStack = UIStackView()
+    groupStack.axis = .vertical
+    groupStack.spacing = 8.0
+    stack.addArrangedSubview(groupStack)
+    
+    paramTree.allParameters.forEach { param in
+      let label = UILabel()
+      label.text = param.displayName
+      groupStack.addArrangedSubview(label)
+//      if let values = param.valueStrings {
+//        print(values)
+//      } else {
+        let slider = UISlider()
+        slider.minimumValue = param.minValue
+        slider.maximumValue = param.maxValue
+        slider.isContinuous = true
+        groupStack.addArrangedSubview(slider)
+//        slider.addControlEvent(.valueChanged) {
+//          param.value = slider.value
+//        }
+      //}
+    }
 
-		attackParameter = paramTree.value(forKey: "timbre") as? AUParameter
-		releaseParameter = paramTree.value(forKey: "harmonics") as? AUParameter
+		//attackParameter = paramTree.value(forKey: "timbre") as? AUParameter
 
 		parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
 			DispatchQueue.main.async {
-				if address == strongSelf.attackParameter!.address {
-                    strongSelf.updateAttack()
-				}
-				else if address == strongSelf.releaseParameter!.address {
-                    strongSelf.updateRelease()
-				}
-				
+//        if address == strongSelf.attackParameter!.address {
+//                    strongSelf.updateAttack()
+//        }
 			}
 		})
         
-        updateAttack()
-        updateRelease()
+        //updateAttack()
 	}
     
-    func updateAttack() {
-      guard let param = attackParameter else { return }
-        attackTextField.text = param.string(fromValue: nil)
-        attackSlider.value = (log10(param.value) + 3.0) * 100.0
-    }
-    
-    func updateRelease() {
-      guard let param = releaseParameter else { return }
-
-        releaseTextField.text = param.string(fromValue: nil)
-        releaseSlider.value = (log10(param.value) + 3.0) * 100.0
-    }
-    
+//    func updateAttack() {
+//      guard let param = attackParameter else { return }
+//        attackTextField.text = param.string(fromValue: nil)
+//        attackSlider.value = (log10(param.value) + 3.0) * 100.0
+//    }
+  
     // MARK:
     // MARK: Actions
     
-	@IBAction func changedAttack(_ sender: AnyObject?) {
-        guard sender === attackSlider else { return }
-
-        // Set the parameter's value from the slider's value.
-        attackParameter!.value = pow(10.0, attackSlider.value * 0.01 - 3.0)
-	}
-
-	@IBAction func changedRelease(_ sender: AnyObject?) {
-        guard sender === releaseSlider else { return }
-
-        // Set the parameter's value from the slider's value.
-        releaseParameter!.value = pow(10.0, releaseSlider.value * 0.01 - 3.0)
-	}
+//  @IBAction func changedAttack(_ sender: AnyObject?) {
+//        guard sender === attackSlider else { return }
+//
+//        // Set the parameter's value from the slider's value.
+//        attackParameter!.value = pow(10.0, attackSlider.value * 0.01 - 3.0)
+//  }
 }

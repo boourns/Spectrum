@@ -17,11 +17,11 @@ const size_t kAudioBlockSize = 24;
 const size_t kPolyphony = 8;
 
 enum {
-    PlaitsParamTimbre = 0,
-    PlaitsParamHarmonics = 1,
-    PlaitsParamMorph = 2,
-    PlaitsParamAlgorithm = 3,
-    PlaitsParamDecay = 4
+  PlaitsParamTimbre = 0,
+  PlaitsParamHarmonics = 1,
+  PlaitsParamMorph = 2,
+  PlaitsParamDecay = 3,
+  PlaitsParamAlgorithm = 4
 };
 
 enum {
@@ -145,7 +145,7 @@ public:
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
 
-        patch.engine = 1;
+        patch.engine = 8;
         patch.note = 48.0f;
         patch.harmonics = 0.3f;
         patch.timbre = 0.7f;
@@ -192,7 +192,7 @@ public:
                 break;
                 
             case PlaitsParamAlgorithm:
-                patch.engine = (int) (clamp(value, 0.0f, 1.0f) * (float) plaits::kMaxEngines);
+                patch.engine = round(clamp(value, 0.0f, 16.0f));
                 break;
                 
             case PlaitsParamDecay:
@@ -213,7 +213,7 @@ public:
                 return patch.morph;
                 
             case PlaitsParamAlgorithm:
-                return ((float) patch.engine) / ((float) plaits::kMaxEngines);
+              return (float) patch.engine;
                 
             case PlaitsParamDecay:
                 return patch.decay;

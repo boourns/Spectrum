@@ -37,22 +37,21 @@
     }
 	
 	// Initialize a default format for the busses.
-    AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
+  AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
 
 	// Create a DSP kernel to handle the signal processing.
 	_kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
 	
 	// Create a parameter object for the attack time.
 	AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
-                                      kAudioUnitParameterFlag_IsReadable |
-                                      kAudioUnitParameterFlag_DisplayLogarithmic;
+                                      kAudioUnitParameterFlag_IsReadable;
     
     enum {
         PlaitsParamTimbre = 0,
         PlaitsParamHarmonics = 1,
         PlaitsParamMorph = 2,
-        PlaitsParamAlgorithm = 3,
-        PlaitsParamDecay = 4
+        PlaitsParamDecay = 3,
+        PlaitsParamAlgorithm = 4
     };
     
 	AUParameter *timbreParam = [AUParameterTree createParameterWithIdentifier:@"timbre" name:@"Timbre"
@@ -65,13 +64,20 @@
 			min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
 			flags: flags valueStrings:nil dependentParameters:nil];
 	
-    AUParameter *morphParam = [AUParameterTree createParameterWithIdentifier:@"morph" name:@"Morph"
+  AUParameter *morphParam = [AUParameterTree createParameterWithIdentifier:@"morph" name:@"Morph"
             address:PlaitsParamMorph
             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
             flags: flags valueStrings:nil dependentParameters:nil];
+  
+  AUParameter *decayParam = [AUParameterTree createParameterWithIdentifier:@"decay" name:@"Decay"
+                                                                   address:PlaitsParamDecay
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+  
+  AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm" address:PlaitsParamAlgorithm min:0.0 max:3.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"one", @"two", @"three" ] dependentParameters:nil];
 	
 	// Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[timbreParam, harmonicsParam, morphParam]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[algorithmParam, timbreParam, harmonicsParam, morphParam, decayParam]];
 
 	// Create the output bus.
 	_outputBusBuffer.init(defaultFormat, 2);
@@ -102,7 +108,8 @@
 		switch (param.address) {
 			case PlaitsParamTimbre:
 			case PlaitsParamHarmonics:
-            case PlaitsParamMorph:
+      case PlaitsParamMorph:
+      case PlaitsParamDecay:
 				return [NSString stringWithFormat:@"%.1f", value];
 			
 			default:

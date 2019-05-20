@@ -1,0 +1,6 @@
+[submodule "Vendor/FunctionalTableData"]
+	path = Vendor/FunctionalTableData
+	url = git@github.com:Shopify/FunctionalTableData.git
+[submodule "Vendor/ActionKit"]
+	path = Vendor/ActionKit
+	url = git@github.com:ActionKit/ActionKit.git

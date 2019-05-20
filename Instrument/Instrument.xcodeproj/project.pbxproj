@@ -32,7 +32,6 @@
 		92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C7B1B9517A50081EA80 /* AppDelegate.swift */; };
 		92A10D081B95285A0081EA80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92A10C7D1B9517A50081EA80 /* LaunchScreen.storyboard */; };
 		92A10D091B95286B0081EA80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92A10C7F1B9517A50081EA80 /* Main.storyboard */; };
-		92A10D0D1B95288E0081EA80 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92A10C861B9517A50081EA80 /* MainInterface.storyboard */; };
 		92A10D131B9528B20081EA80 /* InstrumentDemoFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 92A10C911B9517A50081EA80 /* InstrumentDemoFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92A10D141B9528B60081EA80 /* InstrumentDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C921B9517A50081EA80 /* InstrumentDemoViewController.swift */; };
 		92A10D181B95291B0081EA80 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
@@ -426,6 +425,41 @@
 			remoteGlobalIDString = 92A10CF11B9521F50081EA80;
 			remoteInfo = InstrumentDemoAppExtension;
 		};
+		E2154B2C2292522200CEED2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C7A26FC1F2FA0F800360E9B;
+			remoteInfo = FunctionalTableData;
+		};
+		E2154B2E2292522200CEED2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C7A27051F2FA0F800360E9B;
+			remoteInfo = FunctionalTableDataTests;
+		};
+		E2154B302292522200CEED2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 17E57FE6208A404700BFCC3D;
+			remoteInfo = FunctionalTableDataDemo;
+		};
+		E2154B392292D09C00CEED2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 438CAE531B50060D00EA8B00;
+			remoteInfo = ActionKit;
+		};
+		E2154B3B2292D09C00CEED2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 438CAE5E1B50060D00EA8B00;
+			remoteInfo = ActionKitTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -498,7 +532,6 @@
 		92A10C801B9517A50081EA80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		92A10C811B9517A50081EA80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92A10C841B9517A50081EA80 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		92A10C871B9517A50081EA80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		92A10C881B9517A50081EA80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92A10C891B9517A50081EA80 /* InstrumentDemoViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InstrumentDemoViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
 		92A10C8E1B9517A50081EA80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -631,6 +664,8 @@
 		E2154AA5229249AA00CEED2E /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
 		E2154AA6229249AA00CEED2E /* units.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = units.h; sourceTree = "<group>"; };
 		E2154AA7229249AA00CEED2E /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
+		E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FunctionalTableData.xcodeproj; path = ../Vendor/FunctionalTableData/FunctionalTableData.xcodeproj; sourceTree = "<group>"; };
+		E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ActionKit.xcodeproj; path = ../Vendor/ActionKit/ActionKit.xcodeproj; sourceTree = "<group>"; };
 		E216B0DF228CD67B006ECCBC /* TomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomViewController.swift; sourceTree = "<group>"; };
 		E22476D12290F48500F9450C /* InstrumentDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentDemoViewController.swift; sourceTree = "<group>"; };
 		E22476D52291834600F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstrumentDemoViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
@@ -899,6 +934,8 @@
 		91D3DA0B1B023C03008FFFBB = {
 			isa = PBXGroup;
 			children = (
+				E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */,
+				E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */,
 				E2154A29229248A700CEED2E /* InstrumentDemoApp.entitlements */,
 				3E8E032C1B16387D0011624B /* README.md */,
 				30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */,
@@ -907,6 +944,7 @@
 				91236D861B08F64600734C5E /* SimplePlayEngine */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
 				91D3DA171B023C1E008FFFBB /* Products */,
+				E2154B322292523600CEED2E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -941,7 +979,6 @@
 			isa = PBXGroup;
 			children = (
 				92A10C891B9517A50081EA80 /* InstrumentDemoViewController+AUAudioUnitFactory.swift */,
-				92A10C861B9517A50081EA80 /* MainInterface.storyboard */,
 				92A10C881B9517A50081EA80 /* Info.plist */,
 			);
 			name = InstrumentDemoAppExtension;
@@ -1204,6 +1241,32 @@
 				E2154AA7229249AA00CEED2E /* units.cc */,
 			);
 			path = dsp;
+			sourceTree = "<group>";
+		};
+		E2154B272292522200CEED2E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2154B2D2292522200CEED2E /* FunctionalTableData.framework */,
+				E2154B2F2292522200CEED2E /* FunctionalTableDataTests.xctest */,
+				E2154B312292522200CEED2E /* FunctionalTableDataDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2154B322292523600CEED2E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E2154B352292D09C00CEED2E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2154B3A2292D09C00CEED2E /* ActionKit.framework */,
+				E2154B3C2292D09C00CEED2E /* ActionKitTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		E2254379228F9FD300D72092 /* plaits */ = {
@@ -1844,6 +1907,16 @@
 			mainGroup = 91D3DA0B1B023C03008FFFBB;
 			productRefGroup = 91D3DA171B023C1E008FFFBB /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E2154B352292D09C00CEED2E /* Products */;
+					ProjectRef = E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */;
+				},
+				{
+					ProductGroup = E2154B272292522200CEED2E /* Products */;
+					ProjectRef = E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				92A10CC41B9521320081EA80 /* iOSInstrumentDemoApp */,
@@ -1855,6 +1928,44 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E2154B2D2292522200CEED2E /* FunctionalTableData.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FunctionalTableData.framework;
+			remoteRef = E2154B2C2292522200CEED2E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2154B2F2292522200CEED2E /* FunctionalTableDataTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FunctionalTableDataTests.xctest;
+			remoteRef = E2154B2E2292522200CEED2E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2154B312292522200CEED2E /* FunctionalTableDataDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FunctionalTableDataDemo.app;
+			remoteRef = E2154B302292522200CEED2E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2154B3A2292D09C00CEED2E /* ActionKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ActionKit.framework;
+			remoteRef = E2154B392292D09C00CEED2E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2154B3C2292D09C00CEED2E /* ActionKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ActionKitTests.xctest;
+			remoteRef = E2154B3B2292D09C00CEED2E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		306CFC851C5815010028386F /* Resources */ = {
@@ -1907,7 +2018,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92A10D0D1B95288E0081EA80 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2121,14 +2231,6 @@
 				92A10C801B9517A50081EA80 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		92A10C861B9517A50081EA80 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				92A10C871B9517A50081EA80 /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
