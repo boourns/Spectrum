@@ -25,6 +25,7 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
   
 	var parameterObserverToken: AUParameterObserverToken?
   let stack = UIStackView()
+  var params: [AUParameterAddress: (AUParameter, UISlider)] = [:]
   
   public override func loadView() {
     super.loadView()
@@ -79,36 +80,20 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         slider.addControlEvent(.valueChanged) {
           param.value = slider.value
         }
+        params[param.address] = (param, slider)
+        update(param: param, slider: slider)
       //}
     }
 
-		//attackParameter = paramTree.value(forKey: "timbre") as? AUParameter
-
 		parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
-            guard let strongSelf = self else { return }
+            guard let this = self, let uiParam = this.params[address] else { return }
 			DispatchQueue.main.async {
-//        if address == strongSelf.attackParameter!.address {
-//                    strongSelf.updateAttack()
-//        }
+        this.update(param: uiParam.0, slider: uiParam.1)
 			}
 		})
-        
-        //updateAttack()
-	}
-    
-//    func updateAttack() {
-//      guard let param = attackParameter else { return }
-//        attackTextField.text = param.string(fromValue: nil)
-//        attackSlider.value = (log10(param.value) + 3.0) * 100.0
-//    }
+  }
   
-    // MARK:
-    // MARK: Actions
-    
-//  @IBAction func changedAttack(_ sender: AnyObject?) {
-//        guard sender === attackSlider else { return }
-//
-//        // Set the parameter's value from the slider's value.
-//        attackParameter!.value = pow(10.0, attackSlider.value * 0.01 - 3.0)
-//  }
+  func update(param: AUParameter, slider: UISlider) {
+    slider.value = param.value
+  }
 }
