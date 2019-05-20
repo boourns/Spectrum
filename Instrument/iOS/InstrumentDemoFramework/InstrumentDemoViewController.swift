@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreAudioKit
+import ActionKit
 
 public class InstrumentDemoViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
@@ -75,9 +76,9 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         slider.maximumValue = param.maxValue
         slider.isContinuous = true
         groupStack.addArrangedSubview(slider)
-//        slider.addControlEvent(.valueChanged) {
-//          param.value = slider.value
-//        }
+        slider.addControlEvent(.valueChanged) {
+          param.value = slider.value
+        }
       //}
     }
 
