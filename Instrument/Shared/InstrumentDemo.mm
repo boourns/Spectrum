@@ -74,7 +74,7 @@
                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
   
-  AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm" address:PlaitsParamAlgorithm min:0.0 max:3.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"one", @"two", @"three" ] dependentParameters:nil];
+  AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm" address:PlaitsParamAlgorithm min:0.0 max:16.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:nil dependentParameters:nil];
 	
 	// Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[algorithmParam, timbreParam, harmonicsParam, morphParam, decayParam]];

@@ -193,6 +193,7 @@ public:
                 
             case PlaitsParamAlgorithm:
                 patch.engine = round(clamp(value, 0.0f, 16.0f));
+            NSLog(@"Engine %d value %f", patch.engine, value);
                 break;
                 
             case PlaitsParamDecay:
