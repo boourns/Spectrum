@@ -14,24 +14,12 @@ class ViewController: UIViewController {
     // MARK: Properties
 
 	@IBOutlet var playButton: UIButton!
-    
-    @IBOutlet weak var attackLabel: UILabel!
-    @IBOutlet weak var releaseLabel: UILabel!
 
     /// Container for our custom view.
     @IBOutlet var auContainerView: UIView!
 
 	/// The audio playback engine.
 	var playEngine: SimplePlayEngine!
-
-	/// The audio unit's filter attack frequency parameter object.
-	var attackParameter: AUParameter!
-
-	/// The audio unit's filter release parameter object.
-	var releaseParameter: AUParameter!
-
-	/// A token for our registration to observe parameter value changes.
-	var parameterObserverToken: AUParameterObserverToken!
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
 	var filterDemoViewController: InstrumentDemoViewController!
@@ -70,9 +58,11 @@ class ViewController: UIViewController {
         AUAudioUnit.registerSubclass(AUv3InstrumentDemo.self, as: componentDescription, name: "Demo: Local InstrumentDemo", version: UInt32.max)
 
 		// Instantiate and insert our audio unit effect into the chain.
-		playEngine.selectAudioUnitWithComponentDescription(componentDescription) {
+		playEngine.selectAudioUnitWithComponentDescription(componentDescription) { [weak self] in
+      guard let this = self else { return }
 			// This is an asynchronous callback when complete. Finish audio unit setup.
-			self.connectParametersToControls()
+      let audioUnit = this.playEngine.testAudioUnit as! AUv3InstrumentDemo
+      this.filterDemoViewController.audioUnit = audioUnit
 		}
 	}
 	
@@ -87,62 +77,15 @@ class ViewController: UIViewController {
         let pluginURL = builtInPlugInsURL.appendingPathComponent("InstrumentDemoAppExtension.appex")
         let appExtensionBundle = Bundle(url: pluginURL)
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
-   // let vc = storyboard.instantiateInitialViewController()
         filterDemoViewController = storyboard.instantiateInitialViewController() as! InstrumentDemoViewController
     
-		//filterDemoViewController = InstrumentDemoViewController(nibName: nil, bundle: nil)
-        
         // Present the view controller's view.
         if let view = filterDemoViewController.view {
           addChild(filterDemoViewController)
-            view.frame = auContainerView.bounds
-            
-            auContainerView.addSubview(view)
+          view.frame = auContainerView.bounds
+          auContainerView.addSubview(view)
           filterDemoViewController.didMove(toParent: self)
         }
-	}
-	
-	/**
-        Called after instantiating our audio unit, to find the AU's parameters and
-        connect them to our controls.
-    */
-	func connectParametersToControls() {
-		// Find our parameters by their identifiers.
-        guard let parameterTree = playEngine.testAudioUnit?.parameterTree else { return }
-
-        let audioUnit = playEngine.testAudioUnit as! AUv3InstrumentDemo
-        filterDemoViewController.audioUnit = audioUnit
-        
-        attackParameter = parameterTree.value(forKey: "timbre") as? AUParameter
-        releaseParameter = parameterTree.value(forKey: "harmonics") as? AUParameter
-        
-        parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [unowned self] address, value in
-            /*
-                This is called when one of the parameter values changes.
-                
-                We can only update UI from the main queue.
-            */
-            DispatchQueue.main.async {
-                if address == self.attackParameter.address {
-                    self.updateAttack()
-                }
-                else if address == self.releaseParameter.address {
-                    self.updateRelease()
-                }
-            }
-        })
-        
-        updateAttack()
-        updateRelease()
-	}
-    
-	// Callbacks to update controls from parameters.
-	func updateAttack() {
-        attackLabel.text = attackParameter.string(fromValue: nil)
-	}
-
-	func updateRelease() {
-        releaseLabel.text = releaseParameter.string(fromValue: nil)
 	}
 
     // MARK: IBActions

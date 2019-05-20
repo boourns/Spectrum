@@ -65,13 +65,16 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     groupStack.spacing = 8.0
     stack.addArrangedSubview(groupStack)
     
-    paramTree.allParameters.forEach { param in
-      let label = UILabel()
-      label.text = param.displayName
-      groupStack.addArrangedSubview(label)
-//      if let values = param.valueStrings {
-//        print(values)
-//      } else {
+    paramTree.children.forEach { group in
+      guard let group = group as? AUParameterGroup else { return }
+      group.allParameters.forEach { param in
+        let label = UILabel()
+        print(param.displayName)
+        label.text = "\(param.displayName) kjn"
+        groupStack.addArrangedSubview(label)
+        //      if let values = param.valueStrings {
+        //        print(values)
+        //      } else {
         let slider = UISlider()
         slider.minimumValue = param.minValue
         slider.maximumValue = param.maxValue
@@ -82,7 +85,8 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         }
         params[param.address] = (param, slider)
         update(param: param, slider: slider)
-      //}
+        //}
+      }
     }
 
 		parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
