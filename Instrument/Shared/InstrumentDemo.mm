@@ -74,7 +74,25 @@
                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
   
-  AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm" address:PlaitsParamAlgorithm min:0.0 max:16.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:nil dependentParameters:nil];
+  AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm" address:PlaitsParamAlgorithm min:0.0 max:15.4 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[
+      @"Analog",
+      @"Waveshape",
+      @"FM",
+      @"Grain",
+      @"Additive",
+      @"Wavetable",
+      @"Chord",
+      @"Speech",
+      @"Swarm",
+      @"Noise",
+      @"Particle",
+      @"String",
+      @"Modal",
+      @"Bass",
+      @"Snare",
+      @"Hi Hat",
+      ]
+      dependentParameters:nil];
   
   AUParameterGroup *mainGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, timbreParam, harmonicsParam, morphParam, decayParam]];
 	

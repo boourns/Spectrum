@@ -392,6 +392,7 @@
 		E228F8FF229317E300AD17BE /* ActionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; };
 		E228F900229317E300AD17BE /* ActionKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E228F903229317EB00AD17BE /* ActionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; };
+		E27AD077229395240003C69C /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -797,6 +798,7 @@
 		E22543F3228F9FD300D72092 /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
 		E22543F4228F9FD300D72092 /* units.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = units.h; sourceTree = "<group>"; };
 		E22543F5228F9FD300D72092 /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
+		E27AD076229395240003C69C /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
 		E2CA00C4228FA73F0048AD74 /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1009,6 +1011,7 @@
 			children = (
 				B5234C811CA0963600902296 /* Shared */,
 				92A10C921B9517A50081EA80 /* InstrumentDemoViewController.swift */,
+				E27AD076229395240003C69C /* ParameterView.swift */,
 				92A10C911B9517A50081EA80 /* InstrumentDemoFramework.h */,
 				92A10C8E1B9517A50081EA80 /* Info.plist */,
 			);
@@ -2180,6 +2183,7 @@
 				E22543FC228F9FD300D72092 /* resources.cc in Sources */,
 				E2154AD4229249AA00CEED2E /* string.cc in Sources */,
 				E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */,
+				E27AD077229395240003C69C /* ParameterView.swift in Sources */,
 				E2254498228F9FD300D72092 /* speech_engine.cc in Sources */,
 				E2254482228F9FD300D72092 /* hi_hat_engine.cc in Sources */,
 				B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */,
@@ -2698,7 +2702,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iOS/InstrumentDemoApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2744,7 +2748,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iOS/InstrumentDemoApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoApp";
@@ -2808,7 +2812,7 @@
 				);
 				INFOPLIST_FILE = iOS/InstrumentDemoFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2868,7 +2872,7 @@
 				);
 				INFOPLIST_FILE = iOS/InstrumentDemoFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoFramework";
@@ -2922,7 +2926,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iOS/InstrumentDemoAppExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2968,7 +2972,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iOS/InstrumentDemoAppExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoApp.InstrumentDemoAppExtension";

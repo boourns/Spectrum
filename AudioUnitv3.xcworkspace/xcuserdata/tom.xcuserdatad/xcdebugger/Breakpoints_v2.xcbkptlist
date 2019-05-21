@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580081485.370577"
+            timestampString = "580100765.155412"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
             landmarkName = "-internalRenderBlock"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,7 +426,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580081485.3712749"
+            timestampString = "580100765.156255"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "46"
@@ -442,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580081485.371316"
+            timestampString = "580100765.1565911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "-allocateRenderResourcesAndReturnError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -490,11 +490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580081485.371809"
+            timestampString = "580100765.1569231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "-allocateRenderResourcesAndReturnError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -506,7 +506,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
-            timestampString = "580081485.371852"
+            timestampString = "580100765.157223"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
@@ -538,92 +538,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.371914"
+            timestampString = "580100765.157311"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "connectViewWithAU()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.371959"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "connectViewWithAU()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.372002"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
-            landmarkName = "update(param:slider:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.connectViewWithAU() -&gt; ()"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580078185.5476871"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "97"
-                  endingLineNumber = "97"
-                  offsetFromSymbolStart = "1136">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.update(param: __C.AUParameter, slider: __C.UISlider) -&gt; ()"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580078185.549548"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "97"
-                  endingLineNumber = "97"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "partial apply forwarder for closure #1 () -&gt; () in closure #2 (Swift.UInt64, Swift.Float) -&gt; () in InstrumentDemoFramework.InstrumentDemoViewController.connectViewWithAU() -&gt; ()"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580078185.551447"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "97"
-                  endingLineNumber = "97"
-                  offsetFromSymbolStart = "84">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -633,7 +554,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
-            timestampString = "580081485.372044"
+            timestampString = "580100765.157732"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "79"
@@ -649,7 +570,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.372085"
+            timestampString = "580100765.157806"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "61"
@@ -665,7 +586,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.372125"
+            timestampString = "580100765.158164"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -712,86 +633,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.372167"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "audioUnit"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.audioUnit.modify : Swift.Optional&lt;__C.AUv3InstrumentDemo&gt;"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580079685.593064"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "24">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.audioUnit.modify : Swift.Optional&lt;__C.AUv3InstrumentDemo&gt; with unmangled suffix &quot;.resume.0&quot;"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580079685.594861"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "52">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; InstrumentDemoFramework.InstrumentDemoViewController"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580079685.596699"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "36">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed&gt; of InstrumentDemoFramework.InstrumentDemoViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;InstrumentDemoFramework.InstrumentDemoViewController&gt;"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580079685.598262"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
-            timestampString = "580081485.372207"
+            timestampString = "580100765.158522"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
@@ -806,46 +649,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580081485.372245"
+            filePath = "Instrument/iOS/InstrumentDemoFramework/ParameterView.swift"
+            timestampString = "580100765.158585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "connectViewWithAU()"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "displayString(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.connectViewWithAU() -&gt; ()"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580079978.184303"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "72"
-                  endingLineNumber = "72"
-                  offsetFromSymbolStart = "953">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.connectViewWithAU() -&gt; ()"
-                  moduleName = "InstrumentDemoFramework"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-                  timestampString = "580079978.191568"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "72"
-                  endingLineNumber = "72"
-                  offsetFromSymbolStart = "888">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

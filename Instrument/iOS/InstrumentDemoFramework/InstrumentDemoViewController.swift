@@ -25,7 +25,7 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
   
 	var parameterObserverToken: AUParameterObserverToken?
   let stack = UIStackView()
-  var params: [AUParameterAddress: (AUParameter, UISlider)] = [:]
+  var params: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
   
   public override func loadView() {
     super.loadView()
@@ -68,36 +68,27 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     paramTree.children.forEach { group in
       guard let group = group as? AUParameterGroup else { return }
       group.allParameters.forEach { param in
-        let label = UILabel()
-        print(param.displayName)
-        label.text = "\(param.displayName) kjn"
-        groupStack.addArrangedSubview(label)
-        //      if let values = param.valueStrings {
-        //        print(values)
-        //      } else {
-        let slider = UISlider()
-        slider.minimumValue = param.minValue
-        slider.maximumValue = param.maxValue
-        slider.isContinuous = true
-        groupStack.addArrangedSubview(slider)
-        slider.addControlEvent(.valueChanged) {
-          param.value = slider.value
+        let paramView = ParameterView(param: param)
+        
+        groupStack.addArrangedSubview(paramView)
+        paramView.slider.addControlEvent(.valueChanged) {
+          param.value = paramView.slider.value
         }
-        params[param.address] = (param, slider)
-        update(param: param, slider: slider)
-        //}
+        
+        params[param.address] = (param, paramView)
+        update(param: param, view: paramView)
       }
     }
 
 		parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let this = self, let uiParam = this.params[address] else { return }
 			DispatchQueue.main.async {
-        this.update(param: uiParam.0, slider: uiParam.1)
+        this.update(param: uiParam.0, view: uiParam.1)
 			}
 		})
   }
   
-  func update(param: AUParameter, slider: UISlider) {
-    slider.value = param.value
+  func update(param: AUParameter, view: ParameterView) {
+    view.displayValue = param.value
   }
 }

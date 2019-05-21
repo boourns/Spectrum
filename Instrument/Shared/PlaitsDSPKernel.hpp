@@ -159,7 +159,6 @@ public:
         modulations.note = 0.0f;
         modulations.engine = 0.0f;
         modulations.frequency = 0.0f;
-        modulations.note = 0.0f;
         modulations.harmonics = 0.0f;
         modulations.morph = 0.0;
         modulations.level = 0.0f;

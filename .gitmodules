@@ -4,3 +4,6 @@
 [submodule "Vendor/ActionKit"]
 	path = Vendor/ActionKit
 	url = git@github.com:ActionKit/ActionKit.git
+[submodule "Vendor/AKPickerView-Swift"]
+	path = Vendor/AKPickerView-Swift
+	url = git@github.com:jhonyourangel/AKPickerView-Swift.git
