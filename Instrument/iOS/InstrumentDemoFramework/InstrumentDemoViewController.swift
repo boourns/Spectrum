@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreAudioKit
-import ActionKit
+//import ActionKit
 
 public class InstrumentDemoViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
@@ -72,6 +72,8 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         
         groupStack.addArrangedSubview(paramView)
         paramView.slider.addControlEvent(.valueChanged) {
+          NSLog("update from slider")
+          
           param.value = paramView.slider.value
         }
         
@@ -79,13 +81,30 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         update(param: param, view: paramView)
       }
     }
-
+    
 		parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
+      NSLog("here")
             guard let this = self, let uiParam = this.params[address] else { return }
 			DispatchQueue.main.async {
         this.update(param: uiParam.0, view: uiParam.1)
 			}
 		})
+    
+    parameterObserverToken = paramTree.token(byAddingParameterAutomationObserver: { [weak self] address, value in
+      NSLog("here 2")
+      guard let this = self, let uiParam = this.params[UInt64(address)] else { return }
+      DispatchQueue.main.async {
+        this.update(param: uiParam.0, view: uiParam.1)
+      }
+    })
+    
+    parameterObserverToken = paramTree.token(byAddingParameterRecordingObserver: { [weak self] address, value in
+      NSLog("here 3")
+      guard let this = self, let uiParam = this.params[UInt64(address)] else { return }
+      DispatchQueue.main.async {
+        this.update(param: uiParam.0, view: uiParam.1)
+      }
+    })
   }
   
   func update(param: AUParameter, view: ParameterView) {

@@ -21,7 +21,8 @@ enum {
   PlaitsParamHarmonics = 1,
   PlaitsParamMorph = 2,
   PlaitsParamDecay = 3,
-  PlaitsParamAlgorithm = 4
+  PlaitsParamAlgorithm = 4,
+  PlaitsMaxParameters
 };
 
 enum {
@@ -144,30 +145,30 @@ public:
     
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
-
-        patch.engine = 8;
-        patch.note = 48.0f;
-        patch.harmonics = 0.3f;
-        patch.timbre = 0.7f;
-        patch.morph = 0.7f;
-        patch.frequency_modulation_amount = 0.0f;
-        patch.timbre_modulation_amount = 0.0f;
-        patch.morph_modulation_amount = 0.0f;
-        patch.decay = 0.1f;
-        patch.lpg_colour = 0.0f;
-        
-        modulations.note = 0.0f;
-        modulations.engine = 0.0f;
-        modulations.frequency = 0.0f;
-        modulations.harmonics = 0.0f;
-        modulations.morph = 0.0;
-        modulations.level = 0.0f;
-        modulations.trigger = 0.0f;
-        modulations.frequency_patched = false;
-        modulations.timbre_patched = false;
-        modulations.morph_patched = false;
-        modulations.trigger_patched = true;
-        modulations.level_patched = false;
+      
+      patch.engine = 8;
+      patch.note = 48.0f;
+      patch.harmonics = 0.3f;
+      patch.timbre = 0.7f;
+      patch.morph = 0.7f;
+      patch.frequency_modulation_amount = 0.0f;
+      patch.timbre_modulation_amount = 0.0f;
+      patch.morph_modulation_amount = 0.0f;
+      patch.decay = 0.1f;
+      patch.lpg_colour = 0.0f;
+      
+      modulations.note = 0.0f;
+      modulations.engine = 0.0f;
+      modulations.frequency = 0.0f;
+      modulations.harmonics = 0.0f;
+      modulations.morph = 0.0;
+      modulations.level = 0.0f;
+      modulations.trigger = 0.0f;
+      modulations.frequency_patched = false;
+      modulations.timbre_patched = false;
+      modulations.morph_patched = false;
+      modulations.trigger_patched = true;
+      modulations.level_patched = false;
     }
     
     void reset() {

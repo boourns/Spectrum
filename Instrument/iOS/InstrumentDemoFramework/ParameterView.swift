@@ -88,7 +88,7 @@ class ParameterView: UIView {
           return "??"
         }
       } else {
-        return "\(val)"
+        return String(format:"%.02f", val)
       }
     } else  {
       return param.displayName

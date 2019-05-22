@@ -179,6 +179,7 @@
         render, we're doing it wrong.
 	*/
 	__block PlaitsDSPKernel *state = &_kernel;
+  __block BufferedOutputBus *outputBusBuffer = &_outputBusBuffer;
     
     return ^AUAudioUnitStatus(
 			 AudioUnitRenderActionFlags *actionFlags,
@@ -189,12 +190,37 @@
 			 const AURenderEvent        *realtimeEventListHead,
 			 AURenderPullInputBlock      pullInputBlock) {
 		
-		_outputBusBuffer.prepareOutputBufferList(outputData, frameCount, true);
+		outputBusBuffer->prepareOutputBufferList(outputData, frameCount, true);
 		state->setBuffers(outputData);		
 		state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
 
 		return noErr;
 	};
+}
+
+#pragma mark - fullstate (?!?!?!)
+- (NSDictionary *)fullState {
+  NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullState];
+  NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+  
+  for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+    params[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].value);
+  }
+  
+  state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];
+  return state;
+}
+
+- (void)setFullState:(NSDictionary *)fullState {
+  NSData *data = (NSData *)fullState[@"data"];
+  NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  
+  for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+    NSNumber *savedValue = [params objectForKey: @(_parameterTree.allParameters[i].address)];
+    if (savedValue != nil) {
+      _parameterTree.allParameters[i].value = savedValue.floatValue;
+    }
+  }
 }
 
 @end

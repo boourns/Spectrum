@@ -46,7 +46,6 @@
 		E2154AA8229249AA00CEED2E /* PlaitsDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */; };
 		E2154AA9229249AA00CEED2E /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2C229249AA00CEED2E /* resources.h */; };
 		E2154AAA229249AA00CEED2E /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2D229249AA00CEED2E /* makefile */; };
-		E2154AAB229249AA00CEED2E /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = E2154A2E229249AA00CEED2E /* __init__.py */; };
 		E2154AAC229249AA00CEED2E /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2F229249AA00CEED2E /* resources.cc */; };
 		E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A30229249AA00CEED2E /* pot_controller.h */; };
 		E2154AAE229249AA00CEED2E /* fx_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A33229249AA00CEED2E /* fx_engine.h */; };
@@ -142,7 +141,6 @@
 		E2154B08229249AA00CEED2E /* crc32.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A95229249AA00CEED2E /* crc32.h */; };
 		E2154B09229249AA00CEED2E /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A96229249AA00CEED2E /* random.h */; };
 		E2154B0A229249AA00CEED2E /* stmlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A97229249AA00CEED2E /* stmlib.h */; };
-		E2154B0B229249AA00CEED2E /* atan_approximations.py in Resources */ = {isa = PBXBuildFile; fileRef = E2154A99229249AA00CEED2E /* atan_approximations.py */; };
 		E2154B0C229249AA00CEED2E /* atan.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A9A229249AA00CEED2E /* atan.cc */; };
 		E2154B0D229249AA00CEED2E /* parameter_interpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9B229249AA00CEED2E /* parameter_interpolator.h */; };
 		E2154B0E229249AA00CEED2E /* sample_rate_converter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A9C229249AA00CEED2E /* sample_rate_converter.h */; };
@@ -165,7 +163,6 @@
 		E22543F7228F9FD300D72092 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E225437A228F9FD300D72092 /* resources.h */; };
 		E22543F8228F9FD300D72092 /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = E225437B228F9FD300D72092 /* makefile */; };
 		E22543F9228F9FD300D72092 /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = E225437B228F9FD300D72092 /* makefile */; };
-		E22543FA228F9FD300D72092 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = E225437C228F9FD300D72092 /* __init__.py */; };
 		E22543FB228F9FD300D72092 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = E225437C228F9FD300D72092 /* __init__.py */; };
 		E22543FC228F9FD300D72092 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E225437D228F9FD300D72092 /* resources.cc */; };
 		E22543FD228F9FD300D72092 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E225437D228F9FD300D72092 /* resources.cc */; };
@@ -357,7 +354,6 @@
 		E22544B7228F9FD300D72092 /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = E22543E4228F9FD300D72092 /* random.h */; };
 		E22544B8228F9FD300D72092 /* stmlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E22543E5228F9FD300D72092 /* stmlib.h */; };
 		E22544B9228F9FD300D72092 /* stmlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E22543E5228F9FD300D72092 /* stmlib.h */; };
-		E22544BA228F9FD300D72092 /* atan_approximations.py in Resources */ = {isa = PBXBuildFile; fileRef = E22543E7228F9FD300D72092 /* atan_approximations.py */; };
 		E22544BB228F9FD300D72092 /* atan_approximations.py in Resources */ = {isa = PBXBuildFile; fileRef = E22543E7228F9FD300D72092 /* atan_approximations.py */; };
 		E22544BC228F9FD300D72092 /* atan.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22543E8228F9FD300D72092 /* atan.cc */; };
 		E22544BD228F9FD300D72092 /* atan.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22543E8228F9FD300D72092 /* atan.cc */; };
@@ -387,11 +383,8 @@
 		E22544D5228F9FD300D72092 /* units.h in Headers */ = {isa = PBXBuildFile; fileRef = E22543F4228F9FD300D72092 /* units.h */; };
 		E22544D6228F9FD300D72092 /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22543F5228F9FD300D72092 /* units.cc */; };
 		E22544D7228F9FD300D72092 /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22543F5228F9FD300D72092 /* units.cc */; };
+		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
 		E228F8FD229313E600AD17BE /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2154B4822930D1C00CEED2E /* MainInterface.storyboard */; };
-		E228F8FE229317C200AD17BE /* ActionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; };
-		E228F8FF229317E300AD17BE /* ActionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; };
-		E228F900229317E300AD17BE /* ActionKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E228F903229317EB00AD17BE /* ActionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2154B3A2292D09C00CEED2E /* ActionKit.framework */; };
 		E27AD077229395240003C69C /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
@@ -467,13 +460,6 @@
 			remoteGlobalIDString = 438CAE5E1B50060D00EA8B00;
 			remoteInfo = ActionKitTests;
 		};
-		E228F901229317E300AD17BE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 438CAE521B50060D00EA8B00;
-			remoteInfo = ActionKit;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -504,7 +490,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				92A10CE91B9521B00081EA80 /* InstrumentDemoFramework.framework in Embed Frameworks */,
-				E228F900229317E300AD17BE /* ActionKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -798,6 +783,7 @@
 		E22543F3228F9FD300D72092 /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
 		E22543F4228F9FD300D72092 /* units.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = units.h; sourceTree = "<group>"; };
 		E22543F5228F9FD300D72092 /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
+		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
 		E2CA00C4228FA73F0048AD74 /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -832,7 +818,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A10CE81B9521B00081EA80 /* InstrumentDemoFramework.framework in Frameworks */,
-				E228F8FF229317E300AD17BE /* ActionKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,7 +825,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E228F8FE229317C200AD17BE /* ActionKit.framework in Frameworks */,
 				2B4A917F1C75408E00F61BDD /* AVFoundation.framework in Frameworks */,
 				2B4A91801C75409B00F61BDD /* AudioToolbox.framework in Frameworks */,
 			);
@@ -850,7 +834,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E228F903229317EB00AD17BE /* ActionKit.framework in Frameworks */,
 				92A10D201B966CE30081EA80 /* InstrumentDemoFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1011,6 +994,7 @@
 			children = (
 				B5234C811CA0963600902296 /* Shared */,
 				92A10C921B9517A50081EA80 /* InstrumentDemoViewController.swift */,
+				E2268B102294C3650061A753 /* ActionKit.swift */,
 				E27AD076229395240003C69C /* ParameterView.swift */,
 				92A10C911B9517A50081EA80 /* InstrumentDemoFramework.h */,
 				92A10C8E1B9517A50081EA80 /* Info.plist */,
@@ -1836,7 +1820,6 @@
 			dependencies = (
 				92A10CE71B9521B00081EA80 /* PBXTargetDependency */,
 				92A10CFF1B9521F50081EA80 /* PBXTargetDependency */,
-				E228F902229317E300AD17BE /* PBXTargetDependency */,
 			);
 			name = iOSInstrumentDemoApp;
 			productName = InstrumentDemoApp;
@@ -2030,11 +2013,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E22544BA228F9FD300D72092 /* atan_approximations.py in Resources */,
 				E2154B4922930D1C00CEED2E /* MainInterface.storyboard in Resources */,
-				E2154AAB229249AA00CEED2E /* __init__.py in Resources */,
-				E2154B0B229249AA00CEED2E /* atan_approximations.py in Resources */,
-				E22543FA228F9FD300D72092 /* __init__.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2125,6 +2104,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */,
 				E2154AF8229249AA00CEED2E /* bass_drum_engine.cc in Sources */,
 				E2254422228F9FD300D72092 /* sam_speech_synth.cc in Sources */,
 				E2154AF7229249AA00CEED2E /* grain_engine.cc in Sources */,
@@ -2231,11 +2211,6 @@
 			isa = PBXTargetDependency;
 			target = 92A10CF11B9521F50081EA80 /* iOSInstrumentDemoAppExtension */;
 			targetProxy = 92A10CFE1B9521F50081EA80 /* PBXContainerItemProxy */;
-		};
-		E228F902229317E300AD17BE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ActionKit;
-			targetProxy = E228F901229317E300AD17BE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

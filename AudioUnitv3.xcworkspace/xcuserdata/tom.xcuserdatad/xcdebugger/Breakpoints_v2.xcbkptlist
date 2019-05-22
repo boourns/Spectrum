@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580100765.155412"
+            timestampString = "580255072.271704"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "-internalRenderBlock"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606019"
+            timestampString = "580255072.272189"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "278"
@@ -186,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606107"
+            timestampString = "580255072.272265"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.6061651"
+            timestampString = "580255072.272321"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "VoiceState"
             landmarkType = "14">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606218"
+            timestampString = "580255072.272396"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "VoiceState"
             landmarkType = "14">
          </BreakpointContent>
@@ -234,13 +234,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606279"
+            timestampString = "580255072.272525"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "267"
             endingLineNumber = "267"
             landmarkName = "handleMIDIEvent(AUMIDIEvent const&amp; midiEvent)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlaitsDSPKernel::handleMIDIEvent(AUMIDIEvent const&amp;)"
+                  moduleName = "InstrumentDemoFramework"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/Shared/PlaitsDSPKernel.hpp"
+                  timestampString = "580255072.4869"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "267"
+                  endingLineNumber = "267"
+                  offsetFromSymbolStart = "135">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlaitsDSPKernel::handleMIDIEvent(AUMIDIEvent const&amp;)"
+                  moduleName = "InstrumentDemoFramework"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/Shared/PlaitsDSPKernel.hpp"
+                  timestampString = "580255072.549539"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "267"
+                  endingLineNumber = "267"
+                  offsetFromSymbolStart = "132">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -250,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606346"
+            timestampString = "580255072.272597"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "VoiceState"
             landmarkType = "14">
          </BreakpointContent>
@@ -266,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606419"
+            timestampString = "580255072.272656"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "VoiceState"
             landmarkType = "14">
          </BreakpointContent>
@@ -298,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606491"
+            timestampString = "580255072.272733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "VoiceState"
             landmarkType = "14">
          </BreakpointContent>
@@ -314,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.606544"
+            timestampString = "580255072.272812"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "init(int channelCount, double inSampleRate)"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,7 +458,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580100765.156255"
+            timestampString = "580255072.27292"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "46"
@@ -442,7 +474,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580100765.1565911"
+            timestampString = "580255072.273214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
@@ -490,7 +522,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/InstrumentDemo.mm"
-            timestampString = "580100765.1569231"
+            timestampString = "580255072.273528"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "161"
@@ -506,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
-            timestampString = "580100765.157223"
+            timestampString = "580255072.273827"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "embedPlugInView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -522,7 +554,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "580066625.6076961"
+            timestampString = "580255072.273904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "196"
@@ -538,11 +570,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580100765.157311"
+            timestampString = "580255072.273966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
             landmarkName = "connectViewWithAU()"
             landmarkType = "7">
          </BreakpointContent>
@@ -554,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
-            timestampString = "580100765.157732"
+            timestampString = "580255072.274035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "embedPlugInView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -570,7 +602,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580100765.157806"
+            timestampString = "580255072.2740901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "61"
@@ -586,7 +618,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
-            timestampString = "580100765.158164"
+            timestampString = "580255072.274148"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -634,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
-            timestampString = "580100765.158522"
+            timestampString = "580255072.2742029"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "embedPlugInView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -650,12 +682,139 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/iOS/InstrumentDemoFramework/ParameterView.swift"
-            timestampString = "580100765.158585"
+            timestampString = "580253146.144762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
             endingLineNumber = "84"
             landmarkName = "displayString(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
+            timestampString = "580255072.274274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "connectViewWithAU()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
+            timestampString = "580255072.274333"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "update(param:view:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.connectViewWithAU() -&gt; ()"
+                  moduleName = "InstrumentDemoFramework"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
+                  timestampString = "580247108.222152"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "1504">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "InstrumentDemoFramework.InstrumentDemoViewController.update(param: __C.AUParameter, view: InstrumentDemoFramework.ParameterView) -&gt; ()"
+                  moduleName = "InstrumentDemoFramework"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
+                  timestampString = "580247108.2249531"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "10">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "partial apply forwarder for closure #1 () -&gt; () in closure #2 (Swift.UInt64, Swift.Float) -&gt; () in InstrumentDemoFramework.InstrumentDemoViewController.connectViewWithAU() -&gt; ()"
+                  moduleName = "InstrumentDemoFramework"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tom/Code/Swift/ExampleAudioUnit/Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
+                  timestampString = "580247108.2275651"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "62">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Instrument/iOS/InstrumentDemoApp/ViewController.swift"
+            timestampString = "580255072.274389"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "savePressed(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Instrument/iOS/InstrumentDemoFramework/InstrumentDemoViewController.swift"
+            timestampString = "580255072.274442"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "connectViewWithAU()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Instrument/Shared/InstrumentDemo.mm"
+            timestampString = "580255072.274508"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
+            landmarkName = "-setFullState:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

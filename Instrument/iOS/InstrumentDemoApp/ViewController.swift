@@ -12,11 +12,16 @@ import InstrumentDemoFramework
 
 class ViewController: UIViewController {
     // MARK: Properties
+  
+  var audioUnit: AUAudioUnit? = nil
+  var state: [String: Any?]? = [:]
 
-	@IBOutlet var playButton: UIButton!
-
-    /// Container for our custom view.
-    @IBOutlet var auContainerView: UIView!
+	@IBOutlet weak var playButton: UIButton!
+  @IBOutlet weak var loadButton: UIButton!
+  @IBOutlet weak var saveButton: UIButton!
+  
+  /// Container for our custom view.
+  @IBOutlet var auContainerView: UIView!
 
 	/// The audio playback engine.
 	var playEngine: SimplePlayEngine!
@@ -98,4 +103,16 @@ class ViewController: UIViewController {
 
 		playButton.setTitle(titleText, for: .normal)
 	}
+  
+  @IBAction func savePressed(_ sender: Any) {
+    print("save")
+    guard let unit = playEngine.testAudioUnit else { return }
+    state = unit.fullState
+  }
+  
+  @IBAction func loadPressed(_ sender: Any) {
+    print("load")
+    guard let state = state, let unit = playEngine.testAudioUnit else { return }
+    unit.fullState = state
+  }
 }
