@@ -1,10 +1,10 @@
 /*
-	Copyright (C) 2016 Apple Inc. All Rights Reserved.
-	See LICENSE.txt for this sample’s licensing information
-	
-	Abstract:
-	An AUAudioUnit subclass implementing a simple instrument.
-*/
+ Copyright (C) 2016 Apple Inc. All Rights Reserved.
+ See LICENSE.txt for this sample’s licensing information
+ 
+ Abstract:
+ An AUAudioUnit subclass implementing a simple instrument.
+ */
 
 #import "InstrumentDemo.h"
 #import <AVFoundation/AVFoundation.h>
@@ -23,123 +23,171 @@
 #pragma mark - AUv3InstrumentDemo : AUAudioUnit
 
 @implementation AUv3InstrumentDemo {
-	// C++ members need to be ivars; they would be copied on access if they were properties.
+    // C++ members need to be ivars; they would be copied on access if they were properties.
     PlaitsDSPKernel _kernel;
-	BufferedOutputBus _outputBusBuffer;
+    BufferedOutputBus _outputBusBuffer;
 }
 @synthesize parameterTree = _parameterTree;
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
-
+    
     if (self == nil) {
-    	return nil;
+        return nil;
     }
-	
-	// Initialize a default format for the busses.
-  AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
-
-	// Create a DSP kernel to handle the signal processing.
-	_kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
-	
-	// Create a parameter object for the attack time.
-	AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
-                                      kAudioUnitParameterFlag_IsReadable;
     
-    enum {
-        PlaitsParamTimbre = 0,
-        PlaitsParamHarmonics = 1,
-        PlaitsParamMorph = 2,
-        PlaitsParamDecay = 3,
-        PlaitsParamAlgorithm = 4
-    };
+    // Initialize a default format for the busses.
+    AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
     
-	AUParameter *timbreParam = [AUParameterTree createParameterWithIdentifier:@"timbre" name:@"Timbre"
-			address:PlaitsParamTimbre
-			min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-			flags: flags valueStrings:nil dependentParameters:nil];
-	
-	AUParameter *harmonicsParam = [AUParameterTree createParameterWithIdentifier:@"harmonics" name:@"Harmonics"
-			address:PlaitsParamHarmonics
-			min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-			flags: flags valueStrings:nil dependentParameters:nil];
-	
-  AUParameter *morphParam = [AUParameterTree createParameterWithIdentifier:@"morph" name:@"Morph"
-            address:PlaitsParamMorph
-            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-            flags: flags valueStrings:nil dependentParameters:nil];
-  
-  AUParameter *decayParam = [AUParameterTree createParameterWithIdentifier:@"decay" name:@"Decay"
-                                                                   address:PlaitsParamDecay
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
-  
-  AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm" address:PlaitsParamAlgorithm min:0.0 max:15.4 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[
-      @"Analog",
-      @"Waveshape",
-      @"FM",
-      @"Grain",
-      @"Additive",
-      @"Wavetable",
-      @"Chord",
-      @"Speech",
-      @"Swarm",
-      @"Noise",
-      @"Particle",
-      @"String",
-      @"Modal",
-      @"Bass",
-      @"Snare",
-      @"Hi Hat",
-      ]
-      dependentParameters:nil];
-  
-  AUParameterGroup *mainGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, timbreParam, harmonicsParam, morphParam, decayParam]];
-	
-	// Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainGroup]];
-
-	// Create the output bus.
-	_outputBusBuffer.init(defaultFormat, 2);
-	_outputBus = _outputBusBuffer.bus;
-	
-	// Create the input and output bus arrays.
-	_outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self
+    // Create a DSP kernel to handle the signal processing.
+    _kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
+    
+    // Create a parameter object for the attack time.
+    AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
+    kAudioUnitParameterFlag_IsReadable;
+    
+    AUParameter *timbreParam = [AUParameterTree createParameterWithIdentifier:@"timbre" name:@"Timbre"
+                                                                      address:PlaitsParamTimbre
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *harmonicsParam = [AUParameterTree createParameterWithIdentifier:@"harmonics" name:@"Harmonics"
+                                                                         address:PlaitsParamHarmonics
+                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *morphParam = [AUParameterTree createParameterWithIdentifier:@"morph" name:@"Morph"
+                                                                     address:PlaitsParamMorph
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *decayParam = [AUParameterTree createParameterWithIdentifier:@"decay" name:@"Decay"
+                                                                     address:PlaitsParamDecay
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *colourParam = [AUParameterTree createParameterWithIdentifier:@"colour" name:@"Colour"
+                                                                      address:PlaitsParamLPGColour
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
+                                                                      address:PlaitsParamDetune
+                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *slopParam = [AUParameterTree createParameterWithIdentifier:@"slop" name:@"Slop"
+                                                                      address:PlaitsParamSlop
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm"
+                                                                         address:PlaitsParamAlgorithm min:0.0 max:15.4
+                                                                            unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags:flags valueStrings:@[
+                                                                                                      @"Analog",
+                                                                                                      @"Waveshape",
+                                                                                                      @"FM",
+                                                                                                      @"Grain",
+                                                                                                      @"Additive",
+                                                                                                      @"Wavetable",
+                                                                                                      @"Chord",
+                                                                                                      @"Speech",
+                                                                                                      @"Swarm",
+                                                                                                      @"Noise",
+                                                                                                      @"Particle",
+                                                                                                      @"String",
+                                                                                                      @"Modal",
+                                                                                                      @"Bass",
+                                                                                                      @"Snare",
+                                                                                                      @"Hi Hat",
+                                                                                                      ]
+                                                             dependentParameters:nil];
+    
+    AUParameter *polyphonyParam = [AUParameterTree createParameterWithIdentifier:@"polyphony" name:@"Polyphony" address:PlaitsParamPolyphony min:0.0 max:7.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8"]
+                                                             dependentParameters:nil];
+    
+    AUParameter *unisonParam = [AUParameterTree createParameterWithIdentifier:@"unison" name:@"Unison" address:PlaitsParamUnison min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"Off", @"On"]
+                                                          dependentParameters:nil];
+    
+    AUParameter *volumeParam = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
+                                                                      address:PlaitsParamVolume
+                                                                          min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
+                                                                    address:PlaitsParamLeftSource
+                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *rightSourceParam = [AUParameterTree createParameterWithIdentifier:@"rightSource" name:@"Right Source"
+                                                                    address:PlaitsParamRightSource
+                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *panParam = [AUParameterTree createParameterWithIdentifier:@"pan" name:@"Pan"
+                                                                           address:PlaitsParamPan
+                                                                               min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                             flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *panSpreadParam = [AUParameterTree createParameterWithIdentifier:@"panSpread" name:@"Pan Spread"
+                                                                           address:PlaitsParamPanSpread
+                                                                               min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                             flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *mainGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, detuneParam, harmonicsParam, timbreParam, morphParam]];
+    
+    AUParameterGroup *lpgGroup = [AUParameterTree createGroupWithIdentifier:@"lpg" name:@"LPG" children:@[decayParam, colourParam]];
+    
+    AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, volumeParam]];
+    
+    AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
+    
+    // Create the parameter tree.
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainGroup, lpgGroup, voiceGroup, outGroup]];
+    
+    // Create the output bus.
+    _outputBusBuffer.init(defaultFormat, 2);
+    _outputBus = _outputBusBuffer.bus;
+    
+    // Create the input and output bus arrays.
+    _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self
                                                              busType:AUAudioUnitBusTypeOutput
                                                               busses: @[_outputBus]];
-
-	// Make a local pointer to the kernel to avoid capturing self.
-	__block PlaitsDSPKernel *instrumentKernel = &_kernel;
-
-	// implementorValueObserver is called when a parameter changes value.
-	_parameterTree.implementorValueObserver = ^(AUParameter *param, AUValue value) {
-		instrumentKernel->setParameter(param.address, value);
-	};
-	
-	// implementorValueProvider is called when the value needs to be refreshed.
-	_parameterTree.implementorValueProvider = ^(AUParameter *param) {
-		return instrumentKernel->getParameter(param.address);
-	};
-	
-	// A function to provide string representations of parameter values.
-	_parameterTree.implementorStringFromValueCallback = ^(AUParameter *param, const AUValue *__nullable valuePtr) {
-		AUValue value = valuePtr == nil ? param.value : *valuePtr;
-	
-		switch (param.address) {
-			case PlaitsParamTimbre:
-			case PlaitsParamHarmonics:
-      case PlaitsParamMorph:
-      case PlaitsParamDecay:
-				return [NSString stringWithFormat:@"%.1f", value];
-			
-			default:
-				return @"?";
-		}
-	};
-
-	self.maximumFramesToRender = 512;
-	
-	return self;
+    
+    // Make a local pointer to the kernel to avoid capturing self.
+    __block PlaitsDSPKernel *instrumentKernel = &_kernel;
+    
+    // implementorValueObserver is called when a parameter changes value.
+    _parameterTree.implementorValueObserver = ^(AUParameter *param, AUValue value) {
+        instrumentKernel->setParameter(param.address, value);
+    };
+    
+    // implementorValueProvider is called when the value needs to be refreshed.
+    _parameterTree.implementorValueProvider = ^(AUParameter *param) {
+        return instrumentKernel->getParameter(param.address);
+    };
+    
+    // A function to provide string representations of parameter values.
+    _parameterTree.implementorStringFromValueCallback = ^(AUParameter *param, const AUValue *__nullable valuePtr) {
+        AUValue value = valuePtr == nil ? param.value : *valuePtr;
+        
+        switch (param.address) {
+            case PlaitsParamTimbre:
+            case PlaitsParamHarmonics:
+            case PlaitsParamMorph:
+            case PlaitsParamDecay:
+            case PlaitsParamDetune:
+                return [NSString stringWithFormat:@"%.1f", value];
+                
+            default:
+                return @"?"; // TODO for all params
+        }
+    };
+    
+    self.maximumFramesToRender = 512;
+    
+    return self;
 }
 
 -(void)dealloc {
@@ -153,20 +201,20 @@
 }
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError {
-	if (![super allocateRenderResourcesAndReturnError:outError]) {
-		return NO;
-	}
-	
-	_outputBusBuffer.allocateRenderResources(self.maximumFramesToRender);
-	
-	_kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
-	_kernel.reset();
-	
-	return YES;
+    if (![super allocateRenderResourcesAndReturnError:outError]) {
+        return NO;
+    }
+    
+    _outputBusBuffer.allocateRenderResources(self.maximumFramesToRender);
+    
+    _kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
+    _kernel.reset();
+    
+    return YES;
 }
-	
+
 - (void)deallocateRenderResources {
-	_outputBusBuffer.deallocateRenderResources();
+    _outputBusBuffer.deallocateRenderResources();
     
     [super deallocateRenderResources];
 }
@@ -174,53 +222,53 @@
 #pragma mark - AUAudioUnit (AUAudioUnitImplementation)
 
 - (AUInternalRenderBlock)internalRenderBlock {
-	/*
-		Capture in locals to avoid ObjC member lookups. If "self" is captured in
-        render, we're doing it wrong.
-	*/
-	__block PlaitsDSPKernel *state = &_kernel;
-  __block BufferedOutputBus *outputBusBuffer = &_outputBusBuffer;
+    /*
+     Capture in locals to avoid ObjC member lookups. If "self" is captured in
+     render, we're doing it wrong.
+     */
+    __block PlaitsDSPKernel *state = &_kernel;
+    __block BufferedOutputBus *outputBusBuffer = &_outputBusBuffer;
     
     return ^AUAudioUnitStatus(
-			 AudioUnitRenderActionFlags *actionFlags,
-			 const AudioTimeStamp       *timestamp,
-			 AVAudioFrameCount           frameCount,
-			 NSInteger                   outputBusNumber,
-			 AudioBufferList            *outputData,
-			 const AURenderEvent        *realtimeEventListHead,
-			 AURenderPullInputBlock      pullInputBlock) {
-		
-		outputBusBuffer->prepareOutputBufferList(outputData, frameCount, true);
-		state->setBuffers(outputData);		
-		state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
-
-		return noErr;
-	};
+                              AudioUnitRenderActionFlags *actionFlags,
+                              const AudioTimeStamp       *timestamp,
+                              AVAudioFrameCount           frameCount,
+                              NSInteger                   outputBusNumber,
+                              AudioBufferList            *outputData,
+                              const AURenderEvent        *realtimeEventListHead,
+                              AURenderPullInputBlock      pullInputBlock) {
+        
+        outputBusBuffer->prepareOutputBufferList(outputData, frameCount, true);
+        state->setBuffers(outputData);
+        state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
+        
+        return noErr;
+    };
 }
 
-#pragma mark - fullstate (?!?!?!)
+#pragma mark - fullstate - must override in order to call parameter observer when fullstate is reset.
 - (NSDictionary *)fullState {
-  NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullState];
-  NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-  
-  for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-    params[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].value);
-  }
-  
-  state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];
-  return state;
+    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullState];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        params[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].value);
+    }
+    
+    state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];
+    return state;
 }
 
 - (void)setFullState:(NSDictionary *)fullState {
-  NSData *data = (NSData *)fullState[@"data"];
-  NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-  
-  for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-    NSNumber *savedValue = [params objectForKey: @(_parameterTree.allParameters[i].address)];
-    if (savedValue != nil) {
-      _parameterTree.allParameters[i].value = savedValue.floatValue;
+    NSData *data = (NSData *)fullState[@"data"];
+    NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        NSNumber *savedValue = [params objectForKey: @(_parameterTree.allParameters[i].address)];
+        if (savedValue != nil) {
+            _parameterTree.allParameters[i].value = savedValue.floatValue;
+        }
     }
-  }
 }
 
 @end

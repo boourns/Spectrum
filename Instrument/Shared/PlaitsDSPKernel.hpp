@@ -17,12 +17,23 @@ const size_t kAudioBlockSize = 24;
 const size_t kPolyphony = 8;
 
 enum {
-  PlaitsParamTimbre = 0,
-  PlaitsParamHarmonics = 1,
-  PlaitsParamMorph = 2,
-  PlaitsParamDecay = 3,
-  PlaitsParamAlgorithm = 4,
-  PlaitsMaxParameters
+    PlaitsParamTimbre = 0,
+    PlaitsParamHarmonics = 1,
+    PlaitsParamMorph = 2,
+    PlaitsParamDecay = 3,
+    PlaitsParamAlgorithm = 4,
+    PlaitsParamPitch = 5,
+    PlaitsParamDetune = 6,
+    PlaitsParamLPGColour = 7,
+    PlaitsParamUnison = 8,
+    PlaitsParamPolyphony = 9,
+    PlaitsParamVolume = 10,
+    PlaitsParamSlop = 11,
+    PlaitsParamLeftSource = 12,
+    PlaitsParamRightSource = 13,
+    PlaitsParamPan = 14,
+    PlaitsParamPanSpread = 15,
+    PlaitsMaxParameters
 };
 
 enum {
@@ -66,9 +77,11 @@ public:
         uint8_t note;
         plaits::Voice::Frame frames[kAudioBlockSize];
         size_t plaitsFramesIndex;
+        
         plaits::Voice *voice;
         plaits::Modulations modulations;
         plaits::Patch patch;
+        float panSpread = 0;
         
         void Init() {
             voice = new plaits::Voice();
@@ -80,20 +93,17 @@ public:
         void clear() {
             modulations.trigger = 0.0f;
             state = NoteStateUnused;
-            NSLog(@"Clear");
         }
         
         // linked list management
         void release() {
             modulations.trigger = 0.0f;
             state = NoteStateReleasing;
-            NSLog(@"Release");
         }
         
         void add() {
             modulations.trigger = 1.0f;
             state = NoteStatePlaying;
-            NSLog(@"Add");
         }
         
         void noteOn(int noteNumber, int velocity)
@@ -106,8 +116,9 @@ public:
                 memcpy(&patch, &kernel->patch, sizeof(plaits::Patch));
                 memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
                 
-                NSLog(@"Here");
-                patch.note = float(noteNumber);
+                patch.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop);
+                panSpread = kernel->nextPanSpread();
+
                 note = noteNumber;
                 add();
             }
@@ -116,19 +127,36 @@ public:
         void run(int n, float* outL, float* outR)
         {
             int framesRemaining = n;
+            float leftSource = kernel->leftSource;
+            float rightSource = kernel->rightSource;
+            
+            float out, aux, rightGain, leftGain;
+            
+            float pan = clamp(kernel->pan + panSpread, -1.0f, 1.0f);
+            if (pan > 0) {
+                rightGain = 1.0f;
+                leftGain = 1.0f - pan;
+            } else {
+                leftGain = 1.0f;
+                rightGain = 1.0f + pan;
+            }
+            
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
                     voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                 }
                 
-                *outL++ += ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
-                *outR++ += ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
+                out = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
+                aux = ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
+                
+                *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
+                *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
+                
                 plaitsFramesIndex++;
                 framesRemaining--;
             }
         }
-        
     };
     
     
@@ -145,30 +173,30 @@ public:
     
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
-      
-      patch.engine = 8;
-      patch.note = 48.0f;
-      patch.harmonics = 0.3f;
-      patch.timbre = 0.7f;
-      patch.morph = 0.7f;
-      patch.frequency_modulation_amount = 0.0f;
-      patch.timbre_modulation_amount = 0.0f;
-      patch.morph_modulation_amount = 0.0f;
-      patch.decay = 0.1f;
-      patch.lpg_colour = 0.0f;
-      
-      modulations.note = 0.0f;
-      modulations.engine = 0.0f;
-      modulations.frequency = 0.0f;
-      modulations.harmonics = 0.0f;
-      modulations.morph = 0.0;
-      modulations.level = 0.0f;
-      modulations.trigger = 0.0f;
-      modulations.frequency_patched = false;
-      modulations.timbre_patched = false;
-      modulations.morph_patched = false;
-      modulations.trigger_patched = true;
-      modulations.level_patched = false;
+        
+        patch.engine = 8;
+        patch.note = 48.0f;
+        patch.harmonics = 0.3f;
+        patch.timbre = 0.7f;
+        patch.morph = 0.7f;
+        patch.frequency_modulation_amount = 0.0f;
+        patch.timbre_modulation_amount = 0.0f;
+        patch.morph_modulation_amount = 0.0f;
+        patch.decay = 0.1f;
+        patch.lpg_colour = 0.0f;
+        
+        modulations.note = 0.0f;
+        modulations.engine = 0.0f;
+        modulations.frequency = 0.0f;
+        modulations.harmonics = 0.0f;
+        modulations.morph = 0.0;
+        modulations.level = 0.0f;
+        modulations.trigger = 0.0f;
+        modulations.frequency_patched = false;
+        modulations.timbre_patched = false;
+        modulations.morph_patched = false;
+        modulations.trigger_patched = true;
+        modulations.level_patched = false;
     }
     
     void reset() {
@@ -192,12 +220,59 @@ public:
                 break;
                 
             case PlaitsParamAlgorithm:
-                patch.engine = round(clamp(value, 0.0f, 16.0f));
-            NSLog(@"Engine %d value %f", patch.engine, value);
+                patch.engine = round(clamp(value, 0.0f, 15.0f));
                 break;
                 
             case PlaitsParamDecay:
                 patch.decay = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamLPGColour:
+                patch.lpg_colour = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamPolyphony: {
+                int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
+                if (newPolyphony != activePolyphony) {
+                    gainCoefficient = 1.0f / (float) activePolyphony;
+                    reset();
+                    activePolyphony = newPolyphony;
+                }
+                break;
+            }
+                
+            case PlaitsParamUnison: {
+                int newUnison = round(clamp(value, 0.0f, 1.0f)) == 1;
+                if (newUnison != unison) {
+                    reset();
+                    unison = newUnison;
+                }
+                
+                break;
+            }
+                
+            case PlaitsParamVolume:
+                volume = clamp(value, 0.0f, 2.0f);
+                break;
+                
+            case PlaitsParamSlop:
+                slop = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamLeftSource:
+                leftSource = clamp(value, 0.0f, 1.0f);
+                break;
+            
+            case PlaitsParamRightSource:
+                rightSource = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamPan:
+                pan = clamp(value, -1.0f, 1.0f);
+                break;
+                
+            case PlaitsParamPanSpread:
+                panSpread = clamp(value, 0.0f, 1.0f);
                 break;
         }
     }
@@ -214,10 +289,37 @@ public:
                 return patch.morph;
                 
             case PlaitsParamAlgorithm:
-              return (float) patch.engine;
+                return (float) patch.engine;
                 
             case PlaitsParamDecay:
                 return patch.decay;
+                
+            case PlaitsParamLPGColour:
+                return patch.lpg_colour;
+                
+            case PlaitsParamUnison:
+                return unison ? 1.0f : 0.0f;
+                
+            case PlaitsParamPolyphony:
+                return (float) activePolyphony - 1;
+                
+            case PlaitsParamVolume:
+                return volume;
+                
+            case PlaitsParamSlop:
+                return slop;
+                
+            case PlaitsParamLeftSource:
+                return leftSource;
+                
+            case PlaitsParamRightSource:
+                return rightSource;
+                
+            case PlaitsParamPan:
+                return pan;
+                
+            case PlaitsParamPanSpread:
+                return panSpread;
                 
             default:
                 return 0.0f;
@@ -234,7 +336,7 @@ public:
     }
     
     VoiceState *voiceForNote(uint8_t note) {
-        for (int i = 0; i < kPolyphony; i++) {
+        for (int i = 0; i < activePolyphony; i++) {
             if (voices[i].note == note) {
                 return &voices[i];
             }
@@ -243,18 +345,18 @@ public:
     }
     
     VoiceState *freeVoice() {
-        for (int i = 0; i < kPolyphony; i++) {
+        for (int i = 0; i < activePolyphony; i++) {
             if (voices[i].state == NoteStateUnused) {
                 return &voices[i];
             }
         }
-        for (int i = 0; i < kPolyphony; i++) {
+        for (int i = 0; i < activePolyphony; i++) {
             if (voices[i].state == NoteStateReleasing) {
                 return &voices[i];
             }
         }
         VoiceState *stolen = &voices[stolenVoice];
-        stolenVoice = (stolenVoice + 1) % kPolyphony;
+        stolenVoice = (stolenVoice + 1) % activePolyphony;
         return stolen;
     }
     
@@ -266,25 +368,37 @@ public:
             case 0x80 : { // note off
                 uint8_t note = midiEvent.data[1];
                 if (note > 127) break;
-                VoiceState *voice = voiceForNote(note);
-                if (voice) {
-                    voice->release();
-                }
                 
-                modulations.trigger = 0.0f;
+                if (unison) {
+                    for (int i = 0; i < activePolyphony; i++) {
+                        voices[i].release();
+                    }
+                } else {
+                    VoiceState *voice = voiceForNote(note);
+                    if (voice) {
+                        voice->release();
+                    }
+                }
+                    
                 break;
             }
             case 0x90 : { // note on
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
-                VoiceState *voice = voiceForNote(note);
-                if (voice) {
-                    voice->noteOn(note, veloc);
+                if (unison) {
+                    for (int i = 0; i < activePolyphony; i++) {
+                        voices[i].noteOn(note, veloc);
+                    }
                 } else {
-                    voice = freeVoice();
+                    VoiceState *voice = voiceForNote(note);
                     if (voice) {
                         voice->noteOn(note, veloc);
+                    } else {
+                        voice = freeVoice();
+                        if (voice) {
+                            voice->noteOn(note, veloc);
+                        }
                     }
                 }
                 break;
@@ -306,7 +420,7 @@ public:
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
         
         int playingNotes = 0;
-        for (int i = 0; i < kPolyphony; i++) {
+        for (int i = 0; i < activePolyphony; i++) {
             if (voices[i].state != NoteStateUnused) {
                 playingNotes++;
                 voices[i].run(frameCount, outL, outR);
@@ -315,10 +429,32 @@ public:
         
         if (playingNotes > 0) {
             for (int i = 0; i < frameCount; i++) {
-                outL[i] *= 0.1f;
-                outR[i] *= 0.1f;
+                outL[i] *= gainCoefficient * volume;
+                outR[i] *= gainCoefficient * volume;
             }
         }
+    }
+    
+    float randomSignedFloat(float max) {
+        int range = ((float) INT_MAX) * max;
+        if (range == 0) {
+            return 0.0f;
+        }
+        float result = (float) (rand() % range) / (float) INT_MAX;
+        if (rand() % 2 == 1) {
+            result *= -1;
+        }
+        NSLog(@"Result %f", result);
+        return result;
+    }
+    
+    float nextPanSpread() {
+        float result = panSpread;
+        if (!lastPanSpreadWasNegative) {
+            result *= -1;
+        }
+        lastPanSpreadWasNegative = !lastPanSpreadWasNegative;
+        return result;
     }
     
     // MARK: Member Variables
@@ -330,10 +466,21 @@ private:
     
     AudioBufferList* outBufferListPtr = nullptr;
     
+    unsigned int activePolyphony = 8;
+    
 public:
     plaits::Modulations modulations;
     plaits::Patch patch;
     int stolenVoice = 0;
+    bool lastPanSpreadWasNegative = 0;
+    float slop = 0.0f;
+    bool unison = false;
+    float volume = 1.0f;
+    float gainCoefficient = 0.1f;
+    float leftSource = 0.0f;
+    float rightSource = 1.0f;
+    float pan = 0.0f;
+    float panSpread = 0.0f;
 };
 
 #endif /* PlaitsDSPKernel_h */
