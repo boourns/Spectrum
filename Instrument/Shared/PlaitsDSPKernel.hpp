@@ -117,6 +117,7 @@ public:
                 memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
                 
                 patch.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop);
+                // TODO When stealing don't take new pan spread value
                 panSpread = kernel->nextPanSpread();
 
                 note = noteNumber;

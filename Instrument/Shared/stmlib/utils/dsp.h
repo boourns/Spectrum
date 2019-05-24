@@ -30,7 +30,7 @@
 #ifndef STMLIB_UTILS_DSP_H_
 #define STMLIB_UTILS_DSP_H_
 
-#include "stmlib/stmlib.h"
+#include "../stmlib.h"
 
 namespace stmlib {
 

@@ -33,10 +33,7 @@
 #ifndef PLAITS_RESOURCES_H_
 #define PLAITS_RESOURCES_H_
 
-
 #include "stmlib/stmlib.h"
-
-
 
 namespace plaits {
 

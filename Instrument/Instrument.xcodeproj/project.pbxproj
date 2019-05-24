@@ -385,6 +385,9 @@
 		E22544D7228F9FD300D72092 /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22543F5228F9FD300D72092 /* units.cc */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
 		E228F8FD229313E600AD17BE /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2154B4822930D1C00CEED2E /* MainInterface.storyboard */; };
+		E22AFAFC2298795F00679F99 /* lfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFAFA2298795F00679F99 /* lfo.cpp */; };
+		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
+		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
 		E27AD077229395240003C69C /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
@@ -784,6 +787,10 @@
 		E22543F4228F9FD300D72092 /* units.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = units.h; sourceTree = "<group>"; };
 		E22543F5228F9FD300D72092 /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
+		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
+		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
+		E22AFB03229881F900679F99 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
+		E22AFB04229881F900679F99 /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
 		E2CA00C4228FA73F0048AD74 /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1017,12 +1024,15 @@
 		B5234C811CA0963600902296 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E22AFB02229881F900679F99 /* peaks */,
 				E2154A2B229249AA00CEED2E /* plaits */,
 				E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */,
 				E2154A8C229249AA00CEED2E /* stmlib */,
 				B5234C821CA0966600902296 /* InstrumentDemo.h */,
 				B5234C831CA0966600902296 /* InstrumentDemo.mm */,
 				B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */,
+				E22AFAFA2298795F00679F99 /* lfo.cpp */,
+				E22AFAFB2298795F00679F99 /* lfo.hpp */,
 			);
 			name = Shared;
 			path = ../../Shared;
@@ -1482,6 +1492,15 @@
 			path = dsp;
 			sourceTree = "<group>";
 		};
+		E22AFB02229881F900679F99 /* peaks */ = {
+			isa = PBXGroup;
+			children = (
+				E22AFB03229881F900679F99 /* resources.h */,
+				E22AFB04229881F900679F99 /* resources.cc */,
+			);
+			path = peaks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1619,6 +1638,7 @@
 				E22544C2228F9FD300D72092 /* rsqrt.h in Headers */,
 				E2254444228F9FD300D72092 /* harmonic_oscillator.h in Headers */,
 				E2154AF9229249AA00CEED2E /* bass_drum_engine.h in Headers */,
+				E22AFB05229881F900679F99 /* resources.h in Headers */,
 				E225440E228F9FD300D72092 /* synthetic_bass_drum.h in Headers */,
 				E2154ADC229249AA00CEED2E /* resonator.h in Headers */,
 				E2154AC4229249AA00CEED2E /* smooth_random_generator.h in Headers */,
@@ -1890,6 +1910,7 @@
 					92A10CC41B9521320081EA80 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = YC8HZ62228;
+						LastSwiftMigration = 1020;
 					};
 					92A10CE01B9521B00081EA80 = {
 						CreatedOnToolsVersion = 7.0;
@@ -2096,6 +2117,7 @@
 				E22476D62291834600F9450C /* InstrumentDemoViewController+AUAudioUnitFactory.swift in Sources */,
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,
+				E22AFAFC2298795F00679F99 /* lfo.cpp in Sources */,
 				92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2157,6 +2179,7 @@
 				E22543F8228F9FD300D72092 /* makefile in Sources */,
 				E2154AEB229249AA00CEED2E /* wavetable_engine.cc in Sources */,
 				E2154B0C229249AA00CEED2E /* atan.cc in Sources */,
+				E22AFB06229881F900679F99 /* resources.cc in Sources */,
 				E225448C228F9FD300D72092 /* modal_engine.cc in Sources */,
 				E2254480228F9FD300D72092 /* noise_engine.cc in Sources */,
 				E2154AEA229249AA00CEED2E /* swarm_engine.cc in Sources */,
@@ -2684,6 +2707,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoApp";
 				PRODUCT_NAME = InstrumentDemoApp;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
