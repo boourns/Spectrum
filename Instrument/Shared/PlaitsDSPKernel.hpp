@@ -11,6 +11,7 @@
 #import "DSPKernel.hpp"
 #import <vector>
 #import "plaits/dsp/voice.h"
+#import "lfo.hpp"
 
 const double kTwoPi = 2.0 * M_PI;
 const size_t kAudioBlockSize = 24;
@@ -174,6 +175,8 @@ public:
     
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
+        
+        lfo.Init();
         
         patch.engine = 8;
         patch.note = 48.0f;
@@ -420,10 +423,15 @@ public:
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
         
+        
+        
         int playingNotes = 0;
         for (int i = 0; i < activePolyphony; i++) {
+            // TODO bring 32-sample frame processing back here so we can update LFO, update env, every 32 samples
+            
             if (voices[i].state != NoteStateUnused) {
                 playingNotes++;
+                
                 voices[i].run(frameCount, outL, outR);
             }
         }
@@ -472,6 +480,9 @@ private:
 public:
     plaits::Modulations modulations;
     plaits::Patch patch;
+    
+    peaks::Lfo lfo;
+    
     int stolenVoice = 0;
     bool lastPanSpreadWasNegative = 0;
     float slop = 0.0f;

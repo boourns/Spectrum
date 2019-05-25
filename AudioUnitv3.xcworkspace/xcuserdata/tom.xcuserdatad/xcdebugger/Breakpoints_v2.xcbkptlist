@@ -191,8 +191,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "211"
             endingLineNumber = "211"
-            landmarkName = "setParameter(AUParameterAddress address, AUValue value)"
-            landmarkType = "7">
+            landmarkName = "class PlaitsDSPKernel"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -319,8 +319,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "175"
             endingLineNumber = "175"
-            landmarkName = "init(int channelCount, double inSampleRate)"
-            landmarkType = "7">
+            landmarkName = "class PlaitsDSPKernel"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

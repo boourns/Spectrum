@@ -388,6 +388,8 @@
 		E22AFAFC2298795F00679F99 /* lfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFAFA2298795F00679F99 /* lfo.cpp */; };
 		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
+		E22AFB0922989EC300679F99 /* ModulationEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB0722989EC300679F99 /* ModulationEngine.cpp */; };
+		E22AFB0A22989EC300679F99 /* ModulationEngine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB0822989EC300679F99 /* ModulationEngine.hpp */; };
 		E27AD077229395240003C69C /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
@@ -791,6 +793,8 @@
 		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
 		E22AFB03229881F900679F99 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
 		E22AFB04229881F900679F99 /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
+		E22AFB0722989EC300679F99 /* ModulationEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ModulationEngine.cpp; sourceTree = "<group>"; };
+		E22AFB0822989EC300679F99 /* ModulationEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ModulationEngine.hpp; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
 		E2CA00C4228FA73F0048AD74 /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1033,6 +1037,8 @@
 				B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */,
 				E22AFAFA2298795F00679F99 /* lfo.cpp */,
 				E22AFAFB2298795F00679F99 /* lfo.hpp */,
+				E22AFB0722989EC300679F99 /* ModulationEngine.cpp */,
+				E22AFB0822989EC300679F99 /* ModulationEngine.hpp */,
 			);
 			name = Shared;
 			path = ../../Shared;
@@ -1646,6 +1652,7 @@
 				E2154AE6229249AA00CEED2E /* chord_engine.h in Headers */,
 				E22544BE228F9FD300D72092 /* parameter_interpolator.h in Headers */,
 				E2254424228F9FD300D72092 /* lpc_speech_synth_controller.h in Headers */,
+				E22AFB0A22989EC300679F99 /* ModulationEngine.hpp in Headers */,
 				E2154AB4229249AA00CEED2E /* analog_snare_drum.h in Headers */,
 				E2154ADE229249AA00CEED2E /* voice.h in Headers */,
 				E22544B4228F9FD300D72092 /* crc32.h in Headers */,
@@ -2147,6 +2154,7 @@
 				E2154AF4229249AA00CEED2E /* modal_engine.cc in Sources */,
 				E2254494228F9FD300D72092 /* bass_drum_engine.cc in Sources */,
 				E2254416228F9FD300D72092 /* lpc_speech_synth_phonemes.cc in Sources */,
+				E22AFB0922989EC300679F99 /* ModulationEngine.cpp in Sources */,
 				E225447A228F9FD300D72092 /* wavetable_engine.cc in Sources */,
 				E225449C228F9FD300D72092 /* additive_engine.cc in Sources */,
 				E2254492228F9FD300D72092 /* grain_engine.cc in Sources */,
