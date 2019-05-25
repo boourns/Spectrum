@@ -8,6 +8,7 @@
 #ifndef PlaitsDSPKernel_h
 #define PlaitsDSPKernel_h
 
+#import "multistage_envelope.h"
 #import "DSPKernel.hpp"
 #import <vector>
 #import "plaits/dsp/voice.h"
@@ -40,6 +41,8 @@ enum {
     PlaitsParamLfoAmountHarmonics = 19,
     PlaitsParamLfoAmountTimbre = 20,
     PlaitsParamLfoAmountMorph = 21,
+    PlaitsParamPitchBendRange = 22,
+    PlaitsParamAmpSource = 23,
     PlaitsMaxParameters
 };
 
@@ -90,6 +93,8 @@ public:
         plaits::Patch patch;
         float panSpread = 0;
         
+        bool delayed_trigger = false;
+        
         void Init() {
             voice = new plaits::Voice();
             stmlib::BufferAllocator allocator(ram_block, 16384);
@@ -110,7 +115,11 @@ public:
         }
         
         void add() {
-            modulations.trigger = 1.0f;
+            if (state == NoteStateUnused) {
+                modulations.trigger = 1.0f;
+            } else {
+                delayed_trigger = true;
+            }
             state = NoteStatePlaying;
         }
         
@@ -152,13 +161,17 @@ public:
             
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
-                    modulations.frequency = kernel->lfoOutput * kernel->lfoAmountFM;
+                    modulations.frequency = kernel->bendAmount + ((float) kernel->pitch) + kernel->detune + (kernel->lfoOutput * kernel->lfoAmountFM);
                     modulations.harmonics = kernel->lfoOutput * kernel->lfoAmountHarmonics;
                     modulations.timbre = kernel->lfoOutput * kernel->lfoAmountTimbre;
                     modulations.morph = kernel->lfoOutput * kernel->lfoAmountMorph;
                     
                     voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
+                    if (delayed_trigger) {
+                        delayed_trigger = false;
+                        modulations.trigger = 1.0f;
+                    }
                 }
                 
                 out = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
@@ -239,6 +252,14 @@ public:
                 
             case PlaitsParamAlgorithm:
                 patch.engine = round(clamp(value, 0.0f, 15.0f));
+                break;
+                
+            case PlaitsParamPitch:
+                pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
+                break;
+                
+            case PlaitsParamDetune:
+                detune = clamp(value, -1.0f, 1.0f);
                 break;
                 
             case PlaitsParamDecay:
@@ -326,6 +347,27 @@ public:
             case PlaitsParamLfoAmountMorph:
                 lfoAmountMorph = clamp(value, 0.0f, 1.0f);
                 break;
+                
+            case PlaitsParamPitchBendRange:
+                bendRange = round(clamp(value, 0.0f, 12.0f));
+                break;
+                
+            case PlaitsParamAmpSource: {
+                int newAmpSource = round(clamp(value, 0.0f, 3.0f));
+                if (ampSource != newAmpSource) {
+                    reset();
+                    ampSource = newAmpSource;
+                    if (ampSource == 0) {
+                        modulations.level_patched = false;
+                    } else {
+                        modulations.level_patched = true;
+                        if (ampSource == 2) {
+                            modulations.level = 1.0f;
+                        }
+                    }
+                }
+                break;
+            }
         }
     }
     
@@ -342,6 +384,12 @@ public:
                 
             case PlaitsParamAlgorithm:
                 return (float) patch.engine;
+                
+            case PlaitsParamPitch:
+                return (float) pitch + 12;
+                
+            case PlaitsParamDetune:
+                return detune;
                 
             case PlaitsParamDecay:
                 return patch.decay;
@@ -392,6 +440,12 @@ public:
                 
             case PlaitsParamLfoAmountMorph:
                 return lfoAmountMorph;
+                
+            case PlaitsParamPitchBendRange:
+                return (float) bendRange;
+                
+            case PlaitsParamAmpSource:
+                return (float) ampSource;
                 
             default:
                 return 0.0f;
@@ -475,6 +529,13 @@ public:
                 }
                 break;
             }
+            case 0xE0 : { // pitch bend
+                uint8_t coarse = midiEvent.data[2];
+                uint8_t fine = midiEvent.data[1];
+                int16_t midiPitchBend = (coarse << 7) + fine;
+                bendAmount = (((float) (midiPitchBend - 8192)) / 8192.0f) * bendRange;
+            }
+                
             case 0xB0 : { // control
                 uint8_t num = midiEvent.data[1];
                 if (num == 123) { // all notes off
@@ -498,8 +559,6 @@ public:
             lfoOutput = ((float) lfo.Process(frameCount)) / INT16_MAX;
             
             for (int i = 0; i < activePolyphony; i++) {
-                // TODO bring 32-sample frame processing back here so we can update LFO, update env, every 32 samples
-                
                 if (voices[i].state != NoteStateUnused) {
                     playingNotes++;
                     
@@ -566,6 +625,7 @@ public:
     
     int stolenVoice = 0;
     bool lastPanSpreadWasNegative = 0;
+    
     float slop = 0.0f;
     bool unison = false;
     float volume = 1.0f;
@@ -574,6 +634,13 @@ public:
     float rightSource = 1.0f;
     float pan = 0.0f;
     float panSpread = 0.0f;
+    
+    int pitch = 0;
+    float detune = 0;
+    int bendRange = 0;
+    float bendAmount = 0.0f;
+    
+    int ampSource;
 };
 
 #endif /* PlaitsDSPKernel_h */

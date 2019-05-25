@@ -70,8 +70,8 @@ namespace peaks {
     }
     
     int16_t Lfo::Process(size_t size) {
-        int32_t a = lut_lfo_increments[rate_ >> 8];
-        int32_t b = lut_lfo_increments[(rate_ >> 8) + 1];
+        int32_t a = lut_lfo_increments[rate_ >> 8] >> 2;
+        int32_t b = lut_lfo_increments[(rate_ >> 8) + 1] >> 2;
         phase_increment_ = a + (((b - a) >> 1) * (rate_ & 0xff) >> 7);
         
         phase_ += phase_increment_ * size;
