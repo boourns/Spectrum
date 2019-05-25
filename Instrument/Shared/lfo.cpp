@@ -69,41 +69,37 @@ namespace peaks {
         set_parameter(presets[value][1]);
     }
     
-    void Lfo::Process(const GateFlags* gate_flags, int16_t* out, size_t size) {
-        if (!sync_) {
-            int32_t a = lut_lfo_increments[rate_ >> 8];
-            int32_t b = lut_lfo_increments[(rate_ >> 8) + 1];
-            phase_increment_ = a + (((b - a) >> 1) * (rate_ & 0xff) >> 7);
-        }
-        while (size--) {
-            ++sync_counter_;
-            GateFlags gate_flag = *gate_flags++;
-            if (gate_flag & GATE_FLAG_RISING) {
-                bool reset_phase = true;
-                if (sync_) {
-                    if (sync_counter_ < kSyncCounterMaxTime) {
-                        uint32_t period = 0;
-                        if (gate_flag & GATE_FLAG_FROM_BUTTON) {
-                            period = sync_counter_;
-                        } else if (sync_counter_ < 1920) {
-                            period = (3 * period_ + sync_counter_) >> 2;
-                            reset_phase = false;
-                        }
-                        if (period != period_) {
-                            period_ = period;
-                            phase_increment_ = 0xffffffff / period_;
-                        }
-                    }
-                    sync_counter_ = 0;
-                }
-                if (reset_phase) {
-                    phase_ = reset_phase_;
-                }
-            }
-            phase_ += phase_increment_;
-            int32_t sample = (this->*compute_sample_fn_table_[shape_])();
-            *out++ = sample * level_ >> 15;
-        }
+    int16_t Lfo::Process(size_t size) {
+        int32_t a = lut_lfo_increments[rate_ >> 8];
+        int32_t b = lut_lfo_increments[(rate_ >> 8) + 1];
+        phase_increment_ = a + (((b - a) >> 1) * (rate_ & 0xff) >> 7);
+        
+        phase_ += phase_increment_ * size;
+        int32_t sample = (this->*compute_sample_fn_table_[shape_])();
+        return sample * level_ >> 15;
+    }
+    
+    void Lfo::Trigger() {
+//        bool reset_phase = true;
+//        if (sync_) {
+//            if (sync_counter_ < kSyncCounterMaxTime) {
+//                uint32_t period = 0;
+//                if (gate_flag & GATE_FLAG_FROM_BUTTON) {
+//                    period = sync_counter_;
+//                } else if (sync_counter_ < 1920) {
+//                    period = (3 * period_ + sync_counter_) >> 2;
+//                    reset_phase = false;
+//                }
+//                if (period != period_) {
+//                    period_ = period;
+//                    phase_increment_ = 0xffffffff / period_;
+//                }
+//            }
+//            sync_counter_ = 0;
+//        }
+//        if (reset_phase) {
+//            phase_ = reset_phase_;
+//        }
     }
     
     int16_t Lfo::ComputeSampleSine() {

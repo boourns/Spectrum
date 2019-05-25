@@ -34,6 +34,12 @@ enum {
     PlaitsParamRightSource = 13,
     PlaitsParamPan = 14,
     PlaitsParamPanSpread = 15,
+    PlaitsParamLfoShape = 16,
+    PlaitsParamLfoRate = 17,
+    PlaitsParamLfoAmountFM = 18,
+    PlaitsParamLfoAmountHarmonics = 19,
+    PlaitsParamLfoAmountTimbre = 20,
+    PlaitsParamLfoAmountMorph = 21,
     PlaitsMaxParameters
 };
 
@@ -94,6 +100,7 @@ public:
         void clear() {
             modulations.trigger = 0.0f;
             state = NoteStateUnused;
+            plaitsFramesIndex = kAudioBlockSize;
         }
         
         // linked list management
@@ -145,6 +152,9 @@ public:
             
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
+                    modulations.frequency_patched = true;
+                    patch.frequency_modulation_amount = 1.0f;
+                    modulations.frequency = kernel->lfoOutput * 100.0f;
                     voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                 }
@@ -171,6 +181,8 @@ public:
             voice.kernel = this;
             voice.Init();
         }
+        lfoParameters[2] = lfoParameters[3] = 32768;
+        
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -278,6 +290,40 @@ public:
             case PlaitsParamPanSpread:
                 panSpread = clamp(value, 0.0f, 1.0f);
                 break;
+                
+            case PlaitsParamLfoShape: {
+                uint16_t newShape = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newShape != lfoParameters[1]) {
+                    lfoParameters[1] = newShape;
+                    lfo.Configure(lfoParameters);
+                }
+                break;
+            }
+                
+            case PlaitsParamLfoRate: {
+                uint16_t newRate = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newRate != lfoParameters[0]) {
+                    lfoParameters[0] = newRate;
+                    lfo.Configure(lfoParameters);
+                }
+                break;
+            }
+        
+            case PlaitsParamLfoAmountFM:
+                lfoAmountFM = clamp(value, 0.0f, 120.0f);
+                break;
+        
+            case PlaitsParamLfoAmountHarmonics:
+                lfoAmountHarmonics = clamp(value, 0.0f, 1.0f);
+                break;
+        
+            case PlaitsParamLfoAmountTimbre:
+                lfoAmountTimbre = clamp(value, 0.0f, 1.0f);
+                break;
+
+            case PlaitsParamLfoAmountMorph:
+                lfoAmountMorph = clamp(value, 0.0f, 1.0f);
+                break;
         }
     }
     
@@ -324,6 +370,26 @@ public:
                 
             case PlaitsParamPanSpread:
                 return panSpread;
+                
+            case PlaitsParamLfoRate: {
+                float result = ((float) lfoParameters[0]) / (float) UINT16_MAX;
+                return result;
+            }
+                
+            case PlaitsParamLfoShape:
+                return ((float) lfoParameters[1]) / (float) UINT16_MAX;
+                
+            case PlaitsParamLfoAmountFM:
+                return lfoAmountFM;
+                
+            case PlaitsParamLfoAmountHarmonics:
+                return lfoAmountHarmonics;
+                
+            case PlaitsParamLfoAmountTimbre:
+                return lfoAmountTimbre;
+                
+            case PlaitsParamLfoAmountMorph:
+                return lfoAmountMorph;
                 
             default:
                 return 0.0f;
@@ -424,21 +490,30 @@ public:
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
         
         int playingNotes = 0;
-        for (int i = 0; i < activePolyphony; i++) {
-            // TODO bring 32-sample frame processing back here so we can update LFO, update env, every 32 samples
+        while (frameCount > 0) {
+            int frames = (frameCount > kAudioBlockSize) ? kAudioBlockSize : frameCount;
             
-            if (voices[i].state != NoteStateUnused) {
-                playingNotes++;
+            lfoOutput = ((float) lfo.Process(frameCount)) / INT16_MAX;
+            
+            for (int i = 0; i < activePolyphony; i++) {
+                // TODO bring 32-sample frame processing back here so we can update LFO, update env, every 32 samples
                 
-                voices[i].run(frameCount, outL, outR);
+                if (voices[i].state != NoteStateUnused) {
+                    playingNotes++;
+                    
+                    voices[i].run(frames, outL, outR);
+                }
             }
-        }
-        
-        if (playingNotes > 0) {
-            for (int i = 0; i < frameCount; i++) {
-                outL[i] *= gainCoefficient * volume;
-                outR[i] *= gainCoefficient * volume;
+            
+            if (playingNotes > 0) {
+                for (int i = 0; i < frames; i++) {
+                    outL[i] *= gainCoefficient * volume;
+                    outR[i] *= gainCoefficient * volume;
+                }
             }
+            outL += frames;
+            outR += frames;
+            frameCount -= frames;
         }
     }
     
@@ -480,6 +555,12 @@ public:
     plaits::Patch patch;
     
     peaks::Lfo lfo;
+    uint16_t lfoParameters[4];
+    float lfoOutput;
+    float lfoAmountFM;
+    float lfoAmountHarmonics;
+    float lfoAmountTimbre;
+    float lfoAmountMorph;
     
     int stolenVoice = 0;
     bool lastPanSpreadWasNegative = 0;

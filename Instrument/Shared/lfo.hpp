@@ -117,7 +117,8 @@ namespace peaks {
         ~Lfo() { }
         
         void Init();
-        void Process(const GateFlags* gate_flags, int16_t* out, size_t size);
+        int16_t Process(size_t size);
+        void Trigger();
         
         inline void set_rate(uint16_t rate) {
             rate_ = rate;
