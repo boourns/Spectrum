@@ -145,6 +145,26 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameter *lfoAmountFM = [AUParameterTree createParameterWithIdentifier:@"lfoAmountFM" name:@"FM Amount"
+                                                                   address:PlaitsParamLfoAmountFM
+                                                                       min:0.0 max:120.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoAmountHarmonics = [AUParameterTree createParameterWithIdentifier:@"lfoAmountHarmonics" name:@"Harmonics Amount"
+                                                                      address:PlaitsParamLfoAmountHarmonics
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoAmountTimbre = [AUParameterTree createParameterWithIdentifier:@"lfoAmountTimbre" name:@"Timbre Amount"
+                                                                      address:PlaitsParamLfoAmountTimbre
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoAmountMorph = [AUParameterTree createParameterWithIdentifier:@"lfoAmountMorph" name:@"Morph Amount"
+                                                                      address:PlaitsParamLfoAmountMorph
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
     
     AUParameterGroup *primaryGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, detuneParam, harmonicsParam, timbreParam, morphParam]];
     
@@ -155,10 +175,11 @@
     AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
     
     AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape]];
+    AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoModulation" name:@"LFO Modulation" children:@[lfoAmountFM, lfoAmountHarmonics, lfoAmountTimbre, lfoAmountMorph]];
     
     AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[primaryGroup, lpgGroup]];
 
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
 
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup, outGroup]];
     

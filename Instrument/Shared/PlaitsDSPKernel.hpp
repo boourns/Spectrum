@@ -152,9 +152,11 @@ public:
             
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
-                    modulations.frequency_patched = true;
-                    patch.frequency_modulation_amount = 1.0f;
-                    modulations.frequency = kernel->lfoOutput * 100.0f;
+                    modulations.frequency = kernel->lfoOutput * kernel->lfoAmountFM;
+                    modulations.harmonics = kernel->lfoOutput * kernel->lfoAmountHarmonics;
+                    modulations.timbre = kernel->lfoOutput * kernel->lfoAmountTimbre;
+                    modulations.morph = kernel->lfoOutput * kernel->lfoAmountMorph;
+                    
                     voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                 }
@@ -195,9 +197,9 @@ public:
         patch.harmonics = 0.3f;
         patch.timbre = 0.7f;
         patch.morph = 0.7f;
-        patch.frequency_modulation_amount = 0.0f;
-        patch.timbre_modulation_amount = 0.0f;
-        patch.morph_modulation_amount = 0.0f;
+        patch.frequency_modulation_amount = 1.0f;
+        patch.timbre_modulation_amount = 1.0f;
+        patch.morph_modulation_amount = 1.0f;
         patch.decay = 0.1f;
         patch.lpg_colour = 0.0f;
         
@@ -208,9 +210,9 @@ public:
         modulations.morph = 0.0;
         modulations.level = 0.0f;
         modulations.trigger = 0.0f;
-        modulations.frequency_patched = false;
-        modulations.timbre_patched = false;
-        modulations.morph_patched = false;
+        modulations.frequency_patched = true;
+        modulations.timbre_patched = true;
+        modulations.morph_patched = true;
         modulations.trigger_patched = true;
         modulations.level_patched = false;
     }
