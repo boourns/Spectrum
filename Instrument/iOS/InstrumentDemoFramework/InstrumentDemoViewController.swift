@@ -22,16 +22,42 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
             }
         }
     }
-    
-    var parameterObserverToken: AUParameterObserverToken?
-    let stack = UIStackView()
     var params: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
+    var parameterObserverToken: AUParameterObserverToken?
+    
+    let containerView = UIView()
+    let navigationView = UIStackView()
+    var pages: [(name: String, view: UIView)] = []
     
     public override func loadView() {
         super.loadView()
+        view.addSubview(containerView)
+        view.addSubview(navigationView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        navigationView.translatesAutoresizingMaskIntoConstraints = false
+        
+        navigationView.axis = .horizontal
+        navigationView.distribution = .fillEqually
+        
+        let constraints = [
+            containerView.topAnchor.constraint(equalTo: view.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: navigationView.topAnchor),
+            navigationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+       //     navigationView.heightAnchor.constraint(equalToConstant: 40.0)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func viewForPage(group: AUParameterGroup) -> UIStackView {
+        let stack = UIStackView()
+        
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        view.addSubview(stack)
+        containerView.addSubview(stack)
         stack.translatesAutoresizingMaskIntoConstraints = false
         
         let constraints = [
@@ -41,6 +67,14 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         ]
         
         NSLayoutConstraint.activate(constraints)
+        
+        group.children.forEach { group in
+            guard let group = group as? AUParameterGroup else { return }
+            let groupStack = viewForGroup(group: group)
+            stack.addArrangedSubview(groupStack)
+        }
+        
+        return stack
     }
     
     public override func viewDidLoad() {
@@ -82,9 +116,21 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         
         paramTree.children.forEach { group in
             guard let group = group as? AUParameterGroup else { return }
-            let groupStack = viewForGroup(group: group)
-            stack.addArrangedSubview(groupStack)
+            let pageView = viewForPage(group: group)
+            pages.append((name: group.displayName, view: pageView))
         }
+        
+        pages.enumerated().forEach { index, page in
+            let button = UIButton()
+            button.setTitle(page.name, for: .normal)
+            button.setTitleColor(UIColor.black, for: .normal)
+            button.addControlEvent(.touchUpInside) { [weak self] in
+                self?.selectPage(index)
+            }
+            navigationView.addArrangedSubview(button)
+        }
+        
+        selectPage(0)
         
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let this = self, let uiParam = this.params[address] else { return }
@@ -96,5 +142,11 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     
     func update(param: AUParameter, view: ParameterView) {
         view.displayValue = param.value
+    }
+    
+    func selectPage(_ selectedIndex: Int) {
+        pages.enumerated().forEach { index, page in
+            page.view.isHidden = (selectedIndex != index)
+        }
     }
 }

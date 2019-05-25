@@ -423,8 +423,6 @@ public:
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
         
-        
-        
         int playingNotes = 0;
         for (int i = 0; i < activePolyphony; i++) {
             // TODO bring 32-sample frame processing back here so we can update LFO, update env, every 32 samples

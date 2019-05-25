@@ -390,6 +390,7 @@
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
 		E22AFB0922989EC300679F99 /* ModulationEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB0722989EC300679F99 /* ModulationEngine.cpp */; };
 		E22AFB0A22989EC300679F99 /* ModulationEngine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB0822989EC300679F99 /* ModulationEngine.hpp */; };
+		E22AFB0B2298DB8300679F99 /* lfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFAFA2298795F00679F99 /* lfo.cpp */; };
 		E27AD077229395240003C69C /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
@@ -2133,6 +2134,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E22AFB0B2298DB8300679F99 /* lfo.cpp in Sources */,
 				E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */,
 				E2154AF8229249AA00CEED2E /* bass_drum_engine.cc in Sources */,
 				E2254422228F9FD300D72092 /* sam_speech_synth.cc in Sources */,
