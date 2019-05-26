@@ -44,6 +44,7 @@ void MultistageEnvelope::Init() {
   start_value_ = 0;
   value_ = 0;
   hard_reset_ = false;
+    gate_high = false;
 }
     
     void MultistageEnvelope::TriggerHigh() {
@@ -52,6 +53,7 @@ void MultistageEnvelope::Init() {
         : value_;
         segment_ = 0;
         phase_ = 0;
+        gate_high = true;
     }
     
     void MultistageEnvelope::TriggerLow() {
@@ -60,10 +62,11 @@ void MultistageEnvelope::Init() {
             segment_ = sustain_point_;
             phase_ = 0;
         }
+        gate_high = false;
     }
 
 int16_t MultistageEnvelope::Process(size_t size) {
-    int16_t out;
+    int16_t out = 0;
     
   while (size--) {
      if (phase_ < phase_increment_) {

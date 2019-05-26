@@ -17,7 +17,7 @@
 const double kTwoPi = 2.0 * M_PI;
 const size_t kAudioBlockSize = 24;
 const size_t kPolyphony = 8;
-
+ 
 enum {
     PlaitsParamTimbre = 0,
     PlaitsParamHarmonics = 1,
@@ -43,6 +43,10 @@ enum {
     PlaitsParamLfoAmountMorph = 21,
     PlaitsParamPitchBendRange = 22,
     PlaitsParamAmpSource = 23,
+    PlaitsParamEnvAttack = 24,
+    PlaitsParamEnvDecay = 25,
+    PlaitsParamEnvSustain = 26,
+    PlaitsParamEnvRelease = 27,
     PlaitsMaxParameters
 };
 
@@ -88,6 +92,9 @@ public:
         plaits::Voice::Frame frames[kAudioBlockSize];
         size_t plaitsFramesIndex;
         
+        peaks::MultistageEnvelope envelope;
+        float envelopeValue;
+        
         plaits::Voice *voice;
         plaits::Modulations modulations;
         plaits::Patch patch;
@@ -100,10 +107,13 @@ public:
             stmlib::BufferAllocator allocator(ram_block, 16384);
             voice->Init(&allocator);
             plaitsFramesIndex = kAudioBlockSize;
+            envelope.Init();
         }
         
         void clear() {
             modulations.trigger = 0.0f;
+            envelopeValue = 0;
+            envelope.TriggerLow();
             state = NoteStateUnused;
             plaitsFramesIndex = kAudioBlockSize;
         }
@@ -111,12 +121,15 @@ public:
         // linked list management
         void release() {
             modulations.trigger = 0.0f;
+            envelope.TriggerLow();
+
             state = NoteStateReleasing;
         }
         
         void add() {
             if (state == NoteStateUnused) {
                 modulations.trigger = 1.0f;
+                envelope.TriggerHigh();
             } else {
                 delayed_trigger = true;
             }
@@ -161,6 +174,8 @@ public:
             
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
+                    envelopeValue = ((float) envelope.Process(kAudioBlockSize)) / (float) INT16_MAX;
+
                     modulations.frequency = kernel->bendAmount + ((float) kernel->pitch) + kernel->detune + (kernel->lfoOutput * kernel->lfoAmountFM);
                     modulations.harmonics = kernel->lfoOutput * kernel->lfoAmountHarmonics;
                     modulations.timbre = kernel->lfoOutput * kernel->lfoAmountTimbre;
@@ -168,18 +183,24 @@ public:
                     
                     voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
+                    
                     if (delayed_trigger) {
                         delayed_trigger = false;
                         modulations.trigger = 1.0f;
+                        envelope.TriggerHigh();
                     }
                 }
                 
                 out = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
                 aux = ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
                 
-                *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
-                *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
-                
+                if (kernel->ampSource == 1) {
+                    *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain * envelopeValue;
+                    *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain * envelopeValue;
+                } else {
+                    *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
+                    *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
+                }
                 plaitsFramesIndex++;
                 framesRemaining--;
             }
@@ -197,7 +218,7 @@ public:
             voice.Init();
         }
         lfoParameters[2] = lfoParameters[3] = 32768;
-        
+        envParameters[2] = UINT16_MAX;
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -368,6 +389,50 @@ public:
                 }
                 break;
             }
+            
+            case PlaitsParamEnvAttack: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[0]) {
+                    envParameters[0] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].envelope.Configure(envParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamEnvDecay: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[1]) {
+                    envParameters[1] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].envelope.Configure(envParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamEnvSustain: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[2]) {
+                    envParameters[2] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].envelope.Configure(envParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamEnvRelease: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[3]) {
+                    envParameters[3] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].envelope.Configure(envParameters);
+                    }
+                }
+                break;
+            }
         }
     }
     
@@ -447,6 +512,17 @@ public:
             case PlaitsParamAmpSource:
                 return (float) ampSource;
                 
+            case PlaitsParamEnvAttack:
+                return ((float) envParameters[0]) / (float) UINT16_MAX;
+           
+            case PlaitsParamEnvDecay:
+                return ((float) envParameters[1]) / (float) UINT16_MAX;
+                
+            case PlaitsParamEnvSustain:
+                return ((float) envParameters[2]) / (float) UINT16_MAX;
+                
+            case PlaitsParamEnvRelease:
+                return ((float) envParameters[3]) / (float) UINT16_MAX;
             default:
                 return 0.0f;
         }
@@ -617,6 +693,8 @@ public:
     
     peaks::Lfo lfo;
     uint16_t lfoParameters[4];
+    uint16_t envParameters[4];
+    
     float lfoOutput;
     float lfoAmountFM;
     float lfoAmountHarmonics;
