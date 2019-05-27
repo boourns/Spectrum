@@ -90,20 +90,31 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     func viewForGroup(group: AUParameterGroup) -> UIStackView {
         let groupStack = UIStackView()
         groupStack.axis = .vertical
-        groupStack.spacing = 8.0
+        groupStack.spacing = 16.0
         
         group.allParameters.forEach { param in
-            let paramView = ParameterView(param: param)
-            
+            let paramView = viewForParam(param)
             groupStack.addArrangedSubview(paramView)
-            paramView.slider.addControlEvent(.valueChanged) {
-                param.value = paramView.slider.value
-            }
             
             params[param.address] = (param, paramView)
             update(param: param, view: paramView)
         }
         return groupStack
+    }
+    
+    func viewForParam(_ param: AUParameter) -> ParameterView {
+        if param.valueStrings != nil {
+            let paramView = ParameterStringView(param: param)
+            paramView.delegate = self
+            return paramView
+        } else {
+            let paramView = ParameterSliderView(param: param)
+            
+            paramView.slider.addControlEvent(.valueChanged) {
+                param.value = paramView.slider.value
+            }
+            return paramView
+        }
     }
     
     /*
@@ -141,12 +152,18 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     }
     
     func update(param: AUParameter, view: ParameterView) {
-        view.displayValue = param.value
+        view.value = param.value
     }
     
     func selectPage(_ selectedIndex: Int) {
         pages.enumerated().forEach { index, page in
             page.view.isHidden = (selectedIndex != index)
         }
+    }
+}
+
+extension InstrumentDemoViewController: ParameterStringViewDelegate {
+    func parameterStringView(didUpdate parameterView: ParameterStringView) {
+        parameterView.param.value = parameterView.value
     }
 }

@@ -392,7 +392,10 @@
 		E22AFB0B2298DB8300679F99 /* lfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFAFA2298795F00679F99 /* lfo.cpp */; };
 		E22AFB0E2299D33E00679F99 /* multistage_envelope.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB0C2299D33D00679F99 /* multistage_envelope.h */; };
 		E22AFB0F2299D33E00679F99 /* multistage_envelope.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */; };
-		E27AD077229395240003C69C /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterView.swift */; };
+		E22AFB12229C42C600679F99 /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB11229C42C600679F99 /* ParameterView.swift */; };
+		E22AFB14229C4AA100679F99 /* ParameterStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB13229C4AA100679F99 /* ParameterStringView.swift */; };
+		E22AFB16229C5A2D00679F99 /* UIImage+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */; };
+		E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterSliderView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -799,7 +802,10 @@
 		E22AFB0822989EC300679F99 /* ModulationEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ModulationEngine.hpp; sourceTree = "<group>"; };
 		E22AFB0C2299D33D00679F99 /* multistage_envelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multistage_envelope.h; sourceTree = "<group>"; };
 		E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = multistage_envelope.cc; sourceTree = "<group>"; };
-		E27AD076229395240003C69C /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
+		E22AFB11229C42C600679F99 /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
+		E22AFB13229C4AA100679F99 /* ParameterStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterStringView.swift; sourceTree = "<group>"; };
+		E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extensions.swift"; sourceTree = "<group>"; };
+		E27AD076229395240003C69C /* ParameterSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSliderView.swift; sourceTree = "<group>"; };
 		E2CA00C4228FA73F0048AD74 /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1007,10 +1013,8 @@
 		92A10C8A1B9517A50081EA80 /* InstrumentDemoFramework */ = {
 			isa = PBXGroup;
 			children = (
+				E22AFB10229C415E00679F99 /* UI */,
 				B5234C811CA0963600902296 /* Shared */,
-				92A10C921B9517A50081EA80 /* InstrumentDemoViewController.swift */,
-				E2268B102294C3650061A753 /* ActionKit.swift */,
-				E27AD076229395240003C69C /* ParameterView.swift */,
 				92A10C911B9517A50081EA80 /* InstrumentDemoFramework.h */,
 				92A10C8E1B9517A50081EA80 /* Info.plist */,
 			);
@@ -1511,6 +1515,19 @@
 				E22AFB04229881F900679F99 /* resources.cc */,
 			);
 			path = peaks;
+			sourceTree = "<group>";
+		};
+		E22AFB10229C415E00679F99 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				92A10C921B9517A50081EA80 /* InstrumentDemoViewController.swift */,
+				E2268B102294C3650061A753 /* ActionKit.swift */,
+				E27AD076229395240003C69C /* ParameterSliderView.swift */,
+				E22AFB11229C42C600679F99 /* ParameterView.swift */,
+				E22AFB13229C4AA100679F99 /* ParameterStringView.swift */,
+				E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2154,6 +2171,7 @@
 				E225447C228F9FD300D72092 /* particle_engine.cc in Sources */,
 				E2154ABD229249AA00CEED2E /* naive_speech_synth.cc in Sources */,
 				E2154AB8229249AA00CEED2E /* voice.cc in Sources */,
+				E22AFB16229C5A2D00679F99 /* UIImage+extensions.swift in Sources */,
 				E2154AB9229249AA00CEED2E /* lpc_speech_synth_phonemes.cc in Sources */,
 				E2154AFF229249AA00CEED2E /* snare_drum_engine.cc in Sources */,
 				E2154ABB229249AA00CEED2E /* lpc_speech_synth_controller.cc in Sources */,
@@ -2173,6 +2191,8 @@
 				E2254484228F9FD300D72092 /* chord_engine.cc in Sources */,
 				92A10D181B95291B0081EA80 /* DSPKernel.mm in Sources */,
 				E22AFB0F2299D33E00679F99 /* multistage_envelope.cc in Sources */,
+				E22AFB12229C42C600679F99 /* ParameterView.swift in Sources */,
+				E22AFB14229C4AA100679F99 /* ParameterStringView.swift in Sources */,
 				E2254478228F9FD300D72092 /* swarm_engine.cc in Sources */,
 				E22544A2228F9FD300D72092 /* snare_drum_engine.cc in Sources */,
 				92A10D141B9528B60081EA80 /* InstrumentDemoViewController.swift in Sources */,
@@ -2202,7 +2222,7 @@
 				E22543FC228F9FD300D72092 /* resources.cc in Sources */,
 				E2154AD4229249AA00CEED2E /* string.cc in Sources */,
 				E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */,
-				E27AD077229395240003C69C /* ParameterView.swift in Sources */,
+				E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */,
 				E2254498228F9FD300D72092 /* speech_engine.cc in Sources */,
 				E2254482228F9FD300D72092 /* hi_hat_engine.cc in Sources */,
 				B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */,

@@ -17,7 +17,7 @@
 const double kTwoPi = 2.0 * M_PI;
 const size_t kAudioBlockSize = 24;
 const size_t kPolyphony = 8;
- 
+
 enum {
     PlaitsParamTimbre = 0,
     PlaitsParamHarmonics = 1,
@@ -97,7 +97,6 @@ public:
         
         plaits::Voice *voice;
         plaits::Modulations modulations;
-        plaits::Patch patch;
         float panSpread = 0;
         
         bool delayed_trigger = false;
@@ -143,10 +142,9 @@ public:
                     release();
                 }
             } else {
-                memcpy(&patch, &kernel->patch, sizeof(plaits::Patch));
                 memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
                 
-                patch.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop);
+                modulations.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
                 // TODO When stealing don't take new pan spread value
                 panSpread = kernel->nextPanSpread();
 
@@ -176,12 +174,13 @@ public:
                 if (plaitsFramesIndex >= kAudioBlockSize) {
                     envelopeValue = ((float) envelope.Process(kAudioBlockSize)) / (float) INT16_MAX;
 
-                    modulations.frequency = kernel->bendAmount + ((float) kernel->pitch) + kernel->detune + (kernel->lfoOutput * kernel->lfoAmountFM);
-                    modulations.harmonics = kernel->lfoOutput * kernel->lfoAmountHarmonics;
-                    modulations.timbre = kernel->lfoOutput * kernel->lfoAmountTimbre;
-                    modulations.morph = kernel->lfoOutput * kernel->lfoAmountMorph;
+                    // TODO add poly mod
+                    modulations.frequency = kernel->modulations.frequency;
+                    modulations.harmonics = kernel->modulations.harmonics;
+                    modulations.timbre = kernel->modulations.timbre;
+                    modulations.morph = kernel->modulations.morph;
                     
-                    voice->Render(patch, modulations, &frames[0], kAudioBlockSize);
+                    voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                     
                     if (delayed_trigger) {
@@ -206,7 +205,6 @@ public:
             }
         }
     };
-    
     
     // MARK: Member Functions
     
@@ -277,10 +275,12 @@ public:
                 
             case PlaitsParamPitch:
                 pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
+                patch.note = 48.0f + pitch + detune;
                 break;
                 
             case PlaitsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
+                patch.note = 48.0f + pitch + detune;
                 break;
                 
             case PlaitsParamDecay:
@@ -633,6 +633,11 @@ public:
             int frames = (frameCount > kAudioBlockSize) ? kAudioBlockSize : frameCount;
             
             lfoOutput = ((float) lfo.Process(frameCount)) / INT16_MAX;
+            
+            modulations.frequency = bendAmount + (lfoOutput * lfoAmountFM);
+            modulations.harmonics = lfoOutput * lfoAmountHarmonics;
+            modulations.timbre = lfoOutput * lfoAmountTimbre;
+            modulations.morph = lfoOutput * lfoAmountMorph;
             
             for (int i = 0; i < activePolyphony; i++) {
                 if (voices[i].state != NoteStateUnused) {
