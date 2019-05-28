@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>SpectrumAudioUnitExtension</string>
 	<key>CFBundleExecutable</key>
@@ -17,11 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.5</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>1</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -30,23 +28,25 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>InstrumentDemo</string>
+					<string>SpectrumAudioUnitExtension</string>
+					<key>factoryFunction</key>
+					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
 					<key>manufacturer</key>
-					<string>Demo</string>
+					<string>Brns</string>
 					<key>name</key>
-					<string>Demo: InstrumentDemo</string>
+					<string>Brns: SpectrumAudioUnitExtension</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
-					<string>sin3</string>
+					<string>spec</string>
 					<key>tags</key>
 					<array>
-						<string>Instruments</string>
+						<string>Synthesizer</string>
 					</array>
 					<key>type</key>
 					<string>aumu</string>
 					<key>version</key>
-					<integer>66817</integer>
+					<integer>67072</integer>
 				</dict>
 			</array>
 		</dict>

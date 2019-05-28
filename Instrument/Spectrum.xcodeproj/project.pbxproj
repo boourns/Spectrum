@@ -10,18 +10,8 @@
 		1688EA161C7BD27B0008B611 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1688EA141C7BD08F0008B611 /* Images.xcassets */; };
 		2B4A917F1C75408E00F61BDD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B4A917B1C75403100F61BDD /* AVFoundation.framework */; };
 		2B4A91801C75409B00F61BDD /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */; };
-		2B4A91821C7541AC00F61BDD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B4A917B1C75403100F61BDD /* AVFoundation.framework */; };
-		306CFC9B1C58169F0028386F /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
-		306CFCC31C582FB60028386F /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 306CFCBE1C582E0A0028386F /* SpectrumFramework.framework */; };
-		306CFCC91C5830520028386F /* SpectrumFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 306CFCBE1C582E0A0028386F /* SpectrumFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		306CFCD21C5833380028386F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
-		306CFCD31C5833420028386F /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
-		306CFCD51C5833500028386F /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
-		306CFCEB1C5842300028386F /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 306CFCBE1C582E0A0028386F /* SpectrumFramework.framework */; };
-		306CFCF11C5848320028386F /* SpectrumAppExtension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = 306CFCE61C5841E40028386F /* SpectrumAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92A10CE81B9521B00081EA80 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		92A10CE91B9521B00081EA80 /* SpectrumFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		92A10D001B9521F50081EA80 /* SpectrumAppExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92A10CF21B9521F50081EA80 /* SpectrumAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92A10D051B9527D10081EA80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C841B9517A50081EA80 /* ViewController.swift */; };
 		92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C7B1B9517A50081EA80 /* AppDelegate.swift */; };
 		92A10D081B95285A0081EA80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92A10C7D1B9517A50081EA80 /* LaunchScreen.storyboard */; };
@@ -32,7 +22,6 @@
 		92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
 		92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
 		92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
-		92A10D201B966CE30081EA80 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		B5234C851CA0966600902296 /* InstrumentDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = B5234C821CA0966600902296 /* InstrumentDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C831CA0966600902296 /* InstrumentDemo.mm */; };
 		E2154AA8229249AA00CEED2E /* PlaitsDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */; };
@@ -149,7 +138,6 @@
 		E2154B19229249AA00CEED2E /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154AA7229249AA00CEED2E /* units.cc */; };
 		E2154B4922930D1C00CEED2E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2154B4822930D1C00CEED2E /* MainInterface.storyboard */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
-		E228F8FD229313E600AD17BE /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2154B4822930D1C00CEED2E /* MainInterface.storyboard */; };
 		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
 		E22AFB0922989EC300679F99 /* ModulationEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB0722989EC300679F99 /* ModulationEngine.cpp */; };
@@ -164,43 +152,18 @@
 		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
 		E265FF16229CCF9700340255 /* SpectrumAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = E265FF15229CCF9700340255 /* SpectrumAudioUnit.m */; };
 		E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterSliderView.swift */; };
+		E2FE4828229CE02A00445B2B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2FE4826229CE02A00445B2B /* MainInterface.storyboard */; };
+		E2FE482D229CE02A00445B2B /* SpectrumAudioUnitExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2FE481F229CE02A00445B2B /* SpectrumAudioUnitExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E2FE4831229CE17A00445B2B /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		306CFCC61C5830200028386F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 306CFCAB1C582E0A0028386F;
-			remoteInfo = InstrumentDemoFrameworkOSX;
-		};
-		306CFCE81C5841F90028386F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 306CFCAB1C582E0A0028386F;
-			remoteInfo = InstrumentDemoFrameworkOSX;
-		};
-		306CFCEE1C5848070028386F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 306CFCD81C5841E40028386F;
-			remoteInfo = InstrumentDemoAppExtensionOSX;
-		};
 		92A10CE61B9521B00081EA80 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 92A10CE01B9521B00081EA80;
 			remoteInfo = InstrumentDemoFramework;
-		};
-		92A10CFE1B9521F50081EA80 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 92A10CF11B9521F50081EA80;
-			remoteInfo = InstrumentDemoAppExtension;
 		};
 		E2154B2C2292522200CEED2E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -237,29 +200,16 @@
 			remoteGlobalIDString = 438CAE5E1B50060D00EA8B00;
 			remoteInfo = ActionKitTests;
 		};
+		E2FE482B229CE02A00445B2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2FE481E229CE02A00445B2B;
+			remoteInfo = SpectrumAudioUnitExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		306CFCC81C5830470028386F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				306CFCC91C5830520028386F /* SpectrumFramework.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCF01C58481F0028386F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				306CFCF11C5848320028386F /* SpectrumAppExtension.appex in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		92A10CED1B9521B00081EA80 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -277,7 +227,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				92A10D001B9521F50081EA80 /* SpectrumAppExtension.appex in Embed App Extensions */,
+				E2FE482D229CE02A00445B2B /* SpectrumAudioUnitExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,9 +238,6 @@
 		1688EA141C7BD08F0008B611 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2B4A917B1C75403100F61BDD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
-		306CFC871C5815010028386F /* SpectrumApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpectrumApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		306CFCBE1C582E0A0028386F /* SpectrumFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpectrumFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		306CFCE61C5841E40028386F /* SpectrumAppExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAppExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E8E032C1B16387D0011624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = drumLoop.caf; sourceTree = "<group>"; };
@@ -308,7 +255,6 @@
 		92A10CA81B951C660081EA80 /* DSPKernel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		92A10CC51B9521320081EA80 /* SpectrumApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpectrumApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpectrumFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		92A10CF21B9521F50081EA80 /* SpectrumAppExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAppExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5234C821CA0966600902296 /* InstrumentDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentDemo.h; sourceTree = "<group>"; };
 		B5234C831CA0966600902296 /* InstrumentDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentDemo.mm; sourceTree = "<group>"; };
 		B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentDSPKernel.hpp; sourceTree = "<group>"; };
@@ -446,33 +392,12 @@
 		E265FF14229CCF9700340255 /* iOSSpectrumFramework-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOSSpectrumFramework-Bridging-Header.h"; sourceTree = "<group>"; };
 		E265FF15229CCF9700340255 /* SpectrumAudioUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpectrumAudioUnit.m; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSliderView.swift; sourceTree = "<group>"; };
+		E2FE481F229CE02A00445B2B /* SpectrumAudioUnitExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAudioUnitExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2FE4827229CE02A00445B2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		E2FE4829229CE02A00445B2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		306CFC841C5815010028386F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				306CFCC31C582FB60028386F /* SpectrumFramework.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCB11C582E0A0028386F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2B4A91821C7541AC00F61BDD /* AVFoundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCDD1C5841E40028386F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				306CFCEB1C5842300028386F /* SpectrumFramework.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		92A10CC21B9521320081EA80 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -490,11 +415,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		92A10CEF1B9521F50081EA80 /* Frameworks */ = {
+		E2FE481C229CE02A00445B2B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92A10D201B966CE30081EA80 /* SpectrumFramework.framework in Frameworks */,
+				E2FE4831229CE17A00445B2B /* SpectrumFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,6 +465,7 @@
 				92A10CA51B951C660081EA80 /* Shared Framework Code */,
 				91236D861B08F64600734C5E /* SimplePlayEngine */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
+				E2FE4820229CE02A00445B2B /* SpectrumAudioUnitExtension */,
 				91D3DA171B023C1E008FFFBB /* Products */,
 				E2154B322292523600CEED2E /* Frameworks */,
 			);
@@ -550,10 +476,7 @@
 			children = (
 				92A10CC51B9521320081EA80 /* SpectrumApp.app */,
 				92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */,
-				92A10CF21B9521F50081EA80 /* SpectrumAppExtension.appex */,
-				306CFC871C5815010028386F /* SpectrumApp.app */,
-				306CFCBE1C582E0A0028386F /* SpectrumFramework.framework */,
-				306CFCE61C5841E40028386F /* SpectrumAppExtension.appex */,
+				E2FE481F229CE02A00445B2B /* SpectrumAudioUnitExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -885,18 +808,18 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		E2FE4820229CE02A00445B2B /* SpectrumAudioUnitExtension */ = {
+			isa = PBXGroup;
+			children = (
+				E2FE4826229CE02A00445B2B /* MainInterface.storyboard */,
+				E2FE4829229CE02A00445B2B /* Info.plist */,
+			);
+			path = SpectrumAudioUnitExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		306CFCB41C582E0A0028386F /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				306CFCD21C5833380028386F /* DSPKernel.hpp in Headers */,
-				306CFCD51C5833500028386F /* BufferedAudioBus.hpp in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		92A10CDE1B9521B00081EA80 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -994,63 +917,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		306CFC861C5815010028386F /* OSXSpectrumApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 306CFC981C5815010028386F /* Build configuration list for PBXNativeTarget "OSXSpectrumApp" */;
-			buildPhases = (
-				306CFC831C5815010028386F /* Sources */,
-				306CFC841C5815010028386F /* Frameworks */,
-				306CFC851C5815010028386F /* Resources */,
-				306CFCC81C5830470028386F /* CopyFiles */,
-				306CFCF01C58481F0028386F /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				306CFCEF1C5848070028386F /* PBXTargetDependency */,
-				306CFCC71C5830200028386F /* PBXTargetDependency */,
-			);
-			name = OSXSpectrumApp;
-			productName = InstrumentDemoAppOSX;
-			productReference = 306CFC871C5815010028386F /* SpectrumApp.app */;
-			productType = "com.apple.product-type.application";
-		};
-		306CFCAB1C582E0A0028386F /* OSXSpectrumFramework */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 306CFCBB1C582E0A0028386F /* Build configuration list for PBXNativeTarget "OSXSpectrumFramework" */;
-			buildPhases = (
-				306CFCAC1C582E0A0028386F /* Sources */,
-				306CFCB11C582E0A0028386F /* Frameworks */,
-				306CFCB41C582E0A0028386F /* Headers */,
-				306CFCB91C582E0A0028386F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OSXSpectrumFramework;
-			productName = FilterDemoFrameworkOSX;
-			productReference = 306CFCBE1C582E0A0028386F /* SpectrumFramework.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		306CFCD81C5841E40028386F /* OSXSpectrumAppExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 306CFCE31C5841E40028386F /* Build configuration list for PBXNativeTarget "OSXSpectrumAppExtension" */;
-			buildPhases = (
-				306CFCDB1C5841E40028386F /* Sources */,
-				306CFCDD1C5841E40028386F /* Frameworks */,
-				306CFCE11C5841E40028386F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				306CFCE91C5841F90028386F /* PBXTargetDependency */,
-			);
-			name = OSXSpectrumAppExtension;
-			productName = FilterDemoAppExtensionOSX;
-			productReference = 306CFCE61C5841E40028386F /* SpectrumAppExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		92A10CC41B9521320081EA80 /* iOSSpectrumApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 92A10CD91B9521320081EA80 /* Build configuration list for PBXNativeTarget "iOSSpectrumApp" */;
@@ -1065,7 +931,7 @@
 			);
 			dependencies = (
 				92A10CE71B9521B00081EA80 /* PBXTargetDependency */,
-				92A10CFF1B9521F50081EA80 /* PBXTargetDependency */,
+				E2FE482C229CE02A00445B2B /* PBXTargetDependency */,
 			);
 			name = iOSSpectrumApp;
 			productName = InstrumentDemoApp;
@@ -1090,21 +956,21 @@
 			productReference = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		92A10CF11B9521F50081EA80 /* iOSSpectrumAppExtension */ = {
+		E2FE481E229CE02A00445B2B /* SpectrumAudioUnitExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 92A10D011B9521F50081EA80 /* Build configuration list for PBXNativeTarget "iOSSpectrumAppExtension" */;
+			buildConfigurationList = E2FE482E229CE02A00445B2B /* Build configuration list for PBXNativeTarget "SpectrumAudioUnitExtension" */;
 			buildPhases = (
-				92A10CEE1B9521F50081EA80 /* Sources */,
-				92A10CEF1B9521F50081EA80 /* Frameworks */,
-				92A10CF01B9521F50081EA80 /* Resources */,
+				E2FE481B229CE02A00445B2B /* Sources */,
+				E2FE481C229CE02A00445B2B /* Frameworks */,
+				E2FE481D229CE02A00445B2B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = iOSSpectrumAppExtension;
-			productName = InstrumentDemoAppExtension;
-			productReference = 92A10CF21B9521F50081EA80 /* SpectrumAppExtension.appex */;
+			name = SpectrumAudioUnitExtension;
+			productName = SpectrumAudioUnitExtension;
+			productReference = E2FE481F229CE02A00445B2B /* SpectrumAudioUnitExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -1113,26 +979,9 @@
 		91D3DA0C1B023C03008FFFBB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
 				TargetAttributes = {
-					306CFC861C5815010028386F = {
-						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = YC8HZ62228;
-						SystemCapabilities = {
-							com.apple.Sandbox = {
-								enabled = 0;
-							};
-						};
-					};
-					306CFCD81C5841E40028386F = {
-						DevelopmentTeam = YC8HZ62228;
-						SystemCapabilities = {
-							com.apple.Sandbox = {
-								enabled = 1;
-							};
-						};
-					};
 					92A10CC41B9521320081EA80 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = YC8HZ62228;
@@ -1142,9 +991,10 @@
 						CreatedOnToolsVersion = 7.0;
 						ProvisioningStyle = Manual;
 					};
-					92A10CF11B9521F50081EA80 = {
-						CreatedOnToolsVersion = 7.0;
+					E2FE481E229CE02A00445B2B = {
+						CreatedOnToolsVersion = 10.2;
 						DevelopmentTeam = YC8HZ62228;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1174,10 +1024,7 @@
 			targets = (
 				92A10CC41B9521320081EA80 /* iOSSpectrumApp */,
 				92A10CE01B9521B00081EA80 /* iOSSpectrumFramework */,
-				92A10CF11B9521F50081EA80 /* iOSSpectrumAppExtension */,
-				306CFC861C5815010028386F /* OSXSpectrumApp */,
-				306CFCAB1C582E0A0028386F /* OSXSpectrumFramework */,
-				306CFCD81C5841E40028386F /* OSXSpectrumAppExtension */,
+				E2FE481E229CE02A00445B2B /* SpectrumAudioUnitExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1221,27 +1068,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		306CFC851C5815010028386F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCB91C582E0A0028386F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCE11C5841E40028386F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		92A10CC31B9521320081EA80 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1260,40 +1086,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		92A10CF01B9521F50081EA80 /* Resources */ = {
+		E2FE481D229CE02A00445B2B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E228F8FD229313E600AD17BE /* MainInterface.storyboard in Resources */,
+				E2FE4828229CE02A00445B2B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		306CFC831C5815010028386F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				306CFC9B1C58169F0028386F /* SimplePlayEngine.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCAC1C582E0A0028386F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				306CFCD31C5833420028386F /* DSPKernel.mm in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		306CFCDB1C5841E40028386F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		92A10CC11B9521320081EA80 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1358,7 +1161,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		92A10CEE1B9521F50081EA80 /* Sources */ = {
+		E2FE481B229CE02A00445B2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1368,30 +1171,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		306CFCC71C5830200028386F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 306CFCAB1C582E0A0028386F /* OSXSpectrumFramework */;
-			targetProxy = 306CFCC61C5830200028386F /* PBXContainerItemProxy */;
-		};
-		306CFCE91C5841F90028386F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 306CFCAB1C582E0A0028386F /* OSXSpectrumFramework */;
-			targetProxy = 306CFCE81C5841F90028386F /* PBXContainerItemProxy */;
-		};
-		306CFCEF1C5848070028386F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 306CFCD81C5841E40028386F /* OSXSpectrumAppExtension */;
-			targetProxy = 306CFCEE1C5848070028386F /* PBXContainerItemProxy */;
-		};
 		92A10CE71B9521B00081EA80 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 92A10CE01B9521B00081EA80 /* iOSSpectrumFramework */;
 			targetProxy = 92A10CE61B9521B00081EA80 /* PBXContainerItemProxy */;
 		};
-		92A10CFF1B9521F50081EA80 /* PBXTargetDependency */ = {
+		E2FE482C229CE02A00445B2B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 92A10CF11B9521F50081EA80 /* iOSSpectrumAppExtension */;
-			targetProxy = 92A10CFE1B9521F50081EA80 /* PBXContainerItemProxy */;
+			target = E2FE481E229CE02A00445B2B /* SpectrumAudioUnitExtension */;
+			targetProxy = E2FE482B229CE02A00445B2B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1412,333 +1200,17 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
+		E2FE4826229CE02A00445B2B /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E2FE4827229CE02A00445B2B /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		306CFC991C5815010028386F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = InstrumentOSXIcon;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = YC8HZ62228;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = OSX/InstrumentDemoApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoAppOSX";
-				PRODUCT_NAME = SpectrumApp;
-				SDKROOT = macosx;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		306CFC9A1C5815010028386F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = InstrumentOSXIcon;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = YC8HZ62228;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = OSX/InstrumentDemoApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoAppOSX";
-				PRODUCT_NAME = SpectrumApp;
-				SDKROOT = macosx;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		306CFCBC1C582E0A0028386F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_VERSION = A;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					Instrument/Shared,
-					../../Instrument/Shared,
-					../Instrument/Shared,
-				);
-				INFOPLIST_FILE = OSX/InstrumentDemoFramework/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoFramework";
-				PRODUCT_NAME = SpectrumFramework;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		306CFCBD1C582E0A0028386F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_VERSION = A;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					Instrument/Shared,
-					../../Instrument/Shared,
-					../Instrument/Shared,
-				);
-				INFOPLIST_FILE = OSX/InstrumentDemoFramework/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoFramework";
-				PRODUCT_NAME = SpectrumFramework;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		306CFCE41C5841E40028386F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = OSX/InstrumentDemoAppExtension/InstrumentDemoAppExtensionOSX.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = YC8HZ62228;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = OSX/InstrumentDemoAppExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoAppOSX.InstrumentDemoAppExtensionOSX";
-				PRODUCT_NAME = SpectrumAppExtension;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		306CFCE51C5841E40028386F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = OSX/InstrumentDemoAppExtension/InstrumentDemoAppExtensionOSX.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = YC8HZ62228;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = OSX/InstrumentDemoAppExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.InstrumentDemoAppOSX.InstrumentDemoAppExtensionOSX";
-				PRODUCT_NAME = SpectrumAppExtension;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		91D3DA101B023C03008FFFBB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2021,7 +1493,7 @@
 					../Instrument/Shared,
 					Instrument/Shared,
 				);
-				INFOPLIST_FILE = iOS/InstrumentDemoFramework/Info.plist;
+				INFOPLIST_FILE = iOS/SpectrumFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2041,98 +1513,86 @@
 			};
 			name = Release;
 		};
-		92A10D021B9521F50081EA80 /* Debug */ = {
+		E2FE482F229CE02A00445B2B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YC8HZ62228;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/SpectrumAudioUnitExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				INFOPLIST_FILE = SpectrumAudioUnitExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.spectrumAudioUnitExtension;
-				PRODUCT_NAME = SpectrumAppExtension;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.SpectrumAudioUnitExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "SpectrumAudioUnitExtension/SpectrumAudioUnitExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		92A10D031B9521F50081EA80 /* Release */ = {
+		E2FE4830229CE02A00445B2B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YC8HZ62228;
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/InstrumentDemoAppExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				INFOPLIST_FILE = SpectrumAudioUnitExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.spectrumAudioUnitExtension;
-				PRODUCT_NAME = SpectrumAppExtension;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.SpectrumAudioUnitExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OBJC_BRIDGING_HEADER = "SpectrumAudioUnitExtension/SpectrumAudioUnitExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2142,33 +1602,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		306CFC981C5815010028386F /* Build configuration list for PBXNativeTarget "OSXSpectrumApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				306CFC991C5815010028386F /* Debug */,
-				306CFC9A1C5815010028386F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		306CFCBB1C582E0A0028386F /* Build configuration list for PBXNativeTarget "OSXSpectrumFramework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				306CFCBC1C582E0A0028386F /* Debug */,
-				306CFCBD1C582E0A0028386F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		306CFCE31C5841E40028386F /* Build configuration list for PBXNativeTarget "OSXSpectrumAppExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				306CFCE41C5841E40028386F /* Debug */,
-				306CFCE51C5841E40028386F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "Spectrum" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2196,11 +1629,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		92A10D011B9521F50081EA80 /* Build configuration list for PBXNativeTarget "iOSSpectrumAppExtension" */ = {
+		E2FE482E229CE02A00445B2B /* Build configuration list for PBXNativeTarget "SpectrumAudioUnitExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				92A10D021B9521F50081EA80 /* Debug */,
-				92A10D031B9521F50081EA80 /* Release */,
+				E2FE482F229CE02A00445B2B /* Debug */,
+				E2FE4830229CE02A00445B2B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

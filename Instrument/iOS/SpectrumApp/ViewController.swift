@@ -49,8 +49,8 @@ class ViewController: UIViewController {
         // Ensure that you update the AudioComponentDescription for your AudioUnit type, manufacturer and creator type.
         var componentDescription = AudioComponentDescription()
         componentDescription.componentType = kAudioUnitType_MusicDevice
-        componentDescription.componentSubType = 0x73696E33 /*'sin3'*/
-        componentDescription.componentManufacturer = 0x44656d6f /*'Demo'*/
+        componentDescription.componentSubType = fourCC("spec") /*'sin3'*/
+        componentDescription.componentManufacturer = fourCC("Brns") /*'Demo'*/
         componentDescription.componentFlags = 0
         componentDescription.componentFlagsMask = 0
 		
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
             `InstrumentDemoViewController` from that.
         */
         let builtInPlugInsURL = Bundle.main.builtInPlugInsURL!
-        let pluginURL = builtInPlugInsURL.appendingPathComponent("InstrumentDemoAppExtension.appex")
+        let pluginURL = builtInPlugInsURL.appendingPathComponent("SpectrumAudioUnitExtension.appex")
         let appExtensionBundle = Bundle(url: pluginURL)
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
         filterDemoViewController = storyboard.instantiateInitialViewController() as? InstrumentDemoViewController
@@ -115,4 +115,15 @@ class ViewController: UIViewController {
     guard let state = state, let unit = playEngine.testAudioUnit else { return }
     unit.fullState = state
   }
+    
+    public func fourCC(_ string: String) -> UInt32 {
+        let utf8 = string.utf8
+        precondition(utf8.count == 4, "Must be a 4 char string")
+        var out: UInt32 = 0
+        for char in utf8 {
+            out <<= 8
+            out |= UInt32(char)
+        }
+        return out
+    }
 }
