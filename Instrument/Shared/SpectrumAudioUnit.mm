@@ -261,16 +261,11 @@
     _parameterTree.implementorStringFromValueCallback = ^(AUParameter *param, const AUValue *__nullable valuePtr) {
         AUValue value = valuePtr == nil ? param.value : *valuePtr;
         
-        switch (param.address) {
-            case PlaitsParamTimbre:
-            case PlaitsParamHarmonics:
-            case PlaitsParamMorph:
-            case PlaitsParamDecay:
-            case PlaitsParamDetune:
-                return [NSString stringWithFormat:@"%.1f", value];
-                
-            default:
-                return @"?"; // TODO for all params
+        if (param.valueStrings != nil) {
+            int index = round(value);
+            return param.valueStrings[index];
+        } else {
+            return [NSString stringWithFormat:@"%.1f", value];
         }
     };
     

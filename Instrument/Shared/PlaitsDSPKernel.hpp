@@ -14,7 +14,6 @@
 #import "plaits/dsp/voice.h"
 #import "lfo.hpp"
 
-const double kTwoPi = 2.0 * M_PI;
 const size_t kAudioBlockSize = 24;
 const size_t kPolyphony = 8;
 
@@ -55,25 +54,6 @@ enum {
     NoteStatePlaying = 1,
     NoteStateReleasing = 2
 };
-
-static inline double pow2(double x) {
-    return x * x;
-}
-
-static inline double pow3(double x) {
-    return x * x * x;
-}
-
-static inline double noteToHz(int noteNumber)
-{
-    return 440. * exp2((noteNumber - 69)/12.);
-}
-
-static inline double panValue(double x)
-{
-    x = clamp(x, -1., 1.);
-    return cos(M_PI_2 * (.5 * x + .5));
-}
 
 /*
  InstrumentDSPKernel
@@ -548,18 +528,33 @@ public:
     }
     
     VoiceState *freeVoice() {
-        for (int i = 0; i < activePolyphony; i++) {
-            if (voices[i].state == NoteStateUnused) {
-                return &voices[i];
+        // Choose which voice for the new note.
+        // Acts like a ring buffer to let latest played voices ring out for the longest.
+        
+        // first try to find an unused voice.
+        int startingPoint = nextVoice;
+        do {
+            if (voices[nextVoice].state == NoteStateUnused) {
+                nextVoice = (nextVoice + 1) % activePolyphony;
+                return &voices[nextVoice];
             }
-        }
-        for (int i = 0; i < activePolyphony; i++) {
-            if (voices[i].state == NoteStateReleasing) {
-                return &voices[i];
+            nextVoice = (nextVoice + 1) % activePolyphony;
+        } while (nextVoice != startingPoint);
+        
+        // then try to find a voice that is releasing.
+        startingPoint = nextVoice;
+        do {
+            if (voices[nextVoice].state == NoteStateReleasing) {
+                nextVoice = (nextVoice + 1) % activePolyphony;
+                return &voices[nextVoice];
             }
-        }
-        VoiceState *stolen = &voices[stolenVoice];
-        stolenVoice = (stolenVoice + 1) % activePolyphony;
+            nextVoice = (nextVoice + 1) % activePolyphony;
+        } while (nextVoice != startingPoint);
+        
+        // finally, just use the oldest voice.
+        VoiceState *stolen = &voices[nextVoice];
+        nextVoice = (nextVoice + 1) % activePolyphony;
+        
         return stolen;
     }
     
@@ -708,7 +703,8 @@ public:
     float lfoAmountTimbre;
     float lfoAmountMorph;
     
-    int stolenVoice = 0;
+    int nextVoice = 0;
+    
     bool lastPanSpreadWasNegative = 0;
     
     float slop = 0.0f;
