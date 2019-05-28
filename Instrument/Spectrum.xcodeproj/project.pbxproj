@@ -22,11 +22,10 @@
 		92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
 		92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
 		92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
-		B5234C851CA0966600902296 /* InstrumentDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = B5234C821CA0966600902296 /* InstrumentDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C831CA0966600902296 /* InstrumentDemo.mm */; };
+		B5234C851CA0966600902296 /* SpectrumAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = B5234C821CA0966600902296 /* SpectrumAudioUnit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5234C861CA0966600902296 /* SpectrumAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C831CA0966600902296 /* SpectrumAudioUnit.mm */; };
 		E2154AA8229249AA00CEED2E /* PlaitsDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */; };
 		E2154AA9229249AA00CEED2E /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2C229249AA00CEED2E /* resources.h */; };
-		E2154AAA229249AA00CEED2E /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2D229249AA00CEED2E /* makefile */; };
 		E2154AAC229249AA00CEED2E /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2F229249AA00CEED2E /* resources.cc */; };
 		E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A30229249AA00CEED2E /* pot_controller.h */; };
 		E2154AAE229249AA00CEED2E /* fx_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A33229249AA00CEED2E /* fx_engine.h */; };
@@ -245,7 +244,6 @@
 		1688EA141C7BD08F0008B611 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2B4A917B1C75403100F61BDD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
-		3E8E032C1B16387D0011624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = drumLoop.caf; sourceTree = "<group>"; };
 		92A10C7B1B9517A50081EA80 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -261,13 +259,11 @@
 		92A10CA81B951C660081EA80 /* DSPKernel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		92A10CC51B9521320081EA80 /* SpectrumApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpectrumApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpectrumFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5234C821CA0966600902296 /* InstrumentDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentDemo.h; sourceTree = "<group>"; };
-		B5234C831CA0966600902296 /* InstrumentDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentDemo.mm; sourceTree = "<group>"; };
+		B5234C821CA0966600902296 /* SpectrumAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectrumAudioUnit.h; sourceTree = "<group>"; };
+		B5234C831CA0966600902296 /* SpectrumAudioUnit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpectrumAudioUnit.mm; sourceTree = "<group>"; };
 		B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentDSPKernel.hpp; sourceTree = "<group>"; };
 		E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 		E2154A2C229249AA00CEED2E /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
-		E2154A2D229249AA00CEED2E /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
-		E2154A2E229249AA00CEED2E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		E2154A2F229249AA00CEED2E /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
 		E2154A30229249AA00CEED2E /* pot_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pot_controller.h; sourceTree = "<group>"; };
 		E2154A33229249AA00CEED2E /* fx_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fx_engine.h; sourceTree = "<group>"; };
@@ -467,7 +463,6 @@
 			children = (
 				E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */,
 				E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */,
-				3E8E032C1B16387D0011624B /* README.md */,
 				30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */,
 				92A10CA51B951C660081EA80 /* Shared Framework Code */,
 				91236D861B08F64600734C5E /* SimplePlayEngine */,
@@ -531,8 +526,8 @@
 				E2154A2B229249AA00CEED2E /* plaits */,
 				E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */,
 				E2154A8C229249AA00CEED2E /* stmlib */,
-				B5234C821CA0966600902296 /* InstrumentDemo.h */,
-				B5234C831CA0966600902296 /* InstrumentDemo.mm */,
+				B5234C821CA0966600902296 /* SpectrumAudioUnit.h */,
+				B5234C831CA0966600902296 /* SpectrumAudioUnit.mm */,
 				B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */,
 				E22AFB0722989EC300679F99 /* ModulationEngine.cpp */,
 				E22AFB0822989EC300679F99 /* ModulationEngine.hpp */,
@@ -547,8 +542,6 @@
 			isa = PBXGroup;
 			children = (
 				E2154A2C229249AA00CEED2E /* resources.h */,
-				E2154A2D229249AA00CEED2E /* makefile */,
-				E2154A2E229249AA00CEED2E /* __init__.py */,
 				E2154A2F229249AA00CEED2E /* resources.cc */,
 				E2154A30229249AA00CEED2E /* pot_controller.h */,
 				E2154A31229249AA00CEED2E /* dsp */,
@@ -876,7 +869,7 @@
 				E2154B14229249AA00CEED2E /* delay_line.h in Headers */,
 				E2154AE7229249AA00CEED2E /* modal_engine.h in Headers */,
 				E2154AC7229249AA00CEED2E /* particle.h in Headers */,
-				B5234C851CA0966600902296 /* InstrumentDemo.h in Headers */,
+				B5234C851CA0966600902296 /* SpectrumAudioUnit.h in Headers */,
 				E2154B03229249AA00CEED2E /* stream_buffer.h in Headers */,
 				E2154AE5229249AA00CEED2E /* engine.h in Headers */,
 				E2154B0A229249AA00CEED2E /* stmlib.h in Headers */,
@@ -1116,7 +1109,6 @@
 				E2154AF8229249AA00CEED2E /* bass_drum_engine.cc in Sources */,
 				E2154AF7229249AA00CEED2E /* grain_engine.cc in Sources */,
 				E2154AE0229249AA00CEED2E /* fm_engine.cc in Sources */,
-				E2154AAA229249AA00CEED2E /* makefile in Sources */,
 				E2154AD7229249AA00CEED2E /* modal_voice.cc in Sources */,
 				E2154B04229249AA00CEED2E /* random.cc in Sources */,
 				E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */,
@@ -1152,7 +1144,7 @@
 				E2154AD4229249AA00CEED2E /* string.cc in Sources */,
 				E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */,
 				E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */,
-				B5234C861CA0966600902296 /* InstrumentDemo.mm in Sources */,
+				B5234C861CA0966600902296 /* SpectrumAudioUnit.mm in Sources */,
 				E2154AAC229249AA00CEED2E /* resources.cc in Sources */,
 				E2154ABC229249AA00CEED2E /* lpc_speech_synth.cc in Sources */,
 				E2154AF3229249AA00CEED2E /* string_engine.cc in Sources */,

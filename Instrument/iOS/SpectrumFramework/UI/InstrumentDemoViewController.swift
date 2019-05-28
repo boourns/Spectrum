@@ -183,7 +183,7 @@ extension InstrumentDemoViewController: AUAudioUnitFactory {
      creates its audio unit.
      */
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-        audioUnit = try AUv3InstrumentDemo(componentDescription: componentDescription, options: [])
+        audioUnit = try SpectrumAudioUnit(componentDescription: componentDescription, options: [])
         
         return audioUnit!
     }

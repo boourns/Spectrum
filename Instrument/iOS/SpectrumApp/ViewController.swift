@@ -60,13 +60,13 @@ class ViewController: UIViewController {
 			
 			Note that this registration is local to this process.
 		*/
-        AUAudioUnit.registerSubclass(AUv3InstrumentDemo.self, as: componentDescription, name: "Demo: Local InstrumentDemo", version: UInt32.max)
+        AUAudioUnit.registerSubclass(SpectrumAudioUnit.self, as: componentDescription, name: "Demo: Local InstrumentDemo", version: UInt32.max)
 
 		// Instantiate and insert our audio unit effect into the chain.
 		playEngine.selectAudioUnitWithComponentDescription(componentDescription) { [weak self] in
       guard let this = self else { return }
 			// This is an asynchronous callback when complete. Finish audio unit setup.
-      let audioUnit = this.playEngine.testAudioUnit as! AUv3InstrumentDemo
+      let audioUnit = this.playEngine.testAudioUnit as! SpectrumAudioUnit
       this.filterDemoViewController.audioUnit = audioUnit
 		}
 	}

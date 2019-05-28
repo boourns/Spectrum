@@ -1,17 +1,10 @@
-/*
- Copyright (C) 2016 Apple Inc. All Rights Reserved.
- See LICENSE.txt for this sample’s licensing information
- 
- Abstract:
- An AUAudioUnit subclass implementing a simple instrument.
- */
 
-#import "InstrumentDemo.h"
+#import "SpectrumAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
 #import "PlaitsDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
 
-@interface AUv3InstrumentDemo ()
+@interface SpectrumAudioUnit ()
 
 @property AUAudioUnitBus *outputBus;
 @property AUAudioUnitBusArray *outputBusArray;
@@ -20,9 +13,7 @@
 
 @end
 
-#pragma mark - AUv3InstrumentDemo : AUAudioUnit
-
-@implementation AUv3InstrumentDemo {
+@implementation SpectrumAudioUnit {
     // C++ members need to be ivars; they would be copied on access if they were properties.
     PlaitsDSPKernel _kernel;
     BufferedOutputBus _outputBusBuffer;

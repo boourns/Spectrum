@@ -25,14 +25,11 @@
 		91236D6A1B08F52E00734C5E /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; };
 		91236D6B1B08F52E00734C5E /* FilterDemoFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91236D811B08F59300734C5E /* FilterDemoAppExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
 		91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* FilterDemo.mm */; };
 		91236D921B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */; };
 		916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916233C71B127A5000DBD15D /* MainInterface.storyboard */; };
 		91A9356B1B1269F100370383 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9356A1B1269F100370383 /* FilterView.swift */; };
-		91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
 		91E715C41B0AABAB00BD598C /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; };
-		9228D9AF1BA1EE6F00EDDEA4 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
 		923B43DD1BA0F04B0020FBB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 923B43DB1BA0F04B0020FBB4 /* Main.storyboard */; };
 		923B43DE1BA1E51F0020FBB4 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		927A95A41B1D4043007C1F90 /* FilterDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9152BF241B09567700D8C6A4 /* FilterDemoViewController.swift */; };
@@ -49,7 +46,6 @@
 		92FF86871B9F4EDA007C9389 /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92FF86801B9F4EDA007C9389 /* FilterDemoFramework.framework */; };
 		92FF86881B9F4EDA007C9389 /* FilterDemoFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92FF86801B9F4EDA007C9389 /* FilterDemoFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		92FF868D1B9F4F16007C9389 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
-		92FF869B1B9F5376007C9389 /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
 		92FF869C1B9F572B007C9389 /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92FF86801B9F4EDA007C9389 /* FilterDemoFramework.framework */; };
 		92FF86A21B9F5B7B007C9389 /* FilterDemoViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF869F1B9F5B7B007C9389 /* FilterDemoViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92FF86A31B9F5B7B007C9389 /* FilterDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A01B9F5B7B007C9389 /* FilterDemoViewController.m */; };
@@ -160,7 +156,6 @@
 		2B4A917B1C75403100F61BDD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		30C0135A1C6D303D00F7E9B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3E8E032C1B16387D0011624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		91236D0D1B08F42B00734C5E /* FilterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91236D0F1B08F42B00734C5E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91236D111B08F42B00734C5E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -172,13 +167,11 @@
 		91236D591B08F52D00734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FilterDemoAppExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		91236D7E1B08F59300734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		91236D8D1B08FB0300734C5E /* FilterDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterDemo.mm; sourceTree = "<group>"; };
 		91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterDemoViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
 		9152BF241B09567700D8C6A4 /* FilterDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterDemoViewController.swift; sourceTree = "<group>"; };
 		916233C81B127A5000DBD15D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		91A9356A1B1269F100370383 /* FilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
-		91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = drumLoop.caf; sourceTree = "<group>"; };
 		923B43DC1BA0F04B0020FBB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
 		92A10CA71B951C660081EA80 /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
@@ -343,16 +336,6 @@
 			path = iOS/FilterDemoAppExtension;
 			sourceTree = "<group>";
 		};
-		91236D861B08F64600734C5E /* SimplePlayEngine */ = {
-			isa = PBXGroup;
-			children = (
-				91236D871B08F66200734C5E /* SimplePlayEngine.swift */,
-				91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */,
-			);
-			name = SimplePlayEngine;
-			path = ../Shared;
-			sourceTree = SOURCE_ROOT;
-		};
 		9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,11 +348,9 @@
 		91D3DA0B1B023C03008FFFBB = {
 			isa = PBXGroup;
 			children = (
-				3E8E032C1B16387D0011624B /* README.md */,
 				30AEE0F81BA3510D00302EB1 /* Filter (iOS) */,
 				30AEE0F91BA3513800302EB1 /* Filter (OS X) */,
 				92A10CA51B951C660081EA80 /* Shared Framework Code */,
-				91236D861B08F64600734C5E /* SimplePlayEngine */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
 				91D3DA171B023C1E008FFFBB /* Products */,
 			);
@@ -675,7 +656,6 @@
 			files = (
 				91236D1A1B08F42B00734C5E /* LaunchScreen.storyboard in Resources */,
 				30C0135B1C6D303D00F7E9B4 /* Images.xcassets in Resources */,
-				91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */,
 				91236D151B08F42B00734C5E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -699,7 +679,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9228D9AF1BA1EE6F00EDDEA4 /* drumLoop.caf in Resources */,
 				92FF86541B9A4D97007C9389 /* Assets.xcassets in Resources */,
 				923B43DD1BA0F04B0020FBB4 /* Main.storyboard in Resources */,
 			);
@@ -728,7 +707,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
 			);
@@ -760,7 +738,6 @@
 				92FF865E1B9A51BD007C9389 /* ViewController.m in Sources */,
 				92FF86521B9A4D97007C9389 /* main.m in Sources */,
 				92FF864F1B9A4D97007C9389 /* AppDelegate.m in Sources */,
-				92FF869B1B9F5376007C9389 /* SimplePlayEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
