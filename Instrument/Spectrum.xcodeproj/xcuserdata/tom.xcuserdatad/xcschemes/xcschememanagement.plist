@@ -19,21 +19,6 @@
 			<key>orderHint</key>
 			<integer>15</integer>
 		</dict>
-		<key>OSXSpectrumApp.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>14</integer>
-		</dict>
-		<key>OSXSpectrumAppExtension.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>11</integer>
-		</dict>
-		<key>OSXSpectrumFramework.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>12</integer>
-		</dict>
 		<key>iOSInstrumentDemoApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -52,17 +37,45 @@
 		<key>iOSSpectrumApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>3</integer>
 		</dict>
 		<key>iOSSpectrumAppExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>2</integer>
 		</dict>
 		<key>iOSSpectrumFramework.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>12</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>306CFC861C5815010028386F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>306CFCAB1C582E0A0028386F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>306CFCD81C5841E40028386F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92A10CC41B9521320081EA80</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92A10CF11B9521F50081EA80</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

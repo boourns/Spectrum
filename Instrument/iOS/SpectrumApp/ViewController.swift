@@ -82,7 +82,7 @@ class ViewController: UIViewController {
         let pluginURL = builtInPlugInsURL.appendingPathComponent("InstrumentDemoAppExtension.appex")
         let appExtensionBundle = Bundle(url: pluginURL)
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
-        filterDemoViewController = storyboard.instantiateInitialViewController() as! InstrumentDemoViewController
+        filterDemoViewController = storyboard.instantiateInitialViewController() as? InstrumentDemoViewController
     
         // Present the view controller's view.
         if let view = filterDemoViewController.view {
