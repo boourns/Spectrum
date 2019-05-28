@@ -7,13 +7,13 @@
  */
 
 import UIKit
+import AVFoundation
 import CoreAudioKit
-//import ActionKit
 
 public class InstrumentDemoViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
     
-    public var audioUnit: AUv3InstrumentDemo? {
+    public var audioUnit: AUAudioUnit? {
         didSet {
             DispatchQueue.main.async {
                 if self.isViewLoaded {
@@ -168,3 +168,24 @@ extension InstrumentDemoViewController: ParameterStringViewDelegate {
         parameterView.param.value = parameterView.value
     }
 }
+
+extension InstrumentDemoViewController: AUAudioUnitFactory {
+    /*
+     This implements the required `NSExtensionRequestHandling` protocol method.
+     Note that this may become unnecessary in the future, if `AUViewController`
+     implements the override.
+     */
+    public override func beginRequest(with context: NSExtensionContext) { }
+    
+    /*
+     This implements the required `AUAudioUnitFactory` protocol method.
+     When this view controller is instantiated in an extension process, it
+     creates its audio unit.
+     */
+    public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
+        audioUnit = try AUv3InstrumentDemo(componentDescription: componentDescription, options: [])
+        
+        return audioUnit!
+    }
+}
+

@@ -8,7 +8,7 @@
 
 import UIKit
 import AudioToolbox
-import InstrumentDemoFramework
+import SpectrumFramework
 
 class ViewController: UIViewController {
     // MARK: Properties

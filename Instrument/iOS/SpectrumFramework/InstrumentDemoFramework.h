@@ -14,6 +14,6 @@ FOUNDATION_EXPORT double InstrumentDemoFramework_VersionNumber;
 //! Project version string for InstrumentDemoFramework.
 FOUNDATION_EXPORT const unsigned char InstrumentDemoFramework_VersionString[];
 
-#import <InstrumentDemoFramework/InstrumentDemo.h>
+#import <InstrumentDemoFramework/Shared/InstrumentDemo.h>
 
 @class InstrumentDemoViewController;

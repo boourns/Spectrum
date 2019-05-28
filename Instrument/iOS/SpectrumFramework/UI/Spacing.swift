@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Spacing {
     static let sliderHeight = CGFloat(30)

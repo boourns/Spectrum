@@ -8,7 +8,7 @@
       location = "group:Filter/Filter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Instrument/Instrument.xcodeproj">
+      location = "group:/Users/tom/Code/Swift/ExampleAudioUnit/Instrument/Spectrum.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:AUv3Host/AUv3Host.xcodeproj">

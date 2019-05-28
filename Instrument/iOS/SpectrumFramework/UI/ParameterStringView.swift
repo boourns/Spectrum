@@ -6,6 +6,10 @@
 //
 
 import Foundation
+import CoreAudio
+import UIKit
+import AVFoundation
+import CoreAudioKit
 
 protocol ParameterStringViewDelegate: NSObject {
     func parameterStringView(didUpdate: ParameterStringView)
