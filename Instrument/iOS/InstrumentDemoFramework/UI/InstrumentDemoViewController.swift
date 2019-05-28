@@ -35,7 +35,7 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         view.addSubview(navigationView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         navigationView.translatesAutoresizingMaskIntoConstraints = false
-        
+        containerView.contentMode = .scaleAspectFill
         navigationView.axis = .horizontal
         navigationView.distribution = .fillEqually
         
@@ -47,7 +47,6 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
             navigationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navigationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-       //     navigationView.heightAnchor.constraint(equalToConstant: 40.0)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -57,6 +56,8 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
         
         stack.axis = .horizontal
         stack.distribution = .fillEqually
+        stack.alignment = .firstBaseline
+        stack.spacing = 20.0
         containerView.addSubview(stack)
         stack.translatesAutoresizingMaskIntoConstraints = false
         
@@ -90,7 +91,7 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     func viewForGroup(group: AUParameterGroup) -> UIStackView {
         let groupStack = UIStackView()
         groupStack.axis = .vertical
-        groupStack.spacing = 16.0
+        groupStack.spacing = Spacing.betweenParameters
         
         group.allParameters.forEach { param in
             let paramView = viewForParam(param)

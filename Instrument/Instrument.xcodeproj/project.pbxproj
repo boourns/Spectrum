@@ -395,6 +395,8 @@
 		E22AFB12229C42C600679F99 /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB11229C42C600679F99 /* ParameterView.swift */; };
 		E22AFB14229C4AA100679F99 /* ParameterStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB13229C4AA100679F99 /* ParameterStringView.swift */; };
 		E22AFB16229C5A2D00679F99 /* UIImage+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */; };
+		E22AFB18229C66BB00679F99 /* PSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB17229C66BB00679F99 /* PSlider.swift */; };
+		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
 		E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterSliderView.swift */; };
 		E2F48BD7228D0A2D0036AEE3 /* TomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B0DF228CD67B006ECCBC /* TomViewController.swift */; };
 /* End PBXBuildFile section */
@@ -805,6 +807,8 @@
 		E22AFB11229C42C600679F99 /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
 		E22AFB13229C4AA100679F99 /* ParameterStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterStringView.swift; sourceTree = "<group>"; };
 		E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extensions.swift"; sourceTree = "<group>"; };
+		E22AFB17229C66BB00679F99 /* PSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSlider.swift; sourceTree = "<group>"; };
+		E22AFB19229CC67D00679F99 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSliderView.swift; sourceTree = "<group>"; };
 		E2CA00C4228FA73F0048AD74 /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1526,6 +1530,8 @@
 				E22AFB11229C42C600679F99 /* ParameterView.swift */,
 				E22AFB13229C4AA100679F99 /* ParameterStringView.swift */,
 				E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */,
+				E22AFB17229C66BB00679F99 /* PSlider.swift */,
+				E22AFB19229CC67D00679F99 /* Spacing.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -2167,6 +2173,7 @@
 				E225444C228F9FD300D72092 /* string.cc in Sources */,
 				E2154AD7229249AA00CEED2E /* modal_voice.cc in Sources */,
 				E2154B04229249AA00CEED2E /* random.cc in Sources */,
+				E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */,
 				E225441A228F9FD300D72092 /* lpc_speech_synth_controller.cc in Sources */,
 				E225447C228F9FD300D72092 /* particle_engine.cc in Sources */,
 				E2154ABD229249AA00CEED2E /* naive_speech_synth.cc in Sources */,
@@ -2203,6 +2210,7 @@
 				E2254420228F9FD300D72092 /* lpc_speech_synth_words.cc in Sources */,
 				E225444E228F9FD300D72092 /* resonator.cc in Sources */,
 				E225441C228F9FD300D72092 /* lpc_speech_synth.cc in Sources */,
+				E22AFB18229C66BB00679F99 /* PSlider.swift in Sources */,
 				E2254464228F9FD300D72092 /* fm_engine.cc in Sources */,
 				E2154AD5229249AA00CEED2E /* resonator.cc in Sources */,
 				E2154AFD229249AA00CEED2E /* virtual_analog_engine.cc in Sources */,

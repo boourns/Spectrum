@@ -345,6 +345,7 @@ public:
             }
                 
             case PlaitsParamLfoRate: {
+                
                 uint16_t newRate = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newRate != lfoParameters[0]) {
                     lfoParameters[0] = newRate;
@@ -700,6 +701,7 @@ public:
     uint16_t lfoParameters[4];
     uint16_t envParameters[4];
     
+    float lfoBaseRate;
     float lfoOutput;
     float lfoAmountFM;
     float lfoAmountHarmonics;
