@@ -2,13 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:README.md">
-   </FileRef>
-   <FileRef
       location = "group:Filter/Filter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/tom/Code/Swift/ExampleAudioUnit/Instrument/Spectrum.xcodeproj">
+      location = "group:Instrument/Spectrum.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:AUv3Host/AUv3Host.xcodeproj">
