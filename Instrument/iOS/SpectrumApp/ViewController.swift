@@ -27,7 +27,7 @@ class ViewController: UIViewController {
 	var playEngine: SimplePlayEngine!
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
-	var filterDemoViewController: InstrumentDemoViewController!
+	var filterDemoViewController: SpectrumViewController!
 
     // MARK: View Life Cycle
     
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
         let pluginURL = builtInPlugInsURL.appendingPathComponent("SpectrumAudioUnit.appex")
         let appExtensionBundle = Bundle(url: pluginURL)
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
-        filterDemoViewController = storyboard.instantiateInitialViewController() as? InstrumentDemoViewController
+        filterDemoViewController = storyboard.instantiateInitialViewController() as? SpectrumViewController
     
         // Present the view controller's view.
         if let view = filterDemoViewController.view {

@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
-public class InstrumentDemoViewController: AUViewController { //, InstrumentViewDelegate {
+public class SpectrumViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
     
     public var audioUnit: AUAudioUnit? {
@@ -163,13 +163,13 @@ public class InstrumentDemoViewController: AUViewController { //, InstrumentView
     }
 }
 
-extension InstrumentDemoViewController: ParameterStringViewDelegate {
+extension SpectrumViewController: ParameterStringViewDelegate {
     func parameterStringView(didUpdate parameterView: ParameterStringView) {
         parameterView.param.value = parameterView.value
     }
 }
 
-extension InstrumentDemoViewController: AUAudioUnitFactory {
+extension SpectrumViewController: AUAudioUnitFactory {
     /*
      This implements the required `NSExtensionRequestHandling` protocol method.
      Note that this may become unnecessary in the future, if `AUViewController`
