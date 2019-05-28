@@ -79,7 +79,7 @@ class ViewController: UIViewController {
             `InstrumentDemoViewController` from that.
         */
         let builtInPlugInsURL = Bundle.main.builtInPlugInsURL!
-        let pluginURL = builtInPlugInsURL.appendingPathComponent("SpectrumAudioUnitExtension.appex")
+        let pluginURL = builtInPlugInsURL.appendingPathComponent("SpectrumAudioUnit.appex")
         let appExtensionBundle = Bundle(url: pluginURL)
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
         filterDemoViewController = storyboard.instantiateInitialViewController() as? InstrumentDemoViewController

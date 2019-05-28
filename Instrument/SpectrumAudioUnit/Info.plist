@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SpectrumAudioUnitExtension</string>
+	<string>SpectrumAudioUnit</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,13 +28,13 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>SpectrumAudioUnitExtension</string>
+					<string>SpectrumAudioUnit</string>
 					<key>factoryFunction</key>
 					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
 					<key>manufacturer</key>
 					<string>Brns</string>
 					<key>name</key>
-					<string>Brns: SpectrumAudioUnitExtension</string>
+					<string>Brns: SpectrumAudioUnit</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
