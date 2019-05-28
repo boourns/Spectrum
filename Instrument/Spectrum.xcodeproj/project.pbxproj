@@ -151,11 +151,10 @@
 		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
 		E265FF16229CCF9700340255 /* SpectrumAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = E265FF15229CCF9700340255 /* SpectrumAudioUnit.m */; };
 		E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterSliderView.swift */; };
-		E2E60604229CE577004B33CB /* SpectrumAudioUnitAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E60603229CE577004B33CB /* SpectrumAudioUnitAudioUnit.m */; };
-		E2E60606229CE577004B33CB /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E60605229CE577004B33CB /* AudioUnitViewController.swift */; };
-		E2E60609229CE577004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60607229CE577004B33CB /* MainInterface.storyboard */; };
 		E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
+		E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60617229CE9E0004B33CB /* MainInterface.storyboard */; };
+		E2E6061D229CE9E0004B33CB /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E6061A229CE9E0004B33CB /* Dummy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,6 +206,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E2E605FF229CE577004B33CB;
 			remoteInfo = SpectrumAudioUnit;
+		};
+		E2E6061F229CEA7D004B33CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92A10CE01B9521B00081EA80;
+			remoteInfo = iOSSpectrumFramework;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -392,12 +398,10 @@
 		E265FF15229CCF9700340255 /* SpectrumAudioUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpectrumAudioUnit.m; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSliderView.swift; sourceTree = "<group>"; };
 		E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAudioUnit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		E2E60602229CE577004B33CB /* SpectrumAudioUnitAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpectrumAudioUnitAudioUnit.h; sourceTree = "<group>"; };
-		E2E60603229CE577004B33CB /* SpectrumAudioUnitAudioUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpectrumAudioUnitAudioUnit.m; sourceTree = "<group>"; };
-		E2E60605229CE577004B33CB /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
-		E2E60608229CE577004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		E2E6060A229CE577004B33CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E2E6060B229CE577004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E2E60618229CE9E0004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E2E6061A229CE9E0004B33CB /* Dummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		E2E6061B229CE9E0004B33CB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,6 +436,7 @@
 		30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */ = {
 			isa = PBXGroup;
 			children = (
+				E2E60616229CE9E0004B33CB /* SpectrumAudioUnit */,
 				92A10C7A1B9517A50081EA80 /* SpectrumApp */,
 				92A10C8A1B9517A50081EA80 /* SpectrumFramework */,
 			);
@@ -467,7 +472,6 @@
 				92A10CA51B951C660081EA80 /* Shared Framework Code */,
 				91236D861B08F64600734C5E /* SimplePlayEngine */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
-				E2E60601229CE577004B33CB /* SpectrumAudioUnit */,
 				91D3DA171B023C1E008FFFBB /* Products */,
 				E2154B322292523600CEED2E /* Frameworks */,
 			);
@@ -800,17 +804,16 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		E2E60601229CE577004B33CB /* SpectrumAudioUnit */ = {
+		E2E60616229CE9E0004B33CB /* SpectrumAudioUnit */ = {
 			isa = PBXGroup;
 			children = (
-				E2E60602229CE577004B33CB /* SpectrumAudioUnitAudioUnit.h */,
-				E2E60603229CE577004B33CB /* SpectrumAudioUnitAudioUnit.m */,
-				E2E60605229CE577004B33CB /* AudioUnitViewController.swift */,
-				E2E60607229CE577004B33CB /* MainInterface.storyboard */,
-				E2E6060A229CE577004B33CB /* Info.plist */,
-				E2E6060B229CE577004B33CB /* SpectrumAudioUnit-Bridging-Header.h */,
+				E2E60617229CE9E0004B33CB /* MainInterface.storyboard */,
+				E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */,
+				E2E6061A229CE9E0004B33CB /* Dummy.swift */,
+				E2E6061B229CE9E0004B33CB /* Info.plist */,
 			);
-			path = SpectrumAudioUnit;
+			name = SpectrumAudioUnit;
+			path = iOS/SpectrumAudioUnit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -963,6 +966,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E2E60620229CEA7D004B33CB /* PBXTargetDependency */,
 			);
 			name = SpectrumAudioUnit;
 			productName = SpectrumAudioUnit;
@@ -1085,7 +1089,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2E60609229CE577004B33CB /* MainInterface.storyboard in Resources */,
+				E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1160,8 +1164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2E60604229CE577004B33CB /* SpectrumAudioUnitAudioUnit.m in Sources */,
-				E2E60606229CE577004B33CB /* AudioUnitViewController.swift in Sources */,
+				E2E6061D229CE9E0004B33CB /* Dummy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1177,6 +1180,11 @@
 			isa = PBXTargetDependency;
 			target = E2E605FF229CE577004B33CB /* SpectrumAudioUnit */;
 			targetProxy = E2E6060C229CE577004B33CB /* PBXContainerItemProxy */;
+		};
+		E2E60620229CEA7D004B33CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92A10CE01B9521B00081EA80 /* iOSSpectrumFramework */;
+			targetProxy = E2E6061F229CEA7D004B33CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1197,10 +1205,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		E2E60607229CE577004B33CB /* MainInterface.storyboard */ = {
+		E2E60617229CE9E0004B33CB /* MainInterface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E2E60608229CE577004B33CB /* Base */,
+				E2E60618229CE9E0004B33CB /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -1539,7 +1547,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = SpectrumAudioUnit/Info.plist;
+				INFOPLIST_FILE = iOS/SpectrumAudioUnit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -1549,7 +1557,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "SpectrumAudioUnit/SpectrumAudioUnit-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOS/SpectrumAudioUnit/SpectrumAudioUnit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1589,7 +1597,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "SpectrumAudioUnit/SpectrumAudioUnit-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOS/SpectrumAudioUnit/SpectrumAudioUnit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
