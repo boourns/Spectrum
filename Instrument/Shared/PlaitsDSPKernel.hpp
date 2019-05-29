@@ -109,6 +109,7 @@ public:
             envelope.value = 0;
             ampEnvelope.value = 0;
             envelope.TriggerLow();
+            ampEnvelope.TriggerLow();
             state = NoteStateUnused;
             plaitsFramesIndex = kAudioBlockSize;
         }
@@ -117,6 +118,7 @@ public:
         void release() {
             modulations.trigger = 0.0f;
             envelope.TriggerLow();
+            ampEnvelope.TriggerLow();
 
             state = NoteStateReleasing;
         }
@@ -125,6 +127,7 @@ public:
             if (state == NoteStateUnused) {
                 modulations.trigger = 1.0f;
                 envelope.TriggerHigh();
+                ampEnvelope.TriggerHigh();
             } else {
                 delayed_trigger = true;
             }
@@ -169,6 +172,7 @@ public:
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
                     envelope.Process(kAudioBlockSize);
+                    ampEnvelope.Process(kAudioBlockSize);
 
                     // TODO add poly mod
                     lfoOutput = ((float) lfo.Process(kAudioBlockSize)) / INT16_MAX;
@@ -186,6 +190,7 @@ public:
                         delayed_trigger = false;
                         modulations.trigger = 1.0f;
                         envelope.TriggerHigh();
+                        ampEnvelope.TriggerHigh();
                     }
                 }
                 
