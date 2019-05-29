@@ -93,19 +93,147 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    // LPG
+    AUParameterGroup *primaryGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, harmonicsParam, timbreParam, morphParam]];
     
-    AUParameter *decayParam = [AUParameterTree createParameterWithIdentifier:@"decay" name:@"Decay"
+    AUParameterGroup *lpgGroup = [AUParameterTree createGroupWithIdentifier:@"main2" name:@"Main" children:@[pitchParam, detuneParam]];
+
+    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[primaryGroup, lpgGroup]];
+
+    
+    // LFO
+    
+    // Env
+    AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
+                                                                       address:PlaitsParamEnvAttack
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envDecay = [AUParameterTree createParameterWithIdentifier:@"envDecay" name:@"Decay"
+                                                                      address:PlaitsParamEnvDecay
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envSustain = [AUParameterTree createParameterWithIdentifier:@"envSustain" name:@"Sustain"
+                                                                        address:PlaitsParamEnvSustain
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envRelease = [AUParameterTree createParameterWithIdentifier:@"envRelease" name:@"Release"
+                                                                        address:PlaitsParamEnvRelease
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envAmountFM = [AUParameterTree createParameterWithIdentifier:@"envAmountFM" name:@"FM Amount"
+                                                                      address:PlaitsParamEnvAmountFM
+                                                                          min:0.0 max:120.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envAmountHarmonics = [AUParameterTree createParameterWithIdentifier:@"envAmountHarmonics" name:@"Harmonics"
+                                                                             address: PlaitsParamEnvAmountHarmonics
+                                                                                 min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                               flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envAmountTimbre = [AUParameterTree createParameterWithIdentifier:@"envAmountTimbre" name:@"Timbre Amount"
+                                                                          address:PlaitsParamEnvAmountTimbre
+                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                            flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envAmountMorph = [AUParameterTree createParameterWithIdentifier:@"envAmountMorph" name:@"Morph Amount"
+                                                                         address:PlaitsParamEnvAmountMorph
+                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envAmountLFORate = [AUParameterTree createParameterWithIdentifier:@"envAmountLFORate" name:@"LFO Rate"
+                                                                         address:PlaitsParamEnvAmountLFORate
+                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envAmountLFOAmount = [AUParameterTree createParameterWithIdentifier:@"envAmountLFOAmount" name:@"LFO Amount"
+                                                                         address:PlaitsParamEnvAmountLFOAmount
+                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
+    
+    AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
+    
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings, envModulations]];
+    
+    // MARK - Amp
+    
+    AUParameter *ampEnvAttack = [AUParameterTree createParameterWithIdentifier:@"ampEnvAttack" name:@"Attack"
+                                                                       address:PlaitsParamAmpEnvAttack
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *ampEnvDecay = [AUParameterTree createParameterWithIdentifier:@"ampEnvDecay" name:@"Decay"
+                                                                      address:PlaitsParamAmpEnvDecay
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *ampEnvSustain = [AUParameterTree createParameterWithIdentifier:@"ampEnvSustain" name:@"Sustain"
+                                                                        address:PlaitsParamAmpEnvSustain
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *ampEnvRelease = [AUParameterTree createParameterWithIdentifier:@"ampEnvRelease" name:@"Release"
+                                                                        address:PlaitsParamAmpEnvRelease
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    
+    AUParameter *volumeParam = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
+                                                                      address:PlaitsParamVolume
+                                                                          min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    NSArray *ampSources = @[ @"LPG", @"ADSR", @"Drone"];
+    
+    AUParameter *ampSourceParam = [AUParameterTree createParameterWithIdentifier:@"ampSource" name:@"Amp Source"
+                                                                         address:PlaitsParamAmpSource
+                                                                             min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:ampSources dependentParameters:nil];
+    
+    
+    AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
+                                                                          address:PlaitsParamLeftSource
+                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                            flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *rightSourceParam = [AUParameterTree createParameterWithIdentifier:@"rightSource" name:@"Right Source"
+                                                                           address:PlaitsParamRightSource
+                                                                               min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                             flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *panParam = [AUParameterTree createParameterWithIdentifier:@"pan" name:@"Pan"
+                                                                   address:PlaitsParamPan
+                                                                       min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *panSpreadParam = [AUParameterTree createParameterWithIdentifier:@"panSpread" name:@"Pan Spread"
+                                                                         address:PlaitsParamPanSpread
+                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:nil dependentParameters:nil];
+
+    
+    // LPG
+    AUParameter *decayParam = [AUParameterTree createParameterWithIdentifier:@"decay" name:@"LPG Decay"
                                                                      address:PlaitsParamDecay
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
     
-    AUParameter *colourParam = [AUParameterTree createParameterWithIdentifier:@"colour" name:@"Colour"
+    AUParameter *colourParam = [AUParameterTree createParameterWithIdentifier:@"colour" name:@"LPG Colour"
                                                                       address:PlaitsParamLPGColour
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameterGroup *ampEnvSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[ampEnvAttack, ampEnvDecay, ampEnvSustain, ampEnvRelease, decayParam, colourParam]];
+    
+    AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[volumeParam, ampSourceParam, leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
+    
+    AUParameterGroup *ampPage = [AUParameterTree createGroupWithIdentifier:@"amp" name:@"Amp" children:@[ampEnvSettings, outGroup]];
+
     // Voice Settings
 
     
@@ -128,38 +256,6 @@
                                                                                 flags: flags valueStrings:bendRange dependentParameters:nil];
 
     
-    // Amp
-    AUParameter *volumeParam = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
-                                                                      address:PlaitsParamVolume
-                                                                          min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    NSArray *ampSources = @[ @"LPG", @"ADSR", @"Drone"];
-    AUParameter *ampSourceParam = [AUParameterTree createParameterWithIdentifier:@"ampSource" name:@"Amp Source"
-                                                                              address:PlaitsParamAmpSource
-                                                                                  min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                                flags: flags valueStrings:ampSources dependentParameters:nil];
-    
-    
-    AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
-                                                                    address:PlaitsParamLeftSource
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *rightSourceParam = [AUParameterTree createParameterWithIdentifier:@"rightSource" name:@"Right Source"
-                                                                    address:PlaitsParamRightSource
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *panParam = [AUParameterTree createParameterWithIdentifier:@"pan" name:@"Pan"
-                                                                           address:PlaitsParamPan
-                                                                               min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                             flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *panSpreadParam = [AUParameterTree createParameterWithIdentifier:@"panSpread" name:@"Pan Spread"
-                                                                           address:PlaitsParamPanSpread
-                                                                               min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                             flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
                                                                          address:PlaitsParamLfoRate
@@ -170,6 +266,11 @@
                                                                   address:PlaitsParamLfoShape
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoAmount = [AUParameterTree createParameterWithIdentifier:@"lfoAmount" name:@"LFO Amount"
+                                                                   address:PlaitsParamLfoAmount
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *lfoAmountFM = [AUParameterTree createParameterWithIdentifier:@"lfoAmountFM" name:@"FM Amount"
                                                                    address:PlaitsParamLfoAmountFM
@@ -191,49 +292,21 @@
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
-                                                                         address:PlaitsParamEnvAttack
-                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envDecay = [AUParameterTree createParameterWithIdentifier:@"envDecay" name:@"Decay"
-                                                                    address:PlaitsParamEnvDecay
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envSustain = [AUParameterTree createParameterWithIdentifier:@"envSustain" name:@"Sustain"
-                                                                    address:PlaitsParamEnvSustain
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envRelease = [AUParameterTree createParameterWithIdentifier:@"envRelease" name:@"Release"
-                                                                    address:PlaitsParamEnvRelease
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *primaryGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, harmonicsParam, timbreParam, morphParam]];
-    
-    AUParameterGroup *lpgGroup = [AUParameterTree createGroupWithIdentifier:@"main2" name:@"Main" children:@[pitchParam, detuneParam, decayParam, colourParam]];
-    
     AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam]];
     
-    AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[volumeParam, ampSourceParam, leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
     
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape]];
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoAmount]];
+    
     AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoModulation" name:@"LFO Modulation" children:@[lfoAmountFM, lfoAmountHarmonics, lfoAmountTimbre, lfoAmountMorph]];
     
-    AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
     
-    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[primaryGroup, lpgGroup]];
 
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
-
-    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings]];
     
-    AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup, outGroup]];
+    AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, settingsPage]];
     
     // Create the output bus.
     _outputBusBuffer.init(defaultFormat, 2);

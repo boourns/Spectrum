@@ -46,6 +46,17 @@ enum {
     PlaitsParamEnvDecay = 25,
     PlaitsParamEnvSustain = 26,
     PlaitsParamEnvRelease = 27,
+    PlaitsParamAmpEnvAttack = 28,
+    PlaitsParamAmpEnvDecay = 29,
+    PlaitsParamAmpEnvSustain = 30,
+    PlaitsParamAmpEnvRelease = 31,
+    PlaitsParamEnvAmountFM = 32,
+    PlaitsParamEnvAmountHarmonics = 33,
+    PlaitsParamEnvAmountTimbre = 34,
+    PlaitsParamEnvAmountMorph = 35,
+    PlaitsParamEnvAmountLFORate = 36,
+    PlaitsParamEnvAmountLFOAmount = 37,
+    PlaitsParamLfoAmount = 38,
     PlaitsMaxParameters
 };
 
@@ -73,8 +84,10 @@ public:
         size_t plaitsFramesIndex;
         
         peaks::MultistageEnvelope envelope;
-        float envelopeValue;
-        
+        peaks::MultistageEnvelope ampEnvelope;
+        peaks::Lfo lfo;
+        float lfoOutput;
+
         plaits::Voice *voice;
         plaits::Modulations modulations;
         float panSpread = 0;
@@ -87,11 +100,14 @@ public:
             voice->Init(&allocator);
             plaitsFramesIndex = kAudioBlockSize;
             envelope.Init();
+            ampEnvelope.Init();
+            lfo.Init();
         }
         
         void clear() {
             modulations.trigger = 0.0f;
-            envelopeValue = 0;
+            envelope.value = 0;
+            ampEnvelope.value = 0;
             envelope.TriggerLow();
             state = NoteStateUnused;
             plaitsFramesIndex = kAudioBlockSize;
@@ -152,14 +168,17 @@ public:
             
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
-                    envelopeValue = ((float) envelope.Process(kAudioBlockSize)) / (float) INT16_MAX;
+                    envelope.Process(kAudioBlockSize);
 
                     // TODO add poly mod
-                    modulations.frequency = kernel->modulations.frequency;
-                    modulations.harmonics = kernel->modulations.harmonics;
-                    modulations.timbre = kernel->modulations.timbre;
-                    modulations.morph = kernel->modulations.morph;
+                    lfoOutput = ((float) lfo.Process(kAudioBlockSize)) / INT16_MAX;
+                    float lfoAmount = kernel->lfoAmount + (envelope.value * kernel->envAmountLfoAmount);
                     
+                    modulations.frequency = kernel->modulations.frequency + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
+                    modulations.harmonics = kernel->modulations.harmonics + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
+                    modulations.timbre = kernel->modulations.timbre + lfoOutput * kernel->lfoAmountTimbre * lfoAmount + (envelope.value * kernel->envAmountTimbre);
+                    modulations.morph = kernel->modulations.morph + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
+                
                     voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                     
@@ -174,8 +193,8 @@ public:
                 aux = ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
                 
                 if (kernel->ampSource == 1) {
-                    *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain * envelopeValue;
-                    *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain * envelopeValue;
+                    *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain * ampEnvelope.value;
+                    *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain * ampEnvelope.value;
                 } else {
                     *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
                     *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
@@ -201,8 +220,6 @@ public:
     
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
-        
-        lfo.Init();
         
         patch.engine = 8;
         patch.note = 48.0f;
@@ -319,7 +336,9 @@ public:
                 uint16_t newShape = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newShape != lfoParameters[1]) {
                     lfoParameters[1] = newShape;
-                    lfo.Configure(lfoParameters);
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].lfo.Configure(lfoParameters);
+                    }
                 }
                 break;
             }
@@ -329,13 +348,19 @@ public:
                 uint16_t newRate = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newRate != lfoParameters[0]) {
                     lfoParameters[0] = newRate;
-                    lfo.Configure(lfoParameters);
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].lfo.Configure(lfoParameters);
+                    }
                 }
                 break;
             }
         
             case PlaitsParamLfoAmountFM:
                 lfoAmountFM = clamp(value, 0.0f, 120.0f);
+                break;
+                
+            case PlaitsParamLfoAmount:
+                lfoAmount = clamp(value, 0.0f, 1.0f);
                 break;
         
             case PlaitsParamLfoAmountHarmonics:
@@ -414,6 +439,74 @@ public:
                 }
                 break;
             }
+                
+            case PlaitsParamAmpEnvAttack: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != ampEnvParameters[0]) {
+                    ampEnvParameters[0] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].ampEnvelope.Configure(ampEnvParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamAmpEnvDecay: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != ampEnvParameters[1]) {
+                    ampEnvParameters[1] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].ampEnvelope.Configure(ampEnvParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamAmpEnvSustain: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != ampEnvParameters[2]) {
+                    ampEnvParameters[2] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].ampEnvelope.Configure(ampEnvParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamAmpEnvRelease: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != ampEnvParameters[3]) {
+                    ampEnvParameters[3] = newValue;
+                    for (int i = 0; i < kPolyphony; i++) {
+                        voices[i].ampEnvelope.Configure(ampEnvParameters);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamEnvAmountFM:
+                envAmountFM = clamp(value, 0.0f, 120.0f);
+                break;
+                
+            case PlaitsParamEnvAmountHarmonics:
+                envAmountHarmonics = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamEnvAmountTimbre:
+                envAmountTimbre = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamEnvAmountMorph:
+                envAmountMorph = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamEnvAmountLFORate:
+                envAmountLfoRate = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case PlaitsParamEnvAmountLFOAmount:
+                envAmountLfoAmount = clamp(value, 0.0f, 1.0f);
+                break;
         }
     }
     
@@ -478,6 +571,9 @@ public:
             case PlaitsParamLfoAmountFM:
                 return lfoAmountFM;
                 
+            case PlaitsParamLfoAmount:
+                return lfoAmount;
+                
             case PlaitsParamLfoAmountHarmonics:
                 return lfoAmountHarmonics;
                 
@@ -504,6 +600,37 @@ public:
                 
             case PlaitsParamEnvRelease:
                 return ((float) envParameters[3]) / (float) UINT16_MAX;
+                
+            case PlaitsParamAmpEnvAttack:
+                return ((float) ampEnvParameters[0]) / (float) UINT16_MAX;
+                
+            case PlaitsParamAmpEnvDecay:
+                return ((float) ampEnvParameters[1]) / (float) UINT16_MAX;
+                
+            case PlaitsParamAmpEnvSustain:
+                return ((float) ampEnvParameters[2]) / (float) UINT16_MAX;
+                
+            case PlaitsParamAmpEnvRelease:
+                return ((float) ampEnvParameters[3]) / (float) UINT16_MAX;
+                
+            case PlaitsParamEnvAmountFM:
+                return envAmountFM;
+                
+            case PlaitsParamEnvAmountHarmonics:
+                return envAmountHarmonics;
+                
+            case PlaitsParamEnvAmountTimbre:
+                return envAmountTimbre;
+                
+            case PlaitsParamEnvAmountMorph:
+                return envAmountMorph;
+                
+            case PlaitsParamEnvAmountLFORate:
+                return envAmountLfoRate;
+                
+            case PlaitsParamEnvAmountLFOAmount:
+                return envAmountLfoAmount;
+                
             default:
                 return 0.0f;
         }
@@ -628,12 +755,7 @@ public:
         while (frameCount > 0) {
             int frames = (frameCount > kAudioBlockSize) ? kAudioBlockSize : frameCount;
             
-            lfoOutput = ((float) lfo.Process(frameCount)) / INT16_MAX;
-            
-            modulations.frequency = bendAmount + (lfoOutput * lfoAmountFM);
-            modulations.harmonics = lfoOutput * lfoAmountHarmonics;
-            modulations.timbre = lfoOutput * lfoAmountTimbre;
-            modulations.morph = lfoOutput * lfoAmountMorph;
+            modulations.frequency = bendAmount;
             
             for (int i = 0; i < activePolyphony; i++) {
                 if (voices[i].state != NoteStateUnused) {
@@ -692,16 +814,24 @@ public:
     plaits::Modulations modulations;
     plaits::Patch patch;
     
-    peaks::Lfo lfo;
     uint16_t lfoParameters[4];
     uint16_t envParameters[4];
+    uint16_t ampEnvParameters[4];
     
     float lfoBaseRate;
     float lfoOutput;
+    float lfoAmount;
     float lfoAmountFM;
     float lfoAmountHarmonics;
     float lfoAmountTimbre;
     float lfoAmountMorph;
+    
+    float envAmountFM;
+    float envAmountHarmonics;
+    float envAmountTimbre;
+    float envAmountMorph;
+    float envAmountLfoRate;
+    float envAmountLfoAmount;
     
     int nextVoice = 0;
     

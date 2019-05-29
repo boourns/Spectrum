@@ -65,7 +65,7 @@ void MultistageEnvelope::Init() {
         gate_high = false;
     }
 
-int16_t MultistageEnvelope::Process(size_t size) {
+void MultistageEnvelope::Process(size_t size) {
     int16_t out = 0;
     
   while (size--) {
@@ -94,7 +94,7 @@ int16_t MultistageEnvelope::Process(size_t size) {
     out = value_;
   }
     
-    return out;
+    value = ((float) out) / (float) INT16_MAX;
 }
 
 }  // namespace peaks

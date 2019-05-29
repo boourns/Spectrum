@@ -48,7 +48,7 @@ class MultistageEnvelope {
   ~MultistageEnvelope() { }
   
   void Init();
-  int16_t Process(size_t size);
+  void Process(size_t size);
     void TriggerHigh();
     void TriggerLow();
   
@@ -288,6 +288,8 @@ class MultistageEnvelope {
   inline void set_hard_reset(bool hard_reset) {
     hard_reset_ = hard_reset;
   }
+    
+    float value;
   
  private:
   int16_t level_[kMaxNumSegments];
