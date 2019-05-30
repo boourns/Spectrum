@@ -10,7 +10,14 @@ import AVFoundation
 import CoreAudioKit
 
 class ModalViewController: BaseAudioUnitViewController {
-    
+    override func viewForPage(group: AUParameterGroup) -> UIStackView {
+        if group.displayName == "Exciter" {
+            stackVertically = true
+        }
+        let result = super.viewForPage(group: group)
+        stackVertically = false
+        return result
+    }
 }
 
 extension ModalViewController: AUAudioUnitFactory {

@@ -27,6 +27,7 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     let containerView = UIView()
     let navigationView = UIStackView()
     var pages: [(name: String, view: UIView)] = []
+    var stackVertically = false
     
     public override func loadView() {
         super.loadView()
@@ -61,9 +62,9 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         stack.translatesAutoresizingMaskIntoConstraints = false
         
         let constraints = [
-            stack.topAnchor.constraint(equalTo: view.topAnchor),
-            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            stack.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 1.0),
+            stack.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1.0),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 1.0),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -108,7 +109,7 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
             paramView.delegate = self
             return paramView
         } else {
-            let paramView = ParameterSliderView(param: param)
+            let paramView = ParameterSliderView(param: param, stackVertically: stackVertically)
             
             paramView.slider.addControlEvent(.valueChanged) {
                 param.value = paramView.slider.value

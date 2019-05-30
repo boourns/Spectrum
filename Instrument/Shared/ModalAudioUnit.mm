@@ -125,8 +125,37 @@
     
     AUParameterGroup *exciterPage = [AUParameterTree createGroupWithIdentifier:@"exciter" name:@"Exciter" children:@[bowGroup, blowGroup, strikeGroup]];
     
+    AUParameter *geometry = [AUParameterTree createParameterWithIdentifier:@"geometry" name:@"Geometry"
+                                                                       address:ElementsParamResonatorGeometry
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *brightness = [AUParameterTree createParameterWithIdentifier:@"brightness" name:@"Brightness"
+                                                                   address:ElementsParamResonatorBrightness
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *damping = [AUParameterTree createParameterWithIdentifier:@"damping" name:@"Damping"
+                                                                   address:ElementsParamResonatorDamping
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *position = [AUParameterTree createParameterWithIdentifier:@"position" name:@"Position"
+                                                                   address:ElementsParamResonatorPosition
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *space = [AUParameterTree createParameterWithIdentifier:@"space" name:@"Space"
+                                                                   address:ElementsParamSpace
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[geometry, brightness, position, damping, space]];
+    
+    AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
+    
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage]];
     
     // Create the output bus.
     _outputBusBuffer.init(defaultFormat, 2);

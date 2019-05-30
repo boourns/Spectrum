@@ -83,39 +83,6 @@ public:
         
         reset();
     }
-
-    // linked list management
-    void release() {
-        state = NoteStateReleasing;
-        gate = false;
-    }
-
-    void add() {
-        if (state == NoteStateUnused) {
-            gate = true;
-        } else {
-            delayed_trigger = true;
-        }
-        state = NoteStatePlaying;
-    }
-
-    void noteOn(int noteNumber, int velocity)
-    {
-        if (velocity == 0) {
-            if (state == NoteStatePlaying) {
-                release();
-            }
-        } else {
-            note = noteNumber;
-            add();
-        }
-    }
-    
-    void reset() {
-        state = NoteStateUnused;
-        gate = false;
-        elementsFramesIndex = kAudioBlockSize;
-    }
     
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
@@ -222,6 +189,40 @@ public:
         outBufferListPtr = outBufferList;
     }
     
+    // linked list management
+    void release() {
+        state = NoteStateReleasing;
+        gate = false;
+    }
+    
+    void add() {
+        if (state == NoteStateUnused) {
+            gate = true;
+        } else {
+            delayed_trigger = true;
+        }
+        state = NoteStatePlaying;
+    }
+    
+    void noteOn(int noteNumber, int velocity)
+    {
+        if (velocity == 0) {
+            if (state == NoteStatePlaying) {
+                release();
+            }
+        } else {
+            currentNote = noteNumber;
+            currentVelocity = ((float) velocity) / 127.0;
+            add();
+        }
+    }
+    
+    void reset() {
+        state = NoteStateUnused;
+        gate = false;
+        outputBuffer.clear();
+    }
+    
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
         if (midiEvent.length != 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
@@ -270,21 +271,33 @@ public:
         int framesRemaining = frameCount;
         
         while (framesRemaining) {
-            if (elementsFramesIndex >= kAudioBlockSize) {
+            if (outputBuffer.empty()) {
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
-                performance.note = note;
+                performance.note = currentNote;
                 performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
                                                 if (i > ::kSampleRate * 5) {
                                                 performance.modulation = 0;
                                                 }*/
-                performance.strength = 0.5f;
+                performance.strength = currentVelocity;
                 performance.gate = gate;
                 
                 part->Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
                 
-                elementsFramesIndex = 0;
+                // Convert output buffer
+                {
+                    rack::Frame<2> outputFrames[16];
+                    for (int i = 0; i < 16; i++) {
+                        outputFrames[i].samples[0] = mainSamples[i];
+                        outputFrames[i].samples[1] = auxSamples[i];
+                    }
+                    
+                    int inLen = 16;
+                    int outLen = (int) outputBuffer.capacity();
+                    outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
+                    outputBuffer.endIncr(outLen);
+                }
                 
                 if (delayed_trigger) {
                     gate = true;
@@ -292,10 +305,11 @@ public:
                 }
             }
             
-            *outL++ += mainSamples[elementsFramesIndex];
-            *outR++ += auxSamples[elementsFramesIndex];
+            rack::Frame<2> outputFrame = outputBuffer.shift();
+
+            *outL++ += outputFrame.samples[0];
+            *outR++ += outputFrame.samples[1];
             
-            elementsFramesIndex++;
             framesRemaining--;
         }
     }
@@ -334,10 +348,11 @@ public:
     float silence[kAudioBlockSize];
     
     uint16_t reverb_buffer[32768];
-    uint8_t note;
-    size_t elementsFramesIndex;
+
     bool gate;
-    int currentNote;
+    uint8_t currentNote;
+    float currentVelocity;
+    
     int state;
     
     bool delayed_trigger = false;
