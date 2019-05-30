@@ -8,7 +8,7 @@
 #ifndef PlaitsDSPKernel_h
 #define PlaitsDSPKernel_h
 
-#import "multistage_envelope.h"
+#import "peaks/multistage_envelope.h"
 #import "DSPKernel.hpp"
 #import <vector>
 #import "plaits/dsp/voice.h"

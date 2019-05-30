@@ -1,20 +1,19 @@
-/*
- Copyright (C) 2016 Apple Inc. All Rights Reserved.
- See LICENSE.txt for this sample’s licensing information
- 
- Abstract:
- View controller for the InstrumentDemo audio unit. This is the app extension's principal class, responsible for creating both the audio unit and its view. Manages the interactions between a InstrumentView and the audio unit's parameters.
- */
+//
+//  ModalViewController.swift
+//  iOSSpectrumFramework
+//
+//  Created by tom on 2019-05-28.
+//
 
 import UIKit
 import AVFoundation
 import CoreAudioKit
 
-class SpectrumViewController: BaseAudioUnitViewController {
+class ModalViewController: BaseAudioUnitViewController {
     
 }
 
-extension SpectrumViewController: AUAudioUnitFactory {
+extension ModalViewController: AUAudioUnitFactory {
     /*
      This implements the required `NSExtensionRequestHandling` protocol method.
      Note that this may become unnecessary in the future, if `AUViewController`
@@ -28,7 +27,7 @@ extension SpectrumViewController: AUAudioUnitFactory {
      creates its audio unit.
      */
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-        audioUnit = try SpectrumAudioUnit(componentDescription: componentDescription, options: [])
+        audioUnit = try ModalAudioUnit(componentDescription: componentDescription, options: [])
         
         return audioUnit!
     }

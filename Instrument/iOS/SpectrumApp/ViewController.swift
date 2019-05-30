@@ -10,6 +10,9 @@ import UIKit
 import AudioToolbox
 import SpectrumFramework
 
+let audioUnitCode = "modl"
+let audioUnitClass = ModalAudioUnit.self
+
 class ViewController: UIViewController {
     // MARK: Properties
   
@@ -27,7 +30,7 @@ class ViewController: UIViewController {
 	var playEngine: SimplePlayEngine!
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
-	var filterDemoViewController: SpectrumViewController!
+	var filterDemoViewController: BaseAudioUnitViewController!
 
     // MARK: View Life Cycle
     
@@ -49,8 +52,8 @@ class ViewController: UIViewController {
         // Ensure that you update the AudioComponentDescription for your AudioUnit type, manufacturer and creator type.
         var componentDescription = AudioComponentDescription()
         componentDescription.componentType = kAudioUnitType_MusicDevice
-        componentDescription.componentSubType = fourCC("spec") /*'sin3'*/
-        componentDescription.componentManufacturer = fourCC("Brns") /*'Demo'*/
+        componentDescription.componentSubType = fourCC(audioUnitCode)
+        componentDescription.componentManufacturer = fourCC("Brns")
         componentDescription.componentFlags = 0
         componentDescription.componentFlagsMask = 0
 		
@@ -60,13 +63,13 @@ class ViewController: UIViewController {
 			
 			Note that this registration is local to this process.
 		*/
-        AUAudioUnit.registerSubclass(SpectrumAudioUnit.self, as: componentDescription, name: "Demo: Local InstrumentDemo", version: UInt32.max)
+        AUAudioUnit.registerSubclass(audioUnitClass, as: componentDescription, name: "Demo: Local InstrumentDemo", version: UInt32.max)
 
 		// Instantiate and insert our audio unit effect into the chain.
 		playEngine.selectAudioUnitWithComponentDescription(componentDescription) { [weak self] in
       guard let this = self else { return }
 			// This is an asynchronous callback when complete. Finish audio unit setup.
-      let audioUnit = this.playEngine.testAudioUnit as! SpectrumAudioUnit
+      let audioUnit = this.playEngine.testAudioUnit as! AUAudioUnit
       this.filterDemoViewController.audioUnit = audioUnit
 		}
 	}
@@ -82,7 +85,7 @@ class ViewController: UIViewController {
         let pluginURL = builtInPlugInsURL.appendingPathComponent("SpectrumAudioUnit.appex")
         let appExtensionBundle = Bundle(url: pluginURL)
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
-        filterDemoViewController = storyboard.instantiateInitialViewController() as? SpectrumViewController
+        filterDemoViewController = storyboard.instantiateInitialViewController() as? BaseAudioUnitViewController
     
         // Present the view controller's view.
         if let view = filterDemoViewController.view {
