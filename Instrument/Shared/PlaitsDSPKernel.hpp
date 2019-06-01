@@ -8,6 +8,7 @@
 #ifndef PlaitsDSPKernel_h
 #define PlaitsDSPKernel_h
 
+#import "MIDIProcessor.hpp"
 #import "peaks/multistage_envelope.h"
 #import "DSPKernel.hpp"
 #import <vector>
@@ -15,7 +16,7 @@
 #import "lfo.hpp"
 
 const size_t kAudioBlockSize = 24;
-const size_t kPolyphony = 8;
+const size_t kMaxPolyphony = 8;
 
 enum {
     PlaitsParamTimbre = 0,
@@ -60,12 +61,6 @@ enum {
     PlaitsMaxParameters
 };
 
-enum {
-    NoteStateUnused = 0,
-    NoteStatePlaying = 1,
-    NoteStateReleasing = 2
-};
-
 /*
  InstrumentDSPKernel
  Performs our filter signal processing.
@@ -74,7 +69,8 @@ enum {
 class PlaitsDSPKernel : public DSPKernel {
 public:
     // MARK: Types
-    struct VoiceState {
+    class VoiceState: public MIDIVoice {
+    public:
         unsigned int state;
         PlaitsDSPKernel *kernel;
         
@@ -104,7 +100,7 @@ public:
             lfo.Init();
         }
         
-        void clear() {
+        virtual void midiAllNotesOff() {
             modulations.trigger = 0.0f;
             envelope.value = 0;
             ampEnvelope.value = 0;
@@ -115,12 +111,20 @@ public:
         }
         
         // linked list management
-        void release() {
+        virtual void midiNoteOff() {
             modulations.trigger = 0.0f;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
 
             state = NoteStateReleasing;
+        }
+        
+        virtual uint8_t Note() {
+            return note;
+        }
+        
+        virtual int State() {
+            return state;
         }
         
         void add() {
@@ -134,11 +138,11 @@ public:
             state = NoteStatePlaying;
         }
         
-        void noteOn(int noteNumber, int velocity)
+        virtual void midiNoteOn(uint8_t noteNumber, uint8_t velocity)
         {
             if (velocity == 0) {
                 if (state == NoteStatePlaying) {
-                    release();
+                    midiNoteOff();
                 }
             } else {
                 memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
@@ -214,10 +218,12 @@ public:
     
     PlaitsDSPKernel()
     {
-        voices.resize(kPolyphony);
+        midiProcessor = new MIDIProcessor(kMaxPolyphony);
+        voices.resize(kMaxPolyphony);
         for (VoiceState& voice : voices) {
             voice.kernel = this;
             voice.Init();
+            midiProcessor->voices.push_back(&voice);
         }
         lfoParameters[2] = lfoParameters[3] = 32768;
         envParameters[2] = UINT16_MAX;
@@ -253,7 +259,7 @@ public:
     
     void reset() {
         for (VoiceState& state : voices) {
-            state.clear();
+            state.midiAllNotesOff();
         }
     }
     
@@ -295,21 +301,16 @@ public:
                 
             case PlaitsParamPolyphony: {
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
-                if (newPolyphony != activePolyphony) {
+                if (newPolyphony != midiProcessor->getActivePolyphony()) {
+                    midiProcessor->setActivePolyphony(newPolyphony);
                     gainCoefficient = 1.0f / (float) activePolyphony;
-                    reset();
-                    activePolyphony = newPolyphony;
                 }
                 break;
             }
                 
             case PlaitsParamUnison: {
-                int newUnison = round(clamp(value, 0.0f, 1.0f)) == 1;
-                if (newUnison != unison) {
-                    reset();
-                    unison = newUnison;
-                }
-                
+                int unison = round(clamp(value, 0.0f, 1.0f)) == 1;
+                midiProcessor->setUnison(unison);
                 break;
             }
                 
@@ -341,7 +342,7 @@ public:
                 uint16_t newShape = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newShape != lfoParameters[1]) {
                     lfoParameters[1] = newShape;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].lfo.Configure(lfoParameters);
                     }
                 }
@@ -353,7 +354,7 @@ public:
                 uint16_t newRate = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newRate != lfoParameters[0]) {
                     lfoParameters[0] = newRate;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].lfo.Configure(lfoParameters);
                     }
                 }
@@ -381,7 +382,7 @@ public:
                 break;
                 
             case PlaitsParamPitchBendRange:
-                bendRange = round(clamp(value, 0.0f, 12.0f));
+                midiProcessor->bendRange = round(clamp(value, 0.0f, 12.0f));
                 break;
                 
             case PlaitsParamAmpSource: {
@@ -405,7 +406,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[0]) {
                     envParameters[0] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].envelope.Configure(envParameters);
                     }
                 }
@@ -416,7 +417,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[1]) {
                     envParameters[1] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].envelope.Configure(envParameters);
                     }
                 }
@@ -427,7 +428,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[2]) {
                     envParameters[2] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].envelope.Configure(envParameters);
                     }
                 }
@@ -438,7 +439,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[3]) {
                     envParameters[3] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].envelope.Configure(envParameters);
                     }
                 }
@@ -449,7 +450,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != ampEnvParameters[0]) {
                     ampEnvParameters[0] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].ampEnvelope.Configure(ampEnvParameters);
                     }
                 }
@@ -460,7 +461,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != ampEnvParameters[1]) {
                     ampEnvParameters[1] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].ampEnvelope.Configure(ampEnvParameters);
                     }
                 }
@@ -471,7 +472,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != ampEnvParameters[2]) {
                     ampEnvParameters[2] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].ampEnvelope.Configure(ampEnvParameters);
                     }
                 }
@@ -482,7 +483,7 @@ public:
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != ampEnvParameters[3]) {
                     ampEnvParameters[3] = newValue;
-                    for (int i = 0; i < kPolyphony; i++) {
+                    for (int i = 0; i < kMaxPolyphony; i++) {
                         voices[i].ampEnvelope.Configure(ampEnvParameters);
                     }
                 }
@@ -542,7 +543,7 @@ public:
                 return patch.lpg_colour;
                 
             case PlaitsParamUnison:
-                return unison ? 1.0f : 0.0f;
+                return midiProcessor->getUnison() ? 1.0f : 0.0f;
                 
             case PlaitsParamPolyphony:
                 return (float) activePolyphony - 1;
@@ -589,7 +590,7 @@ public:
                 return lfoAmountMorph;
                 
             case PlaitsParamPitchBendRange:
-                return (float) bendRange;
+                return (float) midiProcessor->bendRange;
                 
             case PlaitsParamAmpSource:
                 return (float) ampSource;
@@ -650,106 +651,8 @@ public:
         outBufferListPtr = outBufferList;
     }
     
-    VoiceState *voiceForNote(uint8_t note) {
-        for (int i = 0; i < activePolyphony; i++) {
-            if (voices[i].note == note) {
-                return &voices[i];
-            }
-        }
-        return nullptr;
-    }
-    
-    VoiceState *freeVoice() {
-        // Choose which voice for the new note.
-        // Acts like a ring buffer to let latest played voices ring out for the longest.
-        
-        // first try to find an unused voice.
-        int startingPoint = nextVoice;
-        do {
-            if (voices[nextVoice].state == NoteStateUnused) {
-                nextVoice = (nextVoice + 1) % activePolyphony;
-                return &voices[nextVoice];
-            }
-            nextVoice = (nextVoice + 1) % activePolyphony;
-        } while (nextVoice != startingPoint);
-        
-        // then try to find a voice that is releasing.
-        startingPoint = nextVoice;
-        do {
-            if (voices[nextVoice].state == NoteStateReleasing) {
-                nextVoice = (nextVoice + 1) % activePolyphony;
-                return &voices[nextVoice];
-            }
-            nextVoice = (nextVoice + 1) % activePolyphony;
-        } while (nextVoice != startingPoint);
-        
-        // finally, just use the oldest voice.
-        VoiceState *stolen = &voices[nextVoice];
-        nextVoice = (nextVoice + 1) % activePolyphony;
-        
-        return stolen;
-    }
-    
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
-        if (midiEvent.length != 3) return;
-        uint8_t status = midiEvent.data[0] & 0xF0;
-        //uint8_t channel = midiEvent.data[0] & 0x0F; // works in omni mode.
-        switch (status) {
-            case 0x80 : { // note off
-                uint8_t note = midiEvent.data[1];
-                if (note > 127) break;
-                
-                if (unison) {
-                    for (int i = 0; i < activePolyphony; i++) {
-                        voices[i].release();
-                    }
-                } else {
-                    VoiceState *voice = voiceForNote(note);
-                    if (voice) {
-                        voice->release();
-                    }
-                }
-                    
-                break;
-            }
-            case 0x90 : { // note on
-                uint8_t note = midiEvent.data[1];
-                uint8_t veloc = midiEvent.data[2];
-                if (note > 127 || veloc > 127) break;
-                if (unison) {
-                    for (int i = 0; i < activePolyphony; i++) {
-                        voices[i].noteOn(note, veloc);
-                    }
-                } else {
-                    VoiceState *voice = voiceForNote(note);
-                    if (voice) {
-                        voice->noteOn(note, veloc);
-                    } else {
-                        voice = freeVoice();
-                        if (voice) {
-                            voice->noteOn(note, veloc);
-                        }
-                    }
-                }
-                break;
-            }
-            case 0xE0 : { // pitch bend
-                uint8_t coarse = midiEvent.data[2];
-                uint8_t fine = midiEvent.data[1];
-                int16_t midiPitchBend = (coarse << 7) + fine;
-                bendAmount = (((float) (midiPitchBend - 8192)) / 8192.0f) * bendRange;
-            }
-                
-            case 0xB0 : { // control
-                uint8_t num = midiEvent.data[1];
-                if (num == 123) { // all notes off
-                    for (int i = 0; i < kPolyphony; i++) {
-                        voices[i].clear();
-                    }
-                }
-                break;
-            }
-        }
+        midiProcessor->handleMIDIEvent(midiEvent);
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -760,7 +663,7 @@ public:
         while (frameCount > 0) {
             int frames = (frameCount > kAudioBlockSize) ? kAudioBlockSize : frameCount;
             
-            modulations.frequency = bendAmount;
+            modulations.frequency = midiProcessor->bendAmount;
             
             for (int i = 0; i < activePolyphony; i++) {
                 if (voices[i].state != NoteStateUnused) {
@@ -807,6 +710,7 @@ public:
     // MARK: Member Variables
     
 private:
+    MIDIProcessor *midiProcessor;
     std::vector<VoiceState> voices;
     
     float sampleRate = 44100.0;
@@ -838,12 +742,9 @@ public:
     float envAmountLfoRate;
     float envAmountLfoAmount;
     
-    int nextVoice = 0;
-    
     bool lastPanSpreadWasNegative = 0;
     
     float slop = 0.0f;
-    bool unison = false;
     float volume = 1.0f;
     float gainCoefficient = 0.1f;
     float leftSource = 0.0f;
@@ -853,8 +754,6 @@ public:
     
     int pitch = 0;
     float detune = 0;
-    int bendRange = 0;
-    float bendAmount = 0.0f;
     
     int ampSource;
 };

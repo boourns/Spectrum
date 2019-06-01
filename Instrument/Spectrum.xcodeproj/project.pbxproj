@@ -475,6 +475,8 @@
 		E2495057229F84730073FBDC /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_alloc.h; sourceTree = "<group>"; };
 		E265FF14229CCF9700340255 /* iOSSpectrumFramework-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOSSpectrumFramework-Bridging-Header.h"; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* ParameterSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSliderView.swift; sourceTree = "<group>"; };
+		E2A6ABFF22A1B3F2007B38DD /* MIDIProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MIDIProcessor.hpp; sourceTree = "<group>"; };
+		E2A6AC0522A1C8DE007B38DD /* ModulationEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ModulationEngine.hpp; sourceTree = "<group>"; };
 		E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAudioUnit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E60618229CE9E0004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -626,6 +628,8 @@
 				E2184A9B229E29C300CA4DFE /* ModalAudioUnit.mm */,
 				E2184A9E229E2AAC00CA4DFE /* ElementsDSPKernel.hpp */,
 				E2184A9D229E29D700CA4DFE /* ModalAudioUnit.h */,
+				E2A6ABFF22A1B3F2007B38DD /* MIDIProcessor.hpp */,
+				E2A6AC0522A1C8DE007B38DD /* ModulationEngine.hpp */,
 			);
 			name = Shared;
 			path = ../../Shared;
