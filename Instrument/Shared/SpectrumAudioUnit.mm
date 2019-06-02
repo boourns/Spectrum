@@ -302,9 +302,9 @@
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
     
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
-                                                                        children:@[[self modMatrixRule:0 parameterOffset:0],
-                                                                                   [self modMatrixRule:1 parameterOffset:0],
-                                                                                   [self modMatrixRule:2 parameterOffset:0],
+                                                                        children:@[[self modMatrixRule:0 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:1 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:2 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    ]];
                                                                                    
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
@@ -387,30 +387,38 @@
     AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
     kAudioUnitParameterFlag_IsReadable;
     
-    AUParameter *input1Param = [AUParameterTree createParameterWithIdentifier:@"ruleNin1" name:@"Input 1"
-                                                                     address:parameterOffset + 0
+    int start = parameterOffset + (ruleNumber*4);
+    
+    AUParameter *input1Param = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iIn1", ruleNumber+1]
+                                                                    name:@"Input 1"
+                                                                     address:start + 0
                                                                          min:0.0 max:((float) [modInputs count])
                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:modInputs dependentParameters:nil];
    
-    AUParameter *input2Param = [AUParameterTree createParameterWithIdentifier:@"ruleNin2" name:@"Input 2"
-                                                                      address:parameterOffset + 1
+    AUParameter *input2Param = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iIn2", ruleNumber+1]
+                                                                         name:@"Input 2"
+                                                                      address:start + 1
                                                                           min:0.0 max:((float) [modInputs count])
                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:modInputs dependentParameters:nil];
     
-    AUParameter *depthParam = [AUParameterTree createParameterWithIdentifier:@"ruleNDepth" name:@"Depth"
-                                                                          address:PlaitsParamLfoAmountTimbre
+    AUParameter *depthParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iDepth", ruleNumber+1]
+                                                                        name:@"Depth"
+                                                                          address:start + 2
                                                                               min:-2.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                             flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *outParam = [AUParameterTree createParameterWithIdentifier:@"ruleNOut" name:@"Out"
-                                                                      address:parameterOffset + 1
-                                                                          min:0.0 max:((float) [modInputs count])
+    AUParameter *outParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%io=Out", ruleNumber+1]
+                                                                      name:@"Out"
+                                                                      address:start + 3
+                                                                          min:0.0 max:((float) [modOutputs count])
                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:modInputs dependentParameters:nil];
+                                                                        flags: flags valueStrings:modOutputs dependentParameters:nil];
     
-    return [AUParameterTree createGroupWithIdentifier:@"ruleN" name:@"Rule N" children:@[input1Param, input2Param, depthParam, outParam]];
+    return [AUParameterTree createGroupWithIdentifier:[NSString stringWithFormat:@"rule%i", ruleNumber+1]
+                                                 name:[NSString stringWithFormat:@"Rule %i", ruleNumber+1]
+                                             children:@[input1Param, input2Param, depthParam, outParam]];
 }
 
 - (AUAudioUnitBusArray *)outputBusses {

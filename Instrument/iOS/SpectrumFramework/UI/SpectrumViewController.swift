@@ -11,7 +11,14 @@ import AVFoundation
 import CoreAudioKit
 
 class SpectrumViewController: BaseAudioUnitViewController {
-    
+    override func viewForPage(group: AUParameterGroup) -> UIStackView {
+        if group.displayName == "Matrix" {
+            stackVertically = true
+        }
+        let result = super.viewForPage(group: group)
+        stackVertically = false
+        return result
+    }
 }
 
 extension SpectrumViewController: AUAudioUnitFactory {

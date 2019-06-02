@@ -39,6 +39,7 @@ public:
         this->maxPolyphony = maxPolyphony;
         this->activePolyphony = maxPolyphony;
         this->unison = false;
+        this->nextVoice = 0;
     }
     
     ~MIDIProcessor() {
@@ -56,12 +57,12 @@ public:
                 
                 if (unison) {
                     for (int i = 0; i < activePolyphony; i++) {
-                        voices[i]->midiAllNotesOff();
+                        voices[i]->midiNoteOff();
                     }
                 } else {
                     MIDIVoice *voice = voiceForNote(note);
                     if (voice) {
-                        voice->midiAllNotesOff();
+                        voice->midiNoteOff();
                     }
                 }
                 
@@ -129,6 +130,7 @@ public:
         for (int i = 0; i < maxPolyphony; i++) {
             voices[i]->midiAllNotesOff();
         }
+        nextVoice = 0;
     }
     
     std::vector<MIDIVoice *> voices;

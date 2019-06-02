@@ -214,6 +214,7 @@ public:
             
             float lfoAmount = kernel->lfoAmount + modEngine->out[ModOutLFOAmount] + (envelope.value * kernel->envAmountLfoAmount);
             
+            modulations.engine = modEngine->out[ModOutEngine];
             modulations.frequency = kernel->modulations.frequency + modEngine->out[ModOutTune] + (modEngine->out[ModOutFrequency] * 120.0f) + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
             
             modulations.harmonics = kernel->modulations.harmonics + modEngine->out[ModOutHarmonics] + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
