@@ -298,15 +298,19 @@
     AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoAmount]];
     
     AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoModulation" name:@"LFO Modulation" children:@[lfoAmountFM, lfoAmountHarmonics, lfoAmountTimbre, lfoAmountMorph]];
-    
-    
 
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
     
+    AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
+                                                                        children:@[[self modMatrixRule:0 parameterOffset:0],
+                                                                                   [self modMatrixRule:1 parameterOffset:0],
+                                                                                   [self modMatrixRule:2 parameterOffset:0],
+                                                                                   ]];
+                                                                                   
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, modMatrixPage, settingsPage]];
     
     // Create the output bus.
     _outputBusBuffer.init(defaultFormat, 2);
@@ -352,6 +356,62 @@
 }
 
 #pragma mark - AUAudioUnit (Overrides)
+
+- (AUParameterGroup *)modMatrixRule:(int) ruleNumber parameterOffset:(int) parameterOffset {
+    
+    NSArray *modInputs = @[@"Direct",
+                               @"LFO",
+                               @"Envelope",
+                               @"Note",
+                               @"Velocity",
+                               @"Modwheel",
+                               @"Out",
+                               @"Aux",
+                            ];
+    
+    NSArray *modOutputs = @[
+    @"Disabled",
+    @"Tune",
+    @"Frequency",
+    @"Harmonics",
+    @"Timbre",
+    @"Morph",
+    @"Engine",
+    @"LFORate",
+    @"LFOAmount",
+    @"LeftSource",
+    @"RightSource",
+    @"Pan",
+    ];
+    
+    AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
+    kAudioUnitParameterFlag_IsReadable;
+    
+    AUParameter *input1Param = [AUParameterTree createParameterWithIdentifier:@"ruleNin1" name:@"Input 1"
+                                                                     address:parameterOffset + 0
+                                                                         min:0.0 max:((float) [modInputs count])
+                                                                         unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:modInputs dependentParameters:nil];
+   
+    AUParameter *input2Param = [AUParameterTree createParameterWithIdentifier:@"ruleNin2" name:@"Input 2"
+                                                                      address:parameterOffset + 1
+                                                                          min:0.0 max:((float) [modInputs count])
+                                                                         unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:modInputs dependentParameters:nil];
+    
+    AUParameter *depthParam = [AUParameterTree createParameterWithIdentifier:@"ruleNDepth" name:@"Depth"
+                                                                          address:PlaitsParamLfoAmountTimbre
+                                                                              min:-2.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                            flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *outParam = [AUParameterTree createParameterWithIdentifier:@"ruleNOut" name:@"Out"
+                                                                      address:parameterOffset + 1
+                                                                          min:0.0 max:((float) [modInputs count])
+                                                                         unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:modInputs dependentParameters:nil];
+    
+    return [AUParameterTree createGroupWithIdentifier:@"ruleN" name:@"Rule N" children:@[input1Param, input2Param, depthParam, outParam]];
+}
 
 - (AUAudioUnitBusArray *)outputBusses {
     return _outputBusArray;

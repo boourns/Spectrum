@@ -9,6 +9,7 @@
 #define PlaitsDSPKernel_h
 
 #import "MIDIProcessor.hpp"
+#import "ModulationEngine.hpp"
 #import "peaks/multistage_envelope.h"
 #import "DSPKernel.hpp"
 #import <vector>
@@ -17,6 +18,7 @@
 
 const size_t kAudioBlockSize = 24;
 const size_t kMaxPolyphony = 8;
+const size_t kNumModulationRules = 3;
 
 enum {
     PlaitsParamTimbre = 0,
@@ -58,7 +60,37 @@ enum {
     PlaitsParamEnvAmountLFORate = 36,
     PlaitsParamEnvAmountLFOAmount = 37,
     PlaitsParamLfoAmount = 38,
+    PlaitsParamModMatrixStart = 39,
+    PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 12 = 51
     PlaitsMaxParameters
+};
+
+enum {
+    ModInDirect = 0,
+    ModInLFO,
+    ModInEnvelope,
+    ModInNote,
+    ModInVelocity,
+    ModInModwheel,
+    ModInOut,
+    ModInAux,
+    NumModulationInputs
+};
+
+enum {
+    ModOutDisabled = 0,
+    ModOutTune,
+    ModOutFrequency,
+    ModOutHarmonics,
+    ModOutTimbre,
+    ModOutMorph,
+    ModOutEngine,
+    ModOutLFORate,
+    ModOutLFOAmount,
+    ModOutLeftSource,
+    ModOutRightSource,
+    ModOutPan,
+    NumModulationOutputs
 };
 
 /*
@@ -83,14 +115,19 @@ public:
         peaks::MultistageEnvelope ampEnvelope;
         peaks::Lfo lfo;
         float lfoOutput;
+        float out, aux;
+        float rightGain, leftGain;
+        float leftSource, rightSource;
 
         plaits::Voice *voice;
         plaits::Modulations modulations;
+        ModulationEngine *modEngine;
+        
         float panSpread = 0;
         
         bool delayed_trigger = false;
         
-        void Init() {
+        void Init(ModulationEngineRuleList *rules) {
             voice = new plaits::Voice();
             stmlib::BufferAllocator allocator(ram_block, 16384);
             voice->Init(&allocator);
@@ -98,6 +135,9 @@ public:
             envelope.Init();
             ampEnvelope.Init();
             lfo.Init();
+            modEngine = new ModulationEngine(NumModulationInputs, NumModulationOutputs);
+            modEngine->rules = rules;
+            modEngine->in[ModInDirect] = 1.0f;
         }
         
         virtual void midiAllNotesOff() {
@@ -152,19 +192,40 @@ public:
                 panSpread = kernel->nextPanSpread();
 
                 note = noteNumber;
+                modEngine->in[ModInNote] = ((float) note) / 127.0f;
+                modEngine->in[ModInVelocity] = ((float) velocity) / 127.0f;
+                
                 add();
             }
         }
         
-        void run(int n, float* outL, float* outR)
-        {
-            int framesRemaining = n;
-            float leftSource = kernel->leftSource;
-            float rightSource = kernel->rightSource;
+        void runModulations(int blockSize) {
+            envelope.Process(blockSize);
+            ampEnvelope.Process(blockSize);
             
-            float out, aux, rightGain, leftGain;
+            lfoOutput = ((float) lfo.Process(kAudioBlockSize)) / INT16_MAX;
             
-            float pan = clamp(kernel->pan + panSpread, -1.0f, 1.0f);
+            modEngine->in[ModInLFO] = lfoOutput;
+            modEngine->in[ModInEnvelope] = envelope.value;
+            modEngine->in[ModInOut] = out;
+            modEngine->in[ModInAux] = aux;
+            
+            modEngine->run();
+            
+            float lfoAmount = kernel->lfoAmount + modEngine->out[ModOutLFOAmount] + (envelope.value * kernel->envAmountLfoAmount);
+            
+            modulations.frequency = kernel->modulations.frequency + modEngine->out[ModOutTune] + (modEngine->out[ModOutFrequency] * 120.0f) + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
+            
+            modulations.harmonics = kernel->modulations.harmonics + modEngine->out[ModOutHarmonics] + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
+            
+            modulations.timbre = kernel->modulations.timbre + modEngine->out[ModOutTimbre] + lfoOutput * kernel->lfoAmountTimbre * lfoAmount + (envelope.value * kernel->envAmountTimbre);
+            
+            modulations.morph = kernel->modulations.morph + modEngine->out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
+            
+            leftSource = clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], 0.0f, 1.0f);
+            rightSource = clamp(kernel->rightSource + modEngine->out[ModOutRightSource], 0.0f, 1.0f);
+            
+            float pan = clamp(kernel->pan + modEngine->out[ModOutPan] + panSpread, -1.0f, 1.0f);
             if (pan > 0) {
                 rightGain = 1.0f;
                 leftGain = 1.0f - pan;
@@ -172,21 +233,17 @@ public:
                 leftGain = 1.0f;
                 rightGain = 1.0f + pan;
             }
+        }
+        
+        void run(int n, float* outL, float* outR)
+        {
+            int framesRemaining = n;
             
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
-                    envelope.Process(kAudioBlockSize);
-                    ampEnvelope.Process(kAudioBlockSize);
-
-                    // TODO add poly mod
-                    lfoOutput = ((float) lfo.Process(kAudioBlockSize)) / INT16_MAX;
-                    float lfoAmount = kernel->lfoAmount + (envelope.value * kernel->envAmountLfoAmount);
                     
-                    modulations.frequency = kernel->modulations.frequency + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
-                    modulations.harmonics = kernel->modulations.harmonics + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
-                    modulations.timbre = kernel->modulations.timbre + lfoOutput * kernel->lfoAmountTimbre * lfoAmount + (envelope.value * kernel->envAmountTimbre);
-                    modulations.morph = kernel->modulations.morph + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
-                
+                    runModulations(kAudioBlockSize);
+                    
                     voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                     
@@ -220,9 +277,10 @@ public:
     {
         midiProcessor = new MIDIProcessor(kMaxPolyphony);
         voices.resize(kMaxPolyphony);
+        modulationEngineRules = new ModulationEngineRuleList(kNumModulationRules);
         for (VoiceState& voice : voices) {
             voice.kernel = this;
-            voice.Init();
+            voice.Init(modulationEngineRules);
             midiProcessor->voices.push_back(&voice);
         }
         lfoParameters[2] = lfoParameters[3] = 32768;
@@ -264,6 +322,11 @@ public:
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
+        if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
+            modulationEngineRules->setParameter(address - PlaitsParamModMatrixStart, value);
+            return;
+        }
+        
         switch (address) {
             case PlaitsParamTimbre:
                 patch.timbre = clamp(value, 0.0f, 1.0f);
@@ -517,6 +580,10 @@ public:
     }
     
     AUValue getParameter(AUParameterAddress address) {
+        if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
+            return modulationEngineRules->getParameter(address - PlaitsParamModMatrixStart);
+        }
+        
         switch (address) {
             case PlaitsParamTimbre:
                 return patch.timbre;
@@ -720,6 +787,8 @@ private:
     unsigned int activePolyphony = 8;
     
 public:
+    ModulationEngineRuleList *modulationEngineRules;
+    
     plaits::Modulations modulations;
     plaits::Patch patch;
     
