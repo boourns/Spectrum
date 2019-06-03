@@ -64,6 +64,7 @@ enum {
     PlaitsParamLfoAmount = 38,
     PlaitsParamModMatrixStart = 39,
     PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 12 = 51
+    PlaitsParamQuality = 52,
     PlaitsMaxParameters
 };
 
@@ -227,7 +228,7 @@ public:
             modulations.morph = kernel->modulations.morph + modEngine->out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
             
             if (kernel->ampSource == 1) {
-                modulations.level = envelope.value;
+                modulations.level = ampEnvelope.value;
             } else if (kernel->ampSource == 2){
                 modulations.level = 1.0f;
             }
@@ -303,9 +304,7 @@ public:
     }
     
     void init(int channelCount, double inSampleRate) {
-        sampleRate = float(inSampleRate);
-        
-        outputSrc.setRates(44100, (int) inSampleRate);
+        outputSrc.setRates(48000, (int) inSampleRate);
 
         patch.engine = 8;
         patch.note = 48.0f;
@@ -590,6 +589,11 @@ public:
             case PlaitsParamEnvAmountLFOAmount:
                 envAmountLfoAmount = clamp(value, 0.0f, 1.0f);
                 break;
+                
+            case PlaitsParamQuality:
+                outputSrc.setQuality((int) clamp(value, 0.0f, 10.0f));
+                break;
+                
         }
     }
     
@@ -718,6 +722,9 @@ public:
             case PlaitsParamEnvAmountLFOAmount:
                 return envAmountLfoAmount;
                 
+            case PlaitsParamQuality:
+                return outputSrc.quality;
+                
             default:
                 return 0.0f;
         }
@@ -812,8 +819,6 @@ public:
 private:
     MIDIProcessor *midiProcessor;
     std::vector<VoiceState> voices;
-    
-    float sampleRate = 44100.0;
     
     AudioBufferList* outBufferListPtr = nullptr;
     

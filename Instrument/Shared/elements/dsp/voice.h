@@ -50,7 +50,7 @@ const size_t kNumStrings = 5;
 enum ResonatorModel {
   RESONATOR_MODEL_MODAL,
   RESONATOR_MODEL_STRING,
-  RESONATOR_MODEL_STRINGS,
+  RESONATOR_MODEL_STRINGS
 };
 
 class Voice {

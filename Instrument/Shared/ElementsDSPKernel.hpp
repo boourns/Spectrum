@@ -33,6 +33,8 @@ enum {
     ElementsParamResonatorDamping = 11,
     ElementsParamResonatorPosition = 12,
     ElementsParamSpace = 13,
+    ElementsParamQuality = 14,
+    ElementsParamMode = 15,
     ElementsMaxParameters
 };
 
@@ -128,6 +130,12 @@ public:
             case ElementsParamSpace:
                 patch->space = clamp(value, 0.0f, 1.0f);
                 break;
+            case ElementsParamQuality:
+                outputSrc.setQuality(clamp(value, 0.0f, 10.0f));
+                break;
+            case ElementsParamMode:
+                part->set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
+                break;
         }
     }
     
@@ -174,6 +182,16 @@ public:
                 
             case ElementsParamSpace:
                 return patch->space;
+                
+            case ElementsParamQuality:
+                return outputSrc.quality;
+                
+            case ElementsParamMode:
+                if (part->easter_egg_) {
+                    return 3.0f;
+                } else {
+                    return (float) part->resonator_model();
+                }
                 
             default:
                 return 0.0f;

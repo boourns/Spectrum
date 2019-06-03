@@ -80,7 +80,15 @@ class Part {
   inline void set_easter_egg(bool easter_egg) { easter_egg_ = easter_egg; }
 
   inline ResonatorModel resonator_model() const { return resonator_model_; }
-  inline void set_resonator_model(ResonatorModel r) { resonator_model_ = r; }
+  inline void set_resonator_model(ResonatorModel r) {
+      if (r < 3) {
+          resonator_model_ = r;
+          easter_egg_ = false;
+      } else {
+          easter_egg_ = true;
+      }
+  }
+bool easter_egg_;
   
  private:
   Patch patch_;
@@ -89,7 +97,6 @@ class Part {
   
   bool panic_;
   bool bypass_;
-  bool easter_egg_;
   bool previous_gate_;
   float note_[kNumVoices];
   

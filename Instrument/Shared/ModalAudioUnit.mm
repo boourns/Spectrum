@@ -154,8 +154,41 @@
     
     AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
     
+    AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
+                                                                       address:ElementsParamMode min:0.0 max:4.0
+                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags:flags valueStrings:@[
+                                                                                                    @"Modal",
+                                                                                                    @"Non-linear",
+                                                                                                    @"Chords",
+                                                                                                    @"Ominous",
+                                                                                                    ]
+                                                           dependentParameters:nil];
+    
+    AUParameter *qualityParam = [AUParameterTree createParameterWithIdentifier:@"quality" name:@"Quality"
+                                                                       address:ElementsParamQuality min:0.0 max:10.0
+                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags:flags valueStrings:@[
+                                                                                                    @"0 (Lowest)",
+                                                                                                    @"1",
+                                                                                                    @"2",
+                                                                                                    @"3",
+                                                                                                    @"4",
+                                                                                                    @"5 (Default)",
+                                                                                                    @"6",
+                                                                                                    @"7",
+                                                                                                    @"8",
+                                                                                                    @"9",
+                                                                                                    @"10 (Highest)",
+                                                                                                    ]
+                                                           dependentParameters:nil];
+    
+    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[modeParam, qualityParam]];
+    
+    AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
+    
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, settingsPage]];
     
     // Create the output bus.
     _outputBusBuffer.init(defaultFormat, 2);
