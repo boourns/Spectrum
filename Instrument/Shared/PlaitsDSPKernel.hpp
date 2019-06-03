@@ -8,6 +8,8 @@
 #ifndef PlaitsDSPKernel_h
 #define PlaitsDSPKernel_h
 
+#import "resampler.hpp"
+
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
 #import "peaks/multistage_envelope.h"
@@ -291,6 +293,8 @@ public:
     void init(int channelCount, double inSampleRate) {
         sampleRate = float(inSampleRate);
         
+        outputSrc.setRates(44100, (int) inSampleRate);
+
         patch.engine = 8;
         patch.note = 48.0f;
         patch.harmonics = 0.3f;
@@ -728,28 +732,47 @@ public:
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
         
         int playingNotes = 0;
+        
         while (frameCount > 0) {
-            int frames = (frameCount > kAudioBlockSize) ? kAudioBlockSize : frameCount;
-            
-            modulations.frequency = midiProcessor->bendAmount;
-            
-            for (int i = 0; i < activePolyphony; i++) {
-                if (voices[i].state != NoteStateUnused) {
-                    playingNotes++;
-                    
-                    voices[i].run(frames, outL, outR);
+            if (outputBuffer.empty()) {
+                float left[kAudioBlockSize] = {};
+                float right[kAudioBlockSize] = {};
+                
+                modulations.frequency = midiProcessor->bendAmount;
+                
+                for (int i = 0; i < activePolyphony; i++) {
+                    if (voices[i].state != NoteStateUnused) {
+                        playingNotes++;
+                        
+                        voices[i].run(kAudioBlockSize, left, right);
+                    }
                 }
-            }
-            
-            if (playingNotes > 0) {
-                for (int i = 0; i < frames; i++) {
-                    outL[i] *= gainCoefficient * volume;
-                    outR[i] *= gainCoefficient * volume;
+                
+                if (playingNotes > 0) {
+                    for (int i = 0; i < kAudioBlockSize; i++) {
+                        left[i] *= gainCoefficient * volume;
+                        right[i] *= gainCoefficient * volume;
+                    }
                 }
+                
+                rack::Frame<2> outputFrames[kAudioBlockSize];
+                for (int i = 0; i < kAudioBlockSize; i++) {
+                    outputFrames[i].samples[0] = left[i];
+                    outputFrames[i].samples[1] = right[i];
+                }
+                
+                int inLen = kAudioBlockSize;
+                int outLen = (int) outputBuffer.capacity();
+                outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
+                outputBuffer.endIncr(outLen);
             }
-            outL += frames;
-            outR += frames;
-            frameCount -= frames;
+                
+            rack::Frame<2> outputFrame = outputBuffer.shift();
+            
+            *outL++ += outputFrame.samples[0];
+            *outR++ += outputFrame.samples[1];
+            
+            frameCount--;
         }
     }
     
@@ -792,6 +815,9 @@ public:
     
     plaits::Modulations modulations;
     plaits::Patch patch;
+    
+    rack::SampleRateConverter<2> outputSrc;
+    rack::DoubleRingBuffer<rack::Frame<2>, 256> outputBuffer;
     
     uint16_t lfoParameters[4];
     uint16_t envParameters[4];

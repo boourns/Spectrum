@@ -285,19 +285,16 @@ public:
                 
                 part->Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
                 
-                // Convert output buffer
-                {
-                    rack::Frame<2> outputFrames[16];
-                    for (int i = 0; i < 16; i++) {
-                        outputFrames[i].samples[0] = mainSamples[i];
-                        outputFrames[i].samples[1] = auxSamples[i];
-                    }
-                    
-                    int inLen = 16;
-                    int outLen = (int) outputBuffer.capacity();
-                    outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
-                    outputBuffer.endIncr(outLen);
+                rack::Frame<2> outputFrames[16];
+                for (int i = 0; i < 16; i++) {
+                    outputFrames[i].samples[0] = mainSamples[i];
+                    outputFrames[i].samples[1] = auxSamples[i];
                 }
+                
+                int inLen = 16;
+                int outLen = (int) outputBuffer.capacity();
+                outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
+                outputBuffer.endIncr(outLen);
                 
                 if (delayed_trigger) {
                     gate = true;

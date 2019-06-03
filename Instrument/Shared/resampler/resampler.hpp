@@ -8,8 +8,6 @@
 
 namespace rack {
     
-#define min(X, Y) (X < Y) ? X : Y
-
 template<int CHANNELS>
 struct SampleRateConverter {
 	SpeexResamplerState *st = NULL;
@@ -90,7 +88,7 @@ struct SampleRateConverter {
 		}
 		else {
 			// Simply copy the buffer without conversion
-			int frames = min(*inFrames, *outFrames);
+            int frames = (*inFrames < *outFrames) ? *inFrames : *outFrames;
 			memcpy(out, in, frames * sizeof(Frame<CHANNELS>));
 			*inFrames = frames;
 			*outFrames = frames;
