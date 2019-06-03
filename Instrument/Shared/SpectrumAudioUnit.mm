@@ -382,6 +382,7 @@
     @"LeftSource",
     @"RightSource",
     @"Pan",
+    @"Level",
     ];
     
     AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |

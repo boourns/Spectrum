@@ -92,6 +92,7 @@ enum {
     ModOutLeftSource,
     ModOutRightSource,
     ModOutPan,
+    ModOutLevel,
     NumModulationOutputs
 };
 
@@ -225,6 +226,14 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine->out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
             
+            if (kernel->ampSource == 1) {
+                modulations.level = envelope.value;
+            } else if (kernel->ampSource == 2){
+                modulations.level = 1.0f;
+            }
+            
+            modulations.level += modEngine->out[ModOutLevel];
+            
             leftSource = clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], 0.0f, 1.0f);
             rightSource = clamp(kernel->rightSource + modEngine->out[ModOutRightSource], 0.0f, 1.0f);
             
@@ -261,13 +270,9 @@ public:
                 out = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
                 aux = ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
                 
-                if (kernel->ampSource == 1) {
-                    *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain * ampEnvelope.value;
-                    *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain * ampEnvelope.value;
-                } else {
-                    *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
-                    *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
-                }
+                *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
+                *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
+                
                 plaitsFramesIndex++;
                 framesRemaining--;
             }
@@ -462,9 +467,6 @@ public:
                         modulations.level_patched = false;
                     } else {
                         modulations.level_patched = true;
-                        if (ampSource == 2) {
-                            modulations.level = 1.0f;
-                        }
                     }
                 }
                 break;
