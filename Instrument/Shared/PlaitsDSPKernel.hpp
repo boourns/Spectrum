@@ -382,7 +382,7 @@ public:
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
                 if (newPolyphony != midiProcessor->getActivePolyphony()) {
                     midiProcessor->setActivePolyphony(newPolyphony);
-                    gainCoefficient = 1.0f / (float) activePolyphony;
+                    gainCoefficient = 1.0f / (float) newPolyphony;
                 }
                 break;
             }
@@ -631,7 +631,7 @@ public:
                 return midiProcessor->getUnison() ? 1.0f : 0.0f;
                 
             case PlaitsParamPolyphony:
-                return (float) activePolyphony - 1;
+                return (float) midiProcessor->getActivePolyphony() - 1;
                 
             case PlaitsParamVolume:
                 return volume;
@@ -756,7 +756,7 @@ public:
                 
                 modulations.frequency = midiProcessor->bendAmount;
                 
-                for (int i = 0; i < activePolyphony; i++) {
+                for (int i = 0; i < midiProcessor->getActivePolyphony(); i++) {
                     if (voices[i].state != NoteStateUnused) {
                         playingNotes++;
                         
@@ -821,8 +821,6 @@ private:
     std::vector<VoiceState> voices;
     
     AudioBufferList* outBufferListPtr = nullptr;
-    
-    unsigned int activePolyphony = 8;
     
 public:
     ModulationEngineRuleList *modulationEngineRules;
