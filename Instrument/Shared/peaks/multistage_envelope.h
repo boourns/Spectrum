@@ -290,7 +290,8 @@ class MultistageEnvelope {
   }
     
     float value;
-  
+    int16_t value_;
+
  private:
   int16_t level_[kMaxNumSegments];
   uint16_t time_[kMaxNumSegments];
@@ -298,7 +299,6 @@ class MultistageEnvelope {
   
   int16_t segment_;
   int16_t start_value_;
-  int16_t value_;
 
   uint32_t phase_;
   uint32_t phase_increment_;

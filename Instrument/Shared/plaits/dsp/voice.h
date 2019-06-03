@@ -163,6 +163,10 @@ class Voice {
       Frame* frames,
       size_t size);
   inline int active_engine() const { return previous_engine_index_; }
+
+    bool lpg_active() {
+        return lpg_envelope_.gain() > 0.000001f;
+    }
     
  private:
   void ComputeDecayParameters(const Patch& settings);

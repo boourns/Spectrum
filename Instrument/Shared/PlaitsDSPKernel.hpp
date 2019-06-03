@@ -265,6 +265,13 @@ public:
                         envelope.TriggerHigh();
                         ampEnvelope.TriggerHigh();
                     }
+                    
+                    if (state == NoteStateReleasing) {
+                        if ((kernel->ampSource == 0 && !voice->lpg_active())
+                            || (kernel->ampSource == 1 && envelope.value_ == 0)) {
+                            state = NoteStateUnused;
+                        }
+                    }
                 }
                 
                 out = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
