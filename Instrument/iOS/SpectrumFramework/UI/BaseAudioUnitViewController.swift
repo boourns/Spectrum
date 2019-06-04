@@ -9,8 +9,19 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
+struct SpectrumColours {
+    let primary: UIColor
+    let secondary: UIColor
+    let background: UIColor
+}
+
 public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
+    var colours = SpectrumColours(
+        primary: UIColor.init(hex: "#bfc0c0ff")!,
+        secondary: UIColor.init(hex: "#bfc0c0ff")!,
+        background: UIColor.init(hex: "#2d3142ff")!
+    )
     
     public var audioUnit: AUAudioUnit? {
         didSet {
@@ -31,6 +42,12 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     
     public override func loadView() {
         super.loadView()
+        view.backgroundColor = colours.background
+        
+        UILabel.appearance().tintColor = colours.primary
+        UISlider.appearance().tintColor = colours.secondary
+        UIButton.appearance().tintColor = colours.secondary
+        
         view.addSubview(containerView)
         view.addSubview(navigationView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,6 +176,16 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     func selectPage(_ selectedIndex: Int) {
         pages.enumerated().forEach { index, page in
             page.view.isHidden = (selectedIndex != index)
+        }
+        navigationView.arrangedSubviews.enumerated().forEach { index, view in
+            guard let button = view as? UIButton else { return }
+            if index == selectedIndex {
+                button.backgroundColor = colours.secondary
+                button.setTitleColor(UIColor.white, for: .normal)
+            } else {
+                button.backgroundColor = colours.background
+                button.setTitleColor(colours.primary, for: .normal)
+            }
         }
     }
 }

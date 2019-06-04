@@ -203,10 +203,16 @@ public:
             }
         }
         
+        void updateLfoRate(float modulationAmount) {
+            float calculatedRate = clamp(kernel->lfoBaseRate + modulationAmount, 0.0f, 1.0f);
+            uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
+            lfo.set_rate(rateParameter);
+        }
+        
         void runModulations(int blockSize) {
             envelope.Process(blockSize);
             ampEnvelope.Process(blockSize);
-            
+        
             lfoOutput = ((float) lfo.Process(kAudioBlockSize)) / INT16_MAX;
             
             modEngine->in[ModInLFO] = lfoOutput;
@@ -215,6 +221,10 @@ public:
             modEngine->in[ModInAux] = aux;
             
             modEngine->run();
+            
+            if (kernel->lfoRateIsPatched || kernel->envAmountLfoRate > 0.0f) {
+                updateLfoRate(modEngine->out[ModOutLFORate] + (envelope.value * kernel->envAmountLfoRate));
+            }
             
             float lfoAmount = kernel->lfoAmount + modEngine->out[ModOutLFOAmount] + (envelope.value * kernel->envAmountLfoAmount);
             
@@ -340,6 +350,7 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
             modulationEngineRules->setParameter(address - PlaitsParamModMatrixStart, value);
+            lfoRateIsPatched = modulationEngineRules->isPatched(ModOutLFORate);
             return;
         }
         
@@ -429,8 +440,9 @@ public:
             }
                 
             case PlaitsParamLfoRate: {
-                
-                uint16_t newRate = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                lfoBaseRate = clamp(value, 0.0f, 1.0f);
+                uint16_t newRate = (uint16_t) (lfoBaseRate * (float) UINT16_MAX);
+
                 if (newRate != lfoParameters[0]) {
                     lfoParameters[0] = newRate;
                     for (int i = 0; i < kMaxPolyphony; i++) {
@@ -824,6 +836,7 @@ private:
     
 public:
     ModulationEngineRuleList *modulationEngineRules;
+    bool lfoRateIsPatched = false;
     
     plaits::Modulations modulations;
     plaits::Patch patch;
@@ -831,9 +844,10 @@ public:
     rack::SampleRateConverter<2> outputSrc;
     rack::DoubleRingBuffer<rack::Frame<2>, 256> outputBuffer;
     
-    uint16_t lfoParameters[4];
     uint16_t envParameters[4];
     uint16_t ampEnvParameters[4];
+
+    uint16_t lfoParameters[4];
     
     float lfoBaseRate;
     float lfoOutput;

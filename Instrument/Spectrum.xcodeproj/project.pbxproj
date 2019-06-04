@@ -166,6 +166,7 @@
 		E2184AB6229F03D000CA4DFE /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2184AB5229F03D000CA4DFE /* Dummy.swift */; };
 		E2184AB7229F040700CA4DFE /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E2184AB8229F046600CA4DFE /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2184AB5229F03D000CA4DFE /* Dummy.swift */; };
+		E224EA6322A6E3D800A34405 /* UIColor+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
 		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
@@ -453,6 +454,7 @@
 		E2184AAD229F03A500CA4DFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2184AB5229F03D000CA4DFE /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E2184AB9229F048100CA4DFE /* ModalAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ModalAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extensions.swift"; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
 		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
@@ -950,6 +952,7 @@
 				E22AFB19229CC67D00679F99 /* Spacing.swift */,
 				E2184A97229E21FE00CA4DFE /* BaseAudioUnitViewController.swift */,
 				E2184A99229E294B00CA4DFE /* ModalViewController.swift */,
+				E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1327,6 +1330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E224EA6322A6E3D800A34405 /* UIColor+extensions.swift in Sources */,
 				E22AFB0B2298DB8300679F99 /* lfo.cpp in Sources */,
 				E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */,
 				E2154AF8229249AA00CEED2E /* bass_drum_engine.cc in Sources */,

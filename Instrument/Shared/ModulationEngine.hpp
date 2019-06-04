@@ -83,6 +83,15 @@ public:
         return 0.0f;
     }
     
+    bool isPatched(int outputIndex) {
+        for (ModulationEngineRule& rule : rules) {
+            if (rule.output == outputIndex) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     std::vector<ModulationEngineRule> rules;
     int parameterBase;
 };

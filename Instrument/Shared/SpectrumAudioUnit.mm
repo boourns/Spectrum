@@ -256,24 +256,6 @@
                                                                          min:0.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                                 flags: flags valueStrings:bendRange dependentParameters:nil];
 
-    AUParameter *qualityParam = [AUParameterTree createParameterWithIdentifier:@"quality" name:@"Quality"
-                                                                         address:PlaitsParamQuality min:0.0 max:10.0
-                                                                            unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags:flags valueStrings:@[
-                                                                                                      @"0 (Lowest)",
-                                                                                                      @"1",
-                                                                                                      @"2",
-                                                                                                      @"3",
-                                                                                                      @"4",
-                                                                                                      @"5 (Default)",
-                                                                                                      @"6",
-                                                                                                      @"7",
-                                                                                                      @"8",
-                                                                                                      @"9",
-                                                                                                      @"10 (Highest)",
-                                                                                                      ]
-                                                             dependentParameters:nil];
-    
     
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
                                                                          address:PlaitsParamLfoRate
@@ -310,7 +292,7 @@
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam, qualityParam]];
+    AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam]];
     
     
     AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoAmount]];

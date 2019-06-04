@@ -52,6 +52,7 @@ class ParameterSliderView: UIView {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
         
+        label.textColor = UILabel.appearance().tintColor
         label.text = param.displayName
         
         slider.minimumValue = param.minValue

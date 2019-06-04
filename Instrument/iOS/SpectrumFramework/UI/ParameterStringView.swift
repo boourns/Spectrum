@@ -48,15 +48,19 @@ class ParameterStringView: UIView, ParameterView {
         stack.distribution = .equalSpacing
         
         label.text = param.displayName
+        label.textColor = UILabel.appearance().tintColor
+
         label.translatesAutoresizingMaskIntoConstraints = false
 
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.textAlignment = .center
+        valueLabel.textColor = UILabel.appearance().tintColor
+
         
         let leftButton = UIButton()
         let rightButton = UIButton()
-        leftButton.setTitleColor(UIColor.black, for: .normal)
-        rightButton.setTitleColor(UIColor.black, for: .normal)
+        //leftButton.setTitleColor(UIColor.black, for: .normal)
+        //rightButton.setTitleColor(UIColor.black, for: .normal)
 
         leftButton.setTitle("<", for: .normal)
         rightButton.setTitle(">", for: .normal)
