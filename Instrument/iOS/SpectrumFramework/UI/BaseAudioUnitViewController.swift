@@ -15,6 +15,8 @@ struct SpectrumColours {
     let background: UIColor
 }
 
+let ResponsiveBreak = CGFloat(540.0)
+
 public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
     var colours = SpectrumColours(
@@ -95,6 +97,12 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         return stack
     }
     
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        layout()
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -159,6 +167,8 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
             navigationView.addArrangedSubview(button)
         }
         
+        layout()
+
         selectPage(0)
         
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
@@ -186,6 +196,19 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
                 button.backgroundColor = colours.background
                 button.setTitleColor(colours.primary, for: .normal)
             }
+        }
+    }
+    
+    func layout() {
+        var pageAxis: NSLayoutConstraint.Axis = .horizontal
+        
+        if view.frame.width < ResponsiveBreak {
+            pageAxis = .vertical
+        }
+        
+        pages.forEach { page in
+            guard let view = page.view as? UIStackView else { return }
+            view.axis = pageAxis
         }
     }
 }
