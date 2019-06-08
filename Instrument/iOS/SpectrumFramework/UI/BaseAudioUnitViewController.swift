@@ -37,7 +37,7 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     var params: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
     var parameterObserverToken: AUParameterObserverToken?
     
-    let containerView = UIView()
+    let containerView = UIScrollView()
     let navigationView = UIStackView()
     var pages: [(name: String, view: UIView)] = []
     var stackVertically = false
@@ -68,6 +68,8 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
             navigationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
+        
+        containerView.isScrollEnabled = true
     }
     
     func viewForPage(group: AUParameterGroup) -> UIStackView {
@@ -75,15 +77,15 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        stack.alignment = .firstBaseline
         stack.spacing = 20.0
         containerView.addSubview(stack)
         stack.translatesAutoresizingMaskIntoConstraints = false
         
         let constraints = [
-            stack.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 1.0),
-            stack.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1.0),
+            stack.topAnchor.constraint(equalToSystemSpacingBelow: containerView.topAnchor, multiplier: 1.0),
+            stack.leadingAnchor.constraint(equalToSystemSpacingAfter: containerView.leadingAnchor, multiplier: 1.0),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 1.0),
+            containerView.bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: stack.bottomAnchor, multiplier: 1.0)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -117,6 +119,7 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         let groupStack = UIStackView()
         groupStack.axis = .vertical
         groupStack.spacing = Spacing.betweenParameters
+        groupStack.alignment = .fill
         
         group.allParameters.forEach { param in
             let paramView = viewForParam(param)
@@ -186,6 +189,10 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     func selectPage(_ selectedIndex: Int) {
         pages.enumerated().forEach { index, page in
             page.view.isHidden = (selectedIndex != index)
+            if selectedIndex == index {
+                containerView.contentSize = CGSize(width: containerView.bounds.size.width,
+                                                   height: page.view.bounds.height + 10)
+            }
         }
         navigationView.arrangedSubviews.enumerated().forEach { index, view in
             guard let button = view as? UIButton else { return }
@@ -201,15 +208,23 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     
     func layout() {
         var pageAxis: NSLayoutConstraint.Axis = .horizontal
+        var pageAlignment: UIStackView.Alignment = .firstBaseline
+        var pageDistribution: UIStackView.Distribution = .fillEqually
         
         if view.frame.width < ResponsiveBreak {
             pageAxis = .vertical
+            pageAlignment = .fill
+            pageDistribution = .equalCentering
         }
         
         pages.forEach { page in
             guard let view = page.view as? UIStackView else { return }
             view.axis = pageAxis
+            view.alignment = pageAlignment
+            view.distribution = pageDistribution
         }
+        
+
     }
 }
 

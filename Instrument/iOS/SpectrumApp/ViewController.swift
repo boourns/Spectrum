@@ -10,8 +10,11 @@ import UIKit
 import AudioToolbox
 import SpectrumFramework
 
-let audioUnitCode = "modl"
-let audioUnitClass = ModalAudioUnit.self
+//let audioUnitCode = "modl"
+//let audioUnitClass = ModalAudioUnit.self
+
+let audioUnitCode = "mcro"
+let audioUnitClass = SpectrumAudioUnit.self
 
 class ViewController: UIViewController {
     // MARK: Properties
