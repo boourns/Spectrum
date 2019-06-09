@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/MIDIProcessor.hpp"
-            timestampString = "581747818.7998559"
+            timestampString = "581788741.438217"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "143"
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/SpectrumAudioUnit.mm"
-            timestampString = "581747818.8001699"
+            timestampString = "581788741.438567"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "597"
-            endingLineNumber = "597"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
             landmarkName = "-setDefaultMIDIMap"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/SpectrumAudioUnit.mm"
-            timestampString = "581747818.800431"
+            timestampString = "581788741.4386131"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "614"
-            endingLineNumber = "614"
+            startingLineNumber = "626"
+            endingLineNumber = "626"
             landmarkName = "-updateKernelMIDIMap"
             landmarkType = "7">
          </BreakpointContent>

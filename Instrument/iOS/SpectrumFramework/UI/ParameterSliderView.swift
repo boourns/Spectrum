@@ -54,6 +54,12 @@ class ParameterSliderView: UIView {
         
         label.textColor = UILabel.appearance().tintColor
         label.text = param.displayName
+        label.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer() { [weak self] in
+            guard let this = self else { return }
+            this.param.value = 0.0
+        }
+        label.addGestureRecognizer(tapGesture)
         
         slider.minimumValue = param.minValue
         slider.maximumValue = param.maxValue

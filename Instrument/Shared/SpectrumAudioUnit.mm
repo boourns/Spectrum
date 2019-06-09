@@ -591,6 +591,18 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 }
 
 #pragma mark- MIDI CC Map
+- (NSDictionary *)fullStateForDocument {
+    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
+    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
+    return state;
+}
+
+- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
+    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
+    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self updateKernelMIDIMap];
+}
+
 - (void)setDefaultMIDIMap {
     int skip;
     
