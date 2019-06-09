@@ -10,6 +10,7 @@
 
 #include "concurrentqueue.h"
 #include <vector>
+#include <map>
 #import "DSPKernel.hpp"
 
 enum {
@@ -19,9 +20,10 @@ enum {
 };
 
 typedef struct {
-    uint8_t controller;
-    int parameter;
-} MIDICCMap;
+    AUParameter *parameter;
+    float minimum;
+    float maximum;
+} MIDICCTarget;
 
 class MIDIVoice {
 public:
@@ -36,12 +38,12 @@ class MIDISynthesizer {
 public:
     virtual void midiPitchBend(uint16_t value) = 0;
     virtual void midiModWheel(uint16_t value) = 0;
-    virtual void midiControllerChange(uint8_t number, uint8_t value) = 0;
+    virtual void setParameter(AUParameterAddress address, AUValue value);
 };
 
 class MIDIProcessor {
 public:
-    MIDIProcessor(int maxPolyphony): updatedParams(64) {
+    MIDIProcessor(int maxPolyphony) {
         this->maxPolyphony = maxPolyphony;
         this->activePolyphony = maxPolyphony;
         this->unison = false;
@@ -106,6 +108,21 @@ public:
                 uint8_t num = midiEvent.data[1];
                 if (num == 123) { // all notes off
                     reset();
+                } else if (num == 1) {
+                    modCoarse = midiEvent.data[2];
+                    calculateModwheel();
+                } else if (num == 32) {
+                    modFine = midiEvent.data[2];
+                    calculateModwheel();
+                } else {
+                    std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(num);
+                    if (params != ccMap.end()) {
+                        std::vector<MIDICCTarget>::iterator itr;
+                        for (itr = params->second.begin(); itr != params->second.end(); ++itr) {
+                            float value = itr->minimum + (itr->maximum - itr->minimum) * (((float) midiEvent.data[2]) / 127.0f);
+                            itr->parameter.value = value;
+                        }
+                    }
                 }
                 break;
             }
@@ -137,18 +154,32 @@ public:
             voices[i]->midiAllNotesOff();
         }
         nextVoice = 0;
+        bendAmount = 0.0f;
+        modwheelAmount = 0.0f;
+        modCoarse = 0;
+        modFine = 0;
     }
     
-    void setCCMap(std::vector<MIDICCMap> &map) {
+    void setCCMap(std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
         ccMap = map;
+    }
+    
+    inline void calculateModwheel() {
+        int16_t wheel = (modCoarse << 7) + modFine;
+
+        modwheelAmount = (((float) wheel) / 16384.0f);
     }
     
     std::vector<MIDIVoice *> voices;
     std::vector<uint8_t> activeNotes;
+    std::map<uint8_t, std::vector<MIDICCTarget>> ccMap;
     
-    std::vector<MIDICCMap> ccMap;
     int bendRange = 0;
     float bendAmount = 0.0f;
+    
+    uint8_t modCoarse = 0;
+    uint8_t modFine = 0;
+    float modwheelAmount = 0.0f;
 
 private:
     
@@ -198,8 +229,6 @@ private:
     bool unison;
     int nextVoice;
     
-    moodycamel::ConcurrentQueue<int> updatedParams;
-
     // vector of voices
     // vector of uint8_t playingNotes
 };

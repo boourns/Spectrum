@@ -9,7 +9,6 @@
 #define PlaitsDSPKernel_h
 
 #import "resampler.hpp"
-
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
 #import "peaks/multistage_envelope.h"
@@ -219,6 +218,7 @@ public:
             modEngine->in[ModInEnvelope] = envelope.value;
             modEngine->in[ModInOut] = out;
             modEngine->in[ModInAux] = aux;
+            modEngine->in[ModInModwheel] = kernel->midiProcessor->modwheelAmount;
             
             modEngine->run();
             

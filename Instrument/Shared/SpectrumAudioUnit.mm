@@ -614,20 +614,34 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         } else {
             skip = 4;
         }
-        midiCCMap[@(_parameterTree.allParameters[i].address + skip)] = @(_parameterTree.allParameters[i].address);
+        midiCCMap[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].address + skip);
     }
     
     [self updateKernelMIDIMap];
 }
 
 - (void)updateKernelMIDIMap {
-    std::vector<MIDICCMap> kernelMIDIMap;
+    std::map<uint8_t, std::vector<MIDICCTarget>> kernelMIDIMap;
     
-    for(int i = 0; i < midiCCMap.allKeys.count; i++) {
-        MIDICCMap map;
-        map.controller = [midiCCMap.allKeys[i] intValue];
-        map.parameter = [[midiCCMap objectForKey: midiCCMap.allKeys[i]] intValue];
-        kernelMIDIMap.push_back(map);
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        AUParameterAddress address = _parameterTree.allParameters[i].address;
+        uint8_t controller = [[midiCCMap objectForKey: @(address)] intValue];
+        
+        std::map<uint8_t, std::vector<MIDICCTarget>>::iterator existing = kernelMIDIMap.find(controller);
+        
+        MIDICCTarget target;
+        target.parameter = _parameterTree.allParameters[i];
+        target.minimum = _parameterTree.allParameters[i].minValue;
+        target.maximum = _parameterTree.allParameters[i].maxValue;
+        
+        if(existing == kernelMIDIMap.end())
+        {
+            std::vector<MIDICCTarget> params;
+            params.push_back(target);
+            kernelMIDIMap[controller] = params;
+        } else {
+            existing->second.push_back(target);
+        }
     }
     
     _kernel.midiProcessor->setCCMap(kernelMIDIMap);

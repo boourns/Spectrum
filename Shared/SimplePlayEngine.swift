@@ -503,6 +503,12 @@ internal class InstrumentPlayer : NSObject {
                     self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
                     
                     usleep(useconds_t(0.2 * 1e6))
+                    
+                    // midi CC
+                    cbytes[0] = 0xB0
+                    cbytes[1] = UInt8(2)
+                    cbytes[2] = 64
+                    self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
 
                     i += 2
                     if i >= 24 {

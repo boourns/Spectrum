@@ -74,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581747818.7996891"
+            timestampString = "581796618.4411941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "283"
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581747818.799759"
+            timestampString = "581796618.441687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "628"
@@ -122,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581747818.7998019"
+            timestampString = "581796618.442093"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "371"
@@ -154,12 +154,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/MIDIProcessor.hpp"
-            timestampString = "581788741.438217"
+            timestampString = "581796618.442444"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "setCCMap(std::vector&lt;MIDICCMap&gt; &amp;map)"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
+            landmarkName = "setCCMap(std::map&lt;uint8_t, std::vector&lt;MIDICCTarget&gt;&gt; &amp;map)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -170,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/SpectrumAudioUnit.mm"
-            timestampString = "581788741.438567"
+            timestampString = "581796618.442821"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "609"
@@ -186,12 +186,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/SpectrumAudioUnit.mm"
-            timestampString = "581788741.4386131"
+            timestampString = "581796618.442885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "626"
-            endingLineNumber = "626"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
             landmarkName = "-updateKernelMIDIMap"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Instrument/Shared/MIDIProcessor.hpp"
+            timestampString = "581796618.442944"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "handleMIDIEvent(AUMIDIEvent const&amp; midiEvent)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
