@@ -306,6 +306,7 @@
 		B5234C821CA0966600902296 /* SpectrumAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectrumAudioUnit.h; sourceTree = "<group>"; };
 		B5234C831CA0966600902296 /* SpectrumAudioUnit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpectrumAudioUnit.mm; sourceTree = "<group>"; };
 		B5234C841CA0966600902296 /* InstrumentDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentDSPKernel.hpp; sourceTree = "<group>"; };
+		E206A06122ACB70A00BF9AC1 /* concurrentqueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = concurrentqueue.h; sourceTree = "<group>"; };
 		E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 		E2154A2C229249AA00CEED2E /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
 		E2154A2F229249AA00CEED2E /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
@@ -632,6 +633,7 @@
 				E2184A9D229E29D700CA4DFE /* ModalAudioUnit.h */,
 				E2A6ABFF22A1B3F2007B38DD /* MIDIProcessor.hpp */,
 				E2A6AC0522A1C8DE007B38DD /* ModulationEngine.hpp */,
+				E206A06122ACB70A00BF9AC1 /* concurrentqueue.h */,
 			);
 			name = Shared;
 			path = ../../Shared;

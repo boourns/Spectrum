@@ -829,12 +829,13 @@ public:
     // MARK: Member Variables
     
 private:
-    MIDIProcessor *midiProcessor;
     std::vector<VoiceState> voices;
     
     AudioBufferList* outBufferListPtr = nullptr;
     
 public:
+    MIDIProcessor *midiProcessor;
+
     ModulationEngineRuleList *modulationEngineRules;
     bool lfoRateIsPatched = false;
     

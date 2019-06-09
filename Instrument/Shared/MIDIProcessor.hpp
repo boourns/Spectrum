@@ -8,6 +8,7 @@
 #ifndef MIDIEngine_h
 #define MIDIEngine_h
 
+#include "concurrentqueue.h"
 #include <vector>
 #import "DSPKernel.hpp"
 
@@ -16,6 +17,11 @@ enum {
     NoteStatePlaying = 1,
     NoteStateReleasing = 2
 };
+
+typedef struct {
+    uint8_t controller;
+    int parameter;
+} MIDICCMap;
 
 class MIDIVoice {
 public:
@@ -35,7 +41,7 @@ public:
 
 class MIDIProcessor {
 public:
-    MIDIProcessor(int maxPolyphony) {
+    MIDIProcessor(int maxPolyphony): updatedParams(64) {
         this->maxPolyphony = maxPolyphony;
         this->activePolyphony = maxPolyphony;
         this->unison = false;
@@ -133,8 +139,14 @@ public:
         nextVoice = 0;
     }
     
+    void setCCMap(std::vector<MIDICCMap> &map) {
+        ccMap = map;
+    }
+    
     std::vector<MIDIVoice *> voices;
     std::vector<uint8_t> activeNotes;
+    
+    std::vector<MIDICCMap> ccMap;
     int bendRange = 0;
     float bendAmount = 0.0f;
 
@@ -186,6 +198,8 @@ private:
     bool unison;
     int nextVoice;
     
+    moodycamel::ConcurrentQueue<int> updatedParams;
+
     // vector of voices
     // vector of uint8_t playingNotes
 };

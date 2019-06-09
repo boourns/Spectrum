@@ -3,6 +3,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PlaitsDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
+#import "MIDIProcessor.hpp"
 
 @interface SpectrumAudioUnit ()
 
@@ -21,6 +22,8 @@
     AUAudioUnitPreset   *_currentPreset;
     NSInteger           _currentFactoryPresetIndex;
     NSArray<AUAudioUnitPreset *> *_presets;
+    
+    NSMutableDictionary *midiCCMap;
 }
 @synthesize parameterTree = _parameterTree;
 @synthesize factoryPresets = _presets;
@@ -199,7 +202,6 @@
                                                                              min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                            flags: flags valueStrings:ampSources dependentParameters:nil];
     
-    
     AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
                                                                           address:PlaitsParamLeftSource
                                                                               min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -358,6 +360,9 @@
     _presets = @[NewAUPreset(0, spectrumPresets[0].name),
                  ];
     self.currentPreset = _presets.firstObject;
+    
+    // assign midi map
+    [self setDefaultMIDIMap];
     
     return self;
 }
@@ -583,6 +588,37 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     } else {
         NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
     }
+}
+
+#pragma mark- MIDI CC Map
+- (void)setDefaultMIDIMap {
+    int skip;
+    
+    midiCCMap = [[NSMutableDictionary alloc] init];
+    
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        if (i < 30) {
+            skip = 2;
+        } else {
+            skip = 4;
+        }
+        midiCCMap[@(_parameterTree.allParameters[i].address + skip)] = @(_parameterTree.allParameters[i].address);
+    }
+    
+    [self updateKernelMIDIMap];
+}
+
+- (void)updateKernelMIDIMap {
+    std::vector<MIDICCMap> kernelMIDIMap;
+    
+    for(int i = 0; i < midiCCMap.allKeys.count; i++) {
+        MIDICCMap map;
+        map.controller = [midiCCMap.allKeys[i] intValue];
+        map.parameter = [[midiCCMap objectForKey: midiCCMap.allKeys[i]] intValue];
+        kernelMIDIMap.push_back(map);
+    }
+    
+    _kernel.midiProcessor->setCCMap(kernelMIDIMap);
 }
 
 @end
