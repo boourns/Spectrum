@@ -183,23 +183,17 @@ public:
         
         virtual void midiNoteOn(uint8_t noteNumber, uint8_t velocity)
         {
-            if (velocity == 0) {
-                if (state == NoteStatePlaying) {
-                    midiNoteOff();
-                }
-            } else {
-                memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
-                
-                modulations.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
-                // TODO When stealing don't take new pan spread value
-                panSpread = kernel->nextPanSpread();
+            memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
+            
+            modulations.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
+            // TODO When stealing don't take new pan spread value
+            panSpread = kernel->nextPanSpread();
 
-                note = noteNumber;
-                modEngine->in[ModInNote] = ((float) note) / 127.0f;
-                modEngine->in[ModInVelocity] = ((float) velocity) / 127.0f;
-                
-                add();
-            }
+            note = noteNumber;
+            modEngine->in[ModInNote] = ((float) note) / 127.0f;
+            modEngine->in[ModInVelocity] = ((float) velocity) / 127.0f;
+            
+            add();
         }
         
         void updateLfoRate(float modulationAmount) {
@@ -311,6 +305,30 @@ public:
         }
         lfoParameters[2] = lfoParameters[3] = 32768;
         envParameters[2] = UINT16_MAX;
+        
+        patch.engine = 8;
+        patch.note = 48.0f;
+        patch.harmonics = 0.3f;
+        patch.timbre = 0.7f;
+        patch.morph = 0.7f;
+        patch.frequency_modulation_amount = 1.0f;
+        patch.timbre_modulation_amount = 1.0f;
+        patch.morph_modulation_amount = 1.0f;
+        patch.decay = 0.1f;
+        patch.lpg_colour = 0.0f;
+        
+        modulations.note = 0.0f;
+        modulations.engine = 0.0f;
+        modulations.frequency = 0.0f;
+        modulations.harmonics = 0.0f;
+        modulations.morph = 0.0;
+        modulations.level = 0.0f;
+        modulations.trigger = 0.0f;
+        modulations.frequency_patched = true;
+        modulations.timbre_patched = true;
+        modulations.morph_patched = true;
+        modulations.trigger_patched = true;
+        modulations.level_patched = false;
     }
     
     void init(int channelCount, double inSampleRate) {

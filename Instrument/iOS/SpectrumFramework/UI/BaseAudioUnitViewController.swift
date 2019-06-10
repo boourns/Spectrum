@@ -54,7 +54,8 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         view.addSubview(navigationView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         navigationView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.contentMode = .scaleAspectFill
+        //containerView.contentMode = .scaleAspectFill
+        containerView.isDirectionalLockEnabled = true
         navigationView.axis = .horizontal
         navigationView.distribution = .fillEqually
         

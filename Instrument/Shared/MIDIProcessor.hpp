@@ -40,7 +40,16 @@ public:
     virtual void setParameter(AUParameterAddress address, AUValue value);
 };
 
-bool noteSort (int i,int j) { return (i>j); }
+typedef struct PlayingNote {
+    uint8_t note;
+    uint8_t vel;
+    
+    bool operator== (const PlayingNote &r) {
+        return (r.note == note);
+    }
+} PlayingNote;
+
+bool noteSort (PlayingNote i, PlayingNote j) { return (i.note > j.note); }
 
 class MIDIProcessor {
     class NoteStack {
@@ -62,28 +71,47 @@ class MIDIProcessor {
         }
         
         void noteOn(uint8_t note, uint8_t vel) {
-            activeNotes.push_back(note);
+            if (vel == 0) {
+                noteOff(note);
+                return;
+            }
+            activeNotes.push_back({.note = note, .vel = vel});
             std::sort(activeNotes.begin(), activeNotes.end(), noteSort);
 
             MIDIVoice *voice = voiceForNote(note);
+            if (!voice) {
+                voice = freeVoice(note);
+            }
+            
             if (voice) {
                 voice->midiNoteOn(note, vel);
-            } else {
-                voice = freeVoice();
-                if (voice) {
-                    voice->midiNoteOn(note, vel);
-                }
             }
+
+            printf("noteOn(%d, %d)\n", note, vel);
+            printNoteState();
         }
         
         void noteOff(uint8_t note) {
+            int poly = polyphony();
+            PlayingNote p = {.note = note, .vel = 0};
+
+            activeNotes.erase(std::remove(activeNotes.begin(), activeNotes.end(), p), activeNotes.end());
+
             MIDIVoice *voice = voiceForNote(note);
-            if (voice) {
-                voice->midiNoteOff();
+            if (activeNotes.size() < poly) {
+                if (voice) {
+                    voice->midiNoteOff();
+                }
+            } else {
+                if (voice) {
+                    voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].vel);
+                }
             }
+            printf("noteOff(%d)\n", note);
+            printNoteState();
         }
         
-        std::vector<uint8_t> activeNotes;
+        std::vector<PlayingNote> activeNotes;
 
         MIDIVoice *voiceForNote(uint8_t note) {
             std::vector<MIDIVoice *> v = getVoices();
@@ -97,7 +125,7 @@ class MIDIProcessor {
             return nullptr;
         }
         
-        MIDIVoice *freeVoice() {
+        MIDIVoice *freeVoice(uint8_t note) {
             // Choose which voice for the new note.
             // Acts like a ring buffer to let latest played voices ring out for the longest.
             
@@ -124,11 +152,16 @@ class MIDIProcessor {
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);
             
-            // finally, just use the oldest voice.
-            MIDIVoice *stolen = v[nextVoice];
-            nextVoice = (nextVoice + 1) % poly;
-            
-            return stolen;
+            // didn't find a voice.  Check our position in activeNotes to determine if we should replace a note.
+            if (activeNotes.size() > poly) {
+                for (int i = 0; i < poly; i++) {
+                    if (activeNotes[i].note == note) {
+                        uint8_t noteToTurnOff = activeNotes[poly].note;
+                        return voiceForNote(noteToTurnOff);
+                    }
+                }
+            }
+            return 0;
         }
         
         void setActivePolyphony(int activePolyphony) {
@@ -174,6 +207,18 @@ class MIDIProcessor {
                 return unisonVoices;
             } else {
                 return voices;
+            }
+        }
+        
+        void printNoteState() {
+            printf("polyphony() = %d, unison() = %d\n", polyphony(), unison);
+            printf("activeNotes.size() = %d\n", activeNotes.size());
+            for (int i = 0; i < activeNotes.size(); i++) {
+                printf("%d, ", activeNotes[i].note);
+            }
+            printf("\nVoice states:\n");
+            for (int i = 0; i < activePolyphony; i++) {
+                printf("note = %d, state = %d\n", voices[i]->Note(), voices[i]->State());
             }
         }
         
