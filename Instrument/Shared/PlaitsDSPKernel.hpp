@@ -307,7 +307,7 @@ public:
         for (VoiceState& voice : voices) {
             voice.kernel = this;
             voice.Init(modulationEngineRules);
-            midiProcessor->voices.push_back(&voice);
+            midiProcessor->noteStack.voices.push_back(&voice);
         }
         lfoParameters[2] = lfoParameters[3] = 32768;
         envParameters[2] = UINT16_MAX;
@@ -315,30 +315,6 @@ public:
     
     void init(int channelCount, double inSampleRate) {
         outputSrc.setRates(48000, (int) inSampleRate);
-
-        patch.engine = 8;
-        patch.note = 48.0f;
-        patch.harmonics = 0.3f;
-        patch.timbre = 0.7f;
-        patch.morph = 0.7f;
-        patch.frequency_modulation_amount = 1.0f;
-        patch.timbre_modulation_amount = 1.0f;
-        patch.morph_modulation_amount = 1.0f;
-        patch.decay = 0.1f;
-        patch.lpg_colour = 0.0f;
-        
-        modulations.note = 0.0f;
-        modulations.engine = 0.0f;
-        modulations.frequency = 0.0f;
-        modulations.harmonics = 0.0f;
-        modulations.morph = 0.0;
-        modulations.level = 0.0f;
-        modulations.trigger = 0.0f;
-        modulations.frequency_patched = true;
-        modulations.timbre_patched = true;
-        modulations.morph_patched = true;
-        modulations.trigger_patched = true;
-        modulations.level_patched = false;
     }
     
     void reset() {
@@ -391,8 +367,8 @@ public:
                 
             case PlaitsParamPolyphony: {
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
-                if (newPolyphony != midiProcessor->getActivePolyphony()) {
-                    midiProcessor->setActivePolyphony(newPolyphony);
+                if (newPolyphony != midiProcessor->noteStack.getActivePolyphony()) {
+                    midiProcessor->noteStack.setActivePolyphony(newPolyphony);
                     gainCoefficient = 1.0f / (float) newPolyphony;
                 }
                 break;
@@ -400,7 +376,7 @@ public:
                 
             case PlaitsParamUnison: {
                 int unison = round(clamp(value, 0.0f, 1.0f)) == 1;
-                midiProcessor->setUnison(unison);
+                midiProcessor->noteStack.setUnison(unison);
                 break;
             }
                 
@@ -640,10 +616,10 @@ public:
                 return patch.lpg_colour;
                 
             case PlaitsParamUnison:
-                return midiProcessor->getUnison() ? 1.0f : 0.0f;
+                return midiProcessor->noteStack.getUnison() ? 1.0f : 0.0f;
                 
             case PlaitsParamPolyphony:
-                return (float) midiProcessor->getActivePolyphony() - 1;
+                return (float) midiProcessor->noteStack.getActivePolyphony() - 1;
                 
             case PlaitsParamVolume:
                 return volume;
@@ -768,7 +744,7 @@ public:
                 
                 modulations.frequency = midiProcessor->bendAmount;
                 
-                for (int i = 0; i < midiProcessor->getActivePolyphony(); i++) {
+                for (int i = 0; i < midiProcessor->noteStack.getActivePolyphony(); i++) {
                     if (voices[i].state != NoteStateUnused) {
                         playingNotes++;
                         
