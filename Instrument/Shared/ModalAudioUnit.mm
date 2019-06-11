@@ -233,7 +233,7 @@
     _outputBusBuffer.allocateRenderResources(self.maximumFramesToRender);
     
     _kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
-    _kernel.reset();
+    _kernel.midiAllNotesOff();
     
     return YES;
 }

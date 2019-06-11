@@ -637,7 +637,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         }
     }
     
-    _kernel.midiProcessor->setCCMap(kernelMIDIMap);
+    _kernel.midiProcessor.setCCMap(kernelMIDIMap);
 }
 
 @end

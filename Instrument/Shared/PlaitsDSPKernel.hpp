@@ -146,6 +146,8 @@ public:
             modEngine->in[ModInDirect] = 1.0f;
         }
         
+        // ================ MIDIProcessor
+        
         virtual void midiAllNotesOff() {
             modulations.trigger = 0.0f;
             envelope.value = 0;
@@ -202,6 +204,8 @@ public:
             add();
         }
         
+        // === MODULATIONS
+        
         void updateLfoRate(float modulationAmount) {
             float calculatedRate = clamp(kernel->lfoBaseRate + modulationAmount, 0.0f, 1.0f);
             uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
@@ -218,7 +222,7 @@ public:
             modEngine->in[ModInEnvelope] = envelope.value;
             modEngine->in[ModInOut] = out;
             modEngine->in[ModInAux] = aux;
-            modEngine->in[ModInModwheel] = kernel->midiProcessor->modwheelAmount;
+            modEngine->in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
             
             modEngine->run();
             
@@ -294,15 +298,14 @@ public:
     
     // MARK: Member Functions
     
-    PlaitsDSPKernel()
+    PlaitsDSPKernel() : midiProcessor(kMaxPolyphony)
     {
-        midiProcessor = new MIDIProcessor(kMaxPolyphony);
         voices.resize(kMaxPolyphony);
         modulationEngineRules = new ModulationEngineRuleList(kNumModulationRules);
         for (VoiceState& voice : voices) {
             voice.kernel = this;
             voice.Init(modulationEngineRules);
-            midiProcessor->noteStack.voices.push_back(&voice);
+            midiProcessor.noteStack.voices.push_back(&voice);
         }
         envParameters[2] = UINT16_MAX;
         
@@ -381,8 +384,8 @@ public:
                 
             case PlaitsParamPolyphony: {
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
-                if (newPolyphony != midiProcessor->noteStack.getActivePolyphony()) {
-                    midiProcessor->noteStack.setActivePolyphony(newPolyphony);
+                if (newPolyphony != midiProcessor.noteStack.getActivePolyphony()) {
+                    midiProcessor.noteStack.setActivePolyphony(newPolyphony);
                     gainCoefficient = 1.0f / (float) newPolyphony;
                 }
                 break;
@@ -390,7 +393,7 @@ public:
                 
             case PlaitsParamUnison: {
                 int unison = round(clamp(value, 0.0f, 1.0f)) == 1;
-                midiProcessor->noteStack.setUnison(unison);
+                midiProcessor.noteStack.setUnison(unison);
                 break;
             }
                 
@@ -474,7 +477,7 @@ public:
                 break;
                 
             case PlaitsParamPitchBendRange:
-                midiProcessor->bendRange = round(clamp(value, 0.0f, 12.0f));
+                midiProcessor.bendRange = round(clamp(value, 0.0f, 12.0f));
                 break;
             
             case PlaitsParamEnvAttack: {
@@ -618,10 +621,10 @@ public:
                 return patch.lpg_colour;
                 
             case PlaitsParamUnison:
-                return midiProcessor->noteStack.getUnison() ? 1.0f : 0.0f;
+                return midiProcessor.noteStack.getUnison() ? 1.0f : 0.0f;
                 
             case PlaitsParamPolyphony:
-                return (float) midiProcessor->noteStack.getActivePolyphony() - 1;
+                return (float) midiProcessor.noteStack.getActivePolyphony() - 1;
                 
             case PlaitsParamVolume:
                 return volume;
@@ -667,7 +670,7 @@ public:
                 return lfoAmountMorph;
                 
             case PlaitsParamPitchBendRange:
-                return (float) midiProcessor->bendRange;
+                return (float) midiProcessor.bendRange;
                 
             case PlaitsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
@@ -729,7 +732,7 @@ public:
     }
     
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
-        midiProcessor->handleMIDIEvent(midiEvent);
+        midiProcessor.handleMIDIEvent(midiEvent);
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -743,9 +746,9 @@ public:
                 float left[kAudioBlockSize] = {};
                 float right[kAudioBlockSize] = {};
                 
-                modulations.frequency = midiProcessor->bendAmount;
+                modulations.frequency = midiProcessor.bendAmount;
                 
-                for (int i = 0; i < midiProcessor->noteStack.getActivePolyphony(); i++) {
+                for (int i = 0; i < midiProcessor.noteStack.getActivePolyphony(); i++) {
                     if (voices[i].state != NoteStateUnused) {
                         playingNotes++;
                         
@@ -811,7 +814,7 @@ private:
     AudioBufferList* outBufferListPtr = nullptr;
     
 public:
-    MIDIProcessor *midiProcessor;
+    MIDIProcessor midiProcessor;
 
     ModulationEngineRuleList *modulationEngineRules;
     bool lfoRateIsPatched = false;

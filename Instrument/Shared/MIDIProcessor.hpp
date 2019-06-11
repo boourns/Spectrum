@@ -49,7 +49,6 @@ typedef struct PlayingNote {
     }
 } PlayingNote;
 
-bool noteSort (PlayingNote i, PlayingNote j) { return (i.note > j.note); }
 
 class MIDIProcessor {
     class NoteStack {
@@ -81,7 +80,7 @@ class MIDIProcessor {
                 return;
             }
             activeNotes.push_back(p);
-            std::sort(activeNotes.begin(), activeNotes.end(), noteSort);
+            std::sort(activeNotes.begin(), activeNotes.end(), MIDIProcessor::noteSort);
 
             MIDIVoice *voice = voiceForNote(note);
             if (!voice) {
@@ -356,6 +355,8 @@ public:
     uint8_t modCoarse = 0;
     uint8_t modFine = 0;
     float modwheelAmount = 0.0f;
+    
+    static bool noteSort (PlayingNote i, PlayingNote j) { return (i.note > j.note); }
 
 private:
     MIDISynthesizer *engine;

@@ -15,6 +15,8 @@
 #import "lfo.hpp"
 #import "resampler.hpp"
 
+#import "MIDIProcessor.hpp"
+
 const size_t kAudioBlockSize = 16;
 const size_t kPolyphony = 1;
 
@@ -38,23 +40,18 @@ enum {
     ElementsMaxParameters
 };
 
-enum {
-    NoteStateUnused = 0,
-    NoteStatePlaying = 1,
-    NoteStateReleasing = 2
-};
-
 /*
  InstrumentDSPKernel
  Performs our filter signal processing.
  As a non-ObjC class, this is safe to use from render thread.
  */
-class ElementsDSPKernel : public DSPKernel {
+class ElementsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    ElementsDSPKernel()
+    ElementsDSPKernel() : midiProcessor(1)
     {
+        midiProcessor.noteStack.voices.push_back(this);
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -83,7 +80,7 @@ public:
         patch->resonator_position = 0.3f;
         patch->space = 0.1f;
         
-        reset();
+        midiAllNotesOff();
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
@@ -208,7 +205,7 @@ public:
     }
     
     // linked list management
-    void release() {
+    virtual void midiNoteOff() {
         state = NoteStateReleasing;
         gate = false;
     }
@@ -222,64 +219,28 @@ public:
         state = NoteStatePlaying;
     }
     
-    void noteOn(int noteNumber, int velocity)
-    {
-        if (velocity == 0) {
-            if (state == NoteStatePlaying) {
-                release();
-            }
-        } else {
-            currentNote = noteNumber;
-            currentVelocity = ((float) velocity) / 127.0;
-            add();
-        }
+    virtual void midiNoteOn(uint8_t note, uint8_t vel) {
+        currentNote = note;
+        currentVelocity = ((float) vel) / 127.0;
+        add();
     }
     
-    void reset() {
+    virtual void midiAllNotesOff() {
         state = NoteStateUnused;
         gate = false;
         outputBuffer.clear();
     }
     
+    virtual uint8_t Note() {
+        return currentNote;
+    }
+    
+    virtual int State() {
+        return state;
+    }
+    
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
-        if (midiEvent.length != 3) return;
-        uint8_t status = midiEvent.data[0] & 0xF0;
-        //uint8_t channel = midiEvent.data[0] & 0x0F; // works in omni mode.
-        switch (status) {
-            case 0x80 : { // note off
-                uint8_t note = midiEvent.data[1];
-                if (note > 127) break;
-                
-                if (note == currentNote) {
-                    release();
-                }
-                
-                break;
-            }
-            case 0x90 : { // note on
-                uint8_t note = midiEvent.data[1];
-                uint8_t veloc = midiEvent.data[2];
-                if (note > 127 || veloc > 127) break;
-                
-                noteOn(note, veloc);
-                
-                break;
-            }
-            case 0xE0 : { // pitch bend
-                uint8_t coarse = midiEvent.data[2];
-                uint8_t fine = midiEvent.data[1];
-                int16_t midiPitchBend = (coarse << 7) + fine;
-                bendAmount = (((float) (midiPitchBend - 8192)) / 8192.0f) * bendRange;
-            }
-                
-            case 0xB0 : { // control
-                uint8_t num = midiEvent.data[1];
-                if (num == 123) { // all notes off
-                    reset();
-                }
-                break;
-            }
-        }
+        midiProcessor.handleMIDIEvent(midiEvent);
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -362,12 +323,17 @@ public:
     float mainSamples[kAudioBlockSize];
     float auxSamples[kAudioBlockSize];
     float silence[kAudioBlockSize];
-    
     uint16_t reverb_buffer[32768];
 
     bool gate;
     uint8_t currentNote;
     float currentVelocity;
+    
+    MIDIProcessor midiProcessor;
+
+    peaks::MultistageEnvelope envelope;
+    peaks::Lfo lfo;
+    float lfoOutput;
     
     int state;
     
