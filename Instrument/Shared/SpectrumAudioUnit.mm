@@ -197,12 +197,12 @@
     
     AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
                                                                           address:PlaitsParamLeftSource
-                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                              min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                             flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *rightSourceParam = [AUParameterTree createParameterWithIdentifier:@"rightSource" name:@"Right Source"
                                                                            address:PlaitsParamRightSource
-                                                                               min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                               min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                              flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *panParam = [AUParameterTree createParameterWithIdentifier:@"pan" name:@"Pan"
@@ -255,10 +255,17 @@
                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                            flags: flags valueStrings:nil dependentParameters:nil];
     
+    NSArray *lfoShapes = @[@"Sine", @"Slope", @"Pulse", @"Stepped", @"Random"];
+    
     AUParameter *lfoShape = [AUParameterTree createParameterWithIdentifier:@"lfoShape" name:@"LFO Shape"
                                                                   address:PlaitsParamLfoShape
-                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+                                                                      min:0.0 max:4.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:lfoShapes dependentParameters:nil];
+    
+    AUParameter *lfoShapeMod = [AUParameterTree createParameterWithIdentifier:@"lfoShapeMod" name:@"ShapeMod"
+                                                                    address:PlaitsParamLfoShapeMod
+                                                                        min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *lfoAmount = [AUParameterTree createParameterWithIdentifier:@"lfoAmount" name:@"LFO Amount"
                                                                    address:PlaitsParamLfoAmount
@@ -288,7 +295,7 @@
     AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam]];
     
     
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoAmount]];
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoAmount]];
     
     AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoModulation" name:@"LFO Modulation" children:@[lfoAmountFM, lfoAmountHarmonics, lfoAmountTimbre, lfoAmountMorph]];
 

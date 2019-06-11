@@ -29,6 +29,7 @@ enum {
     PlaitsParamTimbre = 0,
     PlaitsParamHarmonics = 1,
     PlaitsParamMorph = 2,
+    PlaitsParamLfoShapeMod = 3,
     PlaitsParamAlgorithm = 4,
     PlaitsParamPitch = 5,
     PlaitsParamDetune = 6,
@@ -238,8 +239,8 @@ public:
             
             modulations.level = ampEnvelope.value + modEngine->out[ModOutLevel];
             
-            leftSourceTarget = clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], 0.0f, 1.0f);
-            rightSourceTarget = clamp(kernel->rightSource + modEngine->out[ModOutRightSource], 0.0f, 1.0f);
+            leftSourceTarget = (1.0f + clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], -1.0f, 1.0f)) / 2.0f;
+            rightSourceTarget = (1.0f + clamp(kernel->rightSource + modEngine->out[ModOutRightSource], -1.0f, 1.0f)) / 2.0f;
             
             float pan = clamp(kernel->pan + modEngine->out[ModOutPan] + panSpread, -1.0f, 1.0f);
             if (pan > 0) {
@@ -281,7 +282,6 @@ public:
                 ONE_POLE(rightSource, rightSourceTarget, 0.01);
                 ONE_POLE(leftGain, leftGainTarget, 0.01);
                 ONE_POLE(rightGain, rightGainTarget, 0.01);
-
                 
                 *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
                 *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
@@ -304,7 +304,6 @@ public:
             voice.Init(modulationEngineRules);
             midiProcessor->noteStack.voices.push_back(&voice);
         }
-        lfoParameters[2] = lfoParameters[3] = 32768;
         envParameters[2] = UINT16_MAX;
         
         patch.engine = 8;
@@ -404,11 +403,11 @@ public:
                 break;
                 
             case PlaitsParamLeftSource:
-                leftSource = clamp(value, 0.0f, 1.0f);
+                leftSource = clamp(value, -1.0f, 1.0f);
                 break;
             
             case PlaitsParamRightSource:
-                rightSource = clamp(value, 0.0f, 1.0f);
+                rightSource = clamp(value, -1.0f, 1.0f);
                 break;
                 
             case PlaitsParamPan:
@@ -420,24 +419,35 @@ public:
                 break;
                 
             case PlaitsParamLfoShape: {
-                uint16_t newShape = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
-                if (newShape != lfoParameters[1]) {
-                    lfoParameters[1] = newShape;
+                uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
+                if (newShape != lfoShape) {
+                    lfoShape = newShape;
                     for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].lfo.Configure(lfoParameters);
+                        voices[i].lfo.set_shape((peaks::LfoShape) lfoShape);
+                    }
+                }
+                break;
+            }
+                
+            case PlaitsParamLfoShapeMod: {
+                float newShape = clamp(value, -1.0f, 1.0f);
+                if (newShape != lfoShapeMod) {
+                    lfoShapeMod = newShape;
+                    uint16_t par = (newShape * 32767.0f);
+                    for (int i = 0; i < kMaxPolyphony; i++) {
+                        voices[i].lfo.set_parameter(par);
                     }
                 }
                 break;
             }
                 
             case PlaitsParamLfoRate: {
-                lfoBaseRate = clamp(value, 0.0f, 1.0f);
-                uint16_t newRate = (uint16_t) (lfoBaseRate * (float) UINT16_MAX);
+                float newRate = clamp(value, 0.0f, 1.0f);
 
-                if (newRate != lfoParameters[0]) {
-                    lfoParameters[0] = newRate;
+                if (newRate != lfoBaseRate) {
+                    lfoBaseRate = newRate;
                     for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].lfo.Configure(lfoParameters);
+                        voices[i].updateLfoRate(lfoBaseRate);
                     }
                 }
                 break;
@@ -632,12 +642,14 @@ public:
                 return panSpread;
                 
             case PlaitsParamLfoRate: {
-                float result = ((float) lfoParameters[0]) / (float) UINT16_MAX;
-                return result;
+                return lfoBaseRate;
             }
                 
             case PlaitsParamLfoShape:
-                return ((float) lfoParameters[1]) / (float) UINT16_MAX;
+                return lfoShape;
+                
+            case PlaitsParamLfoShapeMod:
+                return lfoShapeMod;
                 
             case PlaitsParamLfoAmountFM:
                 return lfoAmountFM;
@@ -812,11 +824,12 @@ public:
     
     uint16_t envParameters[4];
     uint16_t ampEnvParameters[4];
-
-    uint16_t lfoParameters[4];
     
     float lfoBaseRate;
-    float lfoOutput;
+    float lfoShape;
+    float lfoShapeMod;
+    
+    //float lfoOutput;
     float lfoAmount;
     float lfoAmountFM;
     float lfoAmountHarmonics;
