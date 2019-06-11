@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581903737.858155"
+            timestampString = "581953811.3089271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
             landmarkName = "run(int n, float* outL, float* outR)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,13 +106,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581903737.858717"
+            timestampString = "581953811.309293"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "631"
-            endingLineNumber = "631"
+            startingLineNumber = "605"
+            endingLineNumber = "605"
             landmarkName = "getParameter(AUParameterAddress address)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,13 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581903737.859037"
+            timestampString = "581953811.3093669"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "372"
+            endingLineNumber = "372"
             landmarkName = "setParameter(AUParameterAddress address, AUValue value)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/MIDIProcessor.hpp"
-            timestampString = "581903737.859305"
+            timestampString = "581953811.309455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "321"
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/SpectrumAudioUnit.mm"
-            timestampString = "581796752.179281"
+            timestampString = "581953811.3099231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "609"
-            endingLineNumber = "609"
+            startingLineNumber = "595"
+            endingLineNumber = "595"
             landmarkName = "-setDefaultMIDIMap"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,11 +186,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/SpectrumAudioUnit.mm"
-            timestampString = "581796752.1793571"
+            timestampString = "581953811.310408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647">
+            startingLineNumber = "633"
+            endingLineNumber = "633"
+            landmarkName = "-updateKernelMIDIMap"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -200,7 +202,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/MIDIProcessor.hpp"
-            timestampString = "581903737.85962"
+            timestampString = "581953811.3106771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "302"
@@ -216,7 +218,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/MIDIProcessor.hpp"
-            timestampString = "581903737.8598419"
+            timestampString = "581953811.3109421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
@@ -232,13 +234,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581903737.860068"
+            timestampString = "581953811.311221"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "388"
-            endingLineNumber = "388"
+            startingLineNumber = "382"
+            endingLineNumber = "382"
             landmarkName = "setParameter(AUParameterAddress address, AUValue value)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -248,7 +250,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/MIDIProcessor.hpp"
-            timestampString = "581903737.860292"
+            timestampString = "581953811.311277"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "103"
@@ -264,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Instrument/Shared/PlaitsDSPKernel.hpp"
-            timestampString = "581903737.86051"
+            timestampString = "581953811.3115571"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
             landmarkName = "run(int n, float* outL, float* outR)"
             landmarkType = "7">
          </BreakpointContent>

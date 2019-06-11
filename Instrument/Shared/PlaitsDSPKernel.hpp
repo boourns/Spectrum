@@ -8,14 +8,18 @@
 #ifndef PlaitsDSPKernel_h
 #define PlaitsDSPKernel_h
 
+#import <vector>
+
+#import "plaits/dsp/voice.h"
+#import "peaks/multistage_envelope.h"
+#import "stmlib/dsp/parameter_interpolator.h"
+#import "lfo.hpp"
+
 #import "resampler.hpp"
+#import "DSPKernel.hpp"
+
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
-#import "peaks/multistage_envelope.h"
-#import "DSPKernel.hpp"
-#import <vector>
-#import "plaits/dsp/voice.h"
-#import "lfo.hpp"
 
 const size_t kAudioBlockSize = 24;
 const size_t kMaxPolyphony = 8;
@@ -44,7 +48,6 @@ enum {
     PlaitsParamLfoAmountTimbre = 20,
     PlaitsParamLfoAmountMorph = 21,
     PlaitsParamPitchBendRange = 22,
-    PlaitsParamDroneMode = 23,
     PlaitsParamEnvAttack = 24,
     PlaitsParamEnvDecay = 25,
     PlaitsParamEnvSustain = 26,
@@ -118,8 +121,8 @@ public:
         peaks::Lfo lfo;
         float lfoOutput;
         float out, aux;
-        float rightGain, leftGain;
-        float leftSource, rightSource;
+        float rightGain, leftGain, rightGainTarget, leftGainTarget;
+        float leftSource, rightSource, leftSourceTarget, rightSourceTarget;
 
         plaits::Voice *voice;
         plaits::Modulations modulations;
@@ -208,7 +211,7 @@ public:
             envelope.Process(blockSize);
             ampEnvelope.Process(blockSize);
         
-            lfoOutput = ((float) lfo.Process(kAudioBlockSize)) / INT16_MAX;
+            lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
             
             modEngine->in[ModInLFO] = lfoOutput;
             modEngine->in[ModInEnvelope] = envelope.value;
@@ -233,24 +236,18 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine->out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
             
-            if (kernel->droneMode) {
-                modulations.level = 1.0f;
-            } else {
-                modulations.level = ampEnvelope.value;
-            }
+            modulations.level = ampEnvelope.value + modEngine->out[ModOutLevel];
             
-            modulations.level += modEngine->out[ModOutLevel];
-            
-            leftSource = clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], 0.0f, 1.0f);
-            rightSource = clamp(kernel->rightSource + modEngine->out[ModOutRightSource], 0.0f, 1.0f);
+            leftSourceTarget = clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], 0.0f, 1.0f);
+            rightSourceTarget = clamp(kernel->rightSource + modEngine->out[ModOutRightSource], 0.0f, 1.0f);
             
             float pan = clamp(kernel->pan + modEngine->out[ModOutPan] + panSpread, -1.0f, 1.0f);
             if (pan > 0) {
-                rightGain = 1.0f;
-                leftGain = 1.0f - pan;
+                rightGainTarget = 1.0f;
+                leftGainTarget = 1.0f - pan;
             } else {
-                leftGain = 1.0f;
-                rightGain = 1.0f + pan;
+                leftGainTarget = 1.0f;
+                rightGainTarget = 1.0f + pan;
             }
         }
         
@@ -261,10 +258,8 @@ public:
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
                     
-                    if (state == NoteStateReleasing) {
-                        if (!kernel->droneMode && !voice->lpg_active()) {
-                            state = NoteStateUnused;
-                        }
+                    if (state == NoteStateReleasing && !voice->lpg_active()) {
+                        state = NoteStateUnused;
                     }
                     
                     runModulations(kAudioBlockSize);
@@ -282,6 +277,11 @@ public:
                 
                 out = ((float) frames[plaitsFramesIndex].out) / ((float) INT16_MAX);
                 aux = ((float) frames[plaitsFramesIndex].aux) / ((float) INT16_MAX);
+                ONE_POLE(leftSource, leftSourceTarget, 0.01);
+                ONE_POLE(rightSource, rightSourceTarget, 0.01);
+                ONE_POLE(leftGain, leftGainTarget, 0.01);
+                ONE_POLE(rightGain, rightGainTarget, 0.01);
+
                 
                 *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
                 *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
@@ -466,15 +466,6 @@ public:
             case PlaitsParamPitchBendRange:
                 midiProcessor->bendRange = round(clamp(value, 0.0f, 12.0f));
                 break;
-                
-            case PlaitsParamDroneMode: {
-                int newDroneMode = round(clamp(value, 0.0f, 1.0f));
-                if (droneMode != newDroneMode) {
-                    reset();
-                    droneMode = newDroneMode;
-                }
-                break;
-            }
             
             case PlaitsParamEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
@@ -666,9 +657,6 @@ public:
             case PlaitsParamPitchBendRange:
                 return (float) midiProcessor->bendRange;
                 
-            case PlaitsParamDroneMode:
-                return (float) droneMode;
-                
             case PlaitsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
            
@@ -849,14 +837,13 @@ public:
     float gainCoefficient = 0.1f;
     float leftSource = 0.0f;
     float rightSource = 1.0f;
+    
     float pan = 0.0f;
     float panSpread = 0.0f;
     float portamento = 0.0f;
     
     int pitch = 0;
     float detune = 0;
-    
-    bool droneMode;
 };
 
 #endif /* PlaitsDSPKernel_h */
