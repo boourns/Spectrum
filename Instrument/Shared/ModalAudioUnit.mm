@@ -69,7 +69,11 @@
         ElementsParamSpace = 13,
         ElementsMaxParameters
     };
-    
+
+    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
+                                                                     address:ElementsParamPitch
+                                                                         min:0.0 max:24.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:pitchRange dependentParameters:nil];
     
     AUParameter *exciterEnvShape = [AUParameterTree createParameterWithIdentifier:@"exciterEnvShape" name:@"Env Shape"
                                                                       address:ElementsParamExciterEnvShape
@@ -117,7 +121,7 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[exciterEnvShape, bowLevel, bowTimbre]];
+    AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[pitchParam, exciterEnvShape, bowLevel, bowTimbre]];
     
     AUParameterGroup *blowGroup = [AUParameterTree createGroupWithIdentifier:@"blow" name:@"Blow" children:@[blowLevel, blowMeta, blowTimbre]];
     
@@ -147,7 +151,7 @@
     
     AUParameter *space = [AUParameterTree createParameterWithIdentifier:@"space" name:@"Space"
                                                                    address:ElementsParamSpace
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[geometry, brightness, position, damping, space]];
@@ -165,25 +169,7 @@
                                                                                                     ]
                                                            dependentParameters:nil];
     
-    AUParameter *qualityParam = [AUParameterTree createParameterWithIdentifier:@"quality" name:@"Quality"
-                                                                       address:ElementsParamQuality min:0.0 max:10.0
-                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                         flags:flags valueStrings:@[
-                                                                                                    @"0 (Lowest)",
-                                                                                                    @"1",
-                                                                                                    @"2",
-                                                                                                    @"3",
-                                                                                                    @"4",
-                                                                                                    @"5 (Default)",
-                                                                                                    @"6",
-                                                                                                    @"7",
-                                                                                                    @"8",
-                                                                                                    @"9",
-                                                                                                    @"10 (Highest)",
-                                                                                                    ]
-                                                           dependentParameters:nil];
-    
-    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[modeParam, qualityParam]];
+    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[modeParam]];
     
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
     

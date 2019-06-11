@@ -33,8 +33,8 @@ enum {
     ElementsParamResonatorDamping = 11,
     ElementsParamResonatorPosition = 12,
     ElementsParamSpace = 13,
-    ElementsParamQuality = 14,
     ElementsParamMode = 15,
+    ElementsParamPitch = 16,
     ElementsMaxParameters
 };
 
@@ -88,6 +88,9 @@ public:
     
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
+            case ElementsParamPitch:
+                pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
+                break;
             case ElementsParamExciterEnvShape:
                 patch->exciter_envelope_shape = clamp(value, 0.0f, 1.0f);
                 break;
@@ -128,10 +131,7 @@ public:
                 patch->resonator_position = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamSpace:
-                patch->space = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamQuality:
-                outputSrc.setQuality(clamp(value, 0.0f, 10.0f));
+                patch->space = clamp(value, 0.0f, 2.0f);
                 break;
             case ElementsParamMode:
                 part->set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
@@ -141,6 +141,9 @@ public:
     
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
+            case ElementsParamPitch:
+                return pitch + 12;
+                
             case ElementsParamExciterEnvShape:
                 return patch->exciter_envelope_shape;
                 
@@ -182,9 +185,6 @@ public:
                 
             case ElementsParamSpace:
                 return patch->space;
-                
-            case ElementsParamQuality:
-                return outputSrc.quality;
                 
             case ElementsParamMode:
                 if (part->easter_egg_) {
@@ -293,7 +293,8 @@ public:
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
-                performance.note = currentNote;
+                performance.note = currentNote + pitch + 12.0f;
+                
                 performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
                                                 if (i > ::kSampleRate * 5) {
                                                 performance.modulation = 0;
