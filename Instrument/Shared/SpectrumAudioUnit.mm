@@ -195,12 +195,12 @@
                                                                           min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    NSArray *ampSources = @[ @"LPG", @"ADSR", @"Drone"];
+    NSArray *droneModes = @[ @"Off", @"On"];
     
-    AUParameter *ampSourceParam = [AUParameterTree createParameterWithIdentifier:@"ampSource" name:@"Amp Source"
-                                                                         address:PlaitsParamAmpSource
-                                                                             min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags: flags valueStrings:ampSources dependentParameters:nil];
+    AUParameter *droneModeParam = [AUParameterTree createParameterWithIdentifier:@"droneMode" name:@"Drone Mode"
+                                                                         address:PlaitsParamDroneMode
+                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:droneModes dependentParameters:nil];
     
     AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
                                                                           address:PlaitsParamLeftSource
@@ -221,13 +221,6 @@
                                                                          address:PlaitsParamPanSpread
                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                            flags: flags valueStrings:nil dependentParameters:nil];
-
-    
-    // LPG
-    AUParameter *decayParam = [AUParameterTree createParameterWithIdentifier:@"decay" name:@"LPG Decay"
-                                                                     address:PlaitsParamDecay
-                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
     
     AUParameter *colourParam = [AUParameterTree createParameterWithIdentifier:@"colour" name:@"LPG Colour"
@@ -235,9 +228,9 @@
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *ampEnvSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[ampEnvAttack, ampEnvDecay, ampEnvSustain, ampEnvRelease, decayParam, colourParam]];
+    AUParameterGroup *ampEnvSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[ampEnvAttack, ampEnvDecay, ampEnvSustain, ampEnvRelease, colourParam]];
     
-    AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[volumeParam, ampSourceParam, leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
+    AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[volumeParam, droneModeParam, leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
     
     AUParameterGroup *ampPage = [AUParameterTree createGroupWithIdentifier:@"amp" name:@"Amp" children:@[ampEnvSettings, outGroup]];
 

@@ -75,7 +75,12 @@ class MIDIProcessor {
                 noteOff(note);
                 return;
             }
-            activeNotes.push_back({.note = note, .vel = vel});
+            PlayingNote p = {.note = note, .vel = vel};
+            if (std::find(activeNotes.begin(), activeNotes.end(), p) != activeNotes.end()) {
+                // note on for note we're already playing.
+                return;
+            }
+            activeNotes.push_back(p);
             std::sort(activeNotes.begin(), activeNotes.end(), noteSort);
 
             MIDIVoice *voice = voiceForNote(note);
@@ -136,8 +141,9 @@ class MIDIProcessor {
             int startingPoint = nextVoice;
             do {
                 if (v[nextVoice]->State() == NoteStateUnused) {
+                    int found = nextVoice;
                     nextVoice = (nextVoice + 1) % poly;
-                    return v[nextVoice];
+                    return v[found];
                 }
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);
@@ -146,8 +152,9 @@ class MIDIProcessor {
             startingPoint = nextVoice;
             do {
                 if (v[nextVoice]->State() == NoteStateReleasing) {
+                    int found = nextVoice;
                     nextVoice = (nextVoice + 1) % poly;
-                    return v[nextVoice];
+                    return v[found];
                 }
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);

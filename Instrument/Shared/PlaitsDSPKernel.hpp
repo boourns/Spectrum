@@ -25,7 +25,6 @@ enum {
     PlaitsParamTimbre = 0,
     PlaitsParamHarmonics = 1,
     PlaitsParamMorph = 2,
-    PlaitsParamDecay = 3,
     PlaitsParamAlgorithm = 4,
     PlaitsParamPitch = 5,
     PlaitsParamDetune = 6,
@@ -45,7 +44,7 @@ enum {
     PlaitsParamLfoAmountTimbre = 20,
     PlaitsParamLfoAmountMorph = 21,
     PlaitsParamPitchBendRange = 22,
-    PlaitsParamAmpSource = 23,
+    PlaitsParamDroneMode = 23,
     PlaitsParamEnvAttack = 24,
     PlaitsParamEnvDecay = 25,
     PlaitsParamEnvSustain = 26,
@@ -63,7 +62,7 @@ enum {
     PlaitsParamLfoAmount = 38,
     PlaitsParamModMatrixStart = 39,
     PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 12 = 51
-    PlaitsParamQuality = 52,
+    PlaitsParamPortamento = 52,
     PlaitsMaxParameters
 };
 
@@ -175,7 +174,7 @@ public:
                 modulations.trigger = 1.0f;
                 envelope.TriggerHigh();
                 ampEnvelope.TriggerHigh();
-            } else {
+            } else if (state == NoteStateReleasing) {
                 delayed_trigger = true;
             }
             state = NoteStatePlaying;
@@ -183,11 +182,14 @@ public:
         
         virtual void midiNoteOn(uint8_t noteNumber, uint8_t velocity)
         {
-            memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
+            if (state == NoteStateUnused) {
+                memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
+
+                // TODO When stealing don't take new pan spread value
+                panSpread = kernel->nextPanSpread();
+            }
             
             modulations.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
-            // TODO When stealing don't take new pan spread value
-            panSpread = kernel->nextPanSpread();
 
             note = noteNumber;
             modEngine->in[ModInNote] = ((float) note) / 127.0f;
@@ -231,10 +233,10 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine->out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
             
-            if (kernel->ampSource == 1) {
-                modulations.level = ampEnvelope.value;
-            } else if (kernel->ampSource == 2){
+            if (kernel->droneMode) {
                 modulations.level = 1.0f;
+            } else {
+                modulations.level = ampEnvelope.value;
             }
             
             modulations.level += modEngine->out[ModOutLevel];
@@ -259,6 +261,12 @@ public:
             while (framesRemaining) {
                 if (plaitsFramesIndex >= kAudioBlockSize) {
                     
+                    if (state == NoteStateReleasing) {
+                        if (!kernel->droneMode && !voice->lpg_active()) {
+                            state = NoteStateUnused;
+                        }
+                    }
+                    
                     runModulations(kAudioBlockSize);
                     
                     voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
@@ -269,13 +277,6 @@ public:
                         modulations.trigger = 1.0f;
                         envelope.TriggerHigh();
                         ampEnvelope.TriggerHigh();
-                    }
-                    
-                    if (state == NoteStateReleasing) {
-                        if ((kernel->ampSource == 0 && !voice->lpg_active())
-                            || (kernel->ampSource == 1 && ampEnvelope.value_ == 0)) {
-                            state = NoteStateUnused;
-                        }
                     }
                 }
                 
@@ -328,7 +329,7 @@ public:
         modulations.timbre_patched = true;
         modulations.morph_patched = true;
         modulations.trigger_patched = true;
-        modulations.level_patched = false;
+        modulations.level_patched = true;
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -373,10 +374,6 @@ public:
             case PlaitsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
                 patch.note = 48.0f + pitch + detune;
-                break;
-                
-            case PlaitsParamDecay:
-                patch.decay = clamp(value, 0.0f, 1.0f);
                 break;
                 
             case PlaitsParamLPGColour:
@@ -470,16 +467,11 @@ public:
                 midiProcessor->bendRange = round(clamp(value, 0.0f, 12.0f));
                 break;
                 
-            case PlaitsParamAmpSource: {
-                int newAmpSource = round(clamp(value, 0.0f, 3.0f));
-                if (ampSource != newAmpSource) {
+            case PlaitsParamDroneMode: {
+                int newDroneMode = round(clamp(value, 0.0f, 1.0f));
+                if (droneMode != newDroneMode) {
                     reset();
-                    ampSource = newAmpSource;
-                    if (ampSource == 0) {
-                        modulations.level_patched = false;
-                    } else {
-                        modulations.level_patched = true;
-                    }
+                    droneMode = newDroneMode;
                 }
                 break;
             }
@@ -562,13 +554,7 @@ public:
             }
                 
             case PlaitsParamAmpEnvRelease: {
-                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
-                if (newValue != ampEnvParameters[3]) {
-                    ampEnvParameters[3] = newValue;
-                    for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].ampEnvelope.Configure(ampEnvParameters);
-                    }
-                }
+                patch.decay = clamp(value, 0.0f, 1.0f);
                 break;
             }
                 
@@ -596,8 +582,8 @@ public:
                 envAmountLfoAmount = clamp(value, 0.0f, 1.0f);
                 break;
                 
-            case PlaitsParamQuality:
-                outputSrc.setQuality((int) clamp(value, 0.0f, 10.0f));
+            case PlaitsParamPortamento:
+                portamento = clamp(value, 0.0f, 1.0f);
                 break;
                 
         }
@@ -626,9 +612,6 @@ public:
                 
             case PlaitsParamDetune:
                 return detune;
-                
-            case PlaitsParamDecay:
-                return patch.decay;
                 
             case PlaitsParamLPGColour:
                 return patch.lpg_colour;
@@ -683,8 +666,8 @@ public:
             case PlaitsParamPitchBendRange:
                 return (float) midiProcessor->bendRange;
                 
-            case PlaitsParamAmpSource:
-                return (float) ampSource;
+            case PlaitsParamDroneMode:
+                return (float) droneMode;
                 
             case PlaitsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
@@ -708,7 +691,7 @@ public:
                 return ((float) ampEnvParameters[2]) / (float) UINT16_MAX;
                 
             case PlaitsParamAmpEnvRelease:
-                return ((float) ampEnvParameters[3]) / (float) UINT16_MAX;
+                return patch.decay;
                 
             case PlaitsParamEnvAmountFM:
                 return envAmountFM;
@@ -728,8 +711,8 @@ public:
             case PlaitsParamEnvAmountLFOAmount:
                 return envAmountLfoAmount;
                 
-            case PlaitsParamQuality:
-                return outputSrc.quality;
+            case PlaitsParamPortamento:
+                return portamento;
                 
             default:
                 return 0.0f;
@@ -868,11 +851,12 @@ public:
     float rightSource = 1.0f;
     float pan = 0.0f;
     float panSpread = 0.0f;
+    float portamento = 0.0f;
     
     int pitch = 0;
     float detune = 0;
     
-    int ampSource;
+    bool droneMode;
 };
 
 #endif /* PlaitsDSPKernel_h */
