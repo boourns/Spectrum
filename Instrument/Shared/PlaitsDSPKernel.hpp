@@ -127,11 +127,13 @@ public:
 
         plaits::Voice *voice;
         plaits::Modulations modulations;
-        ModulationEngine *modEngine;
+        ModulationEngine modEngine;
         
         float panSpread = 0;
         
         bool delayed_trigger = false;
+        
+        VoiceState() : modEngine(NumModulationInputs, NumModulationOutputs) { }
         
         void Init(ModulationEngineRuleList *rules) {
             voice = new plaits::Voice();
@@ -141,9 +143,8 @@ public:
             envelope.Init();
             ampEnvelope.Init();
             lfo.Init();
-            modEngine = new ModulationEngine(NumModulationInputs, NumModulationOutputs);
-            modEngine->rules = rules;
-            modEngine->in[ModInDirect] = 1.0f;
+            modEngine.rules = rules;
+            modEngine.in[ModInDirect] = 1.0f;
         }
         
         // ================ MIDIProcessor
@@ -198,8 +199,8 @@ public:
             modulations.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
 
             note = noteNumber;
-            modEngine->in[ModInNote] = ((float) note) / 127.0f;
-            modEngine->in[ModInVelocity] = ((float) velocity) / 127.0f;
+            modEngine.in[ModInNote] = ((float) note) / 127.0f;
+            modEngine.in[ModInVelocity] = ((float) velocity) / 127.0f;
             
             add();
         }
@@ -218,35 +219,35 @@ public:
         
             lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
             
-            modEngine->in[ModInLFO] = lfoOutput;
-            modEngine->in[ModInEnvelope] = envelope.value;
-            modEngine->in[ModInOut] = out;
-            modEngine->in[ModInAux] = aux;
-            modEngine->in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
+            modEngine.in[ModInLFO] = lfoOutput;
+            modEngine.in[ModInEnvelope] = envelope.value;
+            modEngine.in[ModInOut] = out;
+            modEngine.in[ModInAux] = aux;
+            modEngine.in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
             
-            modEngine->run();
+            modEngine.run();
             
             if (kernel->lfoRateIsPatched || kernel->envAmountLfoRate > 0.0f) {
-                updateLfoRate(modEngine->out[ModOutLFORate] + (envelope.value * kernel->envAmountLfoRate));
+                updateLfoRate(modEngine.out[ModOutLFORate] + (envelope.value * kernel->envAmountLfoRate));
             }
             
-            float lfoAmount = kernel->lfoAmount + modEngine->out[ModOutLFOAmount] + (envelope.value * kernel->envAmountLfoAmount);
+            float lfoAmount = kernel->lfoAmount + modEngine.out[ModOutLFOAmount] + (envelope.value * kernel->envAmountLfoAmount);
             
-            modulations.engine = modEngine->out[ModOutEngine];
-            modulations.frequency = kernel->modulations.frequency + modEngine->out[ModOutTune] + (modEngine->out[ModOutFrequency] * 120.0f) + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
+            modulations.engine = modEngine.out[ModOutEngine];
+            modulations.frequency = kernel->modulations.frequency + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f) + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
             
-            modulations.harmonics = kernel->modulations.harmonics + modEngine->out[ModOutHarmonics] + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
+            modulations.harmonics = kernel->modulations.harmonics + modEngine.out[ModOutHarmonics] + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
             
-            modulations.timbre = kernel->modulations.timbre + modEngine->out[ModOutTimbre] + lfoOutput * kernel->lfoAmountTimbre * lfoAmount + (envelope.value * kernel->envAmountTimbre);
+            modulations.timbre = kernel->modulations.timbre + modEngine.out[ModOutTimbre] + lfoOutput * kernel->lfoAmountTimbre * lfoAmount + (envelope.value * kernel->envAmountTimbre);
             
-            modulations.morph = kernel->modulations.morph + modEngine->out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
+            modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
             
-            modulations.level = ampEnvelope.value + modEngine->out[ModOutLevel];
+            modulations.level = ampEnvelope.value + modEngine.out[ModOutLevel];
             
-            leftSourceTarget = (1.0f + clamp(kernel->leftSource + modEngine->out[ModOutLeftSource], -1.0f, 1.0f)) / 2.0f;
-            rightSourceTarget = (1.0f + clamp(kernel->rightSource + modEngine->out[ModOutRightSource], -1.0f, 1.0f)) / 2.0f;
+            leftSourceTarget = (1.0f + clamp(kernel->leftSource + modEngine.out[ModOutLeftSource], -1.0f, 1.0f)) / 2.0f;
+            rightSourceTarget = (1.0f + clamp(kernel->rightSource + modEngine.out[ModOutRightSource], -1.0f, 1.0f)) / 2.0f;
             
-            float pan = clamp(kernel->pan + modEngine->out[ModOutPan] + panSpread, -1.0f, 1.0f);
+            float pan = clamp(kernel->pan + modEngine.out[ModOutPan] + panSpread, -1.0f, 1.0f);
             if (pan > 0) {
                 rightGainTarget = 1.0f;
                 leftGainTarget = 1.0f - pan;
@@ -298,13 +299,12 @@ public:
     
     // MARK: Member Functions
     
-    PlaitsDSPKernel() : midiProcessor(kMaxPolyphony)
+    PlaitsDSPKernel() : midiProcessor(kMaxPolyphony), modulationEngineRules(kNumModulationRules)
     {
         voices.resize(kMaxPolyphony);
-        modulationEngineRules = new ModulationEngineRuleList(kNumModulationRules);
         for (VoiceState& voice : voices) {
             voice.kernel = this;
-            voice.Init(modulationEngineRules);
+            voice.Init(&modulationEngineRules);
             midiProcessor.noteStack.voices.push_back(&voice);
         }
         envParameters[2] = UINT16_MAX;
@@ -346,8 +346,8 @@ public:
     
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
-            modulationEngineRules->setParameter(address - PlaitsParamModMatrixStart, value);
-            lfoRateIsPatched = modulationEngineRules->isPatched(ModOutLFORate);
+            modulationEngineRules.setParameter(address - PlaitsParamModMatrixStart, value);
+            lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
             return;
         }
         
@@ -450,7 +450,7 @@ public:
                 if (newRate != lfoBaseRate) {
                     lfoBaseRate = newRate;
                     for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].updateLfoRate(lfoBaseRate);
+                        voices[i].updateLfoRate(0.0f);
                     }
                 }
                 break;
@@ -595,7 +595,7 @@ public:
     
     AUValue getParameter(AUParameterAddress address) {
         if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
-            return modulationEngineRules->getParameter(address - PlaitsParamModMatrixStart);
+            return modulationEngineRules.getParameter(address - PlaitsParamModMatrixStart);
         }
         
         switch (address) {
@@ -644,9 +644,8 @@ public:
             case PlaitsParamPanSpread:
                 return panSpread;
                 
-            case PlaitsParamLfoRate: {
+            case PlaitsParamLfoRate:
                 return lfoBaseRate;
-            }
                 
             case PlaitsParamLfoShape:
                 return lfoShape;
@@ -816,7 +815,7 @@ private:
 public:
     MIDIProcessor midiProcessor;
 
-    ModulationEngineRuleList *modulationEngineRules;
+    ModulationEngineRuleList modulationEngineRules;
     bool lfoRateIsPatched = false;
     
     plaits::Modulations modulations;

@@ -16,9 +16,11 @@
 #import "resampler.hpp"
 
 #import "MIDIProcessor.hpp"
+#import "ModulationEngine.hpp"
 
 const size_t kAudioBlockSize = 16;
 const size_t kPolyphony = 1;
+const size_t kNumModulationRules = 10;
 
 enum {
     ElementsParamExciterEnvShape = 0,
@@ -37,7 +39,55 @@ enum {
     ElementsParamSpace = 13,
     ElementsParamMode = 15,
     ElementsParamPitch = 16,
+    ElementsParamDetune = 17,
+    ElementsParamLfoShape = 18,
+    ElementsParamLfoRate = 19,
+    ElementsParamLfoShapeMod = 20,
+    ElementsParamLfoAmount = 21,
+    ElementsParamEnvAttack = 22,
+    ElementsParamEnvDecay = 23,
+    ElementsParamEnvSustain = 24,
+    ElementsParamEnvRelease = 25,
+    ElementsParamModMatrixStart = 26,
+    ElementsParamModMatrixEnd = 26 + (kNumModulationRules * 4), // 26 + 40 = 66
+    
     ElementsMaxParameters
+};
+
+enum {
+    ModInDirect = 0,
+    ModInLFO,
+    ModInEnvelope,
+    ModInNote,
+    ModInVelocity,
+    ModInModwheel,
+    ModInOut,
+    NumModulationInputs
+};
+
+enum {
+    ModOutDisabled = 0,
+    ModOutTune,
+    ModOutFrequency,
+    ModOutExciterEnvShape,
+    ModOutBowLevel,
+    ModOutBowTimbre,
+    ModOutBlowLevel,
+    ModOutBlowMeta,
+    ModOutBlowTimbre,
+    ModOutStrikeLevel,
+    ModOutStrikeMeta,
+    ModOutStrikeTimbre,
+    ModOutResonatorGeometry,
+    ModOutResonatorBrightness,
+    ModOutResonatorDamping,
+    ModOutResonatorPosition,
+    ModOutSpace,
+    ModOutLFORate,
+    ModOutLFOAmount,
+    ModOutLevel,
+    
+    NumModulationOutputs
 };
 
 /*
@@ -49,19 +99,13 @@ class ElementsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    ElementsDSPKernel() : midiProcessor(1)
+    ElementsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules)
     {
         midiProcessor.noteStack.voices.push_back(this);
-    }
-    
-    void init(int channelCount, double inSampleRate) {
-        sampleRate = float(inSampleRate);
-        outputSrc.setRates(32000, (int) inSampleRate);
         
-        part = new elements::Part();
-        part->Init(reverb_buffer);
+        part.Init(reverb_buffer);
         
-        patch = part->mutable_patch();
+        patch = part.mutable_patch();
         
         std::fill(&silence[0], &silence[kAudioBlockSize], 0.0f);
         
@@ -79,11 +123,26 @@ public:
         patch->resonator_damping = 0.8f;
         patch->resonator_position = 0.3f;
         patch->space = 0.1f;
+    }
+    
+    void init(int channelCount, double inSampleRate) {
+        outputSrc.setRates(32000, (int) inSampleRate);
         
         midiAllNotesOff();
+        envelope.Init();
+        lfo.Init();
+        
+        modEngine.rules = &modulationEngineRules;
+        modEngine.in[ModInDirect] = 1.0f;
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
+        if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
+            modulationEngineRules.setParameter(address - ElementsParamModMatrixStart, value);
+            lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
+            return;
+        }
+        
         switch (address) {
             case ElementsParamPitch:
                 pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
@@ -131,12 +190,88 @@ public:
                 patch->space = clamp(value, 0.0f, 2.0f);
                 break;
             case ElementsParamMode:
-                part->set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
+                part.set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
                 break;
+            case ElementsParamDetune:
+                detune = clamp(value, -1.0f, 1.0f);
+                break;
+                
+            case ElementsParamLfoShape: {
+                uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
+                if (newShape != lfoShape) {
+                    lfoShape = newShape;
+                    lfo.set_shape((peaks::LfoShape) lfoShape);
+                }
+                break;
+            }
+                
+            case ElementsParamLfoShapeMod: {
+                float newShape = clamp(value, -1.0f, 1.0f);
+                if (newShape != lfoShapeMod) {
+                    lfoShapeMod = newShape;
+                    uint16_t par = (newShape * 32767.0f);
+                    lfo.set_parameter(par);
+                }
+                break;
+            }
+                
+            case ElementsParamLfoRate: {
+                float newRate = clamp(value, 0.0f, 1.0f);
+                
+                if (newRate != lfoBaseRate) {
+                    lfoBaseRate = newRate;
+                    updateLfoRate(0.0f);
+                }
+                break;
+            }
+                
+            case ElementsParamLfoAmount:
+                lfoBaseAmount = clamp(value, 0.0f, 1.0f);
+                break;
+            
+            case ElementsParamEnvAttack: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[0]) {
+                    envParameters[0] = newValue;
+                    envelope.Configure(envParameters);
+                }
+                break;
+            }
+                
+            case ElementsParamEnvDecay: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[1]) {
+                    envParameters[1] = newValue;
+                    envelope.Configure(envParameters);
+                }
+                break;
+            }
+                
+            case ElementsParamEnvSustain: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[2]) {
+                    envParameters[2] = newValue;
+                    envelope.Configure(envParameters);
+                }
+                break;
+            }
+                
+            case ElementsParamEnvRelease: {
+                uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
+                if (newValue != envParameters[3]) {
+                    envParameters[3] = newValue;
+                    envelope.Configure(envParameters);
+                }
+                break;
+            }
         }
     }
     
     AUValue getParameter(AUParameterAddress address) {
+        if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
+            return modulationEngineRules.getParameter(address - ElementsParamModMatrixStart);
+        }
+        
         switch (address) {
             case ElementsParamPitch:
                 return pitch + 12;
@@ -184,11 +319,38 @@ public:
                 return patch->space;
                 
             case ElementsParamMode:
-                if (part->easter_egg_) {
+                if (part.easter_egg_) {
                     return 3.0f;
                 } else {
-                    return (float) part->resonator_model();
+                    return (float) part.resonator_model();
                 }
+                
+            case ElementsParamDetune:
+                return detune;
+                
+            case ElementsParamLfoRate:
+                return lfoBaseRate;
+                
+            case ElementsParamLfoShape:
+                return lfoShape;
+                
+            case ElementsParamLfoShapeMod:
+                return lfoShapeMod;
+                
+            case ElementsParamLfoAmount:
+                return lfoBaseAmount;
+                
+            case ElementsParamEnvAttack:
+                return ((float) envParameters[0]) / (float) UINT16_MAX;
+                
+            case ElementsParamEnvDecay:
+                return ((float) envParameters[1]) / (float) UINT16_MAX;
+                
+            case ElementsParamEnvSustain:
+                return ((float) envParameters[2]) / (float) UINT16_MAX;
+                
+            case ElementsParamEnvRelease:
+                return ((float) envParameters[3]) / (float) UINT16_MAX;
                 
             default:
                 return 0.0f;
@@ -204,7 +366,8 @@ public:
         outBufferListPtr = outBufferList;
     }
     
-    // linked list management
+    // =========== MIDI
+    
     virtual void midiNoteOff() {
         state = NoteStateReleasing;
         gate = false;
@@ -243,6 +406,31 @@ public:
         midiProcessor.handleMIDIEvent(midiEvent);
     }
     
+    // ================= Modulations
+    void updateLfoRate(float modulationAmount) {
+        float calculatedRate = clamp(lfoBaseRate + modulationAmount, 0.0f, 1.0f);
+        uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
+        lfo.set_rate(rateParameter);
+    }
+    
+    void runModulations(int blockSize) {
+        envelope.Process(blockSize);
+        
+        lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
+        
+        modEngine.in[ModInLFO] = lfoOutput;
+        modEngine.in[ModInEnvelope] = envelope.value;
+        modEngine.in[ModInModwheel] = midiProcessor.modwheelAmount;
+        
+        modEngine.run();
+        
+        if (lfoRateIsPatched) {
+            updateLfoRate(modEngine.out[ModOutLFORate]);
+        }
+        
+        float lfoAmount = lfoBaseAmount + modEngine.out[ModOutLFOAmount];
+    }
+    
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
@@ -254,7 +442,7 @@ public:
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
-                performance.note = currentNote + pitch + 12.0f;
+                performance.note = currentNote + pitch + detune + 12.0f;
                 
                 performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
                                                 if (i > ::kSampleRate * 5) {
@@ -263,7 +451,7 @@ public:
                 performance.strength = currentVelocity;
                 performance.gate = gate;
                 
-                part->Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
+                part.Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
                 
                 rack::Frame<2> outputFrames[16];
                 for (int i = 0; i < 16; i++) {
@@ -307,14 +495,12 @@ public:
     // MARK: Member Variables
     
 private:
-    float sampleRate = 32000.0;
-    
     AudioBufferList* outBufferListPtr = nullptr;
     
     unsigned int activePolyphony = 1;
     
 public:
-    elements::Part *part;
+    elements::Part part;
     elements::Patch *patch;
     
     rack::SampleRateConverter<2> outputSrc;
@@ -324,24 +510,30 @@ public:
     float auxSamples[kAudioBlockSize];
     float silence[kAudioBlockSize];
     uint16_t reverb_buffer[32768];
-
+    
+    MIDIProcessor midiProcessor;
     bool gate;
     uint8_t currentNote;
     float currentVelocity;
-    
-    MIDIProcessor midiProcessor;
-
-    peaks::MultistageEnvelope envelope;
-    peaks::Lfo lfo;
-    float lfoOutput;
-    
     int state;
-    
     bool delayed_trigger = false;
     int pitch = 0;
     float detune = 0;
     int bendRange = 0;
     float bendAmount = 0.0f;
+    
+    ModulationEngine modEngine;
+    ModulationEngineRuleList modulationEngineRules;
+
+    bool lfoRateIsPatched;
+    uint16_t envParameters[4];
+    peaks::MultistageEnvelope envelope;
+    peaks::Lfo lfo;
+    float lfoOutput;
+    float lfoBaseRate;
+    float lfoShape;
+    float lfoShapeMod;
+    float lfoBaseAmount;
 };
 
 #endif /* ElementsDSPKernel_h */

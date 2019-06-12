@@ -57,30 +57,6 @@
     
     NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
     
-    
-    enum {
-        ElementsParamExciterEnvShape = 0,
-        ElementsParamBowLevel = 1,
-        ElementsParamBowTimbre = 2,
-        ElementsParamBlowLevel = 3,
-        ElementsParamBlowMeta = 4,
-        ElementsParamBlowTimbre = 5,
-        ElementsParamStrikeLevel = 6,
-        ElementsParamStrikeMeta = 7,
-        ElementsParamStrikeTimbre = 8,
-        ElementsParamResonatorGeometry = 9,
-        ElementsParamResonatorBrightness = 10,
-        ElementsParamResonatorDamping = 11,
-        ElementsParamResonatorPosition = 12,
-        ElementsParamSpace = 13,
-        ElementsMaxParameters
-    };
-
-    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
-                                                                     address:ElementsParamPitch
-                                                                         min:0.0 max:24.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:pitchRange dependentParameters:nil];
-    
     AUParameter *exciterEnvShape = [AUParameterTree createParameterWithIdentifier:@"exciterEnvShape" name:@"Env Shape"
                                                                       address:ElementsParamExciterEnvShape
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -127,7 +103,7 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[pitchParam, exciterEnvShape, bowLevel, bowTimbre]];
+    AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[exciterEnvShape, bowLevel, bowTimbre]];
     
     AUParameterGroup *blowGroup = [AUParameterTree createGroupWithIdentifier:@"blow" name:@"Blow" children:@[blowLevel, blowMeta, blowTimbre]];
     
@@ -164,6 +140,63 @@
     
     AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
     
+    // LFO
+    AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
+                                                                  address:ElementsParamLfoRate
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    NSArray *lfoShapes = @[@"Sine", @"Slope", @"Pulse", @"Stepped", @"Random"];
+    
+    AUParameter *lfoShape = [AUParameterTree createParameterWithIdentifier:@"lfoShape" name:@"LFO Shape"
+                                                                   address:ElementsParamLfoShape
+                                                                       min:0.0 max:4.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:lfoShapes dependentParameters:nil];
+    
+    AUParameter *lfoShapeMod = [AUParameterTree createParameterWithIdentifier:@"lfoShapeMod" name:@"ShapeMod"
+                                                                      address:ElementsParamLfoShapeMod
+                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoAmount = [AUParameterTree createParameterWithIdentifier:@"lfoAmount" name:@"LFO Amount"
+                                                                    address:ElementsParamLfoAmount
+                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoAmount]];
+    
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
+
+
+    
+    // Env
+    AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
+                                                                    address:ElementsParamEnvAttack
+                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envDecay = [AUParameterTree createParameterWithIdentifier:@"envDecay" name:@"Decay"
+                                                                   address:ElementsParamEnvDecay
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envSustain = [AUParameterTree createParameterWithIdentifier:@"envSustain" name:@"Sustain"
+                                                                     address:ElementsParamEnvSustain
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *envRelease = [AUParameterTree createParameterWithIdentifier:@"envRelease" name:@"Release"
+                                                                     address:ElementsParamEnvRelease
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
+    
+    //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
+    
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings]];
+    
+    
     AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
                                                                        address:ElementsParamMode min:0.0 max:4.0
                                                                           unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -175,12 +208,22 @@
                                                                                                     ]
                                                            dependentParameters:nil];
     
-    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[modeParam]];
+    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
+                                                                     address:ElementsParamPitch
+                                                                         min:0.0 max:24.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:pitchRange dependentParameters:nil];
+    
+    AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
+                                                                      address:ElementsParamDetune
+                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[modeParam, pitchParam, detuneParam]];
     
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, lfoPage, envPage, settingsPage]];
     
     // Create the output bus.
     _outputBusBuffer.init(defaultFormat, 2);
