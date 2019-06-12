@@ -516,6 +516,7 @@
         }
     }
 }
+
 #pragma mark- Preset Management
 
 typedef struct {

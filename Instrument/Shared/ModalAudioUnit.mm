@@ -23,6 +23,12 @@
     // C++ members need to be ivars; they would be copied on access if they were properties.
     ElementsDSPKernel _kernel;
     BufferedOutputBus _outputBusBuffer;
+    
+    AUAudioUnitPreset   *_currentPreset;
+    NSInteger           _currentFactoryPresetIndex;
+    NSArray<AUAudioUnitPreset *> *_presets;
+    
+    NSMutableDictionary *midiCCMap;
 }
 @synthesize parameterTree = _parameterTree;
 
@@ -277,8 +283,15 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        params[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].value);
+        params[[@(_parameterTree.allParameters[i].address) stringValue]] = @(_parameterTree.allParameters[i].value);
     }
+    
+    NSError* error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"===========START============");
+    NSLog([jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]);
+    NSLog(@"===========END============");
     
     state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];
     return state;
@@ -288,12 +301,141 @@
     NSData *data = (NSData *)fullState[@"data"];
     NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
+    [self loadData:params];
+}
+
+- (void)loadData:(NSDictionary *)data {
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        NSNumber *savedValue = [params objectForKey: @(_parameterTree.allParameters[i].address)];
+        NSNumber *savedValue = [data objectForKey: [@(_parameterTree.allParameters[i].address) stringValue]];
         if (savedValue != nil) {
             _parameterTree.allParameters[i].value = savedValue.floatValue;
         }
     }
 }
+
+#pragma mark- Preset Management
+
+typedef struct {
+    NSString *name;
+    NSString *data;
+} FactoryPreset;
+
+static const UInt8 kElementsNumPresets = 0;
+static const FactoryPreset elementsPresets[kElementsNumPresets] =
+{
+//    {
+//        @"Init",
+//        @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
+//    },
+};
+
+static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
+{
+    AUAudioUnitPreset *aPreset = [AUAudioUnitPreset new];
+    aPreset.number = number;
+    aPreset.name = name;
+    return aPreset;
+}
+
+- (AUAudioUnitPreset *)currentPreset
+{
+    if (_currentPreset.number >= 0) {
+        NSLog(@"Returning Current Factory Preset: %ld\n", (long)_currentFactoryPresetIndex);
+        return [_presets objectAtIndex:_currentFactoryPresetIndex];
+    } else {
+        NSLog(@"Returning Current Custom Preset: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
+        return _currentPreset;
+    }
+}
+
+- (void)setCurrentPreset:(AUAudioUnitPreset *)currentPreset
+{
+    if (nil == currentPreset) { NSLog(@"nil passed to setCurrentPreset!"); return; }
+    
+    if (currentPreset.number >= 0) {
+        // factory preset
+        for (AUAudioUnitPreset *factoryPreset in _presets) {
+            if (currentPreset.number == factoryPreset.number) {
+                
+                NSError *jsonError;
+                NSData *objectData = [elementsPresets[factoryPreset.number].data dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
+                                                                     options:NSJSONReadingMutableContainers
+                                                                       error:&jsonError];
+                
+                [self loadData:json];
+                
+                // set factory preset as current
+                _currentPreset = currentPreset;
+                
+                break;
+            }
+        }
+    } else if (nil != currentPreset.name) {
+        // set custom preset as current
+        _currentPreset = currentPreset;
+        NSLog(@"currentPreset Custom: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
+    } else {
+        NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
+    }
+}
+
+#pragma mark- MIDI CC Map
+- (NSDictionary *)fullStateForDocument {
+    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
+    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
+    return state;
+}
+
+- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
+    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
+    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self updateKernelMIDIMap];
+}
+
+- (void)setDefaultMIDIMap {
+    int skip;
+    
+    midiCCMap = [[NSMutableDictionary alloc] init];
+    
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        if (i < 30) {
+            skip = 2;
+        } else {
+            skip = 4;
+        }
+        midiCCMap[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].address + skip);
+    }
+    
+    [self updateKernelMIDIMap];
+}
+
+- (void)updateKernelMIDIMap {
+    std::map<uint8_t, std::vector<MIDICCTarget>> kernelMIDIMap;
+    
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        AUParameterAddress address = _parameterTree.allParameters[i].address;
+        uint8_t controller = [[midiCCMap objectForKey: @(address)] intValue];
+        
+        std::map<uint8_t, std::vector<MIDICCTarget>>::iterator existing = kernelMIDIMap.find(controller);
+        
+        MIDICCTarget target;
+        target.parameter = _parameterTree.allParameters[i];
+        target.minimum = _parameterTree.allParameters[i].minValue;
+        target.maximum = _parameterTree.allParameters[i].maxValue;
+        
+        if(existing == kernelMIDIMap.end())
+        {
+            std::vector<MIDICCTarget> params;
+            params.push_back(target);
+            kernelMIDIMap[controller] = params;
+        } else {
+            existing->second.push_back(target);
+        }
+    }
+    
+    _kernel.midiProcessor.setCCMap(kernelMIDIMap);
+}
+
 
 @end
