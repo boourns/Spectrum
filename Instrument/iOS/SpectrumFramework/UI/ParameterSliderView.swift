@@ -33,7 +33,7 @@ class ParameterSliderView: UIView {
     
     init(param: AUParameter, stackVertically: Bool = false) {
         self.param = param
-        self.stackVertically = stackVertically
+        self.stackVertically = true //stackVertically
         
         if (param.minValue < 0) {
             self.slider = PSlider(bipolar: true)
@@ -54,6 +54,7 @@ class ParameterSliderView: UIView {
         
         label.textColor = UILabel.appearance().tintColor
         label.text = param.displayName
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer() { [weak self] in
             guard let this = self else { return }
@@ -77,8 +78,8 @@ class ParameterSliderView: UIView {
             self?.pressed = false
         }
         
-        addSubview(label)
         addSubview(slider)
+        addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         slider.translatesAutoresizingMaskIntoConstraints = false
         
@@ -86,13 +87,13 @@ class ParameterSliderView: UIView {
         
         if stackVertically {
             constraints = [
-                label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier:0.5),
-                label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0.5),
-                trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 0.5),
-                slider.topAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 0.5),
-                slider.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier:0.5),
+                slider.leadingAnchor.constraint(equalTo: label.leadingAnchor, constant: 7.0/UIScreen.main.scale),
+                slider.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0.5),
                 trailingAnchor.constraint(equalToSystemSpacingAfter: slider.trailingAnchor, multiplier: 0.5),
-                bottomAnchor.constraint(equalToSystemSpacingBelow: slider.bottomAnchor, multiplier: 0.5)
+                label.topAnchor.constraint(equalToSystemSpacingBelow: slider.bottomAnchor, multiplier: 0.5),
+                label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier:0.5),
+                trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 0.5),
+                bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 0.5)
             ]
         } else {
             constraints = [

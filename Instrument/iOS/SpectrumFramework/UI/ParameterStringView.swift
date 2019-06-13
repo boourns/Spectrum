@@ -55,15 +55,14 @@ class ParameterStringView: UIView, ParameterView {
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.textAlignment = .center
         valueLabel.textColor = UILabel.appearance().tintColor
-
         
         let leftButton = UIButton()
         let rightButton = UIButton()
         //leftButton.setTitleColor(UIColor.black, for: .normal)
         //rightButton.setTitleColor(UIColor.black, for: .normal)
 
-        leftButton.setTitle("<", for: .normal)
-        rightButton.setTitle(">", for: .normal)
+        leftButton.setTitle("◀︎", for: .normal)
+        rightButton.setTitle("▶︎", for: .normal)
         
         addSubview(label)
         addSubview(stack)
