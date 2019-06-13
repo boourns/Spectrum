@@ -376,11 +376,13 @@ public:
     virtual void midiNoteOff() {
         state = NoteStateReleasing;
         gate = false;
+        envelope.TriggerLow();
     }
     
     void add() {
         if (state == NoteStateUnused) {
             gate = true;
+            envelope.TriggerHigh();
         } else {
             delayed_trigger = true;
         }
@@ -437,20 +439,20 @@ public:
             updateLfoRate(modEngine.out[ModOutLFORate]);
         }
         
-        patch->exciter_envelope_shape = basePatch.exciter_envelope_shape + modEngine.out[ModOutExciterEnvShape];
-        patch->exciter_bow_level = basePatch.exciter_bow_level + modEngine.out[ModOutBowLevel];
-        patch->exciter_bow_timbre = basePatch.exciter_bow_timbre + modEngine.out[ModOutBowTimbre];
-        patch->exciter_blow_level = basePatch.exciter_blow_level + modEngine.out[ModOutBlowLevel];
-        patch->exciter_blow_meta = basePatch.exciter_blow_meta + modEngine.out[ModOutBlowMeta];
-        patch->exciter_blow_timbre = basePatch.exciter_blow_timbre + modEngine.out[ModOutBlowTimbre];
-        patch->exciter_strike_level = basePatch.exciter_strike_level + modEngine.out[ModOutStrikeLevel];
-        patch->exciter_strike_meta = basePatch.exciter_strike_meta + modEngine.out[ModOutStrikeMeta];
-        patch->exciter_strike_timbre = basePatch.exciter_strike_timbre + modEngine.out[ModOutStrikeTimbre];
-        patch->resonator_geometry = basePatch.resonator_geometry + modEngine.out[ModOutResonatorGeometry];
-        patch->resonator_brightness = basePatch.resonator_brightness + modEngine.out[ModOutResonatorBrightness];
-        patch->resonator_damping = basePatch.resonator_damping + modEngine.out[ModOutResonatorDamping];
-        patch->resonator_position = basePatch.resonator_position + modEngine.out[ModOutResonatorPosition];
-        patch->space = basePatch.space + modEngine.out[ModOutSpace];
+        patch->exciter_envelope_shape = clamp(basePatch.exciter_envelope_shape + modEngine.out[ModOutExciterEnvShape], 0.0f, 1.0f);
+        patch->exciter_bow_level = clamp(basePatch.exciter_bow_level + modEngine.out[ModOutBowLevel], 0.0f, 1.0f);
+        patch->exciter_bow_timbre = clamp(basePatch.exciter_bow_timbre + modEngine.out[ModOutBowTimbre], 0.0f, 0.9995f);
+        patch->exciter_blow_level = clamp(basePatch.exciter_blow_level + modEngine.out[ModOutBlowLevel], 0.0f, 1.0f);
+        patch->exciter_blow_meta = clamp(basePatch.exciter_blow_meta + modEngine.out[ModOutBlowMeta], 0.0f, 0.9995f); // LP
+        patch->exciter_blow_timbre = clamp(basePatch.exciter_blow_timbre + modEngine.out[ModOutBlowTimbre], 0.0f, 0.9995f);
+        patch->exciter_strike_level = clamp(basePatch.exciter_strike_level + modEngine.out[ModOutStrikeLevel], 0.0f, 1.0f);
+        patch->exciter_strike_meta = clamp(basePatch.exciter_strike_meta + modEngine.out[ModOutStrikeMeta], 0.0f, 0.9995f); //LP
+        patch->exciter_strike_timbre = clamp(basePatch.exciter_strike_timbre + modEngine.out[ModOutStrikeTimbre], 0.0f, 0.9995f);
+        patch->resonator_geometry = clamp(basePatch.resonator_geometry + modEngine.out[ModOutResonatorGeometry], 0.0f, 0.9995f); // LP
+        patch->resonator_brightness = clamp(basePatch.resonator_brightness + modEngine.out[ModOutResonatorBrightness], 0.0f, 0.9995f);
+        patch->resonator_damping = clamp(basePatch.resonator_damping + modEngine.out[ModOutResonatorDamping], 0.0f, 0.9995f);
+        patch->resonator_position = clamp(basePatch.resonator_position + modEngine.out[ModOutResonatorPosition], 0.0f, 0.9995f); // LP
+        patch->space = clamp(basePatch.space + modEngine.out[ModOutSpace], 0.0f, 2.0f); // LP
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -490,6 +492,7 @@ public:
                 if (delayed_trigger) {
                     gate = true;
                     delayed_trigger = false;
+                    envelope.TriggerHigh();
                 }
                 
                 modEngine.in[ModInOut] = mainSamples[kAudioBlockSize-1];
@@ -497,8 +500,8 @@ public:
             
             rack::Frame<2> outputFrame = outputBuffer.shift();
 
-            *outL++ += outputFrame.samples[0];
-            *outR++ += outputFrame.samples[1];
+            *outL++ = outputFrame.samples[0];
+            *outR++ = outputFrame.samples[1];
             
             framesRemaining--;
         }

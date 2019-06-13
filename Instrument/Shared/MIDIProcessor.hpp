@@ -8,6 +8,8 @@
 #ifndef MIDIEngine_h
 #define MIDIEngine_h
 
+// #define MIDIPROCESSOR_DEBUG
+
 #include <vector>
 #include <map>
 #import "DSPKernel.hpp"
@@ -216,7 +218,8 @@ class MIDIProcessor {
             }
         }
         
-        void printNoteState() {
+        inline void printNoteState() {
+#ifdef MIDIPROCESSOR_DEBUG
             printf("polyphony() = %d, unison() = %d\n", polyphony(), unison);
             printf("activeNotes.size() = %d\n", activeNotes.size());
             for (int i = 0; i < activeNotes.size(); i++) {
@@ -226,6 +229,7 @@ class MIDIProcessor {
             for (int i = 0; i < activePolyphony; i++) {
                 printf("note = %d, state = %d\n", voices[i]->Note(), voices[i]->State());
             }
+#endif
         }
         
         int maxPolyphony;
