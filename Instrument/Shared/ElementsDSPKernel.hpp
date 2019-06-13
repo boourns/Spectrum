@@ -109,20 +109,25 @@ public:
         
         std::fill(&silence[0], &silence[kAudioBlockSize], 0.0f);
         
-        patch->exciter_envelope_shape = 0.0f;
-        patch->exciter_bow_level = 0.0f;
-        patch->exciter_bow_timbre = 0.0f;
-        patch->exciter_blow_level = 0.0f;
-        patch->exciter_blow_meta = 0.0f;
-        patch->exciter_blow_timbre = 0.0f;
-        patch->exciter_strike_level = 0.5f;
-        patch->exciter_strike_meta = 0.5f;
-        patch->exciter_strike_timbre = 0.3f;
-        patch->resonator_geometry = 0.4f;
-        patch->resonator_brightness = 0.7f;
-        patch->resonator_damping = 0.8f;
-        patch->resonator_position = 0.3f;
-        patch->space = 0.1f;
+        basePatch.exciter_envelope_shape = 0.0f;
+        basePatch.exciter_bow_level = 0.0f;
+        basePatch.exciter_bow_timbre = 0.0f;
+        basePatch.exciter_blow_level = 0.0f;
+        basePatch.exciter_blow_meta = 0.0f;
+        basePatch.exciter_blow_timbre = 0.0f;
+        basePatch.exciter_strike_level = 0.5f;
+        basePatch.exciter_strike_meta = 0.5f;
+        basePatch.exciter_strike_timbre = 0.3f;
+        basePatch.resonator_geometry = 0.4f;
+        basePatch.resonator_brightness = 0.7f;
+        basePatch.resonator_damping = 0.8f;
+        basePatch.resonator_position = 0.3f;
+        basePatch.space = 0.1f;
+        
+        modulationEngineRules.rules[0].input1 = ModInLFO;
+        modulationEngineRules.rules[1].input1 = ModInLFO;
+        modulationEngineRules.rules[2].input1 = ModInEnvelope;
+        modulationEngineRules.rules[3].input1 = ModInEnvelope;
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -148,46 +153,46 @@ public:
                 pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
                 break;
             case ElementsParamExciterEnvShape:
-                patch->exciter_envelope_shape = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_envelope_shape = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamBowLevel:
-                patch->exciter_bow_level = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_bow_level = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamBowTimbre:
-                patch->exciter_bow_timbre = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_bow_timbre = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamBlowLevel:
-                patch->exciter_blow_level = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_blow_level = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamBlowMeta:
-                patch->exciter_blow_meta = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_blow_meta = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamBlowTimbre:
-                patch->exciter_blow_timbre = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_blow_timbre = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamStrikeLevel:
-                patch->exciter_strike_level = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_strike_level = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamStrikeMeta:
-                patch->exciter_strike_meta = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_strike_meta = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamStrikeTimbre:
-                patch->exciter_strike_timbre = clamp(value, 0.0f, 1.0f);
+                basePatch.exciter_strike_timbre = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamResonatorGeometry:
-                patch->resonator_geometry = clamp(value, 0.0f, 1.0f);
+                basePatch.resonator_geometry = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamResonatorBrightness:
-                patch->resonator_brightness = clamp(value, 0.0f, 1.0f);
+                basePatch.resonator_brightness = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamResonatorDamping:
-                patch->resonator_damping = clamp(value, 0.0f, 1.0f);
+                basePatch.resonator_damping = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamResonatorPosition:
-                patch->resonator_position = clamp(value, 0.0f, 1.0f);
+                basePatch.resonator_position = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamSpace:
-                patch->space = clamp(value, 0.0f, 2.0f);
+                basePatch.space = clamp(value, 0.0f, 2.0f);
                 break;
             case ElementsParamMode:
                 part.set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
@@ -277,46 +282,46 @@ public:
                 return pitch + 12;
                 
             case ElementsParamExciterEnvShape:
-                return patch->exciter_envelope_shape;
+                return basePatch.exciter_envelope_shape;
                 
             case ElementsParamBowLevel:
-                return patch->exciter_bow_level;
+                return basePatch.exciter_bow_level;
                 
             case ElementsParamBowTimbre:
-                return patch->exciter_bow_timbre;
+                return basePatch.exciter_bow_timbre;
                 
             case ElementsParamBlowLevel:
-                return patch->exciter_blow_level;
+                return basePatch.exciter_blow_level;
                 
             case ElementsParamBlowMeta:
-                return patch->exciter_blow_meta;
+                return basePatch.exciter_blow_meta;
                 
             case ElementsParamBlowTimbre:
-                return patch->exciter_blow_timbre;
+                return basePatch.exciter_blow_timbre;
                 
             case ElementsParamStrikeLevel:
-                return patch->exciter_strike_level;
+                return basePatch.exciter_strike_level;
                 
             case ElementsParamStrikeMeta:
-                return patch->exciter_strike_meta;
+                return basePatch.exciter_strike_meta;
                 
             case ElementsParamStrikeTimbre:
-                return patch->exciter_strike_timbre;
+                return basePatch.exciter_strike_timbre;
                 
             case ElementsParamResonatorGeometry:
-                return patch->resonator_geometry;
+                return basePatch.resonator_geometry;
                 
             case ElementsParamResonatorBrightness:
-                return patch->resonator_brightness;
+                return basePatch.resonator_brightness;
                 
             case ElementsParamResonatorDamping:
-                return patch->resonator_damping;
+                return basePatch.resonator_damping;
                 
             case ElementsParamResonatorPosition:
-                return patch->resonator_position;
+                return basePatch.resonator_position;
                 
             case ElementsParamSpace:
-                return patch->space;
+                return basePatch.space;
                 
             case ElementsParamMode:
                 if (part.easter_egg_) {
@@ -385,6 +390,9 @@ public:
     virtual void midiNoteOn(uint8_t note, uint8_t vel) {
         currentNote = note;
         currentVelocity = ((float) vel) / 127.0;
+        modEngine.in[ModInNote] = ((float) currentNote) / 127.0f;
+        modEngine.in[ModInVelocity] = currentVelocity;
+
         add();
     }
     
@@ -428,7 +436,20 @@ public:
             updateLfoRate(modEngine.out[ModOutLFORate]);
         }
         
-        float lfoAmount = lfoBaseAmount + modEngine.out[ModOutLFOAmount];
+        patch->exciter_envelope_shape = basePatch.exciter_envelope_shape + modEngine.out[ModOutExciterEnvShape];
+        patch->exciter_bow_level = basePatch.exciter_bow_level + modEngine.out[ModOutBowLevel];
+        patch->exciter_bow_timbre = basePatch.exciter_bow_timbre + modEngine.out[ModOutBowTimbre];
+        patch->exciter_blow_level = basePatch.exciter_blow_level + modEngine.out[ModOutBlowLevel];
+        patch->exciter_blow_meta = basePatch.exciter_blow_meta + modEngine.out[ModOutBlowMeta];
+        patch->exciter_blow_timbre = basePatch.exciter_blow_timbre + modEngine.out[ModOutBlowTimbre];
+        patch->exciter_strike_level = basePatch.exciter_strike_level + modEngine.out[ModOutStrikeLevel];
+        patch->exciter_strike_meta = basePatch.exciter_strike_meta + modEngine.out[ModOutStrikeMeta];
+        patch->exciter_strike_timbre = basePatch.exciter_strike_timbre + modEngine.out[ModOutStrikeTimbre];
+        patch->resonator_geometry = basePatch.resonator_geometry + modEngine.out[ModOutResonatorGeometry];
+        patch->resonator_brightness = basePatch.resonator_brightness + modEngine.out[ModOutResonatorBrightness];
+        patch->resonator_damping = basePatch.resonator_damping + modEngine.out[ModOutResonatorDamping];
+        patch->resonator_position = basePatch.resonator_position + modEngine.out[ModOutResonatorPosition];
+        patch->space = basePatch.space + modEngine.out[ModOutSpace];
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -439,10 +460,11 @@ public:
         
         while (framesRemaining) {
             if (outputBuffer.empty()) {
+                runModulations(kAudioBlockSize);
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
-                performance.note = currentNote + pitch + detune + 12.0f;
+                performance.note = currentNote + pitch + detune + 12.0f + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
                 
                 performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
                                                 if (i > ::kSampleRate * 5) {
@@ -453,13 +475,13 @@ public:
                 
                 part.Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
                 
-                rack::Frame<2> outputFrames[16];
-                for (int i = 0; i < 16; i++) {
+                rack::Frame<2> outputFrames[kAudioBlockSize];
+                for (int i = 0; i < kAudioBlockSize; i++) {
                     outputFrames[i].samples[0] = mainSamples[i];
                     outputFrames[i].samples[1] = auxSamples[i];
                 }
                 
-                int inLen = 16;
+                int inLen = kAudioBlockSize;
                 int outLen = (int) outputBuffer.capacity();
                 outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
                 outputBuffer.endIncr(outLen);
@@ -468,6 +490,8 @@ public:
                     gate = true;
                     delayed_trigger = false;
                 }
+                
+                modEngine.in[ModInOut] = mainSamples[kAudioBlockSize-1];
             }
             
             rack::Frame<2> outputFrame = outputBuffer.shift();
@@ -477,19 +501,6 @@ public:
             
             framesRemaining--;
         }
-    }
-    
-    float randomSignedFloat(float max) {
-        int range = ((float) INT_MAX) * max;
-        if (range == 0) {
-            return 0.0f;
-        }
-        float result = (float) (rand() % range) / (float) INT_MAX;
-        if (rand() % 2 == 1) {
-            result *= -1;
-        }
-        NSLog(@"Result %f", result);
-        return result;
     }
     
     // MARK: Member Variables
@@ -502,6 +513,7 @@ private:
 public:
     elements::Part part;
     elements::Patch *patch;
+    elements::Patch basePatch;
     
     rack::SampleRateConverter<2> outputSrc;
     rack::DoubleRingBuffer<rack::Frame<2>, 256> outputBuffer;

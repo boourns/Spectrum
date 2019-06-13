@@ -165,8 +165,13 @@
     
     AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoAmount]];
     
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
+    AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoMod" name:@"LFO Mod"
+                                                                         children:[self modTargets:0 count:2 parameterOffset:ElementsParamModMatrixStart]];
+    
+    
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
 
+    
 
     
     // Env
@@ -192,9 +197,12 @@
     
     AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
     
+    AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Env Mod"
+                                                                         children:[self modTargets:2 count:2 parameterOffset:ElementsParamModMatrixStart]];
+    
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
     
-    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings]];
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings, envModulations]];
     
     
     AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
@@ -263,6 +271,111 @@
     
     return self;
 }
+
+NSArray *modInputs = @[
+                       @"Direct",
+                       @"LFO",
+                       @"Envelope",
+                       @"Note",
+                       @"Velocity",
+                       @"Modwheel",
+                       @"Out",
+                       ];
+
+NSArray *modOutputs = @[
+                        @"Disabled",
+                        @"Tune",
+                        @"Frequency",
+                        @"ExciterEnvShape",
+                        @"BowLevel",
+                        @"BowTimbre",
+                        @"BlowLevel",
+                        @"BlowMeta",
+                        @"BlowTimbre",
+                        @"StrikeLevel",
+                        @"StrikeMeta",
+                        @"StrikeTimbre",
+                        @"ResonatorGeometry",
+                        @"ResonatorBrightness",
+                        @"ResonatorDamping",
+                        @"ResonatorPosition",
+                        @"Space",
+                        @"LFORate",
+                        @"LFOAmount",
+                        @"Level",
+                        ];
+
+- (NSMutableArray *)modTargets:(int) ruleNumber count:(int) count parameterOffset:(int) parameterOffset {
+    
+    AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
+    kAudioUnitParameterFlag_IsReadable;
+    
+    NSMutableArray *params = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < count; i++) {
+        int base = parameterOffset + ((ruleNumber+i)*4);
+
+        AUParameter *depthParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iDepth", ruleNumber+i]
+                                                                            name:[NSString stringWithFormat:@"Depth %i", i+1]
+                                                                         address:base + 2
+                                                                             min:-2.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                           flags: flags valueStrings:nil dependentParameters:nil];
+        
+        AUParameter *outParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%Output", ruleNumber+i]
+                                                                          name:[NSString stringWithFormat:@"Target %i", i+1]
+                                                                       address:base + 3
+                                                                           min:0.0 max:((float) [modOutputs count])
+                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:modOutputs dependentParameters:nil];
+        
+        [params addObject:outParam];
+        [params addObject:depthParam];
+    }
+    
+    return params;
+}
+
+- (AUParameterGroup *)modMatrixRule:(int) ruleNumber parameterOffset:(int) parameterOffset {
+    
+   
+    
+    AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
+    kAudioUnitParameterFlag_IsReadable;
+    
+    int start = parameterOffset + (ruleNumber*4);
+    
+    AUParameter *input1Param = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iIn1", ruleNumber+1]
+                                                                         name:@"Input 1"
+                                                                      address:start + 0
+                                                                          min:0.0 max:((float) [modInputs count])
+                                                                         unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:modInputs dependentParameters:nil];
+    
+    AUParameter *input2Param = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iIn2", ruleNumber+1]
+                                                                         name:@"Input 2"
+                                                                      address:start + 1
+                                                                          min:0.0 max:((float) [modInputs count])
+                                                                         unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:modInputs dependentParameters:nil];
+    
+    AUParameter *depthParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iDepth", ruleNumber+1]
+                                                                        name:@"Depth"
+                                                                     address:start + 2
+                                                                         min:-2.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *outParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%io=Out", ruleNumber+1]
+                                                                      name:@"Out"
+                                                                   address:start + 3
+                                                                       min:0.0 max:((float) [modOutputs count])
+                                                                      unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:modOutputs dependentParameters:nil];
+    
+    return [AUParameterTree createGroupWithIdentifier:[NSString stringWithFormat:@"rule%i", ruleNumber+1]
+                                                 name:[NSString stringWithFormat:@"Rule %i", ruleNumber+1]
+                                             children:@[input1Param, input2Param, depthParam, outParam]];
+}
+
 
 -(void)dealloc {
     // Deallocate resources as required.
