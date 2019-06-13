@@ -200,6 +200,7 @@
 		E225104E22B1F3B800DD88E8 /* mu_law.h in Headers */ = {isa = PBXBuildFile; fileRef = E225100622B1F3B800DD88E8 /* mu_law.h */; };
 		E225104F22B1F3B800DD88E8 /* grain.h in Headers */ = {isa = PBXBuildFile; fileRef = E225100722B1F3B800DD88E8 /* grain.h */; };
 		E225105022B1F3B800DD88E8 /* looping_sample_player.h in Headers */ = {isa = PBXBuildFile; fileRef = E225100822B1F3B800DD88E8 /* looping_sample_player.h */; };
+		E225105322B1F4D200DD88E8 /* shy_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = E225105222B1F4D200DD88E8 /* shy_fft.h */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
 		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
@@ -522,6 +523,7 @@
 		E225100622B1F3B800DD88E8 /* mu_law.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mu_law.h; sourceTree = "<group>"; };
 		E225100722B1F3B800DD88E8 /* grain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grain.h; sourceTree = "<group>"; };
 		E225100822B1F3B800DD88E8 /* looping_sample_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = looping_sample_player.h; sourceTree = "<group>"; };
+		E225105222B1F4D200DD88E8 /* shy_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shy_fft.h; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
 		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
@@ -866,6 +868,7 @@
 		E2154A8C229249AA00CEED2E /* stmlib */ = {
 			isa = PBXGroup;
 			children = (
+				E225105122B1F4D200DD88E8 /* fft */,
 				E2154A8D229249AA00CEED2E /* utils */,
 				E2154A97229249AA00CEED2E /* stmlib.h */,
 				E2154A98229249AA00CEED2E /* dsp */,
@@ -1067,6 +1070,14 @@
 			path = fx;
 			sourceTree = "<group>";
 		};
+		E225105122B1F4D200DD88E8 /* fft */ = {
+			isa = PBXGroup;
+			children = (
+				E225105222B1F4D200DD88E8 /* shy_fft.h */,
+			);
+			path = fft;
+			sourceTree = "<group>";
+		};
 		E22AFB02229881F900679F99 /* peaks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1238,6 +1249,7 @@
 				E225104622B1F3B800DD88E8 /* window.h in Headers */,
 				E2154B13229249AA00CEED2E /* dsp.h in Headers */,
 				E2184A96229E1F9200CA4DFE /* elements_string.h in Headers */,
+				E225105322B1F4D200DD88E8 /* shy_fft.h in Headers */,
 				E2154AC9229249AA00CEED2E /* variable_shape_oscillator.h in Headers */,
 				E2154B05229249AA00CEED2E /* dsp.h in Headers */,
 				E2154AE9229249AA00CEED2E /* noise_engine.h in Headers */,

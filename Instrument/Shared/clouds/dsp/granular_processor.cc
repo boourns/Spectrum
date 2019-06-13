@@ -30,8 +30,6 @@
 
 #include <cstring>
 
-#include "clouds/drivers/debug_pin.h"
-
 #include "stmlib/dsp/parameter_interpolator.h"
 #include "stmlib/utils/buffer_allocator.h"
 
