@@ -425,6 +425,7 @@ public:
         envelope.Process(blockSize);
         
         lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
+        lfoOutput *= clamp(lfoBaseAmount + modEngine.out[ModOutLFOAmount], 0.0f, 1.0f);
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
