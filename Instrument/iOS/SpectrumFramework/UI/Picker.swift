@@ -12,7 +12,6 @@ import AVFoundation
 import CoreAudioKit
 
 class Picker: UIView, ParameterView {
-    let stack = UIStackView()
     let param: AUParameter
     let valueStrings: [String]
     let valueLabel = UILabel()
@@ -43,17 +42,14 @@ class Picker: UIView, ParameterView {
     
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.distribution = .equalSpacing
         
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.text = param.displayName
         label.textColor = UILabel.appearance().tintColor
 
         label.translatesAutoresizingMaskIntoConstraints = false
-
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         valueLabel.textAlignment = .center
         valueLabel.textColor = UILabel.appearance().tintColor
         
@@ -62,25 +58,27 @@ class Picker: UIView, ParameterView {
         //leftButton.setTitleColor(UIColor.black, for: .normal)
         //rightButton.setTitleColor(UIColor.black, for: .normal)
 
+        leftButton.translatesAutoresizingMaskIntoConstraints = false
+        rightButton.translatesAutoresizingMaskIntoConstraints = false
+        
         leftButton.setTitle("◀︎", for: .normal)
         rightButton.setTitle("▶︎", for: .normal)
         
         addSubview(label)
-        addSubview(stack)
-        stack.addArrangedSubview(leftButton)
-        stack.addArrangedSubview(valueLabel)
-        stack.addArrangedSubview(rightButton)
+        addSubview(leftButton)
+        addSubview(rightButton)
+        addSubview(valueLabel)
         
         let constraints = [
-            label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier:0.5),
-            label.topAnchor.constraint(equalTo: topAnchor, constant: CGFloat(63.0)/UIScreen.main.scale),
-            bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: CGFloat(63.0)/UIScreen.main.scale),
-            label.widthAnchor.constraint(equalToConstant: 100.0),
-            stack.leadingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier:0.5),
-            valueLabel.widthAnchor.constraint(equalToConstant: 100.0),
-            //stack.widthAnchor.constraint(equalToConstant: 140.0),
-            stack.topAnchor.constraint(equalTo: topAnchor),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            leftButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
+            leftButton.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: rightButton.trailingAnchor, multiplier: 1.0),
+            rightButton.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
+            valueLabel.centerYAnchor.constraint(equalTo: leftButton.centerYAnchor),
+            valueLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: leftButton.trailingAnchor, multiplier: 0.2),
+            rightButton.leadingAnchor.constraint(equalToSystemSpacingAfter: valueLabel.trailingAnchor, multiplier: 0.2),
+            label.topAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: rightButton.bottomAnchor, multiplier: 1.0),
+            label.topAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: valueLabel.bottomAnchor, multiplier: 1.0),
         ]
         NSLayoutConstraint.activate(constraints)
         

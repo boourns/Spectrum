@@ -52,7 +52,7 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        ui?.layout()
+        layout()
     }
     
     public override func viewDidLoad() {
@@ -78,13 +78,31 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         view.addSubview(ui!)
         NSLayoutConstraint.activate(view.constraints(filling: ui!))
         
-        ui?.layout()
+        layout()
 
         ui?.selectPage(0)
         
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { address, value in
             SpectrumUI.update(address: address, value: value)
         })
+    }
+    
+    func layout() {
+        var pageAxis: NSLayoutConstraint.Axis = .horizontal
+        var pageAlignment: UIStackView.Alignment = .firstBaseline
+        var pageDistribution: UIStackView.Distribution = .fillEqually
+
+        if view.frame.width < ResponsiveBreak {
+            pageAxis = .vertical
+            pageAlignment = .fill
+            pageDistribution = .equalCentering
+        }
+
+        SpectrumUI.cStacks.forEach { view in
+            view.axis = pageAxis
+            view.alignment = pageAlignment
+            view.distribution = pageDistribution
+        }
     }
     
     func buildUI() -> UI {

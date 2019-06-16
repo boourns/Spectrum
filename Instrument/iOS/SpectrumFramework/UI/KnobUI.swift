@@ -18,6 +18,8 @@ class SpectrumUI {
             uiParam.1.value = value
         }
     }
+    
+    static var cStacks: [UIStackView] = []
 }
 
 class UI: UIView {
@@ -98,24 +100,7 @@ class UI: UIView {
         }
     }
     
-    func layout() {
-//        var pageAxis: NSLayoutConstraint.Axis = .horizontal
-//        var pageAlignment: UIStackView.Alignment = .firstBaseline
-//        var pageDistribution: UIStackView.Distribution = .fillEqually
-//
-//        if view.frame.width < ResponsiveBreak {
-//            pageAxis = .vertical
-//            pageAlignment = .fill
-//            pageDistribution = .equalCentering
-//        }
-//
-//        pages.forEach { page in
-//            guard let view = page.view as? UIStackView else { return }
-//            view.axis = pageAxis
-//            view.alignment = pageAlignment
-//            view.distribution = pageDistribution
-//        }
-    }
+
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -163,5 +148,21 @@ class HStack: UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         
         children.forEach { addArrangedSubview($0) }
+    }
+}
+
+class CStack: UIStackView {
+    convenience init(_ children: [UIView]) {
+        self.init()
+        
+        axis = .horizontal
+        alignment = .firstBaseline
+        distribution = .fillEqually
+        spacing = Spacing.betweenParameters
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        children.forEach { addArrangedSubview($0) }
+        
+        SpectrumUI.cStacks.append(self)
     }
 }

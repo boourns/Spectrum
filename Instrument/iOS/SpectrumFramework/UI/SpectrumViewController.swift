@@ -64,20 +64,56 @@ extension UILabel {
 }
 
 class SpectrumViewController: BaseAudioUnitViewController {
+    
     override func buildUI() -> UI {
-        
         return UI([
             Page("Main",
-                 HStack([
-                    Knob(PlaitsParam.Algorithm.rawValue),
-                    Knob(PlaitsParam.Harmonics.rawValue),
-                    ])
-            ),
+                 CStack([
+                   Stack([
+                     CStack([
+                         HStack([
+                            Picker(PlaitsParam.Algorithm.rawValue),
+                            Knob(PlaitsParam.Harmonics.rawValue),
+                            ]),
+                         HStack([
+                            Knob(PlaitsParam.Algorithm.rawValue),
+                            Knob(PlaitsParam.Harmonics.rawValue),
+                            ]),
+                         ]),
+                     HStack([
+                        Knob(PlaitsParam.Algorithm.rawValue, size: 80),
+                        Knob(PlaitsParam.Harmonics.rawValue, size: 80),
+                        ]),
+                     HStack([
+                        Knob(PlaitsParam.Algorithm.rawValue),
+                        Knob(PlaitsParam.Harmonics.rawValue),
+                        Knob(PlaitsParam.Harmonics.rawValue),
+                        ]),
+                     ]),
+                   Stack([
+                    HStack([
+                        Knob(PlaitsParam.Algorithm.rawValue),
+                        Knob(PlaitsParam.Harmonics.rawValue),
+                        Knob(PlaitsParam.Harmonics.rawValue),
+                        ]),
+                    HStack([
+                        Knob(PlaitsParam.Algorithm.rawValue, size: 80),
+                        Knob(PlaitsParam.Harmonics.rawValue, size: 80),
+                        ]),
+                    HStack([
+                        Knob(PlaitsParam.Algorithm.rawValue),
+                        Knob(PlaitsParam.Harmonics.rawValue),
+                        Knob(PlaitsParam.Harmonics.rawValue),
+                        ]),
+                    ]) //stack
+                ]) // cstack
+            ) // page
+        
             //LFOPage(),
             //EnvPage(),
             //Page("Amp", UIView()),
             //ModMatrixPage(),
-            ])
+            ]) // ui page list
         
     }
 }
