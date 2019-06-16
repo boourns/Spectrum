@@ -48,6 +48,8 @@ class Picker: UIView, ParameterView {
         label.textColor = UILabel.appearance().tintColor
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        //valueLabel.backgroundColor = SpectrumUI.colours.background
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         
         valueLabel.textAlignment = .center
@@ -64,21 +66,31 @@ class Picker: UIView, ParameterView {
         leftButton.setTitle("◀︎", for: .normal)
         rightButton.setTitle("▶︎", for: .normal)
         
-        addSubview(label)
-        addSubview(leftButton)
-        addSubview(rightButton)
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(container)
+        container.addSubview(label)
+        container.addSubview(leftButton)
+        container.addSubview(rightButton)
         addSubview(valueLabel)
         
         let constraints = [
-            leftButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
-            leftButton.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: rightButton.trailingAnchor, multiplier: 1.0),
-            rightButton.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
-            valueLabel.centerYAnchor.constraint(equalTo: leftButton.centerYAnchor),
-            valueLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: leftButton.trailingAnchor, multiplier: 0.2),
-            rightButton.leadingAnchor.constraint(equalToSystemSpacingAfter: valueLabel.trailingAnchor, multiplier: 0.2),
-            label.topAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: rightButton.bottomAnchor, multiplier: 1.0),
-            label.topAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: valueLabel.bottomAnchor, multiplier: 1.0),
+            container.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: Spacing.inner),
+            container.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.inner),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: container.trailingAnchor, multiplier: Spacing.inner),
+            label.topAnchor.constraint(equalToSystemSpacingBelow: container.bottomAnchor, multiplier: Spacing.inner),
+            
+            leftButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            leftButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            rightButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            rightButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            leftButton.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor),
+            container.bottomAnchor.constraint(greaterThanOrEqualTo: leftButton.bottomAnchor),
+            valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: Spacing.margin),
+            label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.margin),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.margin)
         ]
         NSLayoutConstraint.activate(constraints)
         

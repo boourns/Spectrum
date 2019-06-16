@@ -52,7 +52,7 @@ enum PlaitsParam: AUParameterAddress  {
     case LfoAmount = 38
     case ModMatrixStart = 39
     case ModMatrixEnd = 51 // Recompute if necessary!
-    case Portamento = 52
+    //case Portamento = 52
 }
 
 extension UILabel {
@@ -64,49 +64,40 @@ extension UILabel {
 }
 
 class SpectrumViewController: BaseAudioUnitViewController {
+    let big = CGFloat(80.0)
     
     override func buildUI() -> UI {
         return UI([
-            Page("Main",
+            Page("Spectrum",
                  CStack([
                    Stack([
-                     CStack([
-                         HStack([
-                            Picker(PlaitsParam.Algorithm.rawValue),
-                            Knob(PlaitsParam.Harmonics.rawValue),
-                            ]),
-                         HStack([
-                            Knob(PlaitsParam.Algorithm.rawValue),
-                            Knob(PlaitsParam.Harmonics.rawValue),
-                            ]),
+                     Panel(HStack([
+                        Picker(PlaitsParam.Algorithm.rawValue),
+                        Knob(PlaitsParam.Pitch.rawValue),
+                        Knob(PlaitsParam.Detune.rawValue),
+                     ])),
+                     Panel(
+                        Stack([HStack([
+                            Knob(PlaitsParam.Harmonics.rawValue, size: big),
+                            Knob(PlaitsParam.Timbre.rawValue, size: big),
+                            Knob(PlaitsParam.Morph.rawValue, size: big),
                          ]),
-                     HStack([
-                        Knob(PlaitsParam.Algorithm.rawValue, size: 80),
-                        Knob(PlaitsParam.Harmonics.rawValue, size: 80),
-                        ]),
-                     HStack([
-                        Knob(PlaitsParam.Algorithm.rawValue),
-                        Knob(PlaitsParam.Harmonics.rawValue),
-                        Knob(PlaitsParam.Harmonics.rawValue),
-                        ]),
-                     ]),
+                         HStack([
+                                Knob(PlaitsParam.Slop.rawValue),
+                                //Knob(PlaitsParam.Portamento.rawValue),
+                                Picker(PlaitsParam.Unison.rawValue),
+                                Knob(PlaitsParam.Polyphony.rawValue),
+                         ]),
+                         ])),
+                   ]),
                    Stack([
-                    HStack([
-                        Knob(PlaitsParam.Algorithm.rawValue),
-                        Knob(PlaitsParam.Harmonics.rawValue),
-                        Knob(PlaitsParam.Harmonics.rawValue),
+                        UIView(),
+                        HStack([
+                            Picker(PlaitsParam.ModMatrixStart.rawValue),
+                            Picker(PlaitsParam.ModMatrixStart.rawValue+1),
                         ]),
-                    HStack([
-                        Knob(PlaitsParam.Algorithm.rawValue, size: 80),
-                        Knob(PlaitsParam.Harmonics.rawValue, size: 80),
-                        ]),
-                    HStack([
-                        Knob(PlaitsParam.Algorithm.rawValue),
-                        Knob(PlaitsParam.Harmonics.rawValue),
-                        Knob(PlaitsParam.Harmonics.rawValue),
-                        ]),
-                    ]) //stack
-                ]) // cstack
+                   ]),
+                ]) //stack
             ) // page
         
             //LFOPage(),

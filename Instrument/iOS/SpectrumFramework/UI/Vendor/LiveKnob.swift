@@ -40,22 +40,22 @@ public enum LiveKnobControlType: Int, Codable {
     }
     
     /// Default color for the ring base. Defaults black.
-    @IBInspectable public var baseColor: UIColor = .black { didSet { drawKnob() }}
+    @IBInspectable public var baseColor: UIColor = .gray { didSet { drawKnob() }}
     
     /// Default color for the pointer. Defaults black.
-    @IBInspectable public var pointerColor: UIColor = .black { didSet { drawKnob() }}
+    @IBInspectable public var pointerColor: UIColor = .white { didSet { drawKnob() }}
     
     /// Default color for the progress. Defaults orange.
-    @IBInspectable public var progressColor: UIColor = .orange { didSet { drawKnob() }}
+    @IBInspectable public var progressColor: UIColor = .white { didSet { drawKnob() }}
     
     /// Line width for the ring base. Defaults 2.
     @IBInspectable public var baseLineWidth: CGFloat = 2 { didSet { drawKnob() }}
     
     /// Line width for the progress. Defaults 2.
-    @IBInspectable public var progressLineWidth: CGFloat = 2 { didSet { drawKnob() }}
-    
+    @IBInspectable public var progressLineWidth: CGFloat = 4 { didSet { drawKnob() }}
+
     /// Line width for the pointer. Defaults 2.
-    @IBInspectable public var pointerLineWidth: CGFloat = 2 { didSet { drawKnob() }}
+    @IBInspectable public var pointerLineWidth: CGFloat = 4 { didSet { drawKnob() }}
     
     /// Layer for the base ring.
     public private(set) var baseLayer = CAShapeLayer()

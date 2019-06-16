@@ -46,7 +46,7 @@ class ModalViewController: BaseAudioUnitViewController {
             Page("Main",
                  CStack([
                     Stack([
-                        CStack([
+                        Panel(CStack([
                             HStack([
                                 Knob(ElementsParam.ExciterEnvShape.rawValue),
                                 Knob(ElementsParam.BowLevel.rawValue),
@@ -55,16 +55,16 @@ class ModalViewController: BaseAudioUnitViewController {
                                 Knob(ElementsParam.BlowLevel.rawValue),
                                 Knob(ElementsParam.StrikeLevel.rawValue),
                                 ]),
-                            ]),
-                        HStack([
+                            ])),
+                        Panel(HStack([
                             Knob(ElementsParam.BlowMeta.rawValue, size: 80),
                             Knob(ElementsParam.StrikeMeta.rawValue, size: 80),
-                            ]),
-                        HStack([
+                            ])),
+                        Panel(HStack([
                             Knob(ElementsParam.BowTimbre.rawValue),
                             Knob(ElementsParam.BlowTimbre.rawValue),
                             Knob(ElementsParam.StrikeTimbre.rawValue),
-                            ]),
+                            ])),
                         ]),
                     Stack([
                         HStack([

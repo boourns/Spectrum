@@ -10,5 +10,6 @@ import UIKit
 
 class Spacing {
     static let sliderHeight = CGFloat(30)
-    static let betweenParameters = CGFloat(8)
+    static let margin = CGFloat(1.0)
+    static let inner = CGFloat(0.3)
 }

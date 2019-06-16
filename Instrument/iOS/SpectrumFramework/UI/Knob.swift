@@ -79,9 +79,9 @@ class Knob: UIView, ParameterView {
             knob.widthAnchor.constraint(equalToConstant: size),
             knob.heightAnchor.constraint(equalToConstant: size),
             knob.centerXAnchor.constraint(equalTo: centerXAnchor),
-            label.topAnchor.constraint(equalToSystemSpacingBelow: knob.bottomAnchor, multiplier: 0.5),
+            label.topAnchor.constraint(equalToSystemSpacingBelow: knob.bottomAnchor, multiplier: 0.3),
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
-            label.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: bottomAnchor, multiplier: 1.0)
+            bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: label.bottomAnchor, multiplier: 1.0)
         ]
         
         NSLayoutConstraint.activate(constraints)

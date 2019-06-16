@@ -8,10 +8,22 @@
 import Foundation
 import UIKit
 
+struct SpectrumColours {
+    let primary: UIColor
+    let secondary: UIColor
+    let secondBackground: UIColor
+    let background: UIColor
+}
+
 class SpectrumUI {
     static var tree: AUParameterTree?
     static var parameters: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
-    
+    static var colours = SpectrumColours(
+        primary: UIColor.init(hex: "#d0d6d9ff")!,
+        secondary: UIColor.init(hex: "#bfc0c0ff")!,
+        secondBackground: UIColor.init(hex: "#0d1b7aff")!, //"#313335ff")!,
+        background: UIColor.init(hex: "#181b1cff")!
+    )
     class func update(address: AUParameterAddress, value: Float) {
         guard let uiParam = SpectrumUI.parameters[address] else { return }
         DispatchQueue.main.async {
@@ -91,17 +103,15 @@ class UI: UIView {
         navigationView.arrangedSubviews.enumerated().forEach { index, view in
             guard let button = view as? UIButton else { return }
             if index == selectedIndex {
-                //button.backgroundColor = colours.secondary
-                //button.setTitleColor(UIColor.white, for: .normal)
+                button.backgroundColor = SpectrumUI.colours.secondary
+                button.setTitleColor(UIColor.white, for: .normal)
             } else {
-                //button.backgroundColor = colours.background
-                //button.setTitleColor(colours.primary, for: .normal)
+                button.backgroundColor = SpectrumUI.colours.background
+                button.setTitleColor(SpectrumUI.colours.primary, for: .normal)
             }
         }
     }
-    
 
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -130,7 +140,7 @@ class Stack: UIStackView {
         
         axis = .vertical
         alignment = .fill
-        spacing = Spacing.betweenParameters
+        spacing = 1.0/UIScreen.main.scale
         translatesAutoresizingMaskIntoConstraints = false
         
         children.forEach { addArrangedSubview($0) }
@@ -142,9 +152,9 @@ class HStack: UIStackView {
         self.init()
         
         axis = .horizontal
-        alignment = .firstBaseline
+        alignment = .fill
         distribution = .fillEqually
-        spacing = Spacing.betweenParameters
+        spacing = 1.0/UIScreen.main.scale
         translatesAutoresizingMaskIntoConstraints = false
         
         children.forEach { addArrangedSubview($0) }
@@ -158,11 +168,22 @@ class CStack: UIStackView {
         axis = .horizontal
         alignment = .firstBaseline
         distribution = .fillEqually
-        spacing = Spacing.betweenParameters
+        spacing = 1.0/UIScreen.main.scale
         translatesAutoresizingMaskIntoConstraints = false
         
         children.forEach { addArrangedSubview($0) }
         
         SpectrumUI.cStacks.append(self)
+    }
+}
+
+class Panel: UIView {
+    convenience init(_ child: UIView) {
+        self.init()
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        addSubview(child)
+        NSLayoutConstraint.activate(child.constraints(filling: self))
+        backgroundColor = SpectrumUI.colours.secondBackground
     }
 }

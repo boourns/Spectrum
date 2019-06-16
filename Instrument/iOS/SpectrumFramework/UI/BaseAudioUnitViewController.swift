@@ -9,23 +9,12 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
-struct SpectrumColours {
-    let primary: UIColor
-    let secondary: UIColor
-    let secondBackground: UIColor
-    let background: UIColor
-}
+
 
 let ResponsiveBreak = CGFloat(540.0)
 
 public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
-    var colours = SpectrumColours(
-        primary: UIColor.init(hex: "#d0d6d9ff")!,
-        secondary: UIColor.init(hex: "#bfc0c0ff")!,
-        secondBackground: UIColor.init(hex: "#313335ff")!,
-        background: UIColor.init(hex: "#181b1cff")!
-    )
     
     public var audioUnit: AUAudioUnit? {
         didSet {
@@ -42,11 +31,11 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
 
     public override func loadView() {
         super.loadView()
-        view.backgroundColor = colours.background
+        view.backgroundColor = SpectrumUI.colours.background
         
-        UILabel.appearance().tintColor = colours.primary
-        UISlider.appearance().tintColor = colours.secondary
-        UIButton.appearance().tintColor = colours.secondary
+        UILabel.appearance().tintColor = SpectrumUI.colours.primary
+        UISlider.appearance().tintColor = SpectrumUI.colours.secondary
+        UIButton.appearance().tintColor = SpectrumUI.colours.secondary
     }
     
     public override func viewWillLayoutSubviews() {

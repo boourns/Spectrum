@@ -208,7 +208,7 @@
 		E225107022B1FCA800DD88E8 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225106F22B1FCA800DD88E8 /* Dummy.swift */; };
 		E225107322B1FDCD00DD88E8 /* GranularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107122B1FCE700DD88E8 /* GranularViewController.swift */; };
 		E225107622B520B800DD88E8 /* LiveKnob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107422B5209400DD88E8 /* LiveKnob.swift */; };
-		E225107922B53EA100DD88E8 /* KnobUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107722B52EC900DD88E8 /* KnobUI.swift */; };
+		E225107922B53EA100DD88E8 /* SpectrumUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107722B52EC900DD88E8 /* SpectrumUI.swift */; };
 		E225107B22B57B1D00DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
 		E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
@@ -554,7 +554,7 @@
 		E225106F22B1FCA800DD88E8 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E225107122B1FCE700DD88E8 /* GranularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GranularViewController.swift; sourceTree = "<group>"; };
 		E225107422B5209400DD88E8 /* LiveKnob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveKnob.swift; sourceTree = "<group>"; };
-		E225107722B52EC900DD88E8 /* KnobUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnobUI.swift; sourceTree = "<group>"; };
+		E225107722B52EC900DD88E8 /* SpectrumUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumUI.swift; sourceTree = "<group>"; };
 		E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
@@ -569,6 +569,7 @@
 		E22AFB17229C66BB00679F99 /* PSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSlider.swift; sourceTree = "<group>"; };
 		E22AFB19229CC67D00679F99 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
+		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
 		E2495040229F82DF0073FBDC /* ringbuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ringbuffer.hpp; sourceTree = "<group>"; };
 		E2495041229F82DF0073FBDC /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		E2495042229F82DF0073FBDC /* resampler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = resampler.hpp; sourceTree = "<group>"; };
@@ -1152,8 +1153,8 @@
 		E22AFB10229C415E00679F99 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E235624322B6803A00762D39 /* Vendor */,
 				92A10C921B9517A50081EA80 /* SpectrumViewController.swift */,
-				E2268B102294C3650061A753 /* ActionKit.swift */,
 				E27AD076229395240003C69C /* Slider.swift */,
 				E22AFB11229C42C600679F99 /* ParameterView.swift */,
 				E22AFB13229C4AA100679F99 /* Picker.swift */,
@@ -1164,12 +1165,21 @@
 				E2184A99229E294B00CA4DFE /* ModalViewController.swift */,
 				E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */,
 				E225107122B1FCE700DD88E8 /* GranularViewController.swift */,
-				E225107422B5209400DD88E8 /* LiveKnob.swift */,
-				E225107722B52EC900DD88E8 /* KnobUI.swift */,
+				E225107722B52EC900DD88E8 /* SpectrumUI.swift */,
 				E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */,
 				E235623B22B5E0E100762D39 /* Knob.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		E235624322B6803A00762D39 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				E225107422B5209400DD88E8 /* LiveKnob.swift */,
+				E2268B102294C3650061A753 /* ActionKit.swift */,
+				E235624422B6804E00762D39 /* AKTouchPad.swift */,
+			);
+			path = Vendor;
 			sourceTree = "<group>";
 		};
 		E249503F229F82DF0073FBDC /* resampler */ = {
@@ -1606,7 +1616,7 @@
 			files = (
 				E235624222B5E11500762D39 /* Knob.swift in Sources */,
 				E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */,
-				E225107922B53EA100DD88E8 /* KnobUI.swift in Sources */,
+				E225107922B53EA100DD88E8 /* SpectrumUI.swift in Sources */,
 				E225107622B520B800DD88E8 /* LiveKnob.swift in Sources */,
 				E225107322B1FDCD00DD88E8 /* GranularViewController.swift in Sources */,
 				E224EA6322A6E3D800A34405 /* UIColor+extensions.swift in Sources */,
