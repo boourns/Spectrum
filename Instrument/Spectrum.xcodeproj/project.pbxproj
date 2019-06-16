@@ -207,6 +207,10 @@
 		E225106E22B1FC7400DD88E8 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E225107022B1FCA800DD88E8 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225106F22B1FCA800DD88E8 /* Dummy.swift */; };
 		E225107322B1FDCD00DD88E8 /* GranularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107122B1FCE700DD88E8 /* GranularViewController.swift */; };
+		E225107622B520B800DD88E8 /* LiveKnob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107422B5209400DD88E8 /* LiveKnob.swift */; };
+		E225107922B53EA100DD88E8 /* KnobUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107722B52EC900DD88E8 /* KnobUI.swift */; };
+		E225107B22B57B1D00DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
+		E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
 		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
@@ -214,10 +218,11 @@
 		E22AFB0E2299D33E00679F99 /* multistage_envelope.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB0C2299D33D00679F99 /* multistage_envelope.h */; };
 		E22AFB0F2299D33E00679F99 /* multistage_envelope.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */; };
 		E22AFB12229C42C600679F99 /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB11229C42C600679F99 /* ParameterView.swift */; };
-		E22AFB14229C4AA100679F99 /* ParameterStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB13229C4AA100679F99 /* ParameterStringView.swift */; };
+		E22AFB14229C4AA100679F99 /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB13229C4AA100679F99 /* Picker.swift */; };
 		E22AFB16229C5A2D00679F99 /* UIImage+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */; };
 		E22AFB18229C66BB00679F99 /* PSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB17229C66BB00679F99 /* PSlider.swift */; };
 		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
+		E235624222B5E11500762D39 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235623B22B5E0E100762D39 /* Knob.swift */; };
 		E249504D229F82DF0073FBDC /* ringbuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495040229F82DF0073FBDC /* ringbuffer.hpp */; };
 		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
 		E249504F229F82DF0073FBDC /* resampler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495042229F82DF0073FBDC /* resampler.hpp */; };
@@ -226,7 +231,7 @@
 		E2495054229F82DF0073FBDC /* resample_sse.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495047229F82DF0073FBDC /* resample_sse.h */; };
 		E2495056229F83E30073FBDC /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495055229F83E30073FBDC /* arch.h */; };
 		E2495058229F84730073FBDC /* stack_alloc.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495057229F84730073FBDC /* stack_alloc.h */; };
-		E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* ParameterSliderView.swift */; };
+		E27AD077229395240003C69C /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* Slider.swift */; };
 		E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60617229CE9E0004B33CB /* MainInterface.storyboard */; };
@@ -548,6 +553,9 @@
 		E225106D22B1F9E200DD88E8 /* CloudsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CloudsDSPKernel.hpp; sourceTree = "<group>"; };
 		E225106F22B1FCA800DD88E8 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E225107122B1FCE700DD88E8 /* GranularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GranularViewController.swift; sourceTree = "<group>"; };
+		E225107422B5209400DD88E8 /* LiveKnob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveKnob.swift; sourceTree = "<group>"; };
+		E225107722B52EC900DD88E8 /* KnobUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnobUI.swift; sourceTree = "<group>"; };
+		E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
 		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
@@ -556,10 +564,11 @@
 		E22AFB0C2299D33D00679F99 /* multistage_envelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multistage_envelope.h; sourceTree = "<group>"; };
 		E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = multistage_envelope.cc; sourceTree = "<group>"; };
 		E22AFB11229C42C600679F99 /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
-		E22AFB13229C4AA100679F99 /* ParameterStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterStringView.swift; sourceTree = "<group>"; };
+		E22AFB13229C4AA100679F99 /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
 		E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extensions.swift"; sourceTree = "<group>"; };
 		E22AFB17229C66BB00679F99 /* PSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSlider.swift; sourceTree = "<group>"; };
 		E22AFB19229CC67D00679F99 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E2495040229F82DF0073FBDC /* ringbuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ringbuffer.hpp; sourceTree = "<group>"; };
 		E2495041229F82DF0073FBDC /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		E2495042229F82DF0073FBDC /* resampler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = resampler.hpp; sourceTree = "<group>"; };
@@ -569,7 +578,7 @@
 		E2495055229F83E30073FBDC /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arch.h; sourceTree = "<group>"; };
 		E2495057229F84730073FBDC /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_alloc.h; sourceTree = "<group>"; };
 		E265FF14229CCF9700340255 /* iOSSpectrumFramework-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOSSpectrumFramework-Bridging-Header.h"; sourceTree = "<group>"; };
-		E27AD076229395240003C69C /* ParameterSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSliderView.swift; sourceTree = "<group>"; };
+		E27AD076229395240003C69C /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		E2A6ABFF22A1B3F2007B38DD /* MIDIProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MIDIProcessor.hpp; sourceTree = "<group>"; };
 		E2A6AC0522A1C8DE007B38DD /* ModulationEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ModulationEngine.hpp; sourceTree = "<group>"; };
 		E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAudioUnit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1145,9 +1154,9 @@
 			children = (
 				92A10C921B9517A50081EA80 /* SpectrumViewController.swift */,
 				E2268B102294C3650061A753 /* ActionKit.swift */,
-				E27AD076229395240003C69C /* ParameterSliderView.swift */,
+				E27AD076229395240003C69C /* Slider.swift */,
 				E22AFB11229C42C600679F99 /* ParameterView.swift */,
-				E22AFB13229C4AA100679F99 /* ParameterStringView.swift */,
+				E22AFB13229C4AA100679F99 /* Picker.swift */,
 				E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */,
 				E22AFB17229C66BB00679F99 /* PSlider.swift */,
 				E22AFB19229CC67D00679F99 /* Spacing.swift */,
@@ -1155,6 +1164,10 @@
 				E2184A99229E294B00CA4DFE /* ModalViewController.swift */,
 				E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */,
 				E225107122B1FCE700DD88E8 /* GranularViewController.swift */,
+				E225107422B5209400DD88E8 /* LiveKnob.swift */,
+				E225107722B52EC900DD88E8 /* KnobUI.swift */,
+				E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */,
+				E235623B22B5E0E100762D39 /* Knob.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1591,6 +1604,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E235624222B5E11500762D39 /* Knob.swift in Sources */,
+				E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */,
+				E225107922B53EA100DD88E8 /* KnobUI.swift in Sources */,
+				E225107622B520B800DD88E8 /* LiveKnob.swift in Sources */,
 				E225107322B1FDCD00DD88E8 /* GranularViewController.swift in Sources */,
 				E224EA6322A6E3D800A34405 /* UIColor+extensions.swift in Sources */,
 				E225103C22B1F3B800DD88E8 /* phase_vocoder.cc in Sources */,
@@ -1623,7 +1640,7 @@
 				92A10D181B95291B0081EA80 /* DSPKernel.mm in Sources */,
 				E22AFB0F2299D33E00679F99 /* multistage_envelope.cc in Sources */,
 				E22AFB12229C42C600679F99 /* ParameterView.swift in Sources */,
-				E22AFB14229C4AA100679F99 /* ParameterStringView.swift in Sources */,
+				E22AFB14229C4AA100679F99 /* Picker.swift in Sources */,
 				E225103D22B1F3B800DD88E8 /* frame_transformation.cc in Sources */,
 				92A10D141B9528B60081EA80 /* SpectrumViewController.swift in Sources */,
 				E2154AEC229249AA00CEED2E /* particle_engine.cc in Sources */,
@@ -1649,7 +1666,7 @@
 				E2154AEA229249AA00CEED2E /* swarm_engine.cc in Sources */,
 				E2154AD4229249AA00CEED2E /* string.cc in Sources */,
 				E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */,
-				E27AD077229395240003C69C /* ParameterSliderView.swift in Sources */,
+				E27AD077229395240003C69C /* Slider.swift in Sources */,
 				B5234C861CA0966600902296 /* SpectrumAudioUnit.mm in Sources */,
 				E2184A80229E1F9200CA4DFE /* resources.cc in Sources */,
 				E2184A9C229E29C300CA4DFE /* ModalAudioUnit.mm in Sources */,
@@ -1674,6 +1691,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E225107B22B57B1D00DD88E8 /* UIView+extensions.swift in Sources */,
 				E225107022B1FCA800DD88E8 /* Dummy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

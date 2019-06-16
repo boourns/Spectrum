@@ -11,11 +11,7 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
-protocol ParameterStringViewDelegate: NSObject {
-    func parameterStringView(didUpdate: ParameterStringView)
-}
-
-class ParameterStringView: UIView, ParameterView {
+class Picker: UIView, ParameterView {
     let stack = UIStackView()
     let param: AUParameter
     let valueStrings: [String]
@@ -26,14 +22,18 @@ class ParameterStringView: UIView, ParameterView {
             updateDisplay()
         }
     }
-    weak var delegate: ParameterStringViewDelegate? = nil
     
-    init(param: AUParameter) {
+    init(_ address: AUParameterAddress) {
+        guard let param = SpectrumUI.tree?.parameter(withAddress: address) else {
+            fatalError("Could not find param for address \(address)")
+        }
         self.param = param
         self.valueStrings = param.valueStrings!
         self.value = param.value
         
         super.init(frame: CGRect.zero)
+        SpectrumUI.parameters[param.address] = (param, self)
+
         setup()
     }
     
@@ -47,6 +47,7 @@ class ParameterStringView: UIView, ParameterView {
         stack.axis = .horizontal
         stack.distribution = .equalSpacing
         
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.text = param.displayName
         label.textColor = UILabel.appearance().tintColor
 
@@ -72,8 +73,8 @@ class ParameterStringView: UIView, ParameterView {
         
         let constraints = [
             label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier:0.5),
-            label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0.5),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 0.5),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: CGFloat(63.0)/UIScreen.main.scale),
+            bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: CGFloat(63.0)/UIScreen.main.scale),
             label.widthAnchor.constraint(equalToConstant: 100.0),
             stack.leadingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier:0.5),
             valueLabel.widthAnchor.constraint(equalToConstant: 100.0),
@@ -91,7 +92,7 @@ class ParameterStringView: UIView, ParameterView {
             } else {
                 this.value = newValue
             }
-            this.delegate?.parameterStringView(didUpdate: this)
+            this.param.value = this.value
         }
         
         rightButton.addControlEvent(.touchUpInside) { [weak self] in
@@ -102,8 +103,9 @@ class ParameterStringView: UIView, ParameterView {
             } else {
                 this.value = newValue
             }
-            this.delegate?.parameterStringView(didUpdate: this)
+            this.param.value = this.value
         }
+        value = param.value
     }
     
     private func updateDisplay() {

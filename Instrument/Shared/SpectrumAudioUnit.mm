@@ -364,6 +364,13 @@
     // Deallocate resources as required.
 }
 
+- (AUParameter *)unipolar:(AUParameterAddress) address name:(NSString*) name {
+    return [AUParameterTree createParameterWithIdentifier:name name:name
+                                                  address:address
+                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                    flags: kAudioUnitParameterFlag_IsWritable|kAudioUnitParameterFlag_IsReadable valueStrings:nil dependentParameters:nil];
+}
+
 #pragma mark - AUAudioUnit (Overrides)
 
 - (AUParameterGroup *)modMatrixRule:(int) ruleNumber parameterOffset:(int) parameterOffset {

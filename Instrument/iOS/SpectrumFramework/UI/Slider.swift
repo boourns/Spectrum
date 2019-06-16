@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
-class ParameterSliderView: UIView {
+class Slider: UIView {
     let param: AUParameter
     let label = UILabel()
     let slider: PSlider
@@ -31,7 +31,11 @@ class ParameterSliderView: UIView {
     
     let stackVertically: Bool
     
-    init(param: AUParameter, stackVertically: Bool = false) {
+    init(_ address: AUParameterAddress) {
+        guard let param = SpectrumUI.tree?.parameter(withAddress: address) else {
+            fatalError("Could not find parameter for address \(address)")
+        }
+        
         self.param = param
         self.stackVertically = true //stackVertically
         
@@ -42,6 +46,9 @@ class ParameterSliderView: UIView {
         }
         
         super.init(frame: CGRect.zero)
+        
+        SpectrumUI.parameters[param.address] = (param, self)
+        
         setup()
     }
     
@@ -78,22 +85,28 @@ class ParameterSliderView: UIView {
             self?.pressed = false
         }
         
-        addSubview(slider)
-        addSubview(label)
+        slider.addControlEvent(.valueChanged) { [weak self] in
+            guard let this = self else { return }
+            this.param.value = this.slider.value
+        }
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         slider.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(slider)
+        addSubview(label)
+
         var constraints: [NSLayoutConstraint] = []
         
         if stackVertically {
             constraints = [
                 slider.leadingAnchor.constraint(equalTo: label.leadingAnchor, constant: 7.0/UIScreen.main.scale),
-                slider.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0.5),
+                label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 0.5),
                 trailingAnchor.constraint(equalToSystemSpacingAfter: slider.trailingAnchor, multiplier: 0.5),
-                label.topAnchor.constraint(equalToSystemSpacingBelow: slider.bottomAnchor, multiplier: 0.5),
+                slider.topAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 0.5),
                 label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier:0.5),
                 trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 0.5),
-                bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 0.5)
+                bottomAnchor.constraint(equalToSystemSpacingBelow: slider.bottomAnchor, multiplier: 0.5)
             ]
         } else {
             constraints = [
@@ -107,6 +120,7 @@ class ParameterSliderView: UIView {
             ]
         }
         NSLayoutConstraint.activate(constraints)
+        value = param.value
     }
     
     func displayString(_ val: Float) -> String {
@@ -127,4 +141,4 @@ class ParameterSliderView: UIView {
     }
 }
 
-extension ParameterSliderView: ParameterView { }
+extension Slider: ParameterView { }
