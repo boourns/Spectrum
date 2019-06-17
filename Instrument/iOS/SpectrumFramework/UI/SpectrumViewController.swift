@@ -83,15 +83,12 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                 //Knob(PlaitsParam.Portamento.rawValue),
                                 Picker(PlaitsParam.Unison.rawValue),
                                 Knob(PlaitsParam.Polyphony.rawValue),
+                                Knob(PlaitsParam.Polyphony.rawValue),
                          ]),
                          ])),
                    ]),
                    Stack([
-                        UIView(),
-                        HStack([
-                            Picker(PlaitsParam.ModMatrixStart.rawValue),
-                            Picker(PlaitsParam.ModMatrixStart.rawValue+1),
-                        ]),
+                    
                    ]),
                 ]) //stack
             ), // page

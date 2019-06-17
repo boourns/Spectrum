@@ -117,7 +117,7 @@ class UI: UIView {
                 page.topAnchor.constraint(equalTo: containerView.topAnchor),
                 page.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
                 page.trailingAnchor.constraint(equalTo: trailingAnchor),
-                containerView.bottomAnchor.constraint(greaterThanOrEqualTo: page.bottomAnchor)
+                page.bottomAnchor.constraint(greaterThanOrEqualTo: containerView.bottomAnchor)
             ]
             NSLayoutConstraint.activate(constraints)
             

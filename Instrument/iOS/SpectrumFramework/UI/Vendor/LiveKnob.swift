@@ -132,8 +132,15 @@ public enum LiveKnobControlType: Int, Codable {
         pointerLayer.path = pointer.cgPath
         //pointerLayer.lineCap = .round
         
-        let angle = CGFloat(angleForValue(value))
-        let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: angle, clockwise: true)
+        var angle = CGFloat(angleForValue(value))
+        var start = (minimumValue < 0.0) ? CGFloat(Double.pi * -1.0/2.0) : startAngle
+        var end = angle
+        if value < 0.0 {
+            end = start
+            start = angle
+        }
+        NSLog("from %f to %f\n", start, angle);
+        let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: start, endAngle: end, clockwise: true)
         progressLayer.path = progressRing.cgPath
         //progressLayer.lineCap = .round
         

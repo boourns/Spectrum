@@ -40,10 +40,9 @@ enum {
     ElementsParamMode = 15,
     ElementsParamPitch = 16,
     ElementsParamDetune = 17,
-    ElementsParamLfoShape = 18,
-    ElementsParamLfoRate = 19,
+    ElementsParamLfoRate = 18,
+    ElementsParamLfoShape = 19,
     ElementsParamLfoShapeMod = 20,
-    ElementsParamLfoAmount = 21,
     ElementsParamEnvAttack = 22,
     ElementsParamEnvDecay = 23,
     ElementsParamEnvSustain = 24,
@@ -145,6 +144,7 @@ public:
         if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - ElementsParamModMatrixStart, value);
             lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
+            lfoAmountIsPatched = modulationEngineRules.isPatched(ModOutLFOAmount);
             return;
         }
         
@@ -229,10 +229,6 @@ public:
                 }
                 break;
             }
-                
-            case ElementsParamLfoAmount:
-                lfoBaseAmount = clamp(value, 0.0f, 1.0f);
-                break;
             
             case ElementsParamEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
@@ -342,9 +338,6 @@ public:
             case ElementsParamLfoShapeMod:
                 return lfoShapeMod;
                 
-            case ElementsParamLfoAmount:
-                return lfoBaseAmount;
-                
             case ElementsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
                 
@@ -426,8 +419,12 @@ public:
     void runModulations(int blockSize) {
         envelope.Process(blockSize);
         
-        lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
-        lfoOutput *= clamp(lfoBaseAmount + modEngine.out[ModOutLFOAmount], 0.0f, 1.0f);
+        float lfoAmount = 1.0;
+        if (lfoAmountIsPatched) {
+            lfoAmount = modEngine.out[ModOutLFOAmount];
+        }
+        
+        lfoOutput = lfoAmount * ((float) lfo.Process(blockSize)) / INT16_MAX;
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
@@ -542,6 +539,7 @@ public:
     ModulationEngineRuleList modulationEngineRules;
 
     bool lfoRateIsPatched;
+    bool lfoAmountIsPatched;
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;
     peaks::Lfo lfo;

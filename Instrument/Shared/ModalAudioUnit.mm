@@ -193,18 +193,10 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *lfoAmount = [AUParameterTree createParameterWithIdentifier:@"lfoAmount" name:@"LFO Amount"
-                                                                    address:ElementsParamLfoAmount
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoAmount]];
-    
-    AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoMod" name:@"LFO Mod"
-                                                                         children:[self modTargets:0 count:2 parameterOffset:ElementsParamModMatrixStart]];
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
     
     
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
 
     
 
@@ -232,12 +224,24 @@
     
     AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
     
-    AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Env Mod"
-                                                                         children:[self modTargets:2 count:2 parameterOffset:ElementsParamModMatrixStart]];
+    AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
+                                                                        children:@[[self modMatrixRule:0 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:1 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:2 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:3 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:4 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:5 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:6 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:7 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:8 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:9 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   [self modMatrixRule:10 parameterOffset:ElementsParamModMatrixStart],
+                                                                                   
+                                                                                   ]];
     
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
     
-    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings, envModulations]];
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings]];
     
     
     AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
@@ -266,7 +270,7 @@
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, lfoPage, envPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
     
     // Create the output bus.
     _outputBusBuffer.init(defaultFormat, 2);

@@ -27,10 +27,9 @@ enum ElementsParam: AUParameterAddress {
     case Mode = 15
     case Pitch = 16
     case Detune = 17
-    case LfoShape = 18
-    case LfoRate = 19
+    case LfoRate = 18
+    case LfoShape = 19
     case LfoShapeMod = 20
-    case LfoAmount = 21
     case EnvAttack = 22
     case EnvDecay = 23
     case EnvSustain = 24
@@ -83,8 +82,10 @@ class ModalViewController: BaseAudioUnitViewController {
                             ]),
                         ]) //stack
                     ]) // cstack
-            ) // page
+            ), // page
+            SpectrumUI.modulationPage(lfoStart: ElementsParam.LfoRate.rawValue, envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
             
+            SpectrumUI.modMatrixPage(modStart: ElementsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
             //LFOPage(),
             //EnvPage(),
             //Page("Amp", UIView()),
