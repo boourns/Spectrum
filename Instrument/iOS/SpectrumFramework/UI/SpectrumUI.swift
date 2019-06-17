@@ -65,6 +65,15 @@ class SpectrumUI {
                 ])
         )]))
     }
+    
+    static func modMatrixPage(modStart: AUParameterAddress, numberOfRules: Int) -> Page {
+        let ruleStack: [UIView] = (0...numberOfRules-1).map { index in
+            let start: AUParameterAddress = modStart + UInt64(index*4)
+            return Panel(CStack([HStack([Picker(start + 0), Picker(start + 1)]), HStack([Knob(start + 2), Picker(start+3)])]))
+        }
+
+        return Page("Matrix", Stack(ruleStack))
+    }
 }
 
 class UI: UIView {

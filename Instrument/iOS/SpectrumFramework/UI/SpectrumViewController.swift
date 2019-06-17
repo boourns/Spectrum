@@ -95,7 +95,8 @@ class SpectrumViewController: BaseAudioUnitViewController {
                    ]),
                 ]) //stack
             ), // page
-            SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue)
+            SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
+            SpectrumUI.modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
         
             //LFOPage(),
             //EnvPage(),
