@@ -110,18 +110,19 @@ public enum LiveKnobControlType: Int, Codable {
         progressLayer.position = baseLayer.position
         pointerLayer.bounds = baseLayer.bounds
         pointerLayer.position = baseLayer.position
-        baseLayer.lineWidth = baseLineWidth
+        baseLayer.lineWidth = 0 //baseLineWidth
         progressLayer.lineWidth = progressLineWidth
         pointerLayer.lineWidth = pointerLineWidth
-        baseLayer.strokeColor = baseColor.cgColor
+        //baseLayer.strokeColor = baseColor.cgColor
         progressLayer.strokeColor = progressColor.cgColor
         pointerLayer.strokeColor = pointerColor.cgColor
         
         // Draw base ring.
         let center = CGPoint(x: baseLayer.bounds.width / 2, y: baseLayer.bounds.height / 2)
         let radius = (min(baseLayer.bounds.width, baseLayer.bounds.height) / 2) - baseLineWidth
-        let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: CGFloat(2.0 * Double.pi), clockwise: true)
         baseLayer.path = ring.cgPath
+        baseLayer.fillColor = UIColor.black.cgColor
         baseLayer.lineCap = .round
         
         // Draw pointer.
@@ -129,12 +130,12 @@ public enum LiveKnobControlType: Int, Codable {
         pointer.move(to: center)
         pointer.addLine(to: CGPoint(x: center.x + radius, y: center.y))
         pointerLayer.path = pointer.cgPath
-        pointerLayer.lineCap = .round
+        //pointerLayer.lineCap = .round
         
         let angle = CGFloat(angleForValue(value))
         let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: angle, clockwise: true)
         progressLayer.path = progressRing.cgPath
-        progressLayer.lineCap = .round
+        //progressLayer.lineCap = .round
         
         // Draw pointer
         CATransaction.begin()

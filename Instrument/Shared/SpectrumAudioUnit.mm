@@ -58,11 +58,11 @@
                                                                             unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                            flags:flags valueStrings:@[
                                                                                                       @"Analog",
-                                                                                                      @"Waveshape",
+                                                                                                      @"Wave shape",
                                                                                                       @"FM",
                                                                                                       @"Grain",
                                                                                                       @"Additive",
-                                                                                                      @"Wavetable",
+                                                                                                      @"Wave table",
                                                                                                       @"Chord",
                                                                                                       @"Speech",
                                                                                                       @"Swarm",
@@ -131,41 +131,8 @@
                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                           flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *envAmountFM = [AUParameterTree createParameterWithIdentifier:@"envAmountFM" name:@"FM Amount"
-                                                                      address:PlaitsParamEnvAmountFM
-                                                                          min:0.0 max:120.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *envAmountHarmonics = [AUParameterTree createParameterWithIdentifier:@"envAmountHarmonics" name:@"Harmonics"
-                                                                             address: PlaitsParamEnvAmountHarmonics
-                                                                                 min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                               flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envAmountTimbre = [AUParameterTree createParameterWithIdentifier:@"envAmountTimbre" name:@"Timbre Amount"
-                                                                          address:PlaitsParamEnvAmountTimbre
-                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                            flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envAmountMorph = [AUParameterTree createParameterWithIdentifier:@"envAmountMorph" name:@"Morph Amount"
-                                                                         address:PlaitsParamEnvAmountMorph
-                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envAmountLFORate = [AUParameterTree createParameterWithIdentifier:@"envAmountLFORate" name:@"LFO Rate"
-                                                                         address:PlaitsParamEnvAmountLFORate
-                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *envAmountLFOAmount = [AUParameterTree createParameterWithIdentifier:@"envAmountLFOAmount" name:@"LFO Amount"
-                                                                         address:PlaitsParamEnvAmountLFOAmount
-                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
-    
-    AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
-    
-    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings, envModulations]];
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
     
     // MARK - Amp
     
@@ -267,44 +234,24 @@
                                                                         min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *lfoAmount = [AUParameterTree createParameterWithIdentifier:@"lfoAmount" name:@"LFO Amount"
-                                                                   address:PlaitsParamLfoAmount
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *lfoAmountFM = [AUParameterTree createParameterWithIdentifier:@"lfoAmountFM" name:@"FM Amount"
-                                                                   address:PlaitsParamLfoAmountFM
-                                                                       min:0.0 max:120.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *lfoAmountHarmonics = [AUParameterTree createParameterWithIdentifier:@"lfoAmountHarmonics" name:@"Harmonics Amount"
-                                                                      address:PlaitsParamLfoAmountHarmonics
-                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *lfoAmountTimbre = [AUParameterTree createParameterWithIdentifier:@"lfoAmountTimbre" name:@"Timbre Amount"
-                                                                      address:PlaitsParamLfoAmountTimbre
-                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *lfoAmountMorph = [AUParameterTree createParameterWithIdentifier:@"lfoAmountMorph" name:@"Morph Amount"
-                                                                      address:PlaitsParamLfoAmountMorph
-                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
     AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam]];
     
     
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoAmount]];
-    
-    AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoModulation" name:@"LFO Modulation" children:@[lfoAmountFM, lfoAmountHarmonics, lfoAmountTimbre, lfoAmountMorph]];
-
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
     
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
                                                                         children:@[[self modMatrixRule:0 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    [self modMatrixRule:1 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    [self modMatrixRule:2 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:3 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:4 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:5 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:6 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:7 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:8 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:9 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   [self modMatrixRule:10 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                   
                                                                                    ]];
                                                                                    
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
@@ -349,10 +296,10 @@
     self.maximumFramesToRender = 512;
     
     // Create factory preset array.
-    _currentFactoryPresetIndex = 0;
-    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
-                 ];
-    self.currentPreset = _presets.firstObject;
+//    _currentFactoryPresetIndex = 0;
+//    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
+//                 ];
+//    self.currentPreset = _presets.firstObject;
     
     // assign midi map
     [self setDefaultMIDIMap];
@@ -531,13 +478,13 @@ typedef struct {
     NSString *data;
 } FactoryPreset;
 
-static const UInt8 kSpectrumNumPresets = 1;
+static const UInt8 kSpectrumNumPresets = 0;
 static const FactoryPreset spectrumPresets[kSpectrumNumPresets] =
 {
-    {
-        @"Init",
-    @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
-    },
+//    {
+//        @"Init",
+//    @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
+//    },
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)

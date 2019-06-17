@@ -51,9 +51,10 @@ class Picker: UIView, ParameterView {
         label.textAlignment = .center
         //valueLabel.backgroundColor = SpectrumUI.colours.background
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         valueLabel.textAlignment = .center
         valueLabel.textColor = UILabel.appearance().tintColor
+        valueLabel.numberOfLines = 0
+        valueLabel.lineBreakMode = .byWordWrapping
         
         let leftButton = UIButton()
         let rightButton = UIButton()
@@ -87,7 +88,9 @@ class Picker: UIView, ParameterView {
             leftButton.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor),
             container.bottomAnchor.constraint(greaterThanOrEqualTo: leftButton.bottomAnchor),
             valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+//            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            valueLabel.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor),
+            valueLabel.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor),
             bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: Spacing.margin),
             label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.margin),
             trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.margin)

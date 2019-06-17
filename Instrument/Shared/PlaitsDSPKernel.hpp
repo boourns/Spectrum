@@ -23,13 +23,12 @@
 
 const size_t kAudioBlockSize = 24;
 const size_t kMaxPolyphony = 8;
-const size_t kNumModulationRules = 3;
+const size_t kNumModulationRules = 10;
 
 enum {
     PlaitsParamTimbre = 0,
     PlaitsParamHarmonics = 1,
     PlaitsParamMorph = 2,
-    PlaitsParamLfoShapeMod = 3,
     PlaitsParamAlgorithm = 4,
     PlaitsParamPitch = 5,
     PlaitsParamDetune = 6,
@@ -42,31 +41,21 @@ enum {
     PlaitsParamRightSource = 13,
     PlaitsParamPan = 14,
     PlaitsParamPanSpread = 15,
-    PlaitsParamLfoShape = 16,
-    PlaitsParamLfoRate = 17,
-    PlaitsParamLfoAmountFM = 18,
-    PlaitsParamLfoAmountHarmonics = 19,
-    PlaitsParamLfoAmountTimbre = 20,
-    PlaitsParamLfoAmountMorph = 21,
-    PlaitsParamPitchBendRange = 22,
-    PlaitsParamEnvAttack = 24,
-    PlaitsParamEnvDecay = 25,
-    PlaitsParamEnvSustain = 26,
-    PlaitsParamEnvRelease = 27,
+    PlaitsParamLfoRate = 16,
+    PlaitsParamLfoShape = 17,
+    PlaitsParamLfoShapeMod = 18,
+    PlaitsParamEnvAttack = 20,
+    PlaitsParamEnvDecay = 21,
+    PlaitsParamEnvSustain = 22,
+    PlaitsParamEnvRelease = 23,
+    PlaitsParamPitchBendRange = 24,
     PlaitsParamAmpEnvAttack = 28,
     PlaitsParamAmpEnvDecay = 29,
     PlaitsParamAmpEnvSustain = 30,
     PlaitsParamAmpEnvRelease = 31,
-    PlaitsParamEnvAmountFM = 32,
-    PlaitsParamEnvAmountHarmonics = 33,
-    PlaitsParamEnvAmountTimbre = 34,
-    PlaitsParamEnvAmountMorph = 35,
-    PlaitsParamEnvAmountLFORate = 36,
-    PlaitsParamEnvAmountLFOAmount = 37,
-    PlaitsParamLfoAmount = 38,
     PlaitsParamModMatrixStart = 39,
-    PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 12 = 51
-    PlaitsParamPortamento = 52,
+    PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 40 = 79
+    PlaitsParamPortamento = 80,
     PlaitsMaxParameters
 };
 
@@ -217,7 +206,12 @@ public:
             envelope.Process(blockSize);
             ampEnvelope.Process(blockSize);
         
-            lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
+            float lfoAmount = 1.0;
+            if (kernel->lfoAmountIsPatched) {
+                lfoAmount = modEngine.out[ModOutLFOAmount];
+            }
+            
+            lfoOutput = lfoAmount * ((float) lfo.Process(blockSize)) / INT16_MAX;
             
             modEngine.in[ModInLFO] = lfoOutput;
             modEngine.in[ModInEnvelope] = envelope.value;
@@ -227,20 +221,18 @@ public:
             
             modEngine.run();
             
-            if (kernel->lfoRateIsPatched || kernel->envAmountLfoRate > 0.0f) {
-                updateLfoRate(modEngine.out[ModOutLFORate] + (envelope.value * kernel->envAmountLfoRate));
+            if (kernel->lfoRateIsPatched) {
+                updateLfoRate(modEngine.out[ModOutLFORate]);
             }
             
-            float lfoAmount = kernel->lfoAmount + modEngine.out[ModOutLFOAmount] + (envelope.value * kernel->envAmountLfoAmount);
-            
             modulations.engine = modEngine.out[ModOutEngine];
-            modulations.frequency = kernel->modulations.frequency + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f) + (lfoOutput * kernel->lfoAmountFM * lfoAmount) + (envelope.value * kernel->envAmountFM);
+            modulations.frequency = kernel->modulations.frequency + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
             
-            modulations.harmonics = kernel->modulations.harmonics + modEngine.out[ModOutHarmonics] + lfoOutput * kernel->lfoAmountHarmonics * lfoAmount + (envelope.value * kernel->envAmountHarmonics);
+            modulations.harmonics = kernel->modulations.harmonics + modEngine.out[ModOutHarmonics];
             
-            modulations.timbre = kernel->modulations.timbre + modEngine.out[ModOutTimbre] + lfoOutput * kernel->lfoAmountTimbre * lfoAmount + (envelope.value * kernel->envAmountTimbre);
+            modulations.timbre = kernel->modulations.timbre + modEngine.out[ModOutTimbre];
             
-            modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph] + lfoOutput * kernel->lfoAmountMorph * lfoAmount + (envelope.value * kernel->envAmountMorph);
+            modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph];
             
             modulations.level = ampEnvelope.value + modEngine.out[ModOutLevel];
             
@@ -336,6 +328,11 @@ public:
     
     void init(int channelCount, double inSampleRate) {
         outputSrc.setRates(48000, (int) inSampleRate);
+        
+        modulationEngineRules.rules[0].input1 = ModInLFO;
+        modulationEngineRules.rules[1].input1 = ModInLFO;
+        modulationEngineRules.rules[2].input1 = ModInEnvelope;
+        modulationEngineRules.rules[3].input1 = ModInEnvelope;
     }
     
     void reset() {
@@ -348,6 +345,7 @@ public:
         if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - PlaitsParamModMatrixStart, value);
             lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
+            lfoAmountIsPatched = modulationEngineRules.isPatched(ModOutLFOAmount);
             return;
         }
         
@@ -455,26 +453,6 @@ public:
                 }
                 break;
             }
-        
-            case PlaitsParamLfoAmountFM:
-                lfoAmountFM = clamp(value, 0.0f, 120.0f);
-                break;
-                
-            case PlaitsParamLfoAmount:
-                lfoAmount = clamp(value, 0.0f, 1.0f);
-                break;
-        
-            case PlaitsParamLfoAmountHarmonics:
-                lfoAmountHarmonics = clamp(value, 0.0f, 1.0f);
-                break;
-        
-            case PlaitsParamLfoAmountTimbre:
-                lfoAmountTimbre = clamp(value, 0.0f, 1.0f);
-                break;
-
-            case PlaitsParamLfoAmountMorph:
-                lfoAmountMorph = clamp(value, 0.0f, 1.0f);
-                break;
                 
             case PlaitsParamPitchBendRange:
                 midiProcessor.bendRange = round(clamp(value, 0.0f, 12.0f));
@@ -562,34 +540,9 @@ public:
                 break;
             }
                 
-            case PlaitsParamEnvAmountFM:
-                envAmountFM = clamp(value, 0.0f, 120.0f);
-                break;
-                
-            case PlaitsParamEnvAmountHarmonics:
-                envAmountHarmonics = clamp(value, 0.0f, 1.0f);
-                break;
-                
-            case PlaitsParamEnvAmountTimbre:
-                envAmountTimbre = clamp(value, 0.0f, 1.0f);
-                break;
-                
-            case PlaitsParamEnvAmountMorph:
-                envAmountMorph = clamp(value, 0.0f, 1.0f);
-                break;
-                
-            case PlaitsParamEnvAmountLFORate:
-                envAmountLfoRate = clamp(value, 0.0f, 1.0f);
-                break;
-                
-            case PlaitsParamEnvAmountLFOAmount:
-                envAmountLfoAmount = clamp(value, 0.0f, 1.0f);
-                break;
-                
             case PlaitsParamPortamento:
                 portamento = clamp(value, 0.0f, 1.0f);
                 break;
-                
         }
     }
     
@@ -653,21 +606,6 @@ public:
             case PlaitsParamLfoShapeMod:
                 return lfoShapeMod;
                 
-            case PlaitsParamLfoAmountFM:
-                return lfoAmountFM;
-                
-            case PlaitsParamLfoAmount:
-                return lfoAmount;
-                
-            case PlaitsParamLfoAmountHarmonics:
-                return lfoAmountHarmonics;
-                
-            case PlaitsParamLfoAmountTimbre:
-                return lfoAmountTimbre;
-                
-            case PlaitsParamLfoAmountMorph:
-                return lfoAmountMorph;
-                
             case PlaitsParamPitchBendRange:
                 return (float) midiProcessor.bendRange;
                 
@@ -694,24 +632,6 @@ public:
                 
             case PlaitsParamAmpEnvRelease:
                 return patch.decay;
-                
-            case PlaitsParamEnvAmountFM:
-                return envAmountFM;
-                
-            case PlaitsParamEnvAmountHarmonics:
-                return envAmountHarmonics;
-                
-            case PlaitsParamEnvAmountTimbre:
-                return envAmountTimbre;
-                
-            case PlaitsParamEnvAmountMorph:
-                return envAmountMorph;
-                
-            case PlaitsParamEnvAmountLFORate:
-                return envAmountLfoRate;
-                
-            case PlaitsParamEnvAmountLFOAmount:
-                return envAmountLfoAmount;
                 
             case PlaitsParamPortamento:
                 return portamento;
@@ -817,6 +737,7 @@ public:
 
     ModulationEngineRuleList modulationEngineRules;
     bool lfoRateIsPatched = false;
+    bool lfoAmountIsPatched = false;
     
     plaits::Modulations modulations;
     plaits::Patch patch;
@@ -830,20 +751,6 @@ public:
     float lfoBaseRate;
     float lfoShape;
     float lfoShapeMod;
-    
-    //float lfoOutput;
-    float lfoAmount;
-    float lfoAmountFM;
-    float lfoAmountHarmonics;
-    float lfoAmountTimbre;
-    float lfoAmountMorph;
-    
-    float envAmountFM;
-    float envAmountHarmonics;
-    float envAmountTimbre;
-    float envAmountMorph;
-    float envAmountLfoRate;
-    float envAmountLfoAmount;
     
     bool lastPanSpreadWasNegative = 0;
     

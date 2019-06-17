@@ -5,6 +5,7 @@
 //  Created by AudioKit Contributors, revision history on Github.
 //  Copyright © 2017 AudioKit. All rights reserved.
 //
+/*
 import UIKit
 
 public class AKTouchPadView: UIView {
@@ -134,3 +135,5 @@ public class AKTouchPadView: UIView {
         callback(horizontalValue, verticalValue, began)
     }
 }
+
+ */

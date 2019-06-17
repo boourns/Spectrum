@@ -21,7 +21,7 @@ class SpectrumUI {
     static var colours = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
         secondary: UIColor.init(hex: "#bfc0c0ff")!,
-        secondBackground: UIColor.init(hex: "#0d1b7aff")!, //"#313335ff")!,
+        secondBackground: UIColor.init(hex: "#0657a0ff")!, //"#313335ff")!,
         background: UIColor.init(hex: "#181b1cff")!
     )
     class func update(address: AUParameterAddress, value: Float) {
@@ -32,6 +32,39 @@ class SpectrumUI {
     }
     
     static var cStacks: [UIStackView] = []
+    
+    static func modulationPage(lfoStart: AUParameterAddress, envStart: AUParameterAddress, modStart: AUParameterAddress) -> Page {
+        return Page("Modulation",
+            CStack([
+                Stack([
+                    Panel(Stack([
+                        HStack([
+                            Knob(lfoStart), // LFO Speed
+                            Picker(lfoStart+1), // LFO Wave
+                            Knob(lfoStart+2), // LFO Shape Mod
+                            ]),
+                        ])),
+                    Panel(Stack([
+                        Slider(envStart),
+                        Slider(envStart+1),
+                        Slider(envStart+2),
+                        Slider(envStart+3),
+                        ]))
+                    ]),
+                Panel(Stack([
+                    HStack([
+                        ModTarget("LFO -> 1", modStart),
+                        ModTarget("LFO -> 2", modStart+4),
+                        ]),
+                Panel(Stack([
+                    HStack([
+                        ModTarget("Env -> 1", modStart+8),
+                        ModTarget("Env -> 2", modStart+12),
+                        ]),
+                    ])),
+                ])
+        )]))
+    }
 }
 
 class UI: UIView {
@@ -140,6 +173,7 @@ class Stack: UIStackView {
         
         axis = .vertical
         alignment = .fill
+        distribution = .equalCentering
         spacing = 1.0/UIScreen.main.scale
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -166,7 +200,7 @@ class CStack: UIStackView {
         self.init()
         
         axis = .horizontal
-        alignment = .firstBaseline
+        alignment = .fill
         distribution = .fillEqually
         spacing = 1.0/UIScreen.main.scale
         translatesAutoresizingMaskIntoConstraints = false

@@ -27,13 +27,13 @@ class PSlider: UISlider {
         setMaximumTrackImage(UIImage.from(color: UIColor.clear), for: .normal)
         setThumbImage(UIImage.from(color: UIColor.clear), for: .normal)
         layer.addSublayer(barLayer)
-        barLayer.backgroundColor = UISlider.appearance().tintColor.cgColor
+        barLayer.backgroundColor = UIColor.white.cgColor
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.borderWidth = 1.0
-        layer.borderColor = tintColor.cgColor
+        layer.borderColor = UIColor.white.cgColor
         let x: CGFloat = CGFloat((value - minimumValue) / (maximumValue - minimumValue)) * frame.width
         CATransaction.begin()
         CATransaction.setDisableActions(true)

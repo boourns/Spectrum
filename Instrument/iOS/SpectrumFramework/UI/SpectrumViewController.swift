@@ -11,11 +11,10 @@ import AVFoundation
 import CoreAudioKit
 
 // TODO:  HACK :( having to copy params enum into swift land
-enum PlaitsParam: AUParameterAddress  {
+enum PlaitsParam: AUParameterAddress {
     case Timbre = 0
     case Harmonics = 1
     case Morph = 2
-    case LfoShapeMod = 3
     case Algorithm = 4
     case Pitch = 5
     case Detune = 6
@@ -28,17 +27,15 @@ enum PlaitsParam: AUParameterAddress  {
     case RightSource = 13
     case Pan = 14
     case PanSpread = 15
-    case LfoShape = 16
-    case LfoRate = 17
-    case LfoAmountFM = 18
-    case LfoAmountHarmonics = 19
-    case LfoAmountTimbre = 20
-    case LfoAmountMorph = 21
-    case PitchBendRange = 22
-    case EnvAttack = 24
-    case EnvDecay = 25
-    case EnvSustain = 26
-    case EnvRelease = 27
+    case LfoRate = 16
+    case LfoShape = 17
+    case LfoShapeMod = 18
+    case LfoAmount = 19
+    case EnvAttack = 20
+    case EnvDecay = 21
+    case EnvSustain = 22
+    case EnvRelease = 23
+    case PitchBendRange = 24
     case AmpEnvAttack = 28
     case AmpEnvDecay = 29
     case AmpEnvSustain = 30
@@ -49,11 +46,10 @@ enum PlaitsParam: AUParameterAddress  {
     case EnvAmountMorph = 35
     case EnvAmountLFORate = 36
     case EnvAmountLFOAmount = 37
-    case LfoAmount = 38
     case ModMatrixStart = 39
-    case ModMatrixEnd = 51 // Recompute if necessary!
-    //case Portamento = 52
-}
+    case ModMatrixEnd = 79 // 39 + 12 = 51
+    case Portamento = 80
+};
 
 extension UILabel {
     convenience init(text: String) {
@@ -98,7 +94,8 @@ class SpectrumViewController: BaseAudioUnitViewController {
                         ]),
                    ]),
                 ]) //stack
-            ) // page
+            ), // page
+            SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue)
         
             //LFOPage(),
             //EnvPage(),

@@ -223,6 +223,7 @@
 		E22AFB18229C66BB00679F99 /* PSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB17229C66BB00679F99 /* PSlider.swift */; };
 		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
 		E235624222B5E11500762D39 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235623B22B5E0E100762D39 /* Knob.swift */; };
+		E235624722B6FCC300762D39 /* ModTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235624622B6FCC300762D39 /* ModTarget.swift */; };
 		E249504D229F82DF0073FBDC /* ringbuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495040229F82DF0073FBDC /* ringbuffer.hpp */; };
 		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
 		E249504F229F82DF0073FBDC /* resampler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495042229F82DF0073FBDC /* resampler.hpp */; };
@@ -570,6 +571,7 @@
 		E22AFB19229CC67D00679F99 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
+		E235624622B6FCC300762D39 /* ModTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModTarget.swift; sourceTree = "<group>"; };
 		E2495040229F82DF0073FBDC /* ringbuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ringbuffer.hpp; sourceTree = "<group>"; };
 		E2495041229F82DF0073FBDC /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		E2495042229F82DF0073FBDC /* resampler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = resampler.hpp; sourceTree = "<group>"; };
@@ -1168,6 +1170,7 @@
 				E225107722B52EC900DD88E8 /* SpectrumUI.swift */,
 				E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */,
 				E235623B22B5E0E100762D39 /* Knob.swift */,
+				E235624622B6FCC300762D39 /* ModTarget.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1664,6 +1667,7 @@
 				E225103822B1F3B800DD88E8 /* stft.cc in Sources */,
 				E2154AD5229249AA00CEED2E /* resonator.cc in Sources */,
 				E2154AFD229249AA00CEED2E /* virtual_analog_engine.cc in Sources */,
+				E235624722B6FCC300762D39 /* ModTarget.swift in Sources */,
 				E2184A9A229E294B00CA4DFE /* ModalViewController.swift in Sources */,
 				E2184A8A229E1F9200CA4DFE /* voice.cc in Sources */,
 				E2154AEE229249AA00CEED2E /* noise_engine.cc in Sources */,

@@ -78,18 +78,15 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
     
     func layout() {
         var pageAxis: NSLayoutConstraint.Axis = .horizontal
-        var pageAlignment: UIStackView.Alignment = .firstBaseline
         var pageDistribution: UIStackView.Distribution = .fillEqually
 
         if view.frame.width < ResponsiveBreak {
             pageAxis = .vertical
-            pageAlignment = .fill
             pageDistribution = .equalCentering
         }
 
         SpectrumUI.cStacks.forEach { view in
             view.axis = pageAxis
-            view.alignment = pageAlignment
             view.distribution = pageDistribution
         }
     }

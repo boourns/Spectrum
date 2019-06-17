@@ -8,7 +8,7 @@
 #ifndef MIDIEngine_h
 #define MIDIEngine_h
 
-// #define MIDIPROCESSOR_DEBUG
+#define MIDIPROCESSOR_DEBUG
 
 #include <vector>
 #include <map>
