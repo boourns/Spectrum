@@ -70,10 +70,10 @@ class Picker: UIView, ParameterView {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         addSubview(container)
-        container.addSubview(label)
+        container.addSubview(valueLabel)
         container.addSubview(leftButton)
         container.addSubview(rightButton)
-        addSubview(valueLabel)
+        addSubview(label)
         
         let constraints = [
             container.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: Spacing.inner),

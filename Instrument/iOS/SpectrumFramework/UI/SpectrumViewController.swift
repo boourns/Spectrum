@@ -80,10 +80,8 @@ class SpectrumViewController: BaseAudioUnitViewController {
                          ]),
                          HStack([
                                 Knob(PlaitsParam.Slop.rawValue),
-                                //Knob(PlaitsParam.Portamento.rawValue),
-                                Picker(PlaitsParam.Unison.rawValue),
-                                Knob(PlaitsParam.Polyphony.rawValue),
-                                Knob(PlaitsParam.Polyphony.rawValue),
+                                Knob(PlaitsParam.Portamento.rawValue),
+                                Knob(PlaitsParam.PitchBendRange.rawValue),
                          ]),
                          ])),
                    ]),
@@ -92,6 +90,37 @@ class SpectrumViewController: BaseAudioUnitViewController {
                    ]),
                 ]) //stack
             ), // page
+            Page("Amp",
+                        CStack([
+                            Stack([
+                                Panel(Stack([
+                                    HStack([
+                                        Knob(PlaitsParam.Volume.rawValue),
+                                        Knob(PlaitsParam.LPGColour.rawValue),
+                                        ]),
+                                    ])),
+                                Panel(Stack([
+                                    Slider(PlaitsParam.AmpEnvAttack.rawValue),
+                                    Slider(PlaitsParam.AmpEnvDecay.rawValue),
+                                    Slider(PlaitsParam.AmpEnvSustain.rawValue),
+                                    Slider(PlaitsParam.AmpEnvRelease.rawValue),
+                                    ]))
+                                ]),
+                            Panel(Stack([
+                                HStack([
+                                    Knob(PlaitsParam.Pan.rawValue),
+                                    Knob(PlaitsParam.PanSpread.rawValue),
+                                    Picker(PlaitsParam.Unison.rawValue),
+                                    ]),
+                                Panel(Stack([
+                                    HStack([
+                                        Knob(PlaitsParam.LeftSource.rawValue),
+                                        Knob(PlaitsParam.RightSource.rawValue),
+                                        Knob(PlaitsParam.Polyphony.rawValue),
+                                        ]),
+                                    ])),
+                                ])
+                            )])),
             SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
             SpectrumUI.modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
         

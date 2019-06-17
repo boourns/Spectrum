@@ -19,5 +19,12 @@ class ModTarget: Stack {
         distribution = .equalCentering
         knob.label.removeFromSuperview()
         picker.label.text = name
+        
+        picker.label.isUserInteractionEnabled = true
+        picker.label.isEnabled = true
+        let tapGesture = UITapGestureRecognizer() {
+            knob.param.value = 0.0
+        }
+        picker.label.addGestureRecognizer(tapGesture)
     }
 }
