@@ -24,6 +24,7 @@ enum ElementsParam: AUParameterAddress {
     case ResonatorDamping = 11
     case ResonatorPosition = 12
     case Space = 13
+    case Volume = 14
     case Mode = 15
     case Pitch = 16
     case Detune = 17
@@ -56,8 +57,8 @@ class ModalViewController: BaseAudioUnitViewController {
                                 ]),
                             ])),
                         Panel(HStack([
-                            Knob(ElementsParam.BlowMeta.rawValue, size: 80),
-                            Knob(ElementsParam.StrikeMeta.rawValue, size: 80),
+                            Knob(ElementsParam.BlowMeta.rawValue, size: 70),
+                            Knob(ElementsParam.StrikeMeta.rawValue, size: 70),
                             ])),
                         Panel(HStack([
                             Knob(ElementsParam.BowTimbre.rawValue),
@@ -65,22 +66,27 @@ class ModalViewController: BaseAudioUnitViewController {
                             Knob(ElementsParam.StrikeTimbre.rawValue),
                             ])),
                         ]),
-                    Stack([
+                    Panel2(Stack([
                         HStack([
                             Knob(ElementsParam.Pitch.rawValue),
                             Knob(ElementsParam.Detune.rawValue),
-                            //Knob(ElementsParam.Harmonics.rawValue),
+                            Picker(ElementsParam.Mode.rawValue)
                             ]),
                         HStack([
-                            Knob(ElementsParam.ResonatorGeometry.rawValue, size: 80),
-                            Knob(ElementsParam.ResonatorBrightness.rawValue, size: 80),
+                            Knob(ElementsParam.ResonatorGeometry.rawValue, size: 70),
+                            Knob(ElementsParam.ResonatorBrightness.rawValue, size: 70),
                             ]),
-                        HStack([
-                            Knob(ElementsParam.ResonatorDamping.rawValue),
-                            Knob(ElementsParam.ResonatorPosition.rawValue),
-                            Knob(ElementsParam.Space.rawValue),
+                        CStack([
+                            HStack([
+                                Knob(ElementsParam.ResonatorDamping.rawValue),
+                                Knob(ElementsParam.ResonatorPosition.rawValue),
+                                ]),
+                            HStack([
+                                Knob(ElementsParam.Space.rawValue),
+                                Knob(ElementsParam.Volume.rawValue),
+                                ])
                             ]),
-                        ]) //stack
+                        ])) //stack
                     ]) // cstack
             ), // page
             SpectrumUI.modulationPage(lfoStart: ElementsParam.LfoRate.rawValue, envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),

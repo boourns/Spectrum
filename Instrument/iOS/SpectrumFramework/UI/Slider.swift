@@ -37,7 +37,7 @@ class Slider: UIView {
         }
         
         self.param = param
-        self.stackVertically = true //stackVertically
+        self.stackVertically = false //stackVertically
         
         if (param.minValue < 0) {
             self.slider = PSlider(bipolar: true)

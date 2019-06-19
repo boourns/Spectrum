@@ -60,7 +60,8 @@ extension UILabel {
 }
 
 class SpectrumViewController: BaseAudioUnitViewController {
-    let big = CGFloat(80.0)
+    let big = CGFloat(70.0)
+    let small = CGFloat(50.0)
     
     override func buildUI() -> UI {
         return UI([
@@ -72,18 +73,17 @@ class SpectrumViewController: BaseAudioUnitViewController {
                         Knob(PlaitsParam.Pitch.rawValue),
                         Knob(PlaitsParam.Detune.rawValue),
                      ])),
-                     Panel(
-                        Stack([HStack([
+                        Stack([Panel2(HStack([
                             Knob(PlaitsParam.Harmonics.rawValue, size: big),
                             Knob(PlaitsParam.Timbre.rawValue, size: big),
                             Knob(PlaitsParam.Morph.rawValue, size: big),
-                         ]),
-                         HStack([
-                                Knob(PlaitsParam.Slop.rawValue),
-                                Knob(PlaitsParam.Portamento.rawValue),
-                                Knob(PlaitsParam.PitchBendRange.rawValue),
-                         ]),
                          ])),
+                         Panel2(HStack([
+                            Knob(PlaitsParam.Slop.rawValue, size: small),
+                            Knob(PlaitsParam.Portamento.rawValue, size: small),
+                            Knob(PlaitsParam.PitchBendRange.rawValue, size: small),
+                         ])),
+                         ]),
                    ]),
                    Stack([
                     
@@ -93,13 +93,13 @@ class SpectrumViewController: BaseAudioUnitViewController {
             Page("Amp",
                         CStack([
                             Stack([
-                                Panel(Stack([
+                                Panel2(Stack([
                                     HStack([
                                         Knob(PlaitsParam.Volume.rawValue),
                                         Knob(PlaitsParam.LPGColour.rawValue),
                                         ]),
                                     ])),
-                                Panel(Stack([
+                                Panel2(Stack([
                                     Slider(PlaitsParam.AmpEnvAttack.rawValue),
                                     Slider(PlaitsParam.AmpEnvDecay.rawValue),
                                     Slider(PlaitsParam.AmpEnvSustain.rawValue),
@@ -110,17 +110,22 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                 HStack([
                                     Knob(PlaitsParam.Pan.rawValue),
                                     Knob(PlaitsParam.PanSpread.rawValue),
-                                    Picker(PlaitsParam.Unison.rawValue),
                                     ]),
-                                Panel(Stack([
+                                Stack([
                                     HStack([
                                         Knob(PlaitsParam.LeftSource.rawValue),
                                         Knob(PlaitsParam.RightSource.rawValue),
+                                        ]),
+                                    ]),
+                                Stack([
+                                    HStack([
+                                        Picker(PlaitsParam.Unison.rawValue),
                                         Knob(PlaitsParam.Polyphony.rawValue),
                                         ]),
-                                    ])),
+                                    ]),
                                 ])
                             )])),
+            
             SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
             SpectrumUI.modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
         

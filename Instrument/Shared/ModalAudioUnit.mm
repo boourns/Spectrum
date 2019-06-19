@@ -86,10 +86,6 @@
                             @"Level",
                             ];
     
-    NSArray *pitchRange = @[
-                            @"-12", @"-11", @"-10", @"-9", @"-8", @"-7", @"-6", @"-5", @"-4", @"-3", @"-2", @"-1", @"0", @"+1", @"+2", @"+3", @"+4", @"+5", @"+6", @"+7", @"+8", @"+9", @"+10", @"+11", @"+12"
-                            ];
-    
     NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
     
     AUParameter *exciterEnvShape = [AUParameterTree createParameterWithIdentifier:@"exciterEnvShape" name:@"Env Shape"
@@ -171,7 +167,12 @@
                                                                        min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[geometry, brightness, position, damping, space]];
+    AUParameter *volume = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
+                                                                address:ElementsParamVolume
+                                                                    min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                  flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[geometry, brightness, position, damping, space, volume]];
     
     AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
     
@@ -234,9 +235,7 @@
                                                                                    [self modMatrixRule:6 parameterOffset:ElementsParamModMatrixStart],
                                                                                    [self modMatrixRule:7 parameterOffset:ElementsParamModMatrixStart],
                                                                                    [self modMatrixRule:8 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:9 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:10 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   
+                                                                                   [self modMatrixRule:9 parameterOffset:ElementsParamModMatrixStart],                                                             
                                                                                    ]];
     
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
@@ -257,8 +256,8 @@
     
     AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
                                                                      address:ElementsParamPitch
-                                                                         min:0.0 max:24.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:pitchRange dependentParameters:nil];
+                                                                         min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
                                                                       address:ElementsParamDetune

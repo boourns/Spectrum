@@ -40,25 +40,27 @@ public enum LiveKnobControlType: Int, Codable {
     }
     
     /// Default color for the ring base. Defaults black.
-    @IBInspectable public var baseColor: UIColor = .gray { didSet { drawKnob() }}
+    @IBInspectable public var baseColor: UIColor = .white { didSet { drawKnob() }}
     
     /// Default color for the pointer. Defaults black.
     @IBInspectable public var pointerColor: UIColor = .white { didSet { drawKnob() }}
     
     /// Default color for the progress. Defaults orange.
-    @IBInspectable public var progressColor: UIColor = .white { didSet { drawKnob() }}
+    @IBInspectable public var progressColor: UIColor = .orange { didSet { drawKnob() }}
     
     /// Line width for the ring base. Defaults 2.
-    @IBInspectable public var baseLineWidth: CGFloat = 2 { didSet { drawKnob() }}
+    @IBInspectable public var baseLineWidth: CGFloat = 1 / UIScreen.main.scale { didSet { drawKnob() }}
     
     /// Line width for the progress. Defaults 2.
-    @IBInspectable public var progressLineWidth: CGFloat = 4 { didSet { drawKnob() }}
+    @IBInspectable public var progressLineWidth: CGFloat = 2 { didSet { drawKnob() }}
 
     /// Line width for the pointer. Defaults 2.
-    @IBInspectable public var pointerLineWidth: CGFloat = 4 { didSet { drawKnob() }}
+    @IBInspectable public var pointerLineWidth: CGFloat = 2 { didSet { drawKnob() }}
     
     /// Layer for the base ring.
     public private(set) var baseLayer = CAShapeLayer()
+    public private(set) var ringLayer = CAShapeLayer()
+
     /// Layer for the progress ring.
     public private(set) var progressLayer = CAShapeLayer()
     /// Layer for the value pointer.
@@ -89,9 +91,11 @@ public enum LiveKnobControlType: Int, Codable {
         addGestureRecognizer(gestureRecognizer)
         // Setup layers
         baseLayer.fillColor = UIColor.clear.cgColor
+        ringLayer.fillColor = UIColor.clear.cgColor
         progressLayer.fillColor = UIColor.clear.cgColor
         pointerLayer.fillColor = UIColor.clear.cgColor
         layer.addSublayer(baseLayer)
+        layer.addSublayer(ringLayer)
         layer.addSublayer(progressLayer)
         layer.addSublayer(pointerLayer)
     }
@@ -106,43 +110,49 @@ public enum LiveKnobControlType: Int, Codable {
         // Setup layers
         baseLayer.bounds = bounds
         baseLayer.position = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
+        ringLayer.bounds = baseLayer.bounds
+        ringLayer.position = baseLayer.position
         progressLayer.bounds = baseLayer.bounds
         progressLayer.position = baseLayer.position
         pointerLayer.bounds = baseLayer.bounds
         pointerLayer.position = baseLayer.position
-        baseLayer.lineWidth = 0 //baseLineWidth
+        ringLayer.lineWidth = baseLineWidth
         progressLayer.lineWidth = progressLineWidth
         pointerLayer.lineWidth = pointerLineWidth
-        //baseLayer.strokeColor = baseColor.cgColor
+        ringLayer.strokeColor = baseColor.cgColor
         progressLayer.strokeColor = progressColor.cgColor
         pointerLayer.strokeColor = pointerColor.cgColor
         
         // Draw base ring.
         let center = CGPoint(x: baseLayer.bounds.width / 2, y: baseLayer.bounds.height / 2)
         let radius = (min(baseLayer.bounds.width, baseLayer.bounds.height) / 2) - baseLineWidth
-        let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: CGFloat(2.0 * Double.pi), clockwise: true)
-        baseLayer.path = ring.cgPath
+        let circle = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: CGFloat(2.0 * Double.pi), clockwise: true)
+        let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+
+        baseLayer.path = circle.cgPath
         baseLayer.fillColor = UIColor.black.cgColor
         baseLayer.lineCap = .round
+        
+        ringLayer.path = ring.cgPath
+        ringLayer.lineCap = .round
         
         // Draw pointer.
         let pointer = UIBezierPath()
         pointer.move(to: center)
         pointer.addLine(to: CGPoint(x: center.x + radius, y: center.y))
         pointerLayer.path = pointer.cgPath
-        //pointerLayer.lineCap = .round
+        pointerLayer.lineCap = .round
         
-        var angle = CGFloat(angleForValue(value))
+        let angle = CGFloat(angleForValue(value))
         var start = (minimumValue < 0.0) ? CGFloat(Double.pi * -1.0/2.0) : startAngle
         var end = angle
         if value < 0.0 {
             end = start
             start = angle
         }
-        NSLog("from %f to %f\n", start, angle);
         let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: start, endAngle: end, clockwise: true)
         progressLayer.path = progressRing.cgPath
-        //progressLayer.lineCap = .round
+        progressLayer.lineCap = .round
         
         // Draw pointer
         CATransaction.begin()

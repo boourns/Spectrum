@@ -10,20 +10,30 @@ import UIKit
 
 struct SpectrumColours {
     let primary: UIColor
-    let secondary: UIColor
-    let secondBackground: UIColor
+    let panel2: UIColor
+    let panel1: UIColor
     let background: UIColor
 }
+
+let greyscale = SpectrumColours(
+    primary: UIColor.init(hex: "#d0d6d9ff")!,
+    panel2: UIColor.init(hex: "#38393bff")!,
+    panel1: UIColor.init(hex: "#292a30ff")!, //"#313335ff")!,
+    background: UIColor.init(hex: "#1e2022ff")!
+)
+
+let blue = SpectrumColours(
+    primary: UIColor.init(hex: "#d0d6d9ff")!,
+    panel2: UIColor.init(hex: "#092d81ff")!,
+    panel1: UIColor.init(hex: "#072364ff")!, //"#313335ff")!,
+    background: UIColor.init(hex: "#111111ff")!
+)
 
 class SpectrumUI {
     static var tree: AUParameterTree?
     static var parameters: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
-    static var colours = SpectrumColours(
-        primary: UIColor.init(hex: "#d0d6d9ff")!,
-        secondary: UIColor.init(hex: "#bfc0c0ff")!,
-        secondBackground: UIColor.init(hex: "#0657a0ff")!, //"#313335ff")!,
-        background: UIColor.init(hex: "#181b1cff")!
-    )
+    static var colours = blue
+    
     class func update(address: AUParameterAddress, value: Float) {
         guard let uiParam = SpectrumUI.parameters[address] else { return }
         DispatchQueue.main.async {
@@ -44,32 +54,37 @@ class SpectrumUI {
                             Knob(lfoStart+2), // LFO Shape Mod
                             ]),
                         ])),
-                    Panel(Stack([
+                    Panel2(Stack([
                         Slider(envStart),
                         Slider(envStart+1),
                         Slider(envStart+2),
                         Slider(envStart+3),
                         ]))
                     ]),
-                Panel(Stack([
-                    HStack([
+                Stack([
+                    Panel(HStack([
                         ModTarget("LFO -> 1", modStart),
                         ModTarget("LFO -> 2", modStart+4),
-                        ]),
-                Panel(Stack([
+                        ])),
+                Panel2(Stack([
                     HStack([
                         ModTarget("Env -> 1", modStart+8),
                         ModTarget("Env -> 2", modStart+12),
                         ]),
                     ])),
                 ])
-        )]))
+        ]))
     }
     
     static func modMatrixPage(modStart: AUParameterAddress, numberOfRules: Int) -> Page {
-        let ruleStack: [UIView] = (0...numberOfRules-1).map { index in
+        let ruleStack: [Panel] = (0...numberOfRules-1).map { index in
             let start: AUParameterAddress = modStart + UInt64(index*4)
             return Panel(CStack([HStack([Picker(start + 0), Picker(start + 1)]), HStack([Knob(start + 2), Picker(start+3)])]))
+        }
+        ruleStack.enumerated().forEach { index, panel in
+            if index % 2 == 1 {
+                panel.outline?.backgroundColor = SpectrumUI.colours.panel2
+            }
         }
 
         return Page("Matrix", Stack(ruleStack))
@@ -145,7 +160,7 @@ class UI: UIView {
         navigationView.arrangedSubviews.enumerated().forEach { index, view in
             guard let button = view as? UIButton else { return }
             if index == selectedIndex {
-                button.backgroundColor = SpectrumUI.colours.secondary
+                button.backgroundColor = SpectrumUI.colours.panel2
                 button.setTitleColor(UIColor.white, for: .normal)
             } else {
                 button.backgroundColor = SpectrumUI.colours.background
@@ -221,12 +236,36 @@ class CStack: UIStackView {
 }
 
 class Panel: UIView {
+    var outline: UIView? = nil
+    
     convenience init(_ child: UIView) {
         self.init()
-        
+        setup(child: child)
+    }
+    
+    func setup(child: UIView) {
         translatesAutoresizingMaskIntoConstraints = false
-        addSubview(child)
-        NSLayoutConstraint.activate(child.constraints(filling: self))
-        backgroundColor = SpectrumUI.colours.secondBackground
+        let outline = UIView()
+        outline.translatesAutoresizingMaskIntoConstraints = false
+        outline.addSubview(child)
+        addSubview(outline)
+        NSLayoutConstraint.activate(child.constraints(insideWithSystemSpacing: outline, multiplier: 0.05))
+        NSLayoutConstraint.activate(outline.constraints(insideWithSystemSpacing: self, multiplier: 0.05))
+        outline.backgroundColor = SpectrumUI.colours.panel1
+        outline.layer.borderColor = UIColor.black.cgColor
+        outline.layer.borderWidth = 1.0 / UIScreen.main.scale
+        self.outline = outline
+    }
+}
+
+class Panel2: Panel {
+    init(_ child: UIView) {
+        super.init(frame: CGRect.zero)
+        setup(child: child)
+        outline?.backgroundColor = SpectrumUI.colours.panel2
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

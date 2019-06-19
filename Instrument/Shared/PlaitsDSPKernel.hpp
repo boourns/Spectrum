@@ -367,7 +367,7 @@ public:
                 break;
                 
             case PlaitsParamPitch:
-                pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
+                pitch = round(clamp(value, -12.0f, 12.0f));
                 patch.note = 48.0f + pitch + detune;
                 break;
                 

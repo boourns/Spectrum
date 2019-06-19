@@ -37,6 +37,7 @@ enum {
     ElementsParamResonatorDamping = 11,
     ElementsParamResonatorPosition = 12,
     ElementsParamSpace = 13,
+    ElementsParamVolume = 14,
     ElementsParamMode = 15,
     ElementsParamPitch = 16,
     ElementsParamDetune = 17,
@@ -150,7 +151,7 @@ public:
         
         switch (address) {
             case ElementsParamPitch:
-                pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
+                pitch = round(clamp(value, -12.0f, 12.0f));
                 break;
             case ElementsParamExciterEnvShape:
                 basePatch.exciter_envelope_shape = clamp(value, 0.0f, 1.0f);
@@ -193,6 +194,9 @@ public:
                 break;
             case ElementsParamSpace:
                 basePatch.space = clamp(value, 0.0f, 2.0f);
+                break;
+            case ElementsParamVolume:
+                volume = clamp(value, 0.0f, 1.0f);
                 break;
             case ElementsParamMode:
                 part.set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
@@ -350,6 +354,9 @@ public:
             case ElementsParamEnvRelease:
                 return ((float) envParameters[3]) / (float) UINT16_MAX;
                 
+            case ElementsParamVolume:
+                return volume;
+                
             default:
                 return 0.0f;
         }
@@ -472,13 +479,14 @@ public:
                                                 }*/
                 performance.strength = currentVelocity;
                 performance.gate = gate;
+                float finalVolume = clamp(volume + modEngine.out[ModOutLevel], 0.0f, 1.0f);
                 
                 part.Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
                 
                 rack::Frame<2> outputFrames[kAudioBlockSize];
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    outputFrames[i].samples[0] = mainSamples[i];
-                    outputFrames[i].samples[1] = auxSamples[i];
+                    outputFrames[i].samples[0] = mainSamples[i] * finalVolume;
+                    outputFrames[i].samples[1] = auxSamples[i] * finalVolume;
                 }
                 
                 int inLen = kAudioBlockSize;
@@ -548,6 +556,7 @@ public:
     float lfoShape;
     float lfoShapeMod;
     float lfoBaseAmount;
+    float volume;
 };
 
 #endif /* ElementsDSPKernel_h */

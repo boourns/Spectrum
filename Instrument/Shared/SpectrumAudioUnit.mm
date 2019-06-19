@@ -47,10 +47,6 @@
     
     // MAIN
     
-    NSArray *pitchRange = @[
-                            @"-12", @"-11", @"-10", @"-9", @"-8", @"-7", @"-6", @"-5", @"-4", @"-3", @"-2", @"-1", @"0", @"+1", @"+2", @"+3", @"+4", @"+5", @"+6", @"+7", @"+8", @"+9", @"+10", @"+11", @"+12"
-                            ];
-    
     NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
     
     AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm"
@@ -78,8 +74,8 @@
     
     AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
                                                                       address:PlaitsParamPitch
-                                                                          min:0.0 max:24.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:pitchRange dependentParameters:nil];
+                                                                          min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
                                                                       address:PlaitsParamDetune
@@ -215,7 +211,10 @@
                                                                      address:PlaitsParamPitchBendRange
                                                                          min:0.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                                 flags: flags valueStrings:bendRange dependentParameters:nil];
-
+    AUParameter *portamento = [AUParameterTree createParameterWithIdentifier:@"portamento" name:@"Portamento"
+                                                                     address:PlaitsParamPortamento
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
                                                                          address:PlaitsParamLfoRate
@@ -234,7 +233,7 @@
                                                                         min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam]];
+    AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam, portamento]];
     
     
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
@@ -250,7 +249,6 @@
                                                                                    [self modMatrixRule:7 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    [self modMatrixRule:8 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    [self modMatrixRule:9 parameterOffset:PlaitsParamModMatrixStart],
-                                                                                   [self modMatrixRule:10 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    
                                                                                    ]];
                                                                                    
@@ -296,10 +294,10 @@
     self.maximumFramesToRender = 512;
     
     // Create factory preset array.
-//    _currentFactoryPresetIndex = 0;
-//    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
-//                 ];
-//    self.currentPreset = _presets.firstObject;
+    _currentFactoryPresetIndex = 0;
+    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
+                 ];
+    self.currentPreset = _presets.firstObject;
     
     // assign midi map
     [self setDefaultMIDIMap];
@@ -478,13 +476,13 @@ typedef struct {
     NSString *data;
 } FactoryPreset;
 
-static const UInt8 kSpectrumNumPresets = 0;
+static const UInt8 kSpectrumNumPresets = 1;
 static const FactoryPreset spectrumPresets[kSpectrumNumPresets] =
 {
-//    {
-//        @"Init",
-//    @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
-//    },
+    {
+        @"Init",
+    @"{\"39\":0,\"61\":0,\"54\":0,\"47\":0,\"62\":0,\"55\":0,\"48\":0,\"63\":0,\"56\":0,\"49\":0,\"70\":0,\"64\":0,\"57\":0,\"71\":0,\"65\":0,\"58\":0,\"72\":0,\"0\":0,\"66\":0,\"59\":0,\"1\":0,\"73\":0,\"80\":0,\"67\":0,\"2\":0,\"74\":0,\"68\":0,\"4\":0,\"75\":0,\"5\":0,\"69\":0,\"76\":0,\"6\":0,\"7\":0.3049999475479126,\"77\":0,\"10\":1.0166665315628052,\"8\":0,\"78\":0,\"9\":7,\"11\":0,\"12\":0,\"13\":0,\"20\":0.42485696077346802,\"21\":0,\"14\":0,\"22\":1,\"15\":0.24833327531814575,\"30\":1,\"23\":0.3501792848110199,\"16\":0.20333331823348999,\"31\":0.2991802990436554,\"17\":0,\"24\":12,\"18\":0,\"40\":0,\"41\":0,\"42\":0,\"28\":0,\"50\":0,\"43\":0,\"29\":0,\"51\":0,\"44\":0,\"52\":0,\"45\":0,\"60\":0,\"53\":0,\"46\":0}"
+    },
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)

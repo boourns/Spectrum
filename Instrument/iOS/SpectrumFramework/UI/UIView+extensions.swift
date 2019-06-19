@@ -18,4 +18,13 @@ extension UIView {
             bottomAnchor.constraint(equalTo: filling.bottomAnchor)
         ]
     }
+    
+    func constraints(insideWithSystemSpacing parent: UIView, multiplier: CGFloat) -> [NSLayoutConstraint] {
+        return [
+            topAnchor.constraint(equalToSystemSpacingBelow: parent.topAnchor, multiplier: multiplier),
+            leadingAnchor.constraint(equalToSystemSpacingAfter: parent.leadingAnchor, multiplier: multiplier),
+            parent.trailingAnchor.constraint(equalToSystemSpacingAfter: trailingAnchor, multiplier: multiplier),
+            parent.bottomAnchor.constraint(equalToSystemSpacingBelow: bottomAnchor, multiplier: multiplier)
+        ]
+    }
 }

@@ -70,9 +70,10 @@ class Picker: UIView, ParameterView {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         addSubview(container)
-        container.addSubview(valueLabel)
         container.addSubview(leftButton)
         container.addSubview(rightButton)
+        container.addSubview(valueLabel)
+
         addSubview(label)
         
         let constraints = [
@@ -93,7 +94,8 @@ class Picker: UIView, ParameterView {
             valueLabel.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor),
             bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: Spacing.margin),
             label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.margin),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.margin)
+            trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.margin),
+            container.heightAnchor.constraint(lessThanOrEqualTo: container.widthAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
         

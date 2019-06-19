@@ -34,8 +34,8 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         view.backgroundColor = SpectrumUI.colours.background
         
         UILabel.appearance().tintColor = SpectrumUI.colours.primary
-        UISlider.appearance().tintColor = SpectrumUI.colours.secondary
-        UIButton.appearance().tintColor = SpectrumUI.colours.secondary
+        UISlider.appearance().tintColor = SpectrumUI.colours.primary
+        UIButton.appearance().tintColor = SpectrumUI.colours.primary
     }
     
     public override func viewWillLayoutSubviews() {

@@ -31,12 +31,14 @@ enum {
     CloudsParamWet = 5,
     CloudsParamReverb = 6,
     CloudsParamStereo = 7,
+    CloudsParamInputGain = 8,
+    CloudsParamTrigger = 9,
+    CloudsParamFreeze = 10,
     CloudsParamPitch = 16,
     CloudsParamDetune = 17,
-    CloudsParamLfoShape = 18,
-    CloudsParamLfoRate = 19,
+    CloudsParamLfoRate = 18,
+    CloudsParamLfoShape = 19,
     CloudsParamLfoShapeMod = 20,
-    CloudsParamLfoAmount = 21,
     CloudsParamEnvAttack = 22,
     CloudsParamEnvDecay = 23,
     CloudsParamEnvSustain = 24,
@@ -142,6 +144,18 @@ public:
                 baseParameters.texture = clamp(value, 0.0f, 1.0f);
                 break;
                 
+            case CloudsParamInputGain:
+                inputGain = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case CloudsParamTrigger:
+                trigger = clamp(value, 0.0f, 1.0f);
+                break;
+                
+            case CloudsParamFreeze:
+                freeze = clamp(value, 0.0f, 1.0f);
+                break;
+                
             case CloudsParamFeedback:
                 baseParameters.feedback = clamp(value, 0.0f, 1.0f);
                 break;
@@ -194,10 +208,6 @@ public:
                 }
                 break;
             }
-                
-            case CloudsParamLfoAmount:
-                lfoBaseAmount = clamp(value, 0.0f, 1.0f);
-                break;
                 
             case CloudsParamEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
@@ -255,6 +265,15 @@ public:
             case CloudsParamTexture:
                 return baseParameters.texture;
                 
+            case CloudsParamInputGain:
+                return inputGain;
+                
+            case CloudsParamTrigger:
+                return trigger;
+                
+            case CloudsParamFreeze:
+                return freeze;
+                
             case CloudsParamFeedback:
                 return baseParameters.feedback;
                 
@@ -281,9 +300,6 @@ public:
                 
             case CloudsParamLfoShapeMod:
                 return lfoShapeMod;
-                
-            case CloudsParamLfoAmount:
-                return lfoBaseAmount;
                 
             case CloudsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
@@ -507,6 +523,9 @@ public:
     float lfoShape;
     float lfoShapeMod;
     float lfoBaseAmount;
+    float inputGain;
+    float trigger;
+    float freeze;
 };
 
 #endif /* CloudsDSPKernel_h */

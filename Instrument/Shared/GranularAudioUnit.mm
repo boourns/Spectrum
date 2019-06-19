@@ -80,7 +80,22 @@
                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[position, size, density, texture]];
+    AUParameter *inputGain = [AUParameterTree createParameterWithIdentifier:@"inputGain" name:@"Input Gain"
+                                                                  address:CloudsParamInputGain
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *freeze = [AUParameterTree createParameterWithIdentifier:@"freeze" name:@"Freeze"
+                                                                                                                                                                                             address:CloudsParamFreeze
+                                                                                                                                                                                                 min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                                                                                                                                               flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *trigger = [AUParameterTree createParameterWithIdentifier:@"trigger" name:@"Trigger"
+                                                                                                                                                                                                                                                                                                                        address:CloudsParamTrigger
+                                                                                                                                                                                                                                                                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                                                                                                                                                                                                                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[position, size, density, texture, inputGain, freeze, trigger]];
 
     AUParameter *wet = [AUParameterTree createParameterWithIdentifier:@"wet" name:@"Dry/Wet"
                                                                   address:CloudsParamWet
@@ -124,21 +139,7 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *lfoAmount = [AUParameterTree createParameterWithIdentifier:@"lfoAmount" name:@"LFO Amount"
-                                                                    address:CloudsParamLfoAmount
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoAmount]];
-    
-    AUParameterGroup *lfoModulations = [AUParameterTree createGroupWithIdentifier:@"lfoMod" name:@"LFO Mod"
-                                                                         children:[self modTargets:0 count:2 parameterOffset:CloudsParamModMatrixStart]];
-    
-    
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings, lfoModulations]];
-    
-    
-    
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
     
     // Env
     AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
@@ -161,16 +162,9 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
-    
-    AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Env Mod"
-                                                                         children:[self modTargets:2 count:2 parameterOffset:CloudsParamModMatrixStart]];
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
     
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
-    
-    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings, envModulations]];
-    
-    
     
     AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
                                                                      address:CloudsParamPitch
@@ -186,8 +180,22 @@
     
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
     
+    AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
+                                                                        children:@[[self modMatrixRule:0 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:1 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:2 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:3 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:4 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:5 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:6 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:7 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:8 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   [self modMatrixRule:9 parameterOffset:CloudsParamModMatrixStart],
+                                                                                   
+                                                                                   ]];
+    
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, settingsPage, modMatrixPage]];
     
     
     // Create the input and output busses.
