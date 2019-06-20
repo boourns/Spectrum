@@ -40,15 +40,12 @@ enum PlaitsParam: AUParameterAddress {
     case AmpEnvDecay = 29
     case AmpEnvSustain = 30
     case AmpEnvRelease = 31
-    case EnvAmountFM = 32
-    case EnvAmountHarmonics = 33
-    case EnvAmountTimbre = 34
-    case EnvAmountMorph = 35
-    case EnvAmountLFORate = 36
-    case EnvAmountLFOAmount = 37
     case ModMatrixStart = 39
-    case ModMatrixEnd = 79 // 39 + 12 = 51
-    case Portamento = 80
+    case ModMatrixEnd = 87 // 39 + 12 = 51
+    case Portamento = 88
+    case PadX = 89
+    case PadY = 90
+    case PadGate = 91
 };
 
 extension UILabel {
@@ -64,6 +61,8 @@ class SpectrumViewController: BaseAudioUnitViewController {
     let small = CGFloat(50.0)
     
     override func buildUI() -> UI {
+        SpectrumUI.colours = SpectrumUI.green
+
         return UI([
             Page("Spectrum",
                  CStack([
@@ -86,7 +85,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                          ]),
                    ]),
                    Stack([
-                    
+                     TouchPad(PlaitsParam.PadX.rawValue, PlaitsParam.PadY.rawValue, PlaitsParam.PadGate.rawValue)
                    ]),
                 ]) //stack
             ), // page
@@ -127,7 +126,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                             )])),
             
             SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
-            SpectrumUI.modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
+            SpectrumUI.modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6)
         
             //LFOPage(),
             //EnvPage(),

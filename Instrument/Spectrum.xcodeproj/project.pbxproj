@@ -134,6 +134,9 @@
 		E2154B17229249AA00CEED2E /* limiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA5229249AA00CEED2E /* limiter.h */; };
 		E2154B18229249AA00CEED2E /* units.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154AA6229249AA00CEED2E /* units.h */; };
 		E2154B19229249AA00CEED2E /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154AA7229249AA00CEED2E /* units.cc */; };
+		E216B03B22B9DA8500467133 /* AKTouchPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235624422B6804E00762D39 /* AKTouchPad.swift */; };
+		E216B03E22B9DE4E00467133 /* TouchPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B03C22B9DDEE00467133 /* TouchPad.swift */; };
+		E216B04022BAA47400467133 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B03F22BAA47400467133 /* Button.swift */; };
 		E2184A76229E1F9200CA4DFE /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2184A51229E1F9200CA4DFE /* resources.h */; };
 		E2184A7E229E1F9200CA4DFE /* meter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2184A5B229E1F9200CA4DFE /* meter.h */; };
 		E2184A80229E1F9200CA4DFE /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2184A5D229E1F9200CA4DFE /* resources.cc */; };
@@ -169,10 +172,6 @@
 		E224EA6322A6E3D800A34405 /* UIColor+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */; };
 		E225101F22B1F3B800DD88E8 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2250FCE22B1F3B800DD88E8 /* resources.h */; };
 		E225102422B1F3B800DD88E8 /* settings.h in Headers */ = {isa = PBXBuildFile; fileRef = E2250FD422B1F3B800DD88E8 /* settings.h */; };
-		E225102922B1F3B800DD88E8 /* src_filters.py in Resources */ = {isa = PBXBuildFile; fileRef = E2250FDB22B1F3B800DD88E8 /* src_filters.py */; };
-		E225102A22B1F3B800DD88E8 /* lookup_tables.py in Resources */ = {isa = PBXBuildFile; fileRef = E2250FDC22B1F3B800DD88E8 /* lookup_tables.py */; };
-		E225102B22B1F3B800DD88E8 /* __init__.py in Resources */ = {isa = PBXBuildFile; fileRef = E2250FDD22B1F3B800DD88E8 /* __init__.py */; };
-		E225102C22B1F3B800DD88E8 /* resources.py in Resources */ = {isa = PBXBuildFile; fileRef = E2250FDE22B1F3B800DD88E8 /* resources.py */; };
 		E225102E22B1F3B800DD88E8 /* meter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2250FE022B1F3B800DD88E8 /* meter.h */; };
 		E225103122B1F3B800DD88E8 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2250FE322B1F3B800DD88E8 /* resources.cc */; };
 		E225103822B1F3B800DD88E8 /* stft.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2250FEF22B1F3B800DD88E8 /* stft.cc */; };
@@ -475,6 +474,8 @@
 		E2154AA7229249AA00CEED2E /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
 		E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FunctionalTableData.xcodeproj; path = ../Vendor/FunctionalTableData/FunctionalTableData.xcodeproj; sourceTree = "<group>"; };
 		E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ActionKit.xcodeproj; path = ../Vendor/ActionKit/ActionKit.xcodeproj; sourceTree = "<group>"; };
+		E216B03C22B9DDEE00467133 /* TouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchPad.swift; sourceTree = "<group>"; };
+		E216B03F22BAA47400467133 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		E2184A51229E1F9200CA4DFE /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
 		E2184A5B229E1F9200CA4DFE /* meter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = meter.h; sourceTree = "<group>"; };
 		E2184A5D229E1F9200CA4DFE /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
@@ -512,10 +513,6 @@
 		E224EA5C22A6E33300A34405 /* UIColor+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extensions.swift"; sourceTree = "<group>"; };
 		E2250FCE22B1F3B800DD88E8 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
 		E2250FD422B1F3B800DD88E8 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
-		E2250FDB22B1F3B800DD88E8 /* src_filters.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = src_filters.py; sourceTree = "<group>"; };
-		E2250FDC22B1F3B800DD88E8 /* lookup_tables.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = lookup_tables.py; sourceTree = "<group>"; };
-		E2250FDD22B1F3B800DD88E8 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
-		E2250FDE22B1F3B800DD88E8 /* resources.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = resources.py; sourceTree = "<group>"; };
 		E2250FE022B1F3B800DD88E8 /* meter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = meter.h; sourceTree = "<group>"; };
 		E2250FE322B1F3B800DD88E8 /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
 		E2250FEF22B1F3B800DD88E8 /* stft.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stft.cc; sourceTree = "<group>"; };
@@ -1052,23 +1049,11 @@
 			children = (
 				E2250FCE22B1F3B800DD88E8 /* resources.h */,
 				E2250FD422B1F3B800DD88E8 /* settings.h */,
-				E2250FDA22B1F3B800DD88E8 /* resources */,
 				E2250FE022B1F3B800DD88E8 /* meter.h */,
 				E2250FE322B1F3B800DD88E8 /* resources.cc */,
 				E2250FED22B1F3B800DD88E8 /* dsp */,
 			);
 			path = clouds;
-			sourceTree = "<group>";
-		};
-		E2250FDA22B1F3B800DD88E8 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				E2250FDB22B1F3B800DD88E8 /* src_filters.py */,
-				E2250FDC22B1F3B800DD88E8 /* lookup_tables.py */,
-				E2250FDD22B1F3B800DD88E8 /* __init__.py */,
-				E2250FDE22B1F3B800DD88E8 /* resources.py */,
-			);
-			path = resources;
 			sourceTree = "<group>";
 		};
 		E2250FED22B1F3B800DD88E8 /* dsp */ = {
@@ -1158,6 +1143,7 @@
 				E235624322B6803A00762D39 /* Vendor */,
 				92A10C921B9517A50081EA80 /* SpectrumViewController.swift */,
 				E27AD076229395240003C69C /* Slider.swift */,
+				E216B03F22BAA47400467133 /* Button.swift */,
 				E22AFB11229C42C600679F99 /* ParameterView.swift */,
 				E22AFB13229C4AA100679F99 /* Picker.swift */,
 				E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */,
@@ -1171,6 +1157,7 @@
 				E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */,
 				E235623B22B5E0E100762D39 /* Knob.swift */,
 				E235624622B6FCC300762D39 /* ModTarget.swift */,
+				E216B03C22B9DDEE00467133 /* TouchPad.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1569,10 +1556,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E225102A22B1F3B800DD88E8 /* lookup_tables.py in Resources */,
-				E225102B22B1F3B800DD88E8 /* __init__.py in Resources */,
-				E225102922B1F3B800DD88E8 /* src_filters.py in Resources */,
-				E225102C22B1F3B800DD88E8 /* resources.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1617,6 +1600,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E216B03E22B9DE4E00467133 /* TouchPad.swift in Sources */,
+				E216B03B22B9DA8500467133 /* AKTouchPad.swift in Sources */,
 				E235624222B5E11500762D39 /* Knob.swift in Sources */,
 				E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */,
 				E225107922B53EA100DD88E8 /* SpectrumUI.swift in Sources */,
@@ -1658,6 +1643,7 @@
 				92A10D141B9528B60081EA80 /* SpectrumViewController.swift in Sources */,
 				E2154AEC229249AA00CEED2E /* particle_engine.cc in Sources */,
 				E225106B22B1F8E900DD88E8 /* GranularAudioUnit.mm in Sources */,
+				E216B04022BAA47400467133 /* Button.swift in Sources */,
 				E2154AEF229249AA00CEED2E /* hi_hat_engine.cc in Sources */,
 				E2184A82229E1F9200CA4DFE /* part.cc in Sources */,
 				E2154ABF229249AA00CEED2E /* sam_speech_synth.cc in Sources */,

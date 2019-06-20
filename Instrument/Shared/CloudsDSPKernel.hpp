@@ -34,6 +34,10 @@ enum {
     CloudsParamInputGain = 8,
     CloudsParamTrigger = 9,
     CloudsParamFreeze = 10,
+    CloudsParamMode = 11,
+    CloudsParamPadX = 12,
+    CloudsParamPadY = 13,
+    CloudsParamPadGate = 14,
     CloudsParamPitch = 16,
     CloudsParamDetune = 17,
     CloudsParamLfoRate = 18,
@@ -56,6 +60,9 @@ enum {
     ModInNote,
     ModInVelocity,
     ModInModwheel,
+    ModInPadX,
+    ModInPadY,
+    ModInPadGate,
     ModInOut,
     NumModulationInputs
 };
@@ -68,6 +75,8 @@ enum {
     ModOutSize,
     ModOutDensity,
     ModOutTexture,
+    ModOutTrigger,
+    ModOutFreeze,
     ModOutFeedback,
     ModOutWet,
     ModOutReverb,
@@ -108,7 +117,6 @@ public:
         
         processor.set_num_channels(2);
         processor.set_low_fidelity(false);
-        processor.set_quality(0);
         processor.set_playback_mode(clouds::PLAYBACK_MODE_GRANULAR);
         processor.Prepare();
         
@@ -124,6 +132,7 @@ public:
         if (address >= CloudsParamModMatrixStart && address <= CloudsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - CloudsParamModMatrixStart, value);
             lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
+            lfoAmountIsPatched = modulationEngineRules.isPatched(ModOutLFOAmount);
             return;
         }
         
@@ -179,6 +188,31 @@ public:
             case CloudsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
                 break;
+                
+            case CloudsParamMode:
+                processor.set_playback_mode((clouds::PlaybackMode) round(clamp(value, 0.0f, 3.0f)));
+                break;
+                
+            case CloudsParamPadX: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadX] = val;
+                
+                break;
+            }
+                
+            case CloudsParamPadY: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadY] = val;
+                
+                break;
+            }
+                
+            case CloudsParamPadGate: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadGate] = val;
+                
+                break;
+            }
                 
             case CloudsParamLfoShape: {
                 uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
@@ -286,6 +320,18 @@ public:
             case CloudsParamStereo:
                 return baseParameters.stereo_spread;
                 
+            case CloudsParamMode:
+                return (float) processor.playback_mode();
+                
+            case CloudsParamPadX:
+                return modEngine.in[ModInPadX];
+                
+            case CloudsParamPadY:
+                return modEngine.in[ModInPadY];
+                
+            case CloudsParamPadGate:
+                return modEngine.in[ModInPadGate];
+                
             case CloudsParamPitch:
                 return pitch + 12;
                 
@@ -382,7 +428,9 @@ public:
         envelope.Process(blockSize);
         
         lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
-        lfoOutput *= clamp(lfoBaseAmount + modEngine.out[ModOutLFOAmount], 0.0f, 1.0f);
+        if (lfoAmountIsPatched) {
+            lfoOutput *= modEngine.out[ModOutLFOAmount];
+        }
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
@@ -396,8 +444,8 @@ public:
         
         clouds::Parameters* p = processor.mutable_parameters();
 
-        p->trigger = false;
-        p->freeze = false;
+        p->trigger = trigger + modEngine.out[ModOutTrigger] > 0.9;
+        p->freeze = freeze + modEngine.out[ModOutFreeze] > 0.9;
         p->position = clamp(baseParameters.position + modEngine.out[ModOutPosition], 0.0f, 1.0f);
         p->size = clamp(baseParameters.size + modEngine.out[ModOutSize], 0.0f, 1.0f);
         p->pitch = (float) currentNote + pitch + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 24.0f);
@@ -459,6 +507,8 @@ public:
                     outputFrames[i].samples[1] = output[i].r / 32768.0;
                 }
                 
+                modEngine.in[ModInOut] = outputFrames[kAudioBlockSize-1].samples[0];
+                
                 int inLen = kAudioBlockSize;
                 int outLen = (int) outputBuffer.capacity();
                 outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
@@ -468,8 +518,6 @@ public:
                     gate = true;
                     delayed_trigger = false;
                 }
-                
-                //modEngine.in[ModInOut] = mainSamples[kAudioBlockSize-1];
             }
             
             rack::Frame<2> outputFrame = outputBuffer.shift();
@@ -515,6 +563,8 @@ public:
     ModulationEngineRuleList modulationEngineRules;
     
     bool lfoRateIsPatched;
+    bool lfoAmountIsPatched;
+
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;
     peaks::Lfo lfo;

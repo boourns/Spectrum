@@ -213,8 +213,23 @@
                                                                                 flags: flags valueStrings:bendRange dependentParameters:nil];
     AUParameter *portamento = [AUParameterTree createParameterWithIdentifier:@"portamento" name:@"Portamento"
                                                                      address:PlaitsParamPortamento
+                                                                         min:0.0 max:0.995 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
+                                                                     address:PlaitsParamPadX
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
+                                                               address:PlaitsParamPadY
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
+                                                               address:PlaitsParamPadGate
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
                                                                          address:PlaitsParamLfoRate
@@ -236,7 +251,7 @@
     AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam, portamento]];
     
     
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"modulation" name:@"Modulation" children:@[lfoRate, lfoShape, lfoShapeMod, padX, padY, padGate]];
     
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
                                                                         children:@[[self modMatrixRule:0 parameterOffset:PlaitsParamModMatrixStart],
@@ -249,7 +264,8 @@
                                                                                    [self modMatrixRule:7 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    [self modMatrixRule:8 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    [self modMatrixRule:9 parameterOffset:PlaitsParamModMatrixStart],
-                                                                                   
+                                                                                                                                                            [self modMatrixRule:10 parameterOffset:PlaitsParamModMatrixStart],
+                                                                                                                                                                      [self modMatrixRule:11 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    ]];
                                                                                    
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
@@ -294,10 +310,10 @@
     self.maximumFramesToRender = 512;
     
     // Create factory preset array.
-    _currentFactoryPresetIndex = 0;
-    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
-                 ];
-    self.currentPreset = _presets.firstObject;
+//    _currentFactoryPresetIndex = 0;
+//    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
+//                 ];
+//    self.currentPreset = _presets.firstObject;
     
     // assign midi map
     [self setDefaultMIDIMap];
@@ -325,9 +341,13 @@
                                @"Envelope",
                                @"Note",
                                @"Velocity",
+                               @"Gate",
                                @"Modwheel",
                                @"Out",
                                @"Aux",
+                               @"Pad X",
+                               @"Pad Y",
+                               @"Pad Gate"
                             ];
     
     NSArray *modOutputs = @[
@@ -344,6 +364,7 @@
     @"RightSource",
     @"Pan",
     @"Level",
+    @"Portamento",
     ];
     
     AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |

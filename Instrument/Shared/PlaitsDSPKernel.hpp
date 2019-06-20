@@ -23,7 +23,7 @@
 
 const size_t kAudioBlockSize = 24;
 const size_t kMaxPolyphony = 8;
-const size_t kNumModulationRules = 10;
+const size_t kNumModulationRules = 12;
 
 enum {
     PlaitsParamTimbre = 0,
@@ -54,8 +54,11 @@ enum {
     PlaitsParamAmpEnvSustain = 30,
     PlaitsParamAmpEnvRelease = 31,
     PlaitsParamModMatrixStart = 39,
-    PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 40 = 79
-    PlaitsParamPortamento = 80,
+    PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 48 = 87
+    PlaitsParamPortamento = 88,
+    PlaitsParamPadX = 89,
+    PlaitsParamPadY = 90,
+    PlaitsParamPadGate = 91,
     PlaitsMaxParameters
 };
 
@@ -65,9 +68,13 @@ enum {
     ModInEnvelope,
     ModInNote,
     ModInVelocity,
+    ModInGate,
     ModInModwheel,
     ModInOut,
     ModInAux,
+    ModInPadX,
+    ModInPadY,
+    ModInPadGate,
     NumModulationInputs
 };
 
@@ -85,6 +92,7 @@ enum {
     ModOutRightSource,
     ModOutPan,
     ModOutLevel,
+    ModOutPortamento,
     NumModulationOutputs
 };
 
@@ -103,6 +111,7 @@ public:
         
         char ram_block[16 * 1024];
         uint8_t note;
+        float noteTarget;
         plaits::Voice::Frame frames[kAudioBlockSize];
         size_t plaitsFramesIndex;
         
@@ -140,6 +149,7 @@ public:
         
         virtual void midiAllNotesOff() {
             modulations.trigger = 0.0f;
+            modEngine.in[ModInGate] = 0.0f;
             envelope.value = 0;
             ampEnvelope.value = 0;
             envelope.TriggerLow();
@@ -153,6 +163,7 @@ public:
             modulations.trigger = 0.0f;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
+            modEngine.in[ModInGate] = 0.0f;
 
             state = NoteStateReleasing;
         }
@@ -170,6 +181,7 @@ public:
                 modulations.trigger = 1.0f;
                 envelope.TriggerHigh();
                 ampEnvelope.TriggerHigh();
+                modEngine.in[ModInGate] = 1.0f;
             } else if (state == NoteStateReleasing) {
                 delayed_trigger = true;
             }
@@ -185,7 +197,7 @@ public:
                 panSpread = kernel->nextPanSpread();
             }
             
-            modulations.note = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
+            noteTarget = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
 
             note = noteNumber;
             modEngine.in[ModInNote] = ((float) note) / 127.0f;
@@ -219,6 +231,8 @@ public:
             modEngine.in[ModInAux] = aux;
             modEngine.in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
             
+            ONE_POLE(modulations.note, noteTarget, 1.0f - clamp(kernel->portamento + modEngine.out[ModOutPortamento], 0.0f, 0.995f));
+
             modEngine.run();
             
             if (kernel->lfoRateIsPatched) {
@@ -270,6 +284,8 @@ public:
                         modulations.trigger = 1.0f;
                         envelope.TriggerHigh();
                         ampEnvelope.TriggerHigh();
+                        modEngine.in[ModInGate] = 1.0f;
+
                     }
                 }
                 
@@ -333,6 +349,10 @@ public:
         modulationEngineRules.rules[1].input1 = ModInLFO;
         modulationEngineRules.rules[2].input1 = ModInEnvelope;
         modulationEngineRules.rules[3].input1 = ModInEnvelope;
+        modulationEngineRules.rules[4].input1 = ModInPadX;
+        modulationEngineRules.rules[4].input2 = ModInPadGate;
+        modulationEngineRules.rules[5].input1 = ModInPadY;
+        modulationEngineRules.rules[5].input2 = ModInPadGate;
     }
     
     void reset() {
@@ -541,8 +561,32 @@ public:
             }
                 
             case PlaitsParamPortamento:
-                portamento = clamp(value, 0.0f, 1.0f);
+                portamento = clamp(value, 0.0f, 0.995f);
                 break;
+                
+            case PlaitsParamPadX: {
+                float padX = clamp(value, 0.0f, 1.0f);
+                for (int i = 0; i < kMaxPolyphony; i++) {
+                    voices[i].modEngine.in[ModInPadX] = padX;
+                }
+                break;
+            }
+                
+            case PlaitsParamPadY:{
+                float padY = clamp(value, 0.0f, 1.0f);
+                for (int i = 0; i < kMaxPolyphony; i++) {
+                    voices[i].modEngine.in[ModInPadY] = padY;
+                }
+                break;
+            }
+                
+            case PlaitsParamPadGate:{
+                float padGate = clamp(value, 0.0f, 1.0f);
+                for (int i = 0; i < kMaxPolyphony; i++) {
+                    voices[i].modEngine.in[ModInPadGate] = padGate;
+                }
+                break;
+            }
         }
     }
     
@@ -635,6 +679,15 @@ public:
                 
             case PlaitsParamPortamento:
                 return portamento;
+                
+            case PlaitsParamPadX:
+                return voices[0].modEngine.in[ModInPadX];
+                
+            case PlaitsParamPadY:
+                return voices[0].modEngine.in[ModInPadY];
+
+            case PlaitsParamPadGate:
+                return voices[0].modEngine.in[ModInPadGate];
                 
             default:
                 return 0.0f;

@@ -5,7 +5,7 @@
 //  Created by AudioKit Contributors, revision history on Github.
 //  Copyright © 2017 AudioKit. All rights reserved.
 //
-/*
+
 import UIKit
 
 public class AKTouchPadView: UIView {
@@ -15,60 +15,49 @@ public class AKTouchPadView: UIView {
     
     public typealias AKTouchPadCallback = (Double, Double, Bool) -> Void
     var callback: AKTouchPadCallback = { _, _, _ in }
-    
-    public typealias AKTouchPadCompletionHandler = (Double, Double, Bool, Bool) -> Void
-    var completionHandler: AKTouchPadCompletionHandler = { _, _, _, _ in }
-    
+
     var x: CGFloat = 0
     var y: CGFloat = 0
     private var lastX: CGFloat = 0
     private var lastY: CGFloat = 0
     
-    public var horizontalTaper: Double = 1.0 // Linear by default
-    public var horizontalRange: ClosedRange = 0.0...1.0 {
-        didSet {
-            x = CGFloat(horizontalValue.normalized(from: horizontalRange, taper: horizontalTaper))
-        }
-    }
-    
     public var horizontalValue: Double = 0 {
         didSet {
-            horizontalValue = horizontalRange.clamp(horizontalValue)
-            x = CGFloat(horizontalValue.normalized(from: horizontalRange, taper: horizontalTaper))
-        }
-    }
-    
-    public var verticalTaper: Double = 1.0 // Linear by default
-    public var verticalRange: ClosedRange = 0.0...1.0 {
-        didSet {
-            y = CGFloat(verticalValue.normalized(from: verticalRange, taper: verticalTaper))
+            horizontalValue = max(0.0, min(1.0, horizontalValue))
+            x = CGFloat(horizontalValue)
         }
     }
     
     public var verticalValue: Double = 0 {
         didSet {
-            verticalValue = verticalRange.clamp(verticalValue)
-            y = CGFloat(verticalValue.normalized(from: verticalRange, taper: verticalTaper))
+            verticalValue = max(0.0, min(1.0, verticalValue))
+            y = CGFloat(verticalValue)
         }
     }
     
-    var touchPointView: TouchPoint!
+    var touchPointView: UIView = UIView()
     
     override init (frame: CGRect) {
         super.init(frame: frame)
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
+    init() {
         // Setup Touch Visual Indicators
-        var width = 63.0
-        if Conductor.sharedInstance.device == .phone { width = 44.0 }
-        touchPointView = TouchPoint(frame: CGRect(x: -200, y: -200, width: width, height: width))
-        touchPointView.width = width
+        let width = 20.0
+        
+        touchPointView = UIView(frame: CGRect(x: -200, y: -200, width: width, height: width))
+        touchPointView.backgroundColor = UIColor.white
+        //touchPointView.width = width
+        
+        super.init(frame: CGRect.zero)
+        
         touchPointView.center = CGPoint(x: self.bounds.size.width / 2, y: self.bounds.size.height / 2)
         touchPointView.isOpaque = false
         addSubview(touchPointView)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -76,20 +65,23 @@ public class AKTouchPadView: UIView {
             let touchPoint = touch.location(in: self)
             lastX = touchPoint.x
             lastY = touchPoint.y
-            setPercentagesWithTouchPoint(touchPoint, began: true)
+            setPercentagesWithTouchPoint(touchPoint, pressed: true)
         }
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let touchPoint = touch.location(in: self)
-            setPercentagesWithTouchPoint(touchPoint, began: false)
+            setPercentagesWithTouchPoint(touchPoint, pressed: true)
         }
     }
     
     // return indicator to center of view
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        completionHandler(horizontalValue, verticalValue, true, false)
+        for touch in touches {
+            let touchPoint = touch.location(in: self)
+            setPercentagesWithTouchPoint(touchPoint, pressed: false)
+        }
     }
     
     func resetToCenter() {
@@ -109,10 +101,9 @@ public class AKTouchPadView: UIView {
             completion: { _ in
                 self.x = CGFloat(newPercentX)
                 self.y = CGFloat(newPercentY)
-                self.horizontalValue = Double(self.x).denormalized(to: self.horizontalRange,
-                                                                   taper: self.horizontalTaper)
-                self.verticalValue = Double(self.y).denormalized(to: self.verticalRange, taper: self.verticalTaper)
-                self.completionHandler(self.horizontalValue, self.verticalValue, true, true)
+                self.horizontalValue = Double(self.x)
+                self.verticalValue = Double(self.y)
+                self.callback(self.horizontalValue, self.verticalValue, false)
         })
     }
     
@@ -124,16 +115,12 @@ public class AKTouchPadView: UIView {
         touchPointView.center = CGPoint(x: centerPointX, y: centerPointY)
     }
     
-    
-    //TODO: come back here
-    func setPercentagesWithTouchPoint(_ touchPoint: CGPoint, began: Bool = false) {
-        x = CGFloat((0.0 ... 1.0).clamp(touchPoint.x / self.bounds.size.width))
-        y = CGFloat((0.0 ... 1.0).clamp(1 - touchPoint.y / self.bounds.size.height))
+    func setPercentagesWithTouchPoint(_ touchPoint: CGPoint, pressed: Bool = false) {
+        x = CGFloat(max(0.0, min(1.0, touchPoint.x / self.bounds.size.width)))
+        y = CGFloat(max(0.0, min(1.0, 1 - touchPoint.y / self.bounds.size.height)))
         touchPointView.center = CGPoint(x: touchPoint.x, y: touchPoint.y)
-        horizontalValue = Double(x).denormalized(to: horizontalRange, taper: horizontalTaper)
-        verticalValue = Double(y).denormalized(to: verticalRange, taper: verticalTaper)
-        callback(horizontalValue, verticalValue, began)
+        horizontalValue = Double(x)
+        verticalValue = Double(y)
+        callback(horizontalValue, verticalValue, pressed)
     }
 }
-
- */

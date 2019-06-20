@@ -58,6 +58,12 @@
     
     NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
     
+    NSArray *modeStrings = @[
+                           @"Granular",
+                           @"Time Stretch",
+                           @"Looping Delay",
+                           @"Spectral",
+                           ];
     
     // Main
     AUParameter *position = [AUParameterTree createParameterWithIdentifier:@"position" name:@"Position"
@@ -65,7 +71,13 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *size = [AUParameterTree createParameterWithIdentifier:@"size" name:@"size"
+    AUParameter *mode = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
+                                                                   address:CloudsParamMode
+                                                                       min:0.0 max:3.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:modeStrings dependentParameters:nil];
+    
+    
+    AUParameter *size = [AUParameterTree createParameterWithIdentifier:@"size" name:@"Size"
                                                                    address:CloudsParamSize
                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
@@ -95,7 +107,7 @@
                                                                                                                                                                                                                                                                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                                                                                                                                                                                                                                                                           flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[position, size, density, texture, inputGain, freeze, trigger]];
+    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, position, size, density, texture, inputGain, freeze, trigger]];
 
     AUParameter *wet = [AUParameterTree createParameterWithIdentifier:@"wet" name:@"Dry/Wet"
                                                                   address:CloudsParamWet
@@ -139,7 +151,22 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
+    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
+                                                               address:CloudsParamPadX
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
+                                                               address:CloudsParamPadY
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
+                                                                  address:CloudsParamPadGate
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, padX, padY, padGate]];
     
     // Env
     AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
@@ -243,6 +270,9 @@ NSArray *modInputs = @[
                        @"Note",
                        @"Velocity",
                        @"Modwheel",
+                       @"PadX",
+                       @"PadY",
+                       @"Pad Gate",
                        @"Out",
                        ];
 
@@ -250,20 +280,16 @@ NSArray *modOutputs = @[
                         @"Disabled",
                         @"Tune",
                         @"Frequency",
-                        @"ExciterEnvShape",
-                        @"BowLevel",
-                        @"BowTimbre",
-                        @"BlowLevel",
-                        @"BlowMeta",
-                        @"BlowTimbre",
-                        @"StrikeLevel",
-                        @"StrikeMeta",
-                        @"StrikeTimbre",
-                        @"ResonatorGeometry",
-                        @"ResonatorBrightness",
-                        @"ResonatorDamping",
-                        @"ResonatorPosition",
-                        @"Space",
+                        @"Position",
+                        @"Size",
+                        @"Density",
+                        @"Texture",
+                        @"Trigger",
+                        @"Freeze",
+                        @"Feedback",
+                        @"Wet",
+                        @"Reverb",
+                        @"Stereo",
                         @"LFORate",
                         @"LFOAmount",
                         @"Level",

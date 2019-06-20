@@ -15,20 +15,6 @@ struct SpectrumColours {
     let background: UIColor
 }
 
-let greyscale = SpectrumColours(
-    primary: UIColor.init(hex: "#d0d6d9ff")!,
-    panel2: UIColor.init(hex: "#38393bff")!,
-    panel1: UIColor.init(hex: "#292a30ff")!, //"#313335ff")!,
-    background: UIColor.init(hex: "#1e2022ff")!
-)
-
-let blue = SpectrumColours(
-    primary: UIColor.init(hex: "#d0d6d9ff")!,
-    panel2: UIColor.init(hex: "#092d81ff")!,
-    panel1: UIColor.init(hex: "#072364ff")!, //"#313335ff")!,
-    background: UIColor.init(hex: "#111111ff")!
-)
-
 class SpectrumUI {
     static var tree: AUParameterTree?
     static var parameters: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
@@ -89,6 +75,41 @@ class SpectrumUI {
 
         return Page("Matrix", Stack(ruleStack))
     }
+    
+    static let greyscale = SpectrumColours(
+        primary: UIColor.init(hex: "#d0d6d9ff")!,
+        panel2: UIColor.init(hex: "#38393bff")!,
+        panel1: UIColor.init(hex: "#292a30ff")!, //"#313335ff")!,
+        background: UIColor.init(hex: "#1e2022ff")!
+    )
+    
+    static let blue = SpectrumColours(
+        primary: UIColor.init(hex: "#d0d6d9ff")!,
+        panel2: UIColor.init(hex: "#092d81ff")!,
+        panel1: UIColor.init(hex: "#072364ff")!, //"#313335ff")!,
+        background: UIColor.init(hex: "#111111ff")!
+    )
+    
+    static let red = SpectrumColours(
+        primary: UIColor.init(hex: "#d0d6d9ff")!,
+        panel2: UIColor.init(hex: "#890916ff")!,
+        panel1: UIColor.init(hex: "#640710ff")!, //"#313335ff")!,
+        background: UIColor.init(hex: "#111111ff")!
+    )
+    
+    static let purple = SpectrumColours(
+        primary: UIColor.init(hex: "#d0d6d9ff")!,
+        panel2: UIColor.init(hex: "#890948ff")!,
+        panel1: UIColor.init(hex: "#640735ff")!, //"#313335ff")!,
+        background: UIColor.init(hex: "#111111ff")!
+    )
+    
+    static let green = SpectrumColours(
+        primary: UIColor.init(hex: "#d0d6d9ff")!,
+        panel2: UIColor.init(hex: "#098926ff")!,
+        panel1: UIColor.init(hex: "#07641cff")!, //"#313335ff")!,
+        background: UIColor.init(hex: "#111111ff")!
+    )
 }
 
 class UI: UIView {

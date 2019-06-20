@@ -40,7 +40,7 @@ public enum LiveKnobControlType: Int, Codable {
     }
     
     /// Default color for the ring base. Defaults black.
-    @IBInspectable public var baseColor: UIColor = .white { didSet { drawKnob() }}
+    @IBInspectable public var baseColor: UIColor = .gray { didSet { drawKnob() }}
     
     /// Default color for the pointer. Defaults black.
     @IBInspectable public var pointerColor: UIColor = .white { didSet { drawKnob() }}

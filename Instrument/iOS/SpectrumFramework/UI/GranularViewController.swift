@@ -21,6 +21,10 @@ enum CloudsParam: AUParameterAddress {
     case InputGain = 8
     case Trigger = 9
     case Freeze = 10
+    case Mode = 11
+    case PadX = 12
+    case PadY = 13
+    case PadGate = 14
     case Pitch = 16
     case Detune = 17
     case LfoRate = 18
@@ -39,12 +43,9 @@ let big = CGFloat(80)
 class GranularViewController: BaseAudioUnitViewController {
     override func buildUI() -> UI {
         return UI([
-            Page("Spectrum",
+            Page("Granular",
                  CStack([
                     Stack([
-                        Panel(HStack([
-                            //Picker(PlaitsParam.Algorithm.rawValue),
-                            ])),
                         Stack([Panel2(HStack([
                             Knob(CloudsParam.Position.rawValue, size: big),
                             Knob(CloudsParam.Size.rawValue, size: big),
@@ -55,20 +56,36 @@ class GranularViewController: BaseAudioUnitViewController {
                                 Knob(CloudsParam.Density.rawValue),
                                 Knob(CloudsParam.Texture.rawValue),
                                 ])),
+                               Panel2(HStack([
+                                Button(CloudsParam.Freeze.rawValue),
+                                Button(CloudsParam.Trigger.rawValue, momentary: true)
+                                ])),
                             ]),
                         ]),
                     Stack([
-                        Panel2(HStack([
-                            Knob(CloudsParam.Wet.rawValue, size: big),
-                            Knob(CloudsParam.Stereo.rawValue, size: big),
+                        Panel(TouchPad(CloudsParam.PadX.rawValue, CloudsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
+                    ]),
+                ])),
+            Page("Blend",
+                 CStack([
+                    Stack([
+                        Panel(HStack([
+                            Picker(CloudsParam.Mode.rawValue)
                             ])),
                         Panel2(HStack([
-                            Knob(CloudsParam.Feedback.rawValue, size: big),
-                            Knob(CloudsParam.Reverb.rawValue, size: big),
+                            Knob(CloudsParam.Wet.rawValue),
+                            Knob(CloudsParam.Stereo.rawValue),
+                            ])),
+                        Panel2(HStack([
+                            Knob(CloudsParam.Feedback.rawValue),
+                            Knob(CloudsParam.Reverb.rawValue),
                             ]))
-                        ]),
+                    ]),
+                    Stack([
+                        
                     ])
-                ),
+                 ])
+            ),
             
             SpectrumUI.modulationPage(lfoStart: CloudsParam.LfoRate.rawValue, envStart: CloudsParam.EnvAttack.rawValue, modStart: CloudsParam.ModMatrixStart.rawValue),
             SpectrumUI.modMatrixPage(modStart: CloudsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
