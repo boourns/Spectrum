@@ -69,7 +69,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                    Stack([
                      Panel(HStack([
                         Picker(PlaitsParam.Algorithm.rawValue),
-                        Knob(PlaitsParam.Pitch.rawValue),
+                        IntKnob(PlaitsParam.Pitch.rawValue),
                         Knob(PlaitsParam.Detune.rawValue),
                      ])),
                         Stack([Panel2(HStack([
@@ -80,7 +80,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                          Panel2(HStack([
                             Knob(PlaitsParam.Slop.rawValue, size: small),
                             Knob(PlaitsParam.Portamento.rawValue, size: small),
-                            Knob(PlaitsParam.PitchBendRange.rawValue, size: small),
+                            IntKnob(PlaitsParam.PitchBendRange.rawValue, size: small),
                          ])),
                          ]),
                    ]),
@@ -119,7 +119,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                 Stack([
                                     HStack([
                                         Picker(PlaitsParam.Unison.rawValue),
-                                        Knob(PlaitsParam.Polyphony.rawValue),
+                                        IntKnob(PlaitsParam.Polyphony.rawValue),
                                         ]),
                                     ]),
                                 ])

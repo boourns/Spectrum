@@ -133,7 +133,7 @@ class Slider: UIView {
                     return "??"
                 }
             } else {
-                return String(format:"%.02f", val)
+                return String(format:"%.03f", val)
             }
         } else  {
             return param.displayName

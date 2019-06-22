@@ -9,10 +9,45 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
+class IntKnob : Knob {
+    override init(_ address: AUParameterAddress, size: CGFloat = 60.0) {
+        super.init(address, size: size)
+        knob.roundValue = true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override
+    func displayString(_ val: Float) -> String {
+        if pressed {
+            if let values = param.valueStrings {
+                let index = Int(round(val))
+                if values.count > index {
+                    return values[index]
+                } else {
+                    return "??"
+                }
+            } else {
+                return String(format:"%.0f", val)
+            }
+        } else  {
+            return param.displayName
+        }
+    }
+}
+
 class Knob: UIView, ParameterView {
     let param: AUParameter
     let label = UILabel()
     let knob: LiveKnob = LiveKnob()
+    
+    var pressed = false {
+        didSet {
+            label.text = displayString(knob.value)
+        }
+    }
     
     var value: Float {
         get {
@@ -20,7 +55,9 @@ class Knob: UIView, ParameterView {
         }
         
         set(val) {
-            knob.value = val
+            if !pressed {
+                knob.internalValue = val
+            }
         }
     }
     
@@ -66,6 +103,7 @@ class Knob: UIView, ParameterView {
         knob.addControlEvent(.valueChanged) { [weak self] in
             guard let this = self else { return }
             this.param.value = this.knob.value
+            this.label.text = this.displayString(this.knob.value)
         }
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +124,36 @@ class Knob: UIView, ParameterView {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        
+        knob.addControlEvent(.touchDown) { [weak self] in
+            self?.pressed = true
+        }
+        
+        knob.addControlEvent(.touchUpInside) { [weak self] in
+            self?.pressed = false
+        }
+        
+        knob.addControlEvent(.touchUpOutside) { [weak self] in
+            self?.pressed = false
+        }
+        
         value = param.value
+    }
+    
+    func displayString(_ val: Float) -> String {
+        if pressed {
+            if let values = param.valueStrings {
+                let index = Int(round(val))
+                if values.count > index {
+                    return values[index]
+                } else {
+                    return "??"
+                }
+            } else {
+                return String(format:"%.03f", val)
+            }
+        } else  {
+            return param.displayName
+        }
     }
 }

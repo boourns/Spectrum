@@ -39,6 +39,15 @@ public enum LiveKnobControlType: Int, Codable {
         }
     }
     
+    var roundValue: Bool = false
+    
+    public var internalValue: Float = 0.0 {
+        didSet {
+            internalValue = min(maximumValue, max(minimumValue, internalValue))
+            value = roundValue ? round(internalValue) : internalValue
+        }
+    }
+    
     /// Default color for the ring base. Defaults black.
     @IBInspectable public var baseColor: UIColor = .gray { didSet { drawKnob() }}
     
@@ -168,12 +177,12 @@ public enum LiveKnobControlType: Int, Codable {
         
         switch controlType {
         case .horizontal:
-            value += Float(gesture.diagonalChange.width) * (maximumValue - minimumValue)
+            internalValue += Float(gesture.diagonalChange.width) * (maximumValue - minimumValue)
         case .vertical:
-            value -= Float(gesture.diagonalChange.height) * (maximumValue - minimumValue)
+            internalValue -= Float(gesture.diagonalChange.height) * (maximumValue - minimumValue)
         case .horizontalAndVertical:
-            value += Float(gesture.diagonalChange.width) * (maximumValue - minimumValue)
-            value -= Float(gesture.diagonalChange.height) * (maximumValue - minimumValue)
+            internalValue += Float(gesture.diagonalChange.width) * (maximumValue - minimumValue)
+            internalValue -= Float(gesture.diagonalChange.height) * (maximumValue - minimumValue)
         case .rotary:
             let midPointAngle = (2 * CGFloat.pi + startAngle - endAngle) / 2 + endAngle
             
@@ -185,12 +194,15 @@ public enum LiveKnobControlType: Int, Codable {
             }
             
             boundedAngle = min(endAngle, max(startAngle, boundedAngle))
-            value = min(maximumValue, max(minimumValue, valueForAngle(boundedAngle)))
+            internalValue = min(maximumValue, max(minimumValue, valueForAngle(boundedAngle)))
         }
         
         // Inform changes based on continuous behaviour of the knob.
         if continuous {
             sendActions(for: .valueChanged)
+            if gesture.state == .ended || gesture.state == .cancelled {
+                sendActions(for: .touchUpInside)
+            }
         } else {
             if gesture.state == .ended || gesture.state == .cancelled {
                 sendActions(for: .valueChanged)
