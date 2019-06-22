@@ -34,7 +34,7 @@
 					<key>manufacturer</key>
 					<string>Brns</string>
 					<key>name</key>
-					<string>Brns: Granular</string>
+					<string>1</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
@@ -44,7 +44,7 @@
 						<string>Effects</string>
 					</array>
 					<key>type</key>
-					<string>aufx</string>
+					<string>aumf</string>
 					<key>version</key>
 					<integer>67072</integer>
 				</dict>

@@ -61,7 +61,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
     let small = CGFloat(50.0)
     
     override func buildUI() -> UI {
-        SpectrumUI.colours = SpectrumUI.green
+        SpectrumUI.colours = SpectrumUI.purple
 
         return UI([
             Page("Spectrum",

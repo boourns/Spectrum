@@ -42,6 +42,8 @@ enum ElementsParam: AUParameterAddress {
 
 class ModalViewController: BaseAudioUnitViewController {
     override func buildUI() -> UI {
+        SpectrumUI.colours = SpectrumUI.blue
+        
         return UI([
             Page("Main",
                  CStack([

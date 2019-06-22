@@ -37,10 +37,6 @@ public class AKTouchPadView: UIView {
     
     var touchPointView: UIView = UIView()
     
-    override init (frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
     init() {
         // Setup Touch Visual Indicators
         let width = 20.0
@@ -50,7 +46,7 @@ public class AKTouchPadView: UIView {
         //touchPointView.width = width
         
         super.init(frame: CGRect.zero)
-        
+
         touchPointView.center = CGPoint(x: self.bounds.size.width / 2, y: self.bounds.size.height / 2)
         touchPointView.isOpaque = false
         addSubview(touchPointView)
@@ -72,6 +68,7 @@ public class AKTouchPadView: UIView {
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let touchPoint = touch.location(in: self)
+            NSLog("%f", touch.majorRadius)
             setPercentagesWithTouchPoint(touchPoint, pressed: true)
         }
     }

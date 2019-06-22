@@ -189,9 +189,14 @@ public:
                 detune = clamp(value, -1.0f, 1.0f);
                 break;
                 
-            case CloudsParamMode:
-                processor.set_playback_mode((clouds::PlaybackMode) round(clamp(value, 0.0f, 3.0f)));
+            case CloudsParamMode: {
+                clouds::PlaybackMode newMode = (clouds::PlaybackMode) round(clamp(value, 0.0f, 3.0f));
+                if (newMode != processor.playback_mode()) {
+                    processor.set_playback_mode(newMode);
+                    processor.Prepare();
+                }
                 break;
+            }
                 
             case CloudsParamPadX: {
                 float val = clamp(value, 0.0f, 1.0f);

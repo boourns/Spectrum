@@ -9,8 +9,6 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
-
-
 let ResponsiveBreak = CGFloat(540.0)
 
 public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDelegate {
@@ -84,7 +82,9 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
             pageAxis = .vertical
             pageDistribution = .equalCentering
         }
-
+        
+        SpectrumUI.isVertical = (view.frame.width < ResponsiveBreak)
+        
         SpectrumUI.cStacks.forEach { view in
             view.axis = pageAxis
             view.distribution = pageDistribution

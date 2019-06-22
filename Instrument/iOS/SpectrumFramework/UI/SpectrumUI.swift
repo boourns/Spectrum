@@ -18,6 +18,7 @@ struct SpectrumColours {
 class SpectrumUI {
     static var tree: AUParameterTree?
     static var parameters: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
+    static var isVertical: Bool = false
     static var colours = blue
     
     class func update(address: AUParameterAddress, value: Float) {
@@ -73,7 +74,7 @@ class SpectrumUI {
             }
         }
 
-        return Page("Matrix", Stack(ruleStack))
+        return Page("Matrix", Stack(ruleStack), requiresScroll: true)
     }
     
     static let greyscale = SpectrumColours(
@@ -106,8 +107,8 @@ class SpectrumUI {
     
     static let green = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
-        panel2: UIColor.init(hex: "#098926ff")!,
-        panel1: UIColor.init(hex: "#07641cff")!, //"#313335ff")!,
+        panel2: UIColor.init(hex: "#147129ff")!,
+        panel1: UIColor.init(hex: "#00570Fff")!, //"#313335ff")!,
         background: UIColor.init(hex: "#111111ff")!
     )
 }
@@ -116,10 +117,13 @@ class UI: UIView {
     let containerView = UIScrollView()
     let navigationView = UIStackView()
     let pages: [Page]
+    var currentPage: Page
     var stackVertically = false
     
     init(_ pages: [Page]) {
         self.pages = pages
+        self.currentPage = self.pages[0]
+        
         super.init(frame: CGRect.zero)
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -175,8 +179,12 @@ class UI: UIView {
             if selectedIndex == index {
                 containerView.contentSize = CGSize(width: containerView.bounds.size.width,
                                                    height: page.bounds.height + 10)
+                
+                currentPage = page
             }
         }
+        
+        updateScroll()
         
         navigationView.arrangedSubviews.enumerated().forEach { index, view in
             guard let button = view as? UIButton else { return }
@@ -189,6 +197,10 @@ class UI: UIView {
             }
         }
     }
+    
+    func updateScroll() {
+        containerView.isScrollEnabled = (SpectrumUI.isVertical || currentPage.requiresScroll)
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -197,9 +209,11 @@ class UI: UIView {
 
 class Page: UIView {
     public let name: String
+    public let requiresScroll: Bool
     
-    init(_ name: String, _ child: UIView) {
+    init(_ name: String, _ child: UIView, requiresScroll: Bool = false) {
         self.name = name
+        self.requiresScroll = requiresScroll
         super.init(frame: CGRect.zero)
         
         translatesAutoresizingMaskIntoConstraints = false

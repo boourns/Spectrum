@@ -42,6 +42,8 @@ let big = CGFloat(80)
 
 class GranularViewController: BaseAudioUnitViewController {
     override func buildUI() -> UI {
+        SpectrumUI.colours = SpectrumUI.green
+        
         return UI([
             Page("Granular",
                  CStack([
