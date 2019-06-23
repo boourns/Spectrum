@@ -307,6 +307,28 @@
         }
     };
     
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        AUParameter *param = _parameterTree.allParameters[i];
+        
+        switch(param.address) {
+            case PlaitsParamVolume:
+                param.value = 1.0f;
+                break;
+            case PlaitsParamPolyphony:
+                param.value = 7.0f;
+                break;
+            case PlaitsParamEnvRelease:
+                param.value = 0.3f;
+                break;
+            case PlaitsParamPitchBendRange:
+                param.value = 12.0;
+                break;
+            default:
+                param.value = 0.0f;
+                break;
+        }
+    }
+    
     self.maximumFramesToRender = 512;
     
     // Create factory preset array.
@@ -557,18 +579,18 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     }
 }
 
-#pragma mark- MIDI CC Map
-- (NSDictionary *)fullStateForDocument {
-    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
-    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
-    return state;
-}
-
-- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
-    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
-    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    [self updateKernelMIDIMap];
-}
+//#pragma mark- MIDI CC Map
+//- (NSDictionary *)fullStateForDocument {
+//    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
+//    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
+//    return state;
+//}
+//
+//- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
+//    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
+//    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//    [self updateKernelMIDIMap];
+//}
 
 - (void)setDefaultMIDIMap {
     int skip;

@@ -495,9 +495,11 @@ public:
                     inputBuffer.startIncr(inLen);
                     
                     // We might not fill all of the input buffer if there is a deficiency, but this cannot be avoided due to imprecisions between the input and output SRC.
+                    float gain = inputGain * 32767.0f;
+                    
                     for (int i = 0; i < outLen; i++) {
-                        input[i].l = clamp(inputFrames[i].samples[0] * 32767.0f, -32768.0f, 32767.0f);
-                        input[i].r = clamp(inputFrames[i].samples[1] * 32767.0f, -32768.0f, 32767.0f);
+                        input[i].l = clamp(inputFrames[i].samples[0] * gain, -32768.0f, 32767.0f);
+                        input[i].r = clamp(inputFrames[i].samples[1] * gain, -32768.0f, 32767.0f);
                     }
                     
                 }

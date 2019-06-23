@@ -305,6 +305,30 @@
         }
     };
     
+    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        AUParameter *param = _parameterTree.allParameters[i];
+        
+        switch(param.address) {
+            case ElementsParamVolume:
+                param.value = 1.0f;
+                break;
+            case ElementsParamStrikeLevel:
+                param.value = 0.3f;
+                break;
+            default:
+                param.value = 0.0f;
+                break;
+        }
+    }
+    
+    [self setDefaultMIDIMap];
+    
+    // Create factory preset array.
+    //    _currentFactoryPresetIndex = 0;
+    //    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
+    //                 ];
+    //    self.currentPreset = _presets.firstObject;
+
     self.maximumFramesToRender = 512;
     
     return self;
@@ -460,9 +484,11 @@
 
 - (void)setFullState:(NSDictionary *)fullState {
     NSData *data = (NSData *)fullState[@"data"];
-    NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (data != nil) {
+        NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
-    [self loadData:params];
+        [self loadData:params];
+    }
 }
 
 - (void)loadData:(NSDictionary *)data {
@@ -541,18 +567,18 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     }
 }
 
-#pragma mark- MIDI CC Map
-- (NSDictionary *)fullStateForDocument {
-    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
-    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
-    return state;
-}
-
-- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
-    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
-    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    [self updateKernelMIDIMap];
-}
+//#pragma mark- MIDI CC Map
+//- (NSDictionary *)fullStateForDocument {
+//    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
+//    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
+//    return state;
+//}
+//
+//- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
+//    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
+//    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//    [self updateKernelMIDIMap];
+//}
 
 - (void)setDefaultMIDIMap {
     int skip;

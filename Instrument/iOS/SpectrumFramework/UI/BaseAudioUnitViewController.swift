@@ -61,17 +61,26 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         guard let paramTree = audioUnit?.parameterTree else { return }
         SpectrumUI.tree = paramTree
         
+        NSLog("Connecting with AU")
+        
         ui = buildUI()
+        
+        NSLog("Registering parameter callback")
+        
+        parameterObserverToken = paramTree.token(byAddingParameterObserver: { address, value in
+            SpectrumUI.update(address: address, value: value)
+        })
+        
+        paramTree.allParameters.forEach { param in
+            SpectrumUI.update(address: param.address, value: param.value)
+        }
+        
         view.addSubview(ui!)
         NSLayoutConstraint.activate(view.constraints(filling: ui!))
         
         layout()
 
         ui?.selectPage(0)
-        
-        parameterObserverToken = paramTree.token(byAddingParameterObserver: { address, value in
-            SpectrumUI.update(address: address, value: value)
-        })
     }
     
     func layout() {

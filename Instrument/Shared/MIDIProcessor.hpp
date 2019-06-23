@@ -33,6 +33,7 @@ public:
     virtual void midiAllNotesOff() = 0;
     virtual uint8_t Note() = 0;
     virtual int State() = 0;
+    
 };
 
 class MIDISynthesizer {
@@ -306,7 +307,11 @@ public:
                 int16_t midiPitchBend = (coarse << 7) + fine;
                 bendAmount = (((float) (midiPitchBend - 8192)) / 8192.0f) * bendRange;
             }
+            case 0xA0 : { // poly aftertouch
+                uint8_t note = midiEvent.data[1];
+                uint8_t veloc = midiEvent.data[2];
                 
+            }
             case 0xB0 : { // control
                 uint8_t num = midiEvent.data[1];
                 if (num == 123) { // all notes off
