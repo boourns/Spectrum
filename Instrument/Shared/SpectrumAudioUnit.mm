@@ -47,8 +47,6 @@
     
     // MAIN
     
-    NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
-    
     AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm"
                                                                          address:PlaitsParamAlgorithm min:0.0 max:15.4
                                                                             unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -210,7 +208,8 @@
     AUParameter *pitchBendRangeParam = [AUParameterTree createParameterWithIdentifier:@"pitchRange" name:@"Bend Range"
                                                                      address:PlaitsParamPitchBendRange
                                                                          min:0.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                                flags: flags valueStrings:bendRange dependentParameters:nil];
+                                                                                flags: flags valueStrings:nil dependentParameters:nil];
+    
     AUParameter *portamento = [AUParameterTree createParameterWithIdentifier:@"portamento" name:@"Portamento"
                                                                      address:PlaitsParamPortamento
                                                                          min:0.0 max:0.995 unit:kAudioUnitParameterUnit_Generic unitName:nil

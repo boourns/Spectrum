@@ -52,12 +52,6 @@
     
     // MAIN
     
-    NSArray *pitchRange = @[
-                            @"-12", @"-11", @"-10", @"-9", @"-8", @"-7", @"-6", @"-5", @"-4", @"-3", @"-2", @"-1", @"0", @"+1", @"+2", @"+3", @"+4", @"+5", @"+6", @"+7", @"+8", @"+9", @"+10", @"+11", @"+12"
-                            ];
-    
-    NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
-    
     NSArray *modeStrings = @[
                            @"Granular",
                            @"Time Stretch",
@@ -84,7 +78,7 @@
     
     AUParameter *density = [AUParameterTree createParameterWithIdentifier:@"density" name:@"Density"
                                                                    address:CloudsParamDensity
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *texture = [AUParameterTree createParameterWithIdentifier:@"texture" name:@"Texture"
@@ -195,8 +189,8 @@
     
     AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
                                                                      address:CloudsParamPitch
-                                                                         min:0.0 max:24.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:pitchRange dependentParameters:nil];
+                                                                         min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
                                                                       address:CloudsParamDetune
@@ -499,6 +493,9 @@ NSArray *modOutputs = @[
     NSLog([jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]);
     NSLog(@"===========END============");
     
+    params[@"largebuffer"] = [NSData dataWithBytes:(const void *) _kernel.large_buffer length:sizeof(unsigned char)*118784];
+    params[@"smallbuffer"] = [NSData dataWithBytes:(const void *) _kernel.small_buffer length:sizeof(unsigned char)*(65536 - 128)];
+    
     state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];
     return state;
 }
@@ -508,6 +505,16 @@ NSArray *modOutputs = @[
     NSData *data = (NSData *)fullState[@"data"];
     if (data != nil) {
         NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        
+        NSData *ptr = [params objectForKey:@"largebuffer"];
+        if (ptr != nil) {
+            memcpy(&_kernel.large_buffer[0], [ptr bytes], ([ptr length] < 118784) ? [ptr length] : 118784);
+        }
+        
+        ptr = [params objectForKey:@"smallbuffer"];
+        if (ptr != nil) {
+            memcpy(&_kernel.small_buffer[0], [ptr bytes], ([ptr length] < (65536 - 128)) ? [ptr length] : (65536 - 128));
+        }
     
         [self loadData:params];
     }

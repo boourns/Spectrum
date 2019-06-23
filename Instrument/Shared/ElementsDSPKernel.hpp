@@ -279,7 +279,7 @@ public:
         
         switch (address) {
             case ElementsParamPitch:
-                return pitch + 12;
+                return pitch;
                 
             case ElementsParamExciterEnvShape:
                 return basePatch.exciter_envelope_shape;

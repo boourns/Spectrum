@@ -609,7 +609,7 @@ public:
                 return (float) patch.engine;
                 
             case PlaitsParamPitch:
-                return (float) pitch + 12;
+                return (float) pitch;
                 
             case PlaitsParamDetune:
                 return detune;

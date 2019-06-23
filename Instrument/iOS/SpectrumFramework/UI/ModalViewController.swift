@@ -70,7 +70,7 @@ class ModalViewController: BaseAudioUnitViewController {
                         ]),
                     Panel2(Stack([
                         HStack([
-                            Knob(ElementsParam.Pitch.rawValue),
+                            IntKnob(ElementsParam.Pitch.rawValue),
                             Knob(ElementsParam.Detune.rawValue),
                             Picker(ElementsParam.Mode.rawValue)
                             ]),

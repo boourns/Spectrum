@@ -146,7 +146,7 @@ public:
                 break;
                 
             case CloudsParamDensity:
-                baseParameters.density = clamp(value, 0.0f, 1.0f);
+                baseParameters.density = (1.0 + clamp(value, -1.0f, 1.0f)) / 2.0;
                 break;
                 
             case CloudsParamTexture:
@@ -182,7 +182,7 @@ public:
                 break;
                 
             case CloudsParamPitch:
-                pitch = round(clamp(value, 0.0f, 24.0f)) - 12;
+                pitch = clamp(value, -12.0f, 12.0f);
                 break;
             
             case CloudsParamDetune:
@@ -299,7 +299,7 @@ public:
                 return baseParameters.size;
                 
             case CloudsParamDensity:
-                return baseParameters.density;
+                return (baseParameters.density * 2.0f) - 1.0f;
                 
             case CloudsParamTexture:
                 return baseParameters.texture;
@@ -338,7 +338,7 @@ public:
                 return modEngine.in[ModInPadGate];
                 
             case CloudsParamPitch:
-                return pitch + 12;
+                return pitch;
                 
             case CloudsParamDetune:
                 return detune;
@@ -453,7 +453,7 @@ public:
         p->freeze = freeze + modEngine.out[ModOutFreeze] > 0.9;
         p->position = clamp(baseParameters.position + modEngine.out[ModOutPosition], 0.0f, 1.0f);
         p->size = clamp(baseParameters.size + modEngine.out[ModOutSize], 0.0f, 1.0f);
-        p->pitch = (float) currentNote + pitch + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 24.0f);
+        p->pitch = (float) (currentNote - 48.0f) + pitch + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 24.0f);
         p->density = clamp(baseParameters.density + modEngine.out[ModOutDensity], 0.0f, 1.0f);
         p->texture = clamp(baseParameters.texture + modEngine.out[ModOutTexture], 0.0f, 1.0f);
         p->feedback = clamp(baseParameters.feedback + modEngine.out[ModOutFeedback], 0.0f, 1.0f);
