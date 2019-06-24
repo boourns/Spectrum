@@ -211,6 +211,7 @@
 		E225107B22B57B1D00DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
 		E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
 		E2268B162294C3CF0061A753 /* ActionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2268B102294C3650061A753 /* ActionKit.swift */; };
+		E227A5C222C0625600152A79 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E227A5C122C0625600152A79 /* Settings.bundle */; };
 		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
 		E22AFB06229881F900679F99 /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
 		E22AFB0B2298DB8300679F99 /* lfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFAFA2298795F00679F99 /* lfo.cpp */; };
@@ -555,6 +556,7 @@
 		E225107722B52EC900DD88E8 /* SpectrumUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumUI.swift; sourceTree = "<group>"; };
 		E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
+		E227A5C122C0625600152A79 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
 		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
 		E22AFB03229881F900679F99 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
@@ -699,6 +701,7 @@
 				92A10C7F1B9517A50081EA80 /* Main.storyboard */,
 				92A10C7D1B9517A50081EA80 /* LaunchScreen.storyboard */,
 				92A10C811B9517A50081EA80 /* Info.plist */,
+				E227A5C122C0625600152A79 /* Settings.bundle */,
 			);
 			name = SpectrumApp;
 			path = iOS/SpectrumApp;
@@ -1546,6 +1549,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E227A5C222C0625600152A79 /* Settings.bundle in Resources */,
 				1688EA161C7BD27B0008B611 /* Images.xcassets in Resources */,
 				92A10D091B95286B0081EA80 /* Main.storyboard in Resources */,
 				92A10D081B95285A0081EA80 /* LaunchScreen.storyboard in Resources */,
