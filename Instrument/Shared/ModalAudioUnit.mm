@@ -334,36 +334,6 @@
     return self;
 }
 
-- (NSMutableArray *)modTargets:(int) ruleNumber count:(int) count parameterOffset:(int) parameterOffset {
-    
-    AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
-    kAudioUnitParameterFlag_IsReadable;
-    
-    NSMutableArray *params = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < count; i++) {
-        int base = parameterOffset + ((ruleNumber+i)*4);
-
-        AUParameter *depthParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%iDepth", ruleNumber+i]
-                                                                            name:[NSString stringWithFormat:@"Depth %i", i+1]
-                                                                         address:base + 2
-                                                                             min:-2.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                           flags: flags valueStrings:nil dependentParameters:nil];
-        
-        AUParameter *outParam = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"rule%Output", ruleNumber+i]
-                                                                          name:[NSString stringWithFormat:@"Target %i", i+1]
-                                                                       address:base + 3
-                                                                           min:0.0 max:((float) [modOutputs count])
-                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                         flags: flags valueStrings:modOutputs dependentParameters:nil];
-        
-        [params addObject:outParam];
-        [params addObject:depthParam];
-    }
-    
-    return params;
-}
-
 - (AUParameterGroup *)modMatrixRule:(int) ruleNumber parameterOffset:(int) parameterOffset {
     
    
