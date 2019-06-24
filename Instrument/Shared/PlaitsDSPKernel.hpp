@@ -15,7 +15,7 @@
 #import "stmlib/dsp/parameter_interpolator.h"
 #import "lfo.hpp"
 
-#import "resampler.hpp"
+#import "converter.hpp"
 #import "DSPKernel.hpp"
 
 #import "MIDIProcessor.hpp"
@@ -343,7 +343,10 @@ public:
     }
     
     void init(int channelCount, double inSampleRate) {
-        outputSrc.setRates(48000, (int) inSampleRate);
+        if (outputSrc) {
+            delete outputSrc;
+        }
+        outputSrc = new Converter(48000, (int) inSampleRate);
         
         modulationEngineRules.rules[0].input1 = ModInLFO;
         modulationEngineRules.rules[1].input1 = ModInLFO;
@@ -714,45 +717,40 @@ public:
         int playingNotes = 0;
         
         while (frameCount > 0) {
-            if (outputBuffer.empty()) {
-                float left[kAudioBlockSize] = {};
-                float right[kAudioBlockSize] = {};
-                
+            
+            if (renderedFramesPos == kAudioBlockSize) {
                 modulations.frequency = midiProcessor.bendAmount;
                 
+                memset(renderedL, 0, sizeof(float) * kAudioBlockSize);
+                memset(renderedR, 0, sizeof(float) * kAudioBlockSize);
+
                 for (int i = 0; i < midiProcessor.noteStack.getActivePolyphony(); i++) {
                     if (voices[i].state != NoteStateUnused) {
                         playingNotes++;
                         
-                        voices[i].run(kAudioBlockSize, left, right);
+                        voices[i].run(kAudioBlockSize, renderedL, renderedR);
                     }
                 }
                 
                 if (playingNotes > 0) {
                     for (int i = 0; i < kAudioBlockSize; i++) {
-                        left[i] *= gainCoefficient * volume;
-                        right[i] *= gainCoefficient * volume;
+                        renderedL[i] *= gainCoefficient * volume;
+                        renderedR[i] *= gainCoefficient * volume;
                     }
                 }
                 
-                rack::Frame<2> outputFrames[kAudioBlockSize];
-                for (int i = 0; i < kAudioBlockSize; i++) {
-                    outputFrames[i].samples[0] = left[i];
-                    outputFrames[i].samples[1] = right[i];
-                }
-                
-                int inLen = kAudioBlockSize;
-                int outLen = (int) outputBuffer.capacity();
-                outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
-                outputBuffer.endIncr(outLen);
+                renderedFramesPos = 0;
             }
-                
-            rack::Frame<2> outputFrame = outputBuffer.shift();
             
-            *outL++ += outputFrame.samples[0];
-            *outR++ += outputFrame.samples[1];
+            ConverterResult result;
             
-            frameCount--;
+            outputSrc->convert(renderedL + renderedFramesPos, renderedR + renderedFramesPos, kAudioBlockSize - renderedFramesPos, outL, outR, frameCount, &result);
+            
+            outL += result.outputLength;
+            outR += result.outputLength;
+            
+            renderedFramesPos += result.inputConsumed;
+            frameCount -= result.outputLength;
         }
     }
     
@@ -795,8 +793,10 @@ public:
     plaits::Modulations modulations;
     plaits::Patch patch;
     
-    rack::SampleRateConverter<2> outputSrc;
-    rack::DoubleRingBuffer<rack::Frame<2>, 256> outputBuffer;
+    Converter *outputSrc = 0;
+    float renderedL[kAudioBlockSize] = {};
+    float renderedR[kAudioBlockSize] = {};
+    int renderedFramesPos = 0;
     
     uint16_t envParameters[4];
     uint16_t ampEnvParameters[4];

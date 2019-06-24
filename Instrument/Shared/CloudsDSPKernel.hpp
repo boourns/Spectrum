@@ -13,7 +13,7 @@
 #import "DSPKernel.hpp"
 #import <vector>
 #import "lfo.hpp"
-#import "resampler.hpp"
+#import "converter.hpp"
 
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
@@ -108,8 +108,14 @@ public:
     }
     
     void init(int channelCount, double inSampleRate) {
-        outputSrc.setRates(32000, (int) inSampleRate);
-        inputSrc.setRates((int) inSampleRate, 32000);
+        if (inputSrc) {
+            delete inputSrc;
+        }
+        if (outputSrc) {
+            delete outputSrc;
+        }
+        inputSrc = new Converter((int) inSampleRate, 32000);
+        outputSrc = new Converter(32000, (int) inSampleRate);
 
         processor.Init(
                        &large_buffer[0], sizeof(large_buffer),
@@ -407,7 +413,6 @@ public:
     virtual void midiAllNotesOff() {
         state = NoteStateUnused;
         gate = false;
-        outputBuffer.clear();
     }
     
     virtual uint8_t Note() {
@@ -472,54 +477,41 @@ public:
         int inputFramesRemaining = frameCount;
         
         while (outputFramesRemaining) {
-            if (outputBuffer.empty()) {
+            
+            if (renderedFramesPos == kAudioBlockSize) {
                 runModulations(kAudioBlockSize);
                 
-                rack::Frame<2> inputFrame = {};
-                while (!inputBuffer.full() && inputFramesRemaining > 0) {
-                    inputFrame.samples[0] = *inL++;
-                    inputFrame.samples[1] = *inR++;
-                    inputBuffer.push(inputFrame);
-                    inputFramesRemaining--;
-                }
+                ConverterResult result;
+                inputSrc->convert(inL, inR, inputFramesRemaining, processedL + carriedInputFrames, processedR + carriedInputFrames, kAudioBlockSize - carriedInputFrames, &result);
+                inL += result.inputConsumed;
+                inR += result.inputConsumed;
+                inputFramesRemaining -= result.inputConsumed;
                 
                 // convert inputBuffer into clouds Input
                 clouds::ShortFrame input[kAudioBlockSize] = {};
-                // Convert input buffer
-                {
-                    rack::Frame<2> inputFrames[kAudioBlockSize];
-                    int inLen = (int) inputBuffer.size();
-                    int outLen = kAudioBlockSize;
                     
-                    inputSrc.process(inputBuffer.startData(), &inLen, inputFrames, &outLen);
-                    inputBuffer.startIncr(inLen);
-                    
-                    // We might not fill all of the input buffer if there is a deficiency, but this cannot be avoided due to imprecisions between the input and output SRC.
-                    float gain = inputGain * 32767.0f;
-                    
-                    for (int i = 0; i < outLen; i++) {
-                        input[i].l = clamp(inputFrames[i].samples[0] * gain, -32768.0f, 32767.0f);
-                        input[i].r = clamp(inputFrames[i].samples[1] * gain, -32768.0f, 32767.0f);
-                    }
-                    
+                // We might not fill all of the input buffer if there is a deficiency, but this cannot be avoided due to imprecisions between the input and output SRC.
+                float gain = inputGain * 32767.0f;
+                
+                for (int i = 0; i < carriedInputFrames + result.outputLength; i++) {
+                    input[i].l = clamp(processedL[i] * gain, -32768.0f, 32767.0f);
+                    input[i].r = clamp(processedR[i] * gain, -32768.0f, 32767.0f);
                 }
+                
+                carriedInputFrames = 0;
                 
                 // process
                 clouds::ShortFrame output[kAudioBlockSize];
                 processor.Process(input, output, kAudioBlockSize);
                 
-                rack::Frame<2> outputFrames[kAudioBlockSize];
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    outputFrames[i].samples[0] = output[i].l / 32768.0;
-                    outputFrames[i].samples[1] = output[i].r / 32768.0;
+                    renderedL[i] = output[i].l / 32768.0;
+                    renderedR[i] = output[i].r / 32768.0;
                 }
                 
-                modEngine.in[ModInOut] = outputFrames[kAudioBlockSize-1].samples[0];
+                renderedFramesPos = 0;
                 
-                int inLen = kAudioBlockSize;
-                int outLen = (int) outputBuffer.capacity();
-                outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
-                outputBuffer.endIncr(outLen);
+                modEngine.in[ModInOut] = renderedL[kAudioBlockSize-1];
                 
                 if (delayed_trigger) {
                     gate = true;
@@ -527,12 +519,21 @@ public:
                 }
             }
             
-            rack::Frame<2> outputFrame = outputBuffer.shift();
+            ConverterResult result;
+
+            outputSrc->convert(renderedL + renderedFramesPos, renderedR + renderedFramesPos, kAudioBlockSize - renderedFramesPos, outL, outR, outputFramesRemaining, &result);
             
-            *outL++ = outputFrame.samples[0];
-            *outR++ = outputFrame.samples[1];
+            outL += result.outputLength;
+            outR += result.outputLength;
             
-            outputFramesRemaining--;
+            renderedFramesPos += result.inputConsumed;
+            outputFramesRemaining -= result.outputLength;
+        }
+        
+        if (inputFramesRemaining > 0) {
+            ConverterResult result;
+            inputSrc->convert(inL, inR, inputFramesRemaining, processedL, processedR, kAudioBlockSize, &result);
+            carriedInputFrames = result.outputLength;
         }
     }
     
@@ -550,14 +551,19 @@ public:
     uint8_t large_buffer[118784];
     uint8_t small_buffer[65536 - 128];
     
-    rack::SampleRateConverter<2> inputSrc;
-    rack::DoubleRingBuffer<rack::Frame<2>, 256> inputBuffer;
-    rack::SampleRateConverter<2> outputSrc;
-    rack::DoubleRingBuffer<rack::Frame<2>, 256> outputBuffer;
+    Converter *inputSrc = 0;
+    float processedL[kAudioBlockSize] = {};
+    float processedR[kAudioBlockSize] = {};
+    int carriedInputFrames = 0;
+    
+    Converter *outputSrc = 0;
+    float renderedL[kAudioBlockSize] = {};
+    float renderedR[kAudioBlockSize] = {};
+    int renderedFramesPos = 0;
     
     MIDIProcessor midiProcessor;
     bool gate;
-    uint8_t currentNote;
+    uint8_t currentNote = 48;
     float currentVelocity;
     int state;
     bool delayed_trigger = false;

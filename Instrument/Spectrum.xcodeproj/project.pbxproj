@@ -224,9 +224,7 @@
 		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
 		E235624222B5E11500762D39 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235623B22B5E0E100762D39 /* Knob.swift */; };
 		E235624722B6FCC300762D39 /* ModTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235624622B6FCC300762D39 /* ModTarget.swift */; };
-		E249504D229F82DF0073FBDC /* ringbuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495040229F82DF0073FBDC /* ringbuffer.hpp */; };
 		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
-		E249504F229F82DF0073FBDC /* resampler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495042229F82DF0073FBDC /* resampler.hpp */; };
 		E2495051229F82DF0073FBDC /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = E2495044229F82DF0073FBDC /* resample.c */; };
 		E2495053229F82DF0073FBDC /* frame.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495046229F82DF0073FBDC /* frame.hpp */; };
 		E2495054229F82DF0073FBDC /* resample_sse.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495047229F82DF0073FBDC /* resample_sse.h */; };
@@ -557,6 +555,7 @@
 		E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E227A5C122C0625600152A79 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		E227A5C322C068C000152A79 /* converter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = converter.hpp; sourceTree = "<group>"; };
 		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
 		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
 		E22AFB03229881F900679F99 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
@@ -571,9 +570,7 @@
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
 		E235624622B6FCC300762D39 /* ModTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModTarget.swift; sourceTree = "<group>"; };
-		E2495040229F82DF0073FBDC /* ringbuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ringbuffer.hpp; sourceTree = "<group>"; };
 		E2495041229F82DF0073FBDC /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
-		E2495042229F82DF0073FBDC /* resampler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = resampler.hpp; sourceTree = "<group>"; };
 		E2495044229F82DF0073FBDC /* resample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = resample.c; sourceTree = "<group>"; };
 		E2495046229F82DF0073FBDC /* frame.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = frame.hpp; sourceTree = "<group>"; };
 		E2495047229F82DF0073FBDC /* resample_sse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resample_sse.h; sourceTree = "<group>"; };
@@ -1180,9 +1177,8 @@
 			children = (
 				E2495055229F83E30073FBDC /* arch.h */,
 				E2495057229F84730073FBDC /* stack_alloc.h */,
-				E2495040229F82DF0073FBDC /* ringbuffer.hpp */,
 				E2495041229F82DF0073FBDC /* speex_resampler.h */,
-				E2495042229F82DF0073FBDC /* resampler.hpp */,
+				E227A5C322C068C000152A79 /* converter.hpp */,
 				E2495044229F82DF0073FBDC /* resample.c */,
 				E2495046229F82DF0073FBDC /* frame.hpp */,
 				E2495047229F82DF0073FBDC /* resample_sse.h */,
@@ -1277,8 +1273,6 @@
 				E2154AE2229249AA00CEED2E /* speech_engine.h in Headers */,
 				E2154AFE229249AA00CEED2E /* waveshaping_engine.h in Headers */,
 				E225102E22B1F3B800DD88E8 /* meter.h in Headers */,
-				E249504D229F82DF0073FBDC /* ringbuffer.hpp in Headers */,
-				E249504F229F82DF0073FBDC /* resampler.hpp in Headers */,
 				E2154ACB229249AA00CEED2E /* z_oscillator.h in Headers */,
 				E2154AC1229249AA00CEED2E /* lpc_speech_synth.h in Headers */,
 				E2154AD0229249AA00CEED2E /* harmonic_oscillator.h in Headers */,

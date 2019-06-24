@@ -13,7 +13,7 @@
 #import <vector>
 #import "elements/dsp/part.h"
 #import "lfo.hpp"
-#import "resampler.hpp"
+#import "converter.hpp"
 
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
@@ -131,7 +131,10 @@ public:
     }
     
     void init(int channelCount, double inSampleRate) {
-        outputSrc.setRates(32000, (int) inSampleRate);
+        if (outputSrc) {
+            delete outputSrc;
+        }
+        outputSrc = new Converter(32000, (int) inSampleRate);
         
         midiAllNotesOff();
         envelope.Init();
@@ -401,7 +404,6 @@ public:
     virtual void midiAllNotesOff() {
         state = NoteStateUnused;
         gate = false;
-        outputBuffer.clear();
     }
     
     virtual uint8_t Note() {
@@ -466,7 +468,7 @@ public:
         int framesRemaining = frameCount;
         
         while (framesRemaining) {
-            if (outputBuffer.empty()) {
+            if (renderedFramesPos == kAudioBlockSize) {
                 runModulations(kAudioBlockSize);
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
@@ -481,18 +483,7 @@ public:
                 performance.gate = gate;
                 float finalVolume = clamp(volume + modEngine.out[ModOutLevel], 0.0f, 1.0f);
                 
-                part.Process(performance, silence, silence, mainSamples, auxSamples, kAudioBlockSize);
-                
-                rack::Frame<2> outputFrames[kAudioBlockSize];
-                for (int i = 0; i < kAudioBlockSize; i++) {
-                    outputFrames[i].samples[0] = mainSamples[i] * finalVolume;
-                    outputFrames[i].samples[1] = auxSamples[i] * finalVolume;
-                }
-                
-                int inLen = kAudioBlockSize;
-                int outLen = (int) outputBuffer.capacity();
-                outputSrc.process(outputFrames, &inLen, outputBuffer.endData(), &outLen);
-                outputBuffer.endIncr(outLen);
+                part.Process(performance, silence, silence, renderedL, renderedR, kAudioBlockSize);
                 
                 if (delayed_trigger) {
                     gate = true;
@@ -500,15 +491,24 @@ public:
                     envelope.TriggerHigh();
                 }
                 
-                modEngine.in[ModInOut] = mainSamples[kAudioBlockSize-1];
+                for (int i = 0; i < kAudioBlockSize; i++) {
+                    renderedL[i] *= finalVolume;
+                    renderedR[i] *= finalVolume;
+                }
+                
+                modEngine.in[ModInOut] = renderedL[kAudioBlockSize-1];
+                renderedFramesPos = 0;
             }
             
-            rack::Frame<2> outputFrame = outputBuffer.shift();
-
-            *outL++ = outputFrame.samples[0];
-            *outR++ = outputFrame.samples[1];
+            ConverterResult result;
             
-            framesRemaining--;
+            outputSrc->convert(renderedL + renderedFramesPos, renderedR + renderedFramesPos, kAudioBlockSize - renderedFramesPos, outL, outR, framesRemaining, &result);
+            
+            outL += result.outputLength;
+            outR += result.outputLength;
+            
+            renderedFramesPos += result.inputConsumed;
+            framesRemaining -= result.outputLength;
         }
     }
     
@@ -524,11 +524,11 @@ public:
     elements::Patch *patch;
     elements::Patch basePatch;
     
-    rack::SampleRateConverter<2> outputSrc;
-    rack::DoubleRingBuffer<rack::Frame<2>, 256> outputBuffer;
+    Converter *outputSrc = 0;
+    float renderedL[kAudioBlockSize] = {};
+    float renderedR[kAudioBlockSize] = {};
+    int renderedFramesPos = 0;
     
-    float mainSamples[kAudioBlockSize];
-    float auxSamples[kAudioBlockSize];
     float silence[kAudioBlockSize];
     uint16_t reverb_buffer[32768];
     
