@@ -34,8 +34,9 @@ enum CloudsParam: AUParameterAddress {
     case EnvDecay = 23
     case EnvSustain = 24
     case EnvRelease = 25
-    case ModMatrixStart = 26
-    case ModMatrixEnd = 66
+    case Volume = 26
+    case ModMatrixStart = 400
+    case ModMatrixEnd = 440
 };
 
 let big = CGFloat(80)
@@ -81,6 +82,7 @@ class GranularViewController: BaseAudioUnitViewController {
                         Panel2(HStack([
                             Knob(CloudsParam.Feedback.rawValue),
                             Knob(CloudsParam.Reverb.rawValue),
+                            Knob(CloudsParam.Volume.rawValue),
                             ]))
                     ]),
                     Stack([

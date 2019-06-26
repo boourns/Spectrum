@@ -429,7 +429,7 @@ public:
             }
                 
             case PlaitsParamVolume:
-                volume = clamp(value, 0.0f, 2.0f);
+                volume = clamp(value, 0.0f, 1.5f);
                 break;
                 
             case PlaitsParamSlop:

@@ -123,7 +123,12 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *blend = [AUParameterTree createGroupWithIdentifier:@"blend" name:@"Blend" children:@[wet, stereo, feedback, reverb]];
+    AUParameter *volume = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
+                                                                 address:CloudsParamVolume
+                                                                     min:0.0 max:1.5 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                   flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *blend = [AUParameterTree createGroupWithIdentifier:@"blend" name:@"Blend" children:@[wet, stereo, feedback, reverb, volume]];
 
     AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[main, blend]];
     
@@ -270,6 +275,9 @@
                 break;
             case CloudsParamReverb:
                 param.value = 0.3;
+                break;
+            case CloudsParamVolume:
+                param.value = 1.0;
                 break;
             default:
                 param.value = 0.0f;
@@ -586,6 +594,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     midiCCMap = [[NSMutableDictionary alloc] init];
     
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        if (_parameterTree.allParameters[i].address > 200) {
+            continue;
+        }
         if (i < 30) {
             skip = 2;
         } else {

@@ -153,7 +153,7 @@
     
     AUParameter *volumeParam = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
                                                                       address:PlaitsParamVolume
-                                                                          min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          min:0.0 max:1.5 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"

@@ -47,8 +47,9 @@ enum {
     CloudsParamEnvDecay = 23,
     CloudsParamEnvSustain = 24,
     CloudsParamEnvRelease = 25,
-    CloudsParamModMatrixStart = 26,
-    CloudsParamModMatrixEnd = 26 + (kNumModulationRules * 4), // 26 + 40 = 66
+    CloudsParamVolume = 26,
+    CloudsParamModMatrixStart = 400,
+    CloudsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
     CloudsMaxParameters
 };
@@ -195,6 +196,12 @@ public:
             
             case CloudsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
+                break;
+                
+            case CloudsParamVolume:
+                volume = clamp(value, 0.0f, 1.5f);
+                gainCoefficient = volume / 0.6f; // make up for SoftConvert in GranularProcessor
+                printf("gain %f\n", gainCoefficient);
                 break;
                 
             case CloudsParamMode: {
@@ -351,6 +358,9 @@ public:
             case CloudsParamDetune:
                 return detune;
                 
+            case CloudsParamVolume:
+                return volume;
+                
             case CloudsParamLfoRate:
                 return lfoBaseRate;
                 
@@ -506,9 +516,10 @@ public:
                 clouds::ShortFrame output[kAudioBlockSize];
                 processor.Process(input, output, kAudioBlockSize);
                 
+                gain = gainCoefficient / 32768.0f;
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    renderedL[i] = output[i].l / 32768.0f;
-                    renderedR[i] = output[i].r / 32768.0f;
+                    renderedL[i] = output[i].l * gain;
+                    renderedR[i] = output[i].r * gain;
                 }
                 
                 renderedFramesPos = 0;
@@ -589,6 +600,8 @@ public:
     float lfoShapeMod;
     float lfoBaseAmount;
     float inputGain;
+    float volume;
+    float gainCoefficient;
     float trigger;
     float freeze;
 };
