@@ -123,11 +123,6 @@ public:
         basePatch.resonator_damping = 0.8f;
         basePatch.resonator_position = 0.3f;
         basePatch.space = 0.1f;
-        
-        modulationEngineRules.rules[0].input1 = ModInLFO;
-        modulationEngineRules.rules[1].input1 = ModInLFO;
-        modulationEngineRules.rules[2].input1 = ModInEnvelope;
-        modulationEngineRules.rules[3].input1 = ModInEnvelope;
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -142,6 +137,13 @@ public:
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
+    }
+    
+    void setupModulationRules() {
+        modulationEngineRules.rules[0].input1 = ModInLFO;
+        modulationEngineRules.rules[1].input1 = ModInLFO;
+        modulationEngineRules.rules[2].input1 = ModInEnvelope;
+        modulationEngineRules.rules[3].input1 = ModInEnvelope;
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {

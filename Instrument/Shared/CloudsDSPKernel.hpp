@@ -100,11 +100,6 @@ public:
     CloudsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules)
     {
         midiProcessor.noteStack.voices.push_back(this);
-        
-        modulationEngineRules.rules[0].input1 = ModInLFO;
-        modulationEngineRules.rules[1].input1 = ModInLFO;
-        modulationEngineRules.rules[2].input1 = ModInEnvelope;
-        modulationEngineRules.rules[3].input1 = ModInEnvelope;
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -132,6 +127,13 @@ public:
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
+    }
+    
+    void setupModulationRules() {
+        modulationEngineRules.rules[0].input1 = ModInLFO;
+        modulationEngineRules.rules[1].input1 = ModInLFO;
+        modulationEngineRules.rules[2].input1 = ModInEnvelope;
+        modulationEngineRules.rules[3].input1 = ModInEnvelope;
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
@@ -505,8 +507,8 @@ public:
                 processor.Process(input, output, kAudioBlockSize);
                 
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    renderedL[i] = output[i].l / 32768.0;
-                    renderedR[i] = output[i].r / 32768.0;
+                    renderedL[i] = output[i].l / 32768.0f;
+                    renderedR[i] = output[i].r / 32768.0f;
                 }
                 
                 renderedFramesPos = 0;

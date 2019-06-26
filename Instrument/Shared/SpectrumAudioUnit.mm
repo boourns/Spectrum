@@ -212,7 +212,7 @@
     
     AUParameter *portamento = [AUParameterTree createParameterWithIdentifier:@"portamento" name:@"Portamento"
                                                                      address:PlaitsParamPortamento
-                                                                         min:0.0 max:0.995 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         min:0.0 max:0.9995 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
@@ -338,6 +338,8 @@
     
     // assign midi map
     [self setDefaultMIDIMap];
+    
+    _kernel.setupModulationRules();
     
     return self;
 }

@@ -126,6 +126,7 @@ public:
         plaits::Voice *voice;
         plaits::Modulations modulations;
         ModulationEngine modEngine;
+        double portamento = 0.0;
         
         float panSpread = 0;
         
@@ -214,6 +215,11 @@ public:
             lfo.set_rate(rateParameter);
         }
         
+        void updatePortamento(float modulationAmount) {
+            portamento = clamp(kernel->portamento + modulationAmount, 0.0, 0.9995);
+            portamento = std::pow(portamento, 0.05f);
+        }
+        
         void runModulations(int blockSize) {
             envelope.Process(blockSize);
             ampEnvelope.Process(blockSize);
@@ -231,7 +237,11 @@ public:
             modEngine.in[ModInAux] = aux;
             modEngine.in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
             
-            ONE_POLE(modulations.note, noteTarget, 1.0f - clamp(kernel->portamento + modEngine.out[ModOutPortamento], 0.0f, 0.995f));
+            if (kernel->portamentoIsPatched) {
+                updatePortamento(modEngine.out[ModOutPortamento]);
+            }
+            
+            ONE_POLE(modulations.note, noteTarget, 1.0f - portamento);
 
             modEngine.run();
             
@@ -347,15 +357,13 @@ public:
             delete outputSrc;
         }
         outputSrc = new Converter(48000, (int) inSampleRate);
-        
+    }
+    
+    void setupModulationRules() {
         modulationEngineRules.rules[0].input1 = ModInLFO;
         modulationEngineRules.rules[1].input1 = ModInLFO;
         modulationEngineRules.rules[2].input1 = ModInEnvelope;
         modulationEngineRules.rules[3].input1 = ModInEnvelope;
-        modulationEngineRules.rules[4].input1 = ModInPadX;
-        modulationEngineRules.rules[4].input2 = ModInPadGate;
-        modulationEngineRules.rules[5].input1 = ModInPadY;
-        modulationEngineRules.rules[5].input2 = ModInPadGate;
     }
     
     void reset() {
@@ -369,6 +377,7 @@ public:
             modulationEngineRules.setParameter(address - PlaitsParamModMatrixStart, value);
             lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
             lfoAmountIsPatched = modulationEngineRules.isPatched(ModOutLFOAmount);
+            portamentoIsPatched = modulationEngineRules.isPatched(ModOutPortamento);
             return;
         }
         
@@ -407,7 +416,8 @@ public:
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
                 if (newPolyphony != midiProcessor.noteStack.getActivePolyphony()) {
                     midiProcessor.noteStack.setActivePolyphony(newPolyphony);
-                    gainCoefficient = 1.0f / (float) newPolyphony;
+                    gainCoefficient = 1.0f / std::pow((float) newPolyphony, 0.35f);
+                    printf("gain coefficient: %f\n", gainCoefficient);
                 }
                 break;
             }
@@ -564,7 +574,10 @@ public:
             }
                 
             case PlaitsParamPortamento:
-                portamento = clamp(value, 0.0f, 0.995f);
+                portamento = clamp(value, 0.0f, 0.99999f);
+                for (int i = 0; i < kMaxPolyphony; i++) {
+                    voices[i].updatePortamento(0.0f);
+                }
                 break;
                 
             case PlaitsParamPadX: {
@@ -789,6 +802,7 @@ public:
     ModulationEngineRuleList modulationEngineRules;
     bool lfoRateIsPatched = false;
     bool lfoAmountIsPatched = false;
+    bool portamentoIsPatched = false;
     
     plaits::Modulations modulations;
     plaits::Patch patch;
@@ -815,7 +829,7 @@ public:
     
     float pan = 0.0f;
     float panSpread = 0.0f;
-    float portamento = 0.0f;
+    double portamento = 0.0f;
     
     int pitch = 0;
     float detune = 0;

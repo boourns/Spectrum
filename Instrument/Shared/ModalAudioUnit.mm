@@ -321,6 +321,8 @@
         }
     }
     
+    _kernel.setupModulationRules();
+    
     [self setDefaultMIDIMap];
     
     // Create factory preset array.
@@ -335,8 +337,6 @@
 }
 
 - (AUParameterGroup *)modMatrixRule:(int) ruleNumber parameterOffset:(int) parameterOffset {
-    
-   
     
     AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
     kAudioUnitParameterFlag_IsReadable;

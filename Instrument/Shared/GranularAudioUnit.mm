@@ -277,6 +277,7 @@
         }
     }
     
+    _kernel.setupModulationRules();
     self.maximumFramesToRender = 512;
     
     // Create factory preset array.

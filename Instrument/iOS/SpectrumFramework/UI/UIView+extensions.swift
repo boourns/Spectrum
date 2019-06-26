@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension UIView {
+public extension UIView {
 
     func constraints(filling: UIView) -> [NSLayoutConstraint] {
         return [
@@ -16,6 +16,15 @@ extension UIView {
             leadingAnchor.constraint(equalTo: filling.leadingAnchor),
             trailingAnchor.constraint(equalTo: filling.trailingAnchor),
             bottomAnchor.constraint(equalTo: filling.bottomAnchor)
+        ]
+    }
+    
+    func constraints(safelyFilling filling: UIView) -> [NSLayoutConstraint] {
+        return [
+            topAnchor.constraint(equalTo: filling.safeAreaLayoutGuide.topAnchor),
+            leadingAnchor.constraint(equalTo: filling.safeAreaLayoutGuide.leadingAnchor),
+            trailingAnchor.constraint(equalTo: filling.safeAreaLayoutGuide.trailingAnchor),
+            bottomAnchor.constraint(equalTo: filling.safeAreaLayoutGuide.bottomAnchor)
         ]
     }
     
