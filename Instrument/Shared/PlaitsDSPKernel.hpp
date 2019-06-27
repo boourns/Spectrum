@@ -53,12 +53,12 @@ enum {
     PlaitsParamAmpEnvDecay = 29,
     PlaitsParamAmpEnvSustain = 30,
     PlaitsParamAmpEnvRelease = 31,
-    PlaitsParamModMatrixStart = 39,
-    PlaitsParamModMatrixEnd = 39 + (kNumModulationRules * 4), // 39 + 48 = 87
     PlaitsParamPortamento = 88,
     PlaitsParamPadX = 89,
     PlaitsParamPadY = 90,
     PlaitsParamPadGate = 91,
+    PlaitsParamModMatrixStart = 400,
+    PlaitsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 39 + 48 = 87
     PlaitsMaxParameters
 };
 
@@ -106,14 +106,14 @@ public:
     // MARK: Types
     class VoiceState: public MIDIVoice {
     public:
-        unsigned int state;
-        PlaitsDSPKernel *kernel;
+        unsigned int state = 0;
+        PlaitsDSPKernel *kernel = 0;
         
-        char ram_block[16 * 1024];
-        uint8_t note;
-        float noteTarget;
+        char ram_block[16 * 1024] = {};
+        uint8_t note = 0;
+        float noteTarget = 0.0f;
         plaits::Voice::Frame frames[kAudioBlockSize];
-        size_t plaitsFramesIndex;
+        size_t plaitsFramesIndex = 0;
         
         peaks::MultistageEnvelope envelope;
         peaks::MultistageEnvelope ampEnvelope;

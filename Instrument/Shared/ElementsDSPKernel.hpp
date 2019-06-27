@@ -48,8 +48,8 @@ enum {
     ElementsParamEnvDecay = 23,
     ElementsParamEnvSustain = 24,
     ElementsParamEnvRelease = 25,
-    ElementsParamModMatrixStart = 26,
-    ElementsParamModMatrixEnd = 26 + (kNumModulationRules * 4), // 26 + 40 = 66
+    ElementsParamModMatrixStart = 400,
+    ElementsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
     ElementsMaxParameters
 };

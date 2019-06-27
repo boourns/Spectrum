@@ -40,12 +40,12 @@ enum PlaitsParam: AUParameterAddress {
     case AmpEnvDecay = 29
     case AmpEnvSustain = 30
     case AmpEnvRelease = 31
-    case ModMatrixStart = 39
-    case ModMatrixEnd = 87 // 39 + 12 = 51
     case Portamento = 88
     case PadX = 89
     case PadY = 90
     case PadGate = 91
+    case ModMatrixStart = 400
+    case ModMatrixEnd = 448
 };
 
 extension UILabel {

@@ -35,8 +35,8 @@ enum ElementsParam: AUParameterAddress {
     case EnvDecay = 23
     case EnvSustain = 24
     case EnvRelease = 25
-    case ModMatrixStart = 26
-    case ModMatrixEnd = 66
+    case ModMatrixStart = 400
+    case ModMatrixEnd = 440
 };
 
 

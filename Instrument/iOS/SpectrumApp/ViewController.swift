@@ -1,10 +1,9 @@
 import UIKit
-import AudioToolbox
 import SpectrumFramework
 
 class ViewController: UIViewController {
     class Text: UILabel {
-        convenience init(_ content: String) {
+        convenience init(_ content: String, font: UIFont = UIFont.preferredFont(forTextStyle: .body)) {
             self.init(frame: CGRect.zero)
             text = content
             textColor = .white
@@ -12,6 +11,7 @@ class ViewController: UIViewController {
             textAlignment = .center
             numberOfLines = 0
             lineBreakMode = .byWordWrapping
+            self.font = font
         }
     }
     
@@ -23,9 +23,49 @@ class ViewController: UIViewController {
             setTitleColor(.white, for: .normal)
             layer.borderColor = UIColor.white.cgColor
             contentEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
-
+            
             layer.borderWidth = 1.0
             layer.cornerRadius = 10
+            clipsToBounds = true
+            
+            addControlEvent(.touchUpInside) {
+                if let url = URL(string: url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        }
+    }
+    
+    class ImageButton: UIButton {
+        convenience init(_ image: String, _ url: String) {
+            self.init(frame: CGRect.zero)
+            setImage(UIImage(named: image), for: .normal)
+
+            layer.cornerRadius = 10
+            clipsToBounds = true
+            widthAnchor.constraint(equalToConstant: 100).isActive = true
+            heightAnchor.constraint(equalToConstant: 100).isActive = true
+            
+            addControlEvent(.touchUpInside) {
+                if let url = URL(string: url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+
+        }
+    }
+    
+    class HStack: UIStackView {
+        convenience init(_ children: [UIView]) {
+            self.init()
+            
+            axis = .horizontal
+            alignment = .fill
+            distribution = .fillEqually
+            spacing = 20
+            translatesAutoresizingMaskIntoConstraints = false
+            
+            children.forEach { addArrangedSubview($0) }
         }
     }
     
@@ -66,18 +106,17 @@ class ViewController: UIViewController {
     
     func ui() -> [UIView] {
         return [
-          Text("Spectrum"),
+            Text("Spectrum", font: UIFont.preferredFont(forTextStyle: .title1)),
           Text("Spectrum Audio Units are now installed."),
           Text("To use Spectrum you need an Audio Unit Host or DAW like AUM or Garageband."),
-          Button("Spectrum Manual", ""),
           Text("Spectrum is based on Eurorack modules by Mutable Instruments.  If you like it, support Mutable Instruments by buying their hardware."),
-          Button("Mutable Instruments Home", ""),
+          Button("Mutable Instruments Home", "https://mutable-instruments.net"),
           Text("Spectrum Audio Units have been built by Tom Burns.  If you want to support my work consider buying one of my other apps.  Thanks!"),
-          Button("App Store", ""),
+          Button("App Store", "https://apps.apple.com/ca/developer/thomas-burns/id522224284"),
           Text("Follow Burns Audio to keep up to date with my latest software and music releases"),
-          Button("Instagram", ""),
-          Button("Youtube", ""),
-          Button("Email", "")
+          HStack([ImageButton("Instagram", "https://www.instagram.com/gravitronic/"),
+          ImageButton("Youtube", "https://www.youtube.com/channel/UCbZ29esNP4GrR2zkUdScFNw"),
+          ImageButton("Email", "https://burns.ca/newsletter.html")])
         ]
     }
 }

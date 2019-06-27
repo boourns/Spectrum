@@ -599,6 +599,10 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     midiCCMap = [[NSMutableDictionary alloc] init];
     
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
+        if (_parameterTree.allParameters[i].address > 200) {
+            continue;
+        }
+        
         if (i < 30) {
             skip = 2;
         } else {
