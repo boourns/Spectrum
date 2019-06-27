@@ -400,11 +400,13 @@ public:
     virtual void midiNoteOff() {
         state = NoteStateReleasing;
         gate = false;
+        envelope.TriggerLow();
     }
     
     void add() {
         if (state == NoteStateUnused) {
             gate = true;
+            envelope.TriggerHigh();
         } else {
             delayed_trigger = true;
         }
@@ -527,6 +529,7 @@ public:
                 if (delayed_trigger) {
                     gate = true;
                     delayed_trigger = false;
+                    envelope.TriggerHigh();
                 }
             }
             
