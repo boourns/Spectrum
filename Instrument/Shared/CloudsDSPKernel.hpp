@@ -98,7 +98,7 @@ class CloudsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    CloudsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules)
+    CloudsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
     {
         midiProcessor.noteStack.voices.push_back(this);
     }
@@ -140,8 +140,6 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= CloudsParamModMatrixStart && address <= CloudsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - CloudsParamModMatrixStart, value);
-            lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
-            lfoAmountIsPatched = modulationEngineRules.isPatched(ModOutLFOAmount);
             return;
         }
         
@@ -450,7 +448,7 @@ public:
         envelope.Process(blockSize);
         
         lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
-        if (lfoAmountIsPatched) {
+        if (modulationEngineRules.isPatched(ModOutLFOAmount)) {
             lfoOutput *= modEngine.out[ModOutLFOAmount];
         }
         
@@ -460,7 +458,7 @@ public:
         
         modEngine.run();
         
-        if (lfoRateIsPatched) {
+        if (modulationEngineRules.isPatched(ModOutLFORate)) {
             updateLfoRate(modEngine.out[ModOutLFORate]);
         }
         
@@ -587,9 +585,6 @@ public:
     
     ModulationEngine modEngine;
     ModulationEngineRuleList modulationEngineRules;
-    
-    bool lfoRateIsPatched;
-    bool lfoAmountIsPatched;
 
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;

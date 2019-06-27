@@ -43,8 +43,8 @@ class ViewController: UIViewController {
 
             layer.cornerRadius = 10
             clipsToBounds = true
-            widthAnchor.constraint(equalToConstant: 100).isActive = true
-            heightAnchor.constraint(equalToConstant: 100).isActive = true
+            widthAnchor.constraint(equalToConstant: 80).isActive = true
+            heightAnchor.constraint(equalToConstant: 80).isActive = true
             
             addControlEvent(.touchUpInside) {
                 if let url = URL(string: url) {

@@ -29,8 +29,9 @@ struct ModulationEngineRule {
 
 class ModulationEngineRuleList {
 public:
-    ModulationEngineRuleList(int numRules) {
+    ModulationEngineRuleList(int numRules, int numInputs, int numOutputs) {
         rules.resize(numRules);
+        outputPatched.resize(numOutputs);
 
         for (ModulationEngineRule& rule : rules) {
             rule.depth = 0.0f;
@@ -38,6 +39,7 @@ public:
             rule.input2 = 0;
             rule.output = 0;
         }
+        recalculatePatched();
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
@@ -60,6 +62,7 @@ public:
                 
             case 3:
                 rules[index].output = value;
+                recalculatePatched();
                 break;
         }
 
@@ -83,16 +86,24 @@ public:
         return 0.0f;
     }
     
-    bool isPatched(int outputIndex) {
-        for (ModulationEngineRule& rule : rules) {
-            if (rule.output == outputIndex) {
-                return true;
-            }
-        }
-        return false;
+    inline bool isPatched(int outputIndex) {
+        return outputPatched[outputIndex];
     }
     
     std::vector<ModulationEngineRule> rules;
+
+private:
+    
+    void recalculatePatched() {
+        for (int i = 0; i < outputPatched.size(); i++) {
+            outputPatched[i] = false;
+        }
+        for (int i = 0; i < rules.size(); i++) {
+            outputPatched[rules[i].output] = true;
+        }
+    }
+    
+    std::vector<bool> outputPatched;
     int parameterBase;
 };
 

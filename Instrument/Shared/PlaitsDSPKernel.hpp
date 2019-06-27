@@ -225,7 +225,7 @@ public:
             ampEnvelope.Process(blockSize);
         
             float lfoAmount = 1.0;
-            if (kernel->lfoAmountIsPatched) {
+            if (kernel->modulationEngineRules.isPatched(ModOutLFOAmount)) {
                 lfoAmount = modEngine.out[ModOutLFOAmount];
             }
             
@@ -237,7 +237,7 @@ public:
             modEngine.in[ModInAux] = aux;
             modEngine.in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
             
-            if (kernel->portamentoIsPatched) {
+            if (kernel->modulationEngineRules.isPatched(ModOutPortamento)) {
                 updatePortamento(modEngine.out[ModOutPortamento]);
             }
             
@@ -245,7 +245,7 @@ public:
 
             modEngine.run();
             
-            if (kernel->lfoRateIsPatched) {
+            if (kernel->modulationEngineRules.isPatched(ModOutLFORate)) {
                 updateLfoRate(modEngine.out[ModOutLFORate]);
             }
             
@@ -317,7 +317,7 @@ public:
     
     // MARK: Member Functions
     
-    PlaitsDSPKernel() : midiProcessor(kMaxPolyphony), modulationEngineRules(kNumModulationRules)
+    PlaitsDSPKernel() : midiProcessor(kMaxPolyphony), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
     {
         voices.resize(kMaxPolyphony);
         for (VoiceState& voice : voices) {
@@ -375,9 +375,7 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= PlaitsParamModMatrixStart && address <= PlaitsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - PlaitsParamModMatrixStart, value);
-            lfoRateIsPatched = modulationEngineRules.isPatched(ModOutLFORate);
-            lfoAmountIsPatched = modulationEngineRules.isPatched(ModOutLFOAmount);
-            portamentoIsPatched = modulationEngineRules.isPatched(ModOutPortamento);
+            
             return;
         }
         
@@ -800,9 +798,6 @@ public:
     MIDIProcessor midiProcessor;
 
     ModulationEngineRuleList modulationEngineRules;
-    bool lfoRateIsPatched = false;
-    bool lfoAmountIsPatched = false;
-    bool portamentoIsPatched = false;
     
     plaits::Modulations modulations;
     plaits::Patch patch;
