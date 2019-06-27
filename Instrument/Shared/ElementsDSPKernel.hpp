@@ -126,9 +126,13 @@ public:
     }
     
     void init(int channelCount, double inSampleRate) {
+        if (inputSrc) {
+            delete inputSrc;
+        }
         if (outputSrc) {
             delete outputSrc;
         }
+        inputSrc = new Converter((int) inSampleRate, 32000);
         outputSrc = new Converter(32000, (int) inSampleRate);
         
         midiAllNotesOff();
@@ -370,7 +374,8 @@ public:
         setParameter(address, value);
     }
     
-    void setBuffers(AudioBufferList* outBufferList) {
+    void setBuffers(AudioBufferList* inBufferList, AudioBufferList* outBufferList) {
+        inBufferListPtr = inBufferList;
         outBufferListPtr = outBufferList;
     }
     
@@ -464,12 +469,28 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
+        float *inL = (float *)inBufferListPtr->mBuffers[0].mData + bufferOffset;
+        float *inR = (float *)inBufferListPtr->mBuffers[1].mData + bufferOffset;
         
-        int framesRemaining = frameCount;
+        float *extInputPtr = &silence[0];
+        float *resInputPtr = extInputPtr;
         
-        while (framesRemaining) {
+        int outputFramesRemaining = frameCount;
+        int inputFramesRemaining = frameCount;
+        
+        while (outputFramesRemaining) {
             if (renderedFramesPos == kAudioBlockSize) {
                 runModulations(kAudioBlockSize);
+                
+                if (useAudioInput) {
+                    ConverterResult result;
+                    inputSrc->convert(inL, inR, inputFramesRemaining, processedL + carriedInputFrames, processedR + carriedInputFrames, kAudioBlockSize - carriedInputFrames, &result);
+                    inL += result.inputConsumed;
+                    inR += result.inputConsumed;
+                    inputFramesRemaining -= result.inputConsumed;
+                    extInputPtr = &processedL[0];
+                    resInputPtr = &processedR[0];
+                }
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
@@ -483,7 +504,7 @@ public:
                 performance.gate = gate;
                 float finalVolume = clamp(volume + modEngine.out[ModOutLevel], 0.0f, 1.0f);
                 
-                part.Process(performance, silence, silence, renderedL, renderedR, kAudioBlockSize);
+                part.Process(performance, extInputPtr, resInputPtr, renderedL, renderedR, kAudioBlockSize);
                 
                 if (delayed_trigger) {
                     gate = true;
@@ -502,19 +523,26 @@ public:
             
             ConverterResult result;
             
-            outputSrc->convert(renderedL + renderedFramesPos, renderedR + renderedFramesPos, kAudioBlockSize - renderedFramesPos, outL, outR, framesRemaining, &result);
+            outputSrc->convert(renderedL + renderedFramesPos, renderedR + renderedFramesPos, kAudioBlockSize - renderedFramesPos, outL, outR, outputFramesRemaining, &result);
             
             outL += result.outputLength;
             outR += result.outputLength;
             
             renderedFramesPos += result.inputConsumed;
-            framesRemaining -= result.outputLength;
+            outputFramesRemaining -= result.outputLength;
+        }
+        
+        if (inputFramesRemaining > 0) {
+            ConverterResult result;
+            inputSrc->convert(inL, inR, inputFramesRemaining, processedL, processedR, kAudioBlockSize, &result);
+            carriedInputFrames = result.outputLength;
         }
     }
     
     // MARK: Member Variables
     
 private:
+    AudioBufferList* inBufferListPtr = nullptr;
     AudioBufferList* outBufferListPtr = nullptr;
     
     unsigned int activePolyphony = 1;
@@ -523,6 +551,11 @@ public:
     elements::Part part;
     elements::Patch *patch;
     elements::Patch basePatch;
+    
+    Converter *inputSrc = 0;
+    float processedL[kAudioBlockSize] = {};
+    float processedR[kAudioBlockSize] = {};
+    int carriedInputFrames = 0;
     
     Converter *outputSrc = 0;
     float renderedL[kAudioBlockSize] = {};
@@ -542,6 +575,7 @@ public:
     float detune = 0;
     int bendRange = 0;
     float bendAmount = 0.0f;
+    bool useAudioInput = false;
     
     ModulationEngine modEngine;
     ModulationEngineRuleList modulationEngineRules;
