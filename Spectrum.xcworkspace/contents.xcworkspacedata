@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Filter/Filter.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Instrument/Spectrum.xcodeproj">
    </FileRef>
    <FileRef
