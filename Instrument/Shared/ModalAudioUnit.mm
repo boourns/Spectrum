@@ -99,6 +99,8 @@
     
     NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
     
+    NSArray *inputs = @[ @"Env", @"Res"];
+    
     AUParameter *exciterEnvShape = [AUParameterTree createParameterWithIdentifier:@"exciterEnvShape" name:@"Env Shape"
                                                                       address:ElementsParamExciterEnvShape
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -145,13 +147,23 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameter *inputGain = [AUParameterTree createParameterWithIdentifier:@"inputGain" name:@"Input Gain"
+                                                                    address:ElementsParamInputGain
+                                                                        min:0.0 max:1.5 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *inputDest = [AUParameterTree createParameterWithIdentifier:@"inputDest" name:@"Input Dest"
+                                                                    address:ElementsParamInputResonator
+                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:inputs dependentParameters:nil];
+    
     AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[exciterEnvShape, bowLevel, bowTimbre]];
     
     AUParameterGroup *blowGroup = [AUParameterTree createGroupWithIdentifier:@"blow" name:@"Blow" children:@[blowLevel, blowMeta, blowTimbre]];
     
     AUParameterGroup *strikeGroup = [AUParameterTree createGroupWithIdentifier:@"strike" name:@"Strike" children:@[strikeLevel, strikeMeta, strikeTimbre]];
     
-    AUParameterGroup *exciterPage = [AUParameterTree createGroupWithIdentifier:@"exciter" name:@"Exciter" children:@[bowGroup, blowGroup, strikeGroup]];
+    AUParameterGroup *exciterPage = [AUParameterTree createGroupWithIdentifier:@"exciter" name:@"Exciter" children:@[bowGroup, blowGroup, strikeGroup, inputGain, inputDest]];
     
     AUParameter *geometry = [AUParameterTree createParameterWithIdentifier:@"geometry" name:@"Geometry"
                                                                        address:ElementsParamResonatorGeometry
@@ -325,6 +337,9 @@
                 break;
             case ElementsParamStrikeLevel:
                 param.value = 0.3f;
+                break;
+            case ElementsParamInputGain:
+                param.value = 1.0;
                 break;
             default:
                 param.value = 0.0f;

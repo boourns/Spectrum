@@ -35,14 +35,48 @@ enum ElementsParam: AUParameterAddress {
     case EnvDecay = 23
     case EnvSustain = 24
     case EnvRelease = 25
+    case InputGain = 26
+    case InputResonator = 27
     case ModMatrixStart = 400
     case ModMatrixEnd = 440
 };
 
 
 class ModalViewController: BaseAudioUnitViewController {
+    var loadAsEffect = false
+    
     override func buildUI() -> UI {
         SpectrumUI.colours = SpectrumUI.blue
+        
+        var main = [
+            Knob(ElementsParam.BlowMeta.rawValue, size: 70),
+            Knob(ElementsParam.StrikeMeta.rawValue, size: 70),
+            ]
+        
+        var timbre: UIView = HStack([
+            Knob(ElementsParam.BowTimbre.rawValue),
+            Knob(ElementsParam.BlowTimbre.rawValue),
+            Knob(ElementsParam.StrikeTimbre.rawValue),
+        ])
+        
+        if loadAsEffect {
+            main = [
+                Knob(ElementsParam.InputGain.rawValue, size: 70),
+            ] + main
+            
+            timbre = CStack([
+                HStack([
+                    Picker(ElementsParam.InputResonator.rawValue),
+                    Knob(ElementsParam.BowTimbre.rawValue),
+                    ]),
+                HStack([
+                    Knob(ElementsParam.BlowTimbre.rawValue),
+                    Knob(ElementsParam.StrikeTimbre.rawValue),
+                    ]),
+                ])
+            
+        }
+        
         
         return UI([
             Page("Main",
@@ -58,15 +92,8 @@ class ModalViewController: BaseAudioUnitViewController {
                                 Knob(ElementsParam.StrikeLevel.rawValue),
                                 ]),
                             ])),
-                        Panel(HStack([
-                            Knob(ElementsParam.BlowMeta.rawValue, size: 70),
-                            Knob(ElementsParam.StrikeMeta.rawValue, size: 70),
-                            ])),
-                        Panel(HStack([
-                            Knob(ElementsParam.BowTimbre.rawValue),
-                            Knob(ElementsParam.BlowTimbre.rawValue),
-                            Knob(ElementsParam.StrikeTimbre.rawValue),
-                            ])),
+                        Panel(HStack(main)),
+                        Panel(timbre),
                         ]),
                     Panel2(Stack([
                         HStack([
@@ -117,6 +144,10 @@ extension ModalViewController: AUAudioUnitFactory {
      creates its audio unit.
      */
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
+        if componentDescription.componentType == 1635085670 {
+            loadAsEffect = true
+        }
+            
         audioUnit = try ModalAudioUnit(componentDescription: componentDescription, options: [])
         
         return audioUnit!

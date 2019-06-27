@@ -48,6 +48,8 @@ enum {
     ElementsParamEnvDecay = 23,
     ElementsParamEnvSustain = 24,
     ElementsParamEnvRelease = 25,
+    ElementsParamInputGain = 26,
+    ElementsParamInputResonator = 27,
     ElementsParamModMatrixStart = 400,
     ElementsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
@@ -205,9 +207,18 @@ public:
             case ElementsParamVolume:
                 volume = clamp(value, 0.0f, 1.0f);
                 break;
+            case ElementsParamInputGain:
+                inputGain = clamp(value, 0.0f, 1.5f);
+                break;
+                
+            case ElementsParamInputResonator:
+                inputResonator = (value > 0.7);
+                break;
+                
             case ElementsParamMode:
                 part.set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
                 break;
+                
             case ElementsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
                 break;
@@ -364,6 +375,12 @@ public:
             case ElementsParamVolume:
                 return volume;
                 
+            case ElementsParamInputResonator:
+                return inputResonator ? 1.0f : 0.0f;
+                
+            case ElementsParamInputGain:
+                return inputGain;
+                
             default:
                 return 0.0f;
         }
@@ -472,6 +489,8 @@ public:
         float *inL = (float *)inBufferListPtr->mBuffers[0].mData + bufferOffset;
         float *inR = (float *)inBufferListPtr->mBuffers[1].mData + bufferOffset;
         
+        float mixedInput[kAudioBlockSize];
+        
         float *extInputPtr = &silence[0];
         float *resInputPtr = extInputPtr;
         
@@ -488,8 +507,13 @@ public:
                     inL += result.inputConsumed;
                     inR += result.inputConsumed;
                     inputFramesRemaining -= result.inputConsumed;
-                    extInputPtr = &processedL[0];
-                    resInputPtr = &processedR[0];
+                    
+                    for (int i = 0; i < kAudioBlockSize; i++) {
+                        mixedInput[i] = (processedL[i] + processedR[i]) / 2.0f;
+                    }
+                    
+                    extInputPtr = !inputResonator ? &mixedInput[0] : &silence[0];
+                    resInputPtr = inputResonator ? &mixedInput[0] : &silence[0];
                 }
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
@@ -589,6 +613,8 @@ public:
     float lfoShapeMod;
     float lfoBaseAmount;
     float volume;
+    float inputGain;
+    bool inputResonator;
 };
 
 #endif /* ElementsDSPKernel_h */
