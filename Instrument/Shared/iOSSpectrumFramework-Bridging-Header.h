@@ -5,3 +5,4 @@
 #import "ModalAudioUnit.h"
 #import "SpectrumAudioUnit.h"
 #import "GranularAudioUnit.h"
+#import "ResonatorAudioUnit.h"

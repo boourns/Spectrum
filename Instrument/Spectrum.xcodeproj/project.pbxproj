@@ -221,6 +221,17 @@
 		E22AFB16229C5A2D00679F99 /* UIImage+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */; };
 		E22AFB18229C66BB00679F99 /* PSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB17229C66BB00679F99 /* PSlider.swift */; };
 		E22AFB1A229CC67D00679F99 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB19229CC67D00679F99 /* Spacing.swift */; };
+		E22C33FE22C5B9F900185BB5 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E22C33FC22C5B9F900185BB5 /* MainInterface.storyboard */; };
+		E22C340322C5B9F900185BB5 /* Resonator.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E22C33F522C5B9F900185BB5 /* Resonator.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E22C340722C5BA1200185BB5 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
+		E22C340A22C5BAA000185BB5 /* ResonatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C340822C5BA3900185BB5 /* ResonatorViewController.swift */; };
+		E22C340C22C5BACF00185BB5 /* ResonatorAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E22C340B22C5BACF00185BB5 /* ResonatorAudioUnit.mm */; };
+		E22C340E22C5BB1100185BB5 /* ResonatorAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = E22C340D22C5BB1100185BB5 /* ResonatorAudioUnit.h */; };
+		E22C341122C5BBFE00185BB5 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C341022C5BBFE00185BB5 /* Dummy.swift */; };
+		E22C341F22C63F8D00185BB5 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E22C341D22C63F8D00185BB5 /* MainInterface.storyboard */; };
+		E22C342422C63F8D00185BB5 /* ResonatorEffect.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E22C342822C63FC700185BB5 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
+		E22C342B22C6409F00185BB5 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C342922C63FE100185BB5 /* Dummy.swift */; };
 		E235624222B5E11500762D39 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235623B22B5E0E100762D39 /* Knob.swift */; };
 		E235624722B6FCC300762D39 /* ModTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235624622B6FCC300762D39 /* ModTarget.swift */; };
 		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
@@ -234,6 +245,35 @@
 		E2ABBBA422C47827001FA69B /* ModalEffect.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2ABBB9622C47827001FA69B /* ModalEffect.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2ABBBAA22C47896001FA69B /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBA922C47896001FA69B /* Dummy.swift */; };
 		E2ABBBAB22C478A4001FA69B /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
+		E2ABBC0D22C573C8001FA69B /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBC122C573C7001FA69B /* resources.h */; };
+		E2ABBC1A22C573C8001FA69B /* meter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBD122C573C7001FA69B /* meter.h */; };
+		E2ABBC1D22C573C8001FA69B /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBD422C573C7001FA69B /* resources.cc */; };
+		E2ABBC2422C573C8001FA69B /* string_synth_part.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBDF22C573C7001FA69B /* string_synth_part.cc */; };
+		E2ABBC2522C573C8001FA69B /* string_synth_part.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBE022C573C7001FA69B /* string_synth_part.h */; };
+		E2ABBC2622C573C8001FA69B /* part.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBE122C573C7001FA69B /* part.cc */; };
+		E2ABBC2722C573C8001FA69B /* string.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBE222C573C7001FA69B /* string.cc */; };
+		E2ABBC2822C573C8001FA69B /* resonator.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBE322C573C7001FA69B /* resonator.cc */; };
+		E2ABBC2922C573C8001FA69B /* performance_state.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBE422C573C7001FA69B /* performance_state.h */; };
+		E2ABBC2A22C573C8001FA69B /* reverb.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBE622C573C7001FA69B /* reverb.h */; };
+		E2ABBC2B22C573C8001FA69B /* fx_engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBE722C573C7001FA69B /* fx_engine.h */; };
+		E2ABBC2C22C573C8001FA69B /* chorus.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBE822C573C7001FA69B /* chorus.h */; };
+		E2ABBC2D22C573C8001FA69B /* ensemble.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBE922C573C7001FA69B /* ensemble.h */; };
+		E2ABBC2E22C573C8001FA69B /* string_synth_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBEA22C573C7001FA69B /* string_synth_oscillator.h */; };
+		E2ABBC2F22C573C8001FA69B /* fm_voice.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2ABBBEB22C573C7001FA69B /* fm_voice.cc */; };
+		E2ABBC3022C573C8001FA69B /* strummer.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBEC22C573C7001FA69B /* strummer.h */; };
+		E2ABBC3122C573C8001FA69B /* string_synth_envelope.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBED22C573C7001FA69B /* string_synth_envelope.h */; };
+		E2ABBC3222C573C8001FA69B /* note_filter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBEE22C573C7001FA69B /* note_filter.h */; };
+		E2ABBC3322C573C8001FA69B /* follower.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBEF22C573C7001FA69B /* follower.h */; };
+		E2ABBC3422C573C8001FA69B /* patch.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF022C573C7001FA69B /* patch.h */; };
+		E2ABBC3522C573C8001FA69B /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF122C573C7001FA69B /* dsp.h */; };
+		E2ABBC3622C573C8001FA69B /* fm_voice.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF222C573C7001FA69B /* fm_voice.h */; };
+		E2ABBC3722C573C8001FA69B /* onset_detector.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF322C573C7001FA69B /* onset_detector.h */; };
+		E2ABBC3822C573C8001FA69B /* plucker.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF422C573C7001FA69B /* plucker.h */; };
+		E2ABBC3922C573C8001FA69B /* string_synth_voice.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF522C573C7001FA69B /* string_synth_voice.h */; };
+		E2ABBC3A22C573C8001FA69B /* part.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF622C573C7001FA69B /* part.h */; };
+		E2ABBC3B22C573C8001FA69B /* limiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF722C573C7001FA69B /* limiter.h */; };
+		E2ABBC3C22C573C8001FA69B /* resonator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF822C573C7001FA69B /* resonator.h */; };
+		E2ABBC3D22C573C8001FA69B /* rings_string.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF922C573C7001FA69B /* rings_string.h */; };
 		E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60617229CE9E0004B33CB /* MainInterface.storyboard */; };
@@ -297,6 +337,20 @@
 			remoteGlobalIDString = E225105722B1F6DF00DD88E8;
 			remoteInfo = Granular;
 		};
+		E22C340122C5B9F900185BB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E22C33F422C5B9F900185BB5;
+			remoteInfo = Resonator;
+		};
+		E22C342222C63F8D00185BB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E22C341522C63F8D00185BB5;
+			remoteInfo = ResonatorEffect;
+		};
 		E2ABBBA222C47827001FA69B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
@@ -339,7 +393,9 @@
 			dstSubfolderSpec = 13;
 			files = (
 				E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */,
+				E22C342422C63F8D00185BB5 /* ResonatorEffect.appex in Embed App Extensions */,
 				E2184AB1229F03A500CA4DFE /* ModalAudioUnit.appex in Embed App Extensions */,
+				E22C340322C5B9F900185BB5 /* Resonator.appex in Embed App Extensions */,
 				E225106622B1F6E000DD88E8 /* Granular.appex in Embed App Extensions */,
 				E2ABBBA422C47827001FA69B /* ModalEffect.appex in Embed App Extensions */,
 			);
@@ -577,6 +633,20 @@
 		E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extensions.swift"; sourceTree = "<group>"; };
 		E22AFB17229C66BB00679F99 /* PSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSlider.swift; sourceTree = "<group>"; };
 		E22AFB19229CC67D00679F99 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		E22C33F522C5B9F900185BB5 /* Resonator.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Resonator.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E22C33FD22C5B9F900185BB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		E22C33FF22C5B9F900185BB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E22C340022C5B9F900185BB5 /* Resonator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Resonator-Bridging-Header.h"; sourceTree = "<group>"; };
+		E22C340822C5BA3900185BB5 /* ResonatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResonatorViewController.swift; sourceTree = "<group>"; };
+		E22C340B22C5BACF00185BB5 /* ResonatorAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResonatorAudioUnit.mm; sourceTree = "<group>"; };
+		E22C340D22C5BB1100185BB5 /* ResonatorAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResonatorAudioUnit.h; sourceTree = "<group>"; };
+		E22C340F22C5BB3200185BB5 /* RingsDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RingsDSPKernel.hpp; sourceTree = "<group>"; };
+		E22C341022C5BBFE00185BB5 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ResonatorEffect.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E22C341E22C63F8D00185BB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		E22C342022C63F8D00185BB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E22C342122C63F8D00185BB5 /* ResonatorEffect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ResonatorEffect-Bridging-Header.h"; sourceTree = "<group>"; };
+		E22C342922C63FE100185BB5 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
 		E235624622B6FCC300762D39 /* ModTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModTarget.swift; sourceTree = "<group>"; };
@@ -595,6 +665,35 @@
 		E2ABBBA022C47827001FA69B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2ABBBA122C47827001FA69B /* ModalEffect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ModalEffect-Bridging-Header.h"; sourceTree = "<group>"; };
 		E2ABBBA922C47896001FA69B /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		E2ABBBC122C573C7001FA69B /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
+		E2ABBBD122C573C7001FA69B /* meter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = meter.h; sourceTree = "<group>"; };
+		E2ABBBD422C573C7001FA69B /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
+		E2ABBBDF22C573C7001FA69B /* string_synth_part.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_synth_part.cc; sourceTree = "<group>"; };
+		E2ABBBE022C573C7001FA69B /* string_synth_part.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_synth_part.h; sourceTree = "<group>"; };
+		E2ABBBE122C573C7001FA69B /* part.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = part.cc; sourceTree = "<group>"; };
+		E2ABBBE222C573C7001FA69B /* string.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string.cc; sourceTree = "<group>"; };
+		E2ABBBE322C573C7001FA69B /* resonator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resonator.cc; sourceTree = "<group>"; };
+		E2ABBBE422C573C7001FA69B /* performance_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = performance_state.h; sourceTree = "<group>"; };
+		E2ABBBE622C573C7001FA69B /* reverb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reverb.h; sourceTree = "<group>"; };
+		E2ABBBE722C573C7001FA69B /* fx_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fx_engine.h; sourceTree = "<group>"; };
+		E2ABBBE822C573C7001FA69B /* chorus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chorus.h; sourceTree = "<group>"; };
+		E2ABBBE922C573C7001FA69B /* ensemble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ensemble.h; sourceTree = "<group>"; };
+		E2ABBBEA22C573C7001FA69B /* string_synth_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_synth_oscillator.h; sourceTree = "<group>"; };
+		E2ABBBEB22C573C7001FA69B /* fm_voice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fm_voice.cc; sourceTree = "<group>"; };
+		E2ABBBEC22C573C7001FA69B /* strummer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strummer.h; sourceTree = "<group>"; };
+		E2ABBBED22C573C7001FA69B /* string_synth_envelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_synth_envelope.h; sourceTree = "<group>"; };
+		E2ABBBEE22C573C7001FA69B /* note_filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note_filter.h; sourceTree = "<group>"; };
+		E2ABBBEF22C573C7001FA69B /* follower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = follower.h; sourceTree = "<group>"; };
+		E2ABBBF022C573C7001FA69B /* patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch.h; sourceTree = "<group>"; };
+		E2ABBBF122C573C7001FA69B /* dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
+		E2ABBBF222C573C7001FA69B /* fm_voice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fm_voice.h; sourceTree = "<group>"; };
+		E2ABBBF322C573C7001FA69B /* onset_detector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onset_detector.h; sourceTree = "<group>"; };
+		E2ABBBF422C573C7001FA69B /* plucker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = plucker.h; sourceTree = "<group>"; };
+		E2ABBBF522C573C7001FA69B /* string_synth_voice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_synth_voice.h; sourceTree = "<group>"; };
+		E2ABBBF622C573C7001FA69B /* part.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = part.h; sourceTree = "<group>"; };
+		E2ABBBF722C573C7001FA69B /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
+		E2ABBBF822C573C7001FA69B /* resonator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resonator.h; sourceTree = "<group>"; };
+		E2ABBBF922C573C7001FA69B /* rings_string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rings_string.h; sourceTree = "<group>"; };
 		E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAudioUnit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E60618229CE9E0004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -636,6 +735,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E22C33F222C5B9F900185BB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E22C340722C5BA1200185BB5 /* SpectrumFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E22C341322C63F8D00185BB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E22C342822C63FC700185BB5 /* SpectrumFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2ABBB9322C47827001FA69B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -658,6 +773,9 @@
 		30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */ = {
 			isa = PBXGroup;
 			children = (
+				E22C341722C63F8D00185BB5 /* ResonatorEffect */,
+				E22C33F622C5B9F900185BB5 /* Resonator */,
+				E2ABBB9722C47827001FA69B /* ModalEffect */,
 				E225105922B1F6DF00DD88E8 /* Granular */,
 				E2184AA4229F03A500CA4DFE /* ModalAudioUnit */,
 				E2E60616229CE9E0004B33CB /* SpectrumAudioUnit */,
@@ -695,7 +813,6 @@
 				92A10CA51B951C660081EA80 /* Shared Framework Code */,
 				91236D861B08F64600734C5E /* SimplePlayEngine */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
-				E2ABBB9722C47827001FA69B /* ModalEffect */,
 				91D3DA171B023C1E008FFFBB /* Products */,
 				E2154B322292523600CEED2E /* Frameworks */,
 			);
@@ -710,6 +827,8 @@
 				E2184AA3229F03A500CA4DFE /* ModalAudioUnit.appex */,
 				E225105822B1F6DF00DD88E8 /* Granular.appex */,
 				E2ABBB9622C47827001FA69B /* ModalEffect.appex */,
+				E22C33F522C5B9F900185BB5 /* Resonator.appex */,
+				E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -753,6 +872,7 @@
 		B5234C811CA0963600902296 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				E2ABBBAC22C573C7001FA69B /* rings */,
 				E2250FBB22B1F3B800DD88E8 /* clouds */,
 				E249503F229F82DF0073FBDC /* resampler */,
 				E2184A50229E1F9200CA4DFE /* elements */,
@@ -773,6 +893,9 @@
 				E225106A22B1F8E900DD88E8 /* GranularAudioUnit.mm */,
 				E225106D22B1F9E200DD88E8 /* CloudsDSPKernel.hpp */,
 				E225106C22B1F90800DD88E8 /* GranularAudioUnit.h */,
+				E22C340B22C5BACF00185BB5 /* ResonatorAudioUnit.mm */,
+				E22C340D22C5BB1100185BB5 /* ResonatorAudioUnit.h */,
+				E22C340F22C5BB3200185BB5 /* RingsDSPKernel.hpp */,
 			);
 			name = Shared;
 			path = ../../Shared;
@@ -1182,8 +1305,31 @@
 				E235623B22B5E0E100762D39 /* Knob.swift */,
 				E235624622B6FCC300762D39 /* ModTarget.swift */,
 				E216B03C22B9DDEE00467133 /* TouchPad.swift */,
+				E22C340822C5BA3900185BB5 /* ResonatorViewController.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		E22C33F622C5B9F900185BB5 /* Resonator */ = {
+			isa = PBXGroup;
+			children = (
+				E22C33FC22C5B9F900185BB5 /* MainInterface.storyboard */,
+				E22C33FF22C5B9F900185BB5 /* Info.plist */,
+				E22C340022C5B9F900185BB5 /* Resonator-Bridging-Header.h */,
+				E22C341022C5BBFE00185BB5 /* Dummy.swift */,
+			);
+			path = Resonator;
+			sourceTree = "<group>";
+		};
+		E22C341722C63F8D00185BB5 /* ResonatorEffect */ = {
+			isa = PBXGroup;
+			children = (
+				E22C341D22C63F8D00185BB5 /* MainInterface.storyboard */,
+				E22C342022C63F8D00185BB5 /* Info.plist */,
+				E22C342122C63F8D00185BB5 /* ResonatorEffect-Bridging-Header.h */,
+				E22C342922C63FE100185BB5 /* Dummy.swift */,
+			);
+			path = ResonatorEffect;
 			sourceTree = "<group>";
 		};
 		E235624322B6803A00762D39 /* Vendor */ = {
@@ -1221,6 +1367,58 @@
 			path = ModalEffect;
 			sourceTree = "<group>";
 		};
+		E2ABBBAC22C573C7001FA69B /* rings */ = {
+			isa = PBXGroup;
+			children = (
+				E2ABBBC122C573C7001FA69B /* resources.h */,
+				E2ABBBD122C573C7001FA69B /* meter.h */,
+				E2ABBBD422C573C7001FA69B /* resources.cc */,
+				E2ABBBDE22C573C7001FA69B /* dsp */,
+			);
+			path = rings;
+			sourceTree = "<group>";
+		};
+		E2ABBBDE22C573C7001FA69B /* dsp */ = {
+			isa = PBXGroup;
+			children = (
+				E2ABBBDF22C573C7001FA69B /* string_synth_part.cc */,
+				E2ABBBE022C573C7001FA69B /* string_synth_part.h */,
+				E2ABBBE122C573C7001FA69B /* part.cc */,
+				E2ABBBE222C573C7001FA69B /* string.cc */,
+				E2ABBBE322C573C7001FA69B /* resonator.cc */,
+				E2ABBBE422C573C7001FA69B /* performance_state.h */,
+				E2ABBBE522C573C7001FA69B /* fx */,
+				E2ABBBEA22C573C7001FA69B /* string_synth_oscillator.h */,
+				E2ABBBEB22C573C7001FA69B /* fm_voice.cc */,
+				E2ABBBEC22C573C7001FA69B /* strummer.h */,
+				E2ABBBED22C573C7001FA69B /* string_synth_envelope.h */,
+				E2ABBBEE22C573C7001FA69B /* note_filter.h */,
+				E2ABBBEF22C573C7001FA69B /* follower.h */,
+				E2ABBBF022C573C7001FA69B /* patch.h */,
+				E2ABBBF122C573C7001FA69B /* dsp.h */,
+				E2ABBBF222C573C7001FA69B /* fm_voice.h */,
+				E2ABBBF322C573C7001FA69B /* onset_detector.h */,
+				E2ABBBF422C573C7001FA69B /* plucker.h */,
+				E2ABBBF522C573C7001FA69B /* string_synth_voice.h */,
+				E2ABBBF622C573C7001FA69B /* part.h */,
+				E2ABBBF722C573C7001FA69B /* limiter.h */,
+				E2ABBBF822C573C7001FA69B /* resonator.h */,
+				E2ABBBF922C573C7001FA69B /* rings_string.h */,
+			);
+			path = dsp;
+			sourceTree = "<group>";
+		};
+		E2ABBBE522C573C7001FA69B /* fx */ = {
+			isa = PBXGroup;
+			children = (
+				E2ABBBE622C573C7001FA69B /* reverb.h */,
+				E2ABBBE722C573C7001FA69B /* fx_engine.h */,
+				E2ABBBE822C573C7001FA69B /* chorus.h */,
+				E2ABBBE922C573C7001FA69B /* ensemble.h */,
+			);
+			path = fx;
+			sourceTree = "<group>";
+		};
 		E2E60616229CE9E0004B33CB /* SpectrumAudioUnit */ = {
 			isa = PBXGroup;
 			children = (
@@ -1246,13 +1444,17 @@
 				92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */,
 				E2184A91229E1F9200CA4DFE /* ominous_voice.h in Headers */,
 				E225104122B1F3B800DD88E8 /* pitch_shifter.h in Headers */,
+				E2ABBC2A22C573C8001FA69B /* reverb.h in Headers */,
 				E2154ADF229249AA00CEED2E /* envelope.h in Headers */,
 				E2154B06229249AA00CEED2E /* murmurhash3.h in Headers */,
+				E22C340E22C5BB1100185BB5 /* ResonatorAudioUnit.h in Headers */,
+				E2ABBC3922C573C8001FA69B /* string_synth_voice.h in Headers */,
 				E2154B07229249AA00CEED2E /* buffer_allocator.h in Headers */,
 				E2154B16229249AA00CEED2E /* filter.h in Headers */,
 				E2154B18229249AA00CEED2E /* units.h in Headers */,
 				E2154ACA229249AA00CEED2E /* wavetable_oscillator.h in Headers */,
 				E2184A7E229E1F9200CA4DFE /* meter.h in Headers */,
+				E2ABBC0D22C573C8001FA69B /* resources.h in Headers */,
 				E2154AB3229249AA00CEED2E /* hi_hat.h in Headers */,
 				E2154AC5229249AA00CEED2E /* fractal_random_generator.h in Headers */,
 				E2154AA9229249AA00CEED2E /* resources.h in Headers */,
@@ -1262,15 +1464,19 @@
 				E225104422B1F3B800DD88E8 /* frame.h in Headers */,
 				E2184A88229E1F9200CA4DFE /* fx_engine.h in Headers */,
 				E2154ACC229249AA00CEED2E /* string_synth_oscillator.h in Headers */,
+				E2ABBC3322C573C8001FA69B /* follower.h in Headers */,
 				E2154AB0229249AA00CEED2E /* overdrive.h in Headers */,
 				E2154AD9229249AA00CEED2E /* delay_line.h in Headers */,
 				E2184A89229E1F9200CA4DFE /* diffuser.h in Headers */,
+				E2ABBC2922C573C8001FA69B /* performance_state.h in Headers */,
 				E2154AD8229249AA00CEED2E /* modal_voice.h in Headers */,
 				E2184A90229E1F9200CA4DFE /* dsp.h in Headers */,
 				E2154AF6229249AA00CEED2E /* hi_hat_engine.h in Headers */,
 				E2495058229F84730073FBDC /* stack_alloc.h in Headers */,
 				E2154B08229249AA00CEED2E /* crc32.h in Headers */,
+				E2ABBC3222C573C8001FA69B /* note_filter.h in Headers */,
 				E2184A95229E1F9200CA4DFE /* resonator.h in Headers */,
+				E2ABBC2B22C573C8001FA69B /* fx_engine.h in Headers */,
 				E2154AF9229249AA00CEED2E /* bass_drum_engine.h in Headers */,
 				E22AFB05229881F900679F99 /* resources.h in Headers */,
 				E225104322B1F3B800DD88E8 /* sample_rate_converter.h in Headers */,
@@ -1279,20 +1485,26 @@
 				E2184A8F229E1F9200CA4DFE /* patch.h in Headers */,
 				E2154AC4229249AA00CEED2E /* smooth_random_generator.h in Headers */,
 				E2495053229F82DF0073FBDC /* frame.hpp in Headers */,
+				E2ABBC3A22C573C8001FA69B /* part.h in Headers */,
 				E2154AC2229249AA00CEED2E /* lpc_speech_synth_words.h in Headers */,
 				E2154AE6229249AA00CEED2E /* chord_engine.h in Headers */,
 				E225104B22B1F3B800DD88E8 /* granular_processor.h in Headers */,
 				E2154AB4229249AA00CEED2E /* analog_snare_drum.h in Headers */,
+				E2ABBC3022C573C8001FA69B /* strummer.h in Headers */,
 				E2154ADE229249AA00CEED2E /* voice.h in Headers */,
+				E2ABBC3D22C573C8001FA69B /* rings_string.h in Headers */,
 				E2154AE8229249AA00CEED2E /* snare_drum_engine.h in Headers */,
 				E2154AD2229249AA00CEED2E /* sine_oscillator.h in Headers */,
 				E2154B12229249AA00CEED2E /* polyblep.h in Headers */,
 				E2154AC3229249AA00CEED2E /* sam_speech_synth.h in Headers */,
 				E2184A8E229E1F9200CA4DFE /* tube.h in Headers */,
 				E2184A85229E1F9200CA4DFE /* multistage_envelope.h in Headers */,
+				E2ABBC3B22C573C8001FA69B /* limiter.h in Headers */,
 				E2154AAF229249AA00CEED2E /* low_pass_gate.h in Headers */,
+				E2ABBC3122C573C8001FA69B /* string_synth_envelope.h in Headers */,
 				E225102422B1F3B800DD88E8 /* settings.h in Headers */,
 				E225104F22B1F3B800DD88E8 /* grain.h in Headers */,
+				E2ABBC3722C573C8001FA69B /* onset_detector.h in Headers */,
 				E2154AC8229249AA00CEED2E /* dust.h in Headers */,
 				E2154AD1229249AA00CEED2E /* grainlet_oscillator.h in Headers */,
 				E2154B17229249AA00CEED2E /* limiter.h in Headers */,
@@ -1328,21 +1540,28 @@
 				E2154B01229249AA00CEED2E /* ring_buffer.h in Headers */,
 				E2154AC0229249AA00CEED2E /* lpc_speech_synth_controller.h in Headers */,
 				E225101F22B1F3B800DD88E8 /* resources.h in Headers */,
+				E2ABBC1A22C573C8001FA69B /* meter.h in Headers */,
 				E2154B15229249AA00CEED2E /* cosine_oscillator.h in Headers */,
 				E2154B0D229249AA00CEED2E /* parameter_interpolator.h in Headers */,
+				E2ABBC3822C573C8001FA69B /* plucker.h in Headers */,
 				E2184A92229E1F9200CA4DFE /* voice.h in Headers */,
+				E2ABBC2C22C573C8001FA69B /* chorus.h in Headers */,
 				E2154AB2229249AA00CEED2E /* diffuser.h in Headers */,
+				E2ABBC2E22C573C8001FA69B /* string_synth_oscillator.h in Headers */,
 				E225103922B1F3B800DD88E8 /* frame_transformation.h in Headers */,
 				E225104522B1F3B800DD88E8 /* wsola_sample_player.h in Headers */,
+				E2ABBC2522C573C8001FA69B /* string_synth_part.h in Headers */,
 				E2154B02229249AA00CEED2E /* gate_flags.h in Headers */,
 				92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */,
 				E2154AC6229249AA00CEED2E /* clocked_noise.h in Headers */,
+				E2ABBC2D22C573C8001FA69B /* ensemble.h in Headers */,
 				E225104722B1F3B800DD88E8 /* parameters.h in Headers */,
 				E2154AF2229249AA00CEED2E /* particle_engine.h in Headers */,
 				E2154AF5229249AA00CEED2E /* additive_engine.h in Headers */,
 				E2154AE1229249AA00CEED2E /* string_engine.h in Headers */,
 				E225104622B1F3B800DD88E8 /* window.h in Headers */,
 				E2154B13229249AA00CEED2E /* dsp.h in Headers */,
+				E2ABBC3C22C573C8001FA69B /* resonator.h in Headers */,
 				E2184A96229E1F9200CA4DFE /* elements_string.h in Headers */,
 				E225105322B1F4D200DD88E8 /* shy_fft.h in Headers */,
 				E2154AC9229249AA00CEED2E /* variable_shape_oscillator.h in Headers */,
@@ -1355,15 +1574,18 @@
 				E2154AB5229249AA00CEED2E /* synthetic_bass_drum.h in Headers */,
 				E2154AED229249AA00CEED2E /* virtual_analog_engine.h in Headers */,
 				E22AFB0E2299D33E00679F99 /* multistage_envelope.h in Headers */,
+				E2ABBC3622C573C8001FA69B /* fm_voice.h in Headers */,
 				E2154ACF229249AA00CEED2E /* variable_saw_oscillator.h in Headers */,
 				E2154B10229249AA00CEED2E /* hysteresis_quantizer.h in Headers */,
 				E2154B00229249AA00CEED2E /* swarm_engine.h in Headers */,
 				E225104D22B1F3B800DD88E8 /* correlator.h in Headers */,
+				E2ABBC3422C573C8001FA69B /* patch.h in Headers */,
 				E2184A76229E1F9200CA4DFE /* resources.h in Headers */,
 				E2154AB6229249AA00CEED2E /* analog_bass_drum.h in Headers */,
 				E225105022B1F3B800DD88E8 /* looping_sample_player.h in Headers */,
 				E2154ACD229249AA00CEED2E /* oscillator.h in Headers */,
 				E225104222B1F3B800DD88E8 /* diffuser.h in Headers */,
+				E2ABBC3522C573C8001FA69B /* dsp.h in Headers */,
 				E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */,
 				E2154ABA229249AA00CEED2E /* naive_speech_synth.h in Headers */,
 				E2184A87229E1F9200CA4DFE /* reverb.h in Headers */,
@@ -1392,6 +1614,8 @@
 				E2184AB0229F03A500CA4DFE /* PBXTargetDependency */,
 				E225106522B1F6E000DD88E8 /* PBXTargetDependency */,
 				E2ABBBA322C47827001FA69B /* PBXTargetDependency */,
+				E22C340222C5B9F900185BB5 /* PBXTargetDependency */,
+				E22C342322C63F8D00185BB5 /* PBXTargetDependency */,
 			);
 			name = iOSSpectrumApp;
 			productName = iOSSpectrumApp;
@@ -1448,6 +1672,40 @@
 			name = Granular;
 			productName = Granular;
 			productReference = E225105822B1F6DF00DD88E8 /* Granular.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		E22C33F422C5B9F900185BB5 /* Resonator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E22C340422C5B9F900185BB5 /* Build configuration list for PBXNativeTarget "Resonator" */;
+			buildPhases = (
+				E22C33F122C5B9F900185BB5 /* Sources */,
+				E22C33F222C5B9F900185BB5 /* Frameworks */,
+				E22C33F322C5B9F900185BB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Resonator;
+			productName = Resonator;
+			productReference = E22C33F522C5B9F900185BB5 /* Resonator.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		E22C341522C63F8D00185BB5 /* ResonatorEffect */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E22C342522C63F8D00185BB5 /* Build configuration list for PBXNativeTarget "ResonatorEffect" */;
+			buildPhases = (
+				E22C341222C63F8D00185BB5 /* Sources */,
+				E22C341322C63F8D00185BB5 /* Frameworks */,
+				E22C341422C63F8D00185BB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ResonatorEffect;
+			productName = ResonatorEffect;
+			productReference = E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		E2ABBB9522C47827001FA69B /* ModalEffect */ = {
@@ -1513,6 +1771,16 @@
 						DevelopmentTeam = YC8HZ62228;
 						ProvisioningStyle = Automatic;
 					};
+					E22C33F422C5B9F900185BB5 = {
+						CreatedOnToolsVersion = 10.2;
+						DevelopmentTeam = YC8HZ62228;
+						ProvisioningStyle = Automatic;
+					};
+					E22C341522C63F8D00185BB5 = {
+						CreatedOnToolsVersion = 10.2;
+						DevelopmentTeam = YC8HZ62228;
+						ProvisioningStyle = Automatic;
+					};
 					E2ABBB9522C47827001FA69B = {
 						CreatedOnToolsVersion = 10.2;
 						DevelopmentTeam = YC8HZ62228;
@@ -1555,6 +1823,8 @@
 				E2184AA2229F03A500CA4DFE /* ModalAudioUnit */,
 				E225105722B1F6DF00DD88E8 /* Granular */,
 				E2ABBB9522C47827001FA69B /* ModalEffect */,
+				E22C33F422C5B9F900185BB5 /* Resonator */,
+				E22C341522C63F8D00185BB5 /* ResonatorEffect */,
 			);
 		};
 /* End PBXProject section */
@@ -1631,6 +1901,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E22C33F322C5B9F900185BB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E22C33FE22C5B9F900185BB5 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E22C341422C63F8D00185BB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E22C341F22C63F8D00185BB5 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2ABBB9422C47827001FA69B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1664,6 +1950,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E22C340A22C5BAA000185BB5 /* ResonatorViewController.swift in Sources */,
 				E216B03E22B9DE4E00467133 /* TouchPad.swift in Sources */,
 				E216B03B22B9DA8500467133 /* AKTouchPad.swift in Sources */,
 				E235624222B5E11500762D39 /* Knob.swift in Sources */,
@@ -1672,6 +1959,7 @@
 				E225107622B520B800DD88E8 /* LiveKnob.swift in Sources */,
 				E225107322B1FDCD00DD88E8 /* GranularViewController.swift in Sources */,
 				E224EA6322A6E3D800A34405 /* UIColor+extensions.swift in Sources */,
+				E2ABBC2422C573C8001FA69B /* string_synth_part.cc in Sources */,
 				E225103C22B1F3B800DD88E8 /* phase_vocoder.cc in Sources */,
 				E22AFB0B2298DB8300679F99 /* lfo.cpp in Sources */,
 				E225103E22B1F3B800DD88E8 /* granular_processor.cc in Sources */,
@@ -1705,7 +1993,12 @@
 				E22AFB14229C4AA100679F99 /* Picker.swift in Sources */,
 				E225103D22B1F3B800DD88E8 /* frame_transformation.cc in Sources */,
 				92A10D141B9528B60081EA80 /* SpectrumViewController.swift in Sources */,
+				E2ABBC2622C573C8001FA69B /* part.cc in Sources */,
+				E2ABBC2722C573C8001FA69B /* string.cc in Sources */,
+				E2ABBC2822C573C8001FA69B /* resonator.cc in Sources */,
+				E22C340C22C5BACF00185BB5 /* ResonatorAudioUnit.mm in Sources */,
 				E2154AEC229249AA00CEED2E /* particle_engine.cc in Sources */,
+				E2ABBC2F22C573C8001FA69B /* fm_voice.cc in Sources */,
 				E225106B22B1F8E900DD88E8 /* GranularAudioUnit.mm in Sources */,
 				E216B04022BAA47400467133 /* Button.swift in Sources */,
 				E2154AEF229249AA00CEED2E /* hi_hat_engine.cc in Sources */,
@@ -1729,6 +2022,7 @@
 				E22AFB06229881F900679F99 /* resources.cc in Sources */,
 				E2154AEA229249AA00CEED2E /* swarm_engine.cc in Sources */,
 				E2154AD4229249AA00CEED2E /* string.cc in Sources */,
+				E2ABBC1D22C573C8001FA69B /* resources.cc in Sources */,
 				E2154AF0229249AA00CEED2E /* chord_engine.cc in Sources */,
 				E27AD077229395240003C69C /* Slider.swift in Sources */,
 				B5234C861CA0966600902296 /* SpectrumAudioUnit.mm in Sources */,
@@ -1757,6 +2051,22 @@
 			files = (
 				E225107B22B57B1D00DD88E8 /* UIView+extensions.swift in Sources */,
 				E225107022B1FCA800DD88E8 /* Dummy.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E22C33F122C5B9F900185BB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E22C341122C5BBFE00185BB5 /* Dummy.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E22C341222C63F8D00185BB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E22C342B22C6409F00185BB5 /* Dummy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1793,6 +2103,16 @@
 			isa = PBXTargetDependency;
 			target = E225105722B1F6DF00DD88E8 /* Granular */;
 			targetProxy = E225106422B1F6E000DD88E8 /* PBXContainerItemProxy */;
+		};
+		E22C340222C5B9F900185BB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E22C33F422C5B9F900185BB5 /* Resonator */;
+			targetProxy = E22C340122C5B9F900185BB5 /* PBXContainerItemProxy */;
+		};
+		E22C342322C63F8D00185BB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E22C341522C63F8D00185BB5 /* ResonatorEffect */;
+			targetProxy = E22C342222C63F8D00185BB5 /* PBXContainerItemProxy */;
 		};
 		E2ABBBA322C47827001FA69B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1832,6 +2152,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				E225106022B1F6E000DD88E8 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		E22C33FC22C5B9F900185BB5 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E22C33FD22C5B9F900185BB5 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		E22C341D22C63F8D00185BB5 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E22C341E22C63F8D00185BB5 /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -2329,6 +2665,178 @@
 			};
 			name = Release;
 		};
+		E22C340522C5B9F900185BB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YC8HZ62228;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Resonator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.Resonator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "Resonator/Resonator-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E22C340622C5B9F900185BB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YC8HZ62228;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Resonator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.Resonator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Resonator/Resonator-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E22C342622C63F8D00185BB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YC8HZ62228;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ResonatorEffect/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.ResonatorEffect;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "ResonatorEffect/ResonatorEffect-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E22C342722C63F8D00185BB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YC8HZ62228;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ResonatorEffect/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsAudio.spectrumApp.ResonatorEffect;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ResonatorEffect/ResonatorEffect-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		E2ABBBA622C47827001FA69B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2545,6 +3053,24 @@
 			buildConfigurations = (
 				E225106822B1F6E000DD88E8 /* Debug */,
 				E225106922B1F6E000DD88E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E22C340422C5B9F900185BB5 /* Build configuration list for PBXNativeTarget "Resonator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E22C340522C5B9F900185BB5 /* Debug */,
+				E22C340622C5B9F900185BB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E22C342522C63F8D00185BB5 /* Build configuration list for PBXNativeTarget "ResonatorEffect" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E22C342622C63F8D00185BB5 /* Debug */,
+				E22C342722C63F8D00185BB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

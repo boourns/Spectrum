@@ -28,13 +28,13 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>SpectrumAudioUnit</string>
+					<string>Spectrum</string>
 					<key>factoryFunction</key>
 					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
 					<key>manufacturer</key>
 					<string>Brns</string>
 					<key>name</key>
-					<string>Brns: SpectrumAudioUnit</string>
+					<string>Burns Audio: Spectrum</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>

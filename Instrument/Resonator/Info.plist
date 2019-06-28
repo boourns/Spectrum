@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ModalEffect</string>
+	<string>Resonator</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,24 +28,23 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>ModalEffect</string>
+					<string>Resonator</string>
 					<key>factoryFunction</key>
 					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
 					<key>manufacturer</key>
 					<string>Brns</string>
 					<key>name</key>
-					<string>Burns Audio: ModalEffect</string>
+					<string>Burns Audio: Resonator</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
-					<string>mdfx</string>
+					<string>reso</string>
 					<key>tags</key>
 					<array>
-						<string>Effects</string>
-						<string>MIDI</string>
+						<string>Synthesizer</string>
 					</array>
 					<key>type</key>
-					<string>aumf</string>
+					<string>aumu</string>
 					<key>version</key>
 					<integer>67072</integer>
 				</dict>

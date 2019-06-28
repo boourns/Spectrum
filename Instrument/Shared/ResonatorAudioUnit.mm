@@ -1,16 +1,16 @@
 //
-//  ModalAudioUnit.m
+//  ResonatorAudioUnit.m
 //  iOSSpectrumFramework
 //
-//  Created by tom on 2019-05-28.
+//  Created by tom on 2019-06-27.
 //
 
-#import "ModalAudioUnit.h"
+#import "ResonatorAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
-#import "ElementsDSPKernel.hpp"
+#import "RingsDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
 
-@interface ModalAudioUnit ()
+@interface ResonatorAudioUnit ()
 
 @property AUAudioUnitBus *outputBus;
 @property AUAudioUnitBusArray *outputBusArray;
@@ -20,11 +20,11 @@
 
 @end
 
-@implementation ModalAudioUnit {
+@implementation ResonatorAudioUnit {
     // C++ members need to be ivars; they would be copied on access if they were properties.
-    ElementsDSPKernel _kernel;
+    RingsDSPKernel _kernel;
     BufferedInputBus _inputBus;
-
+    
     AUAudioUnitPreset   *_currentPreset;
     NSInteger           _currentFactoryPresetIndex;
     NSArray<AUAudioUnitPreset *> *_presets;
@@ -65,155 +65,90 @@
     // MAIN
     
     modInputs = @[
-                           @"Direct",
-                           @"LFO",
-                           @"Envelope",
-                           @"Note",
-                           @"Velocity",
-                           @"Modwheel",
-                           @"Out",
-                           ];
+                  @"Direct",
+                  @"LFO",
+                  @"Envelope",
+                  @"Note",
+                  @"Velocity",
+                  @"Modwheel",
+                  @"Out",
+                  ];
     
     modOutputs = @[
-                            @"Disabled",
-                            @"Tune",
-                            @"Frequency",
-                            @"ExciterEnvShape",
-                            @"BowLevel",
-                            @"BowTimbre",
-                            @"BlowLevel",
-                            @"BlowMeta",
-                            @"BlowTimbre",
-                            @"StrikeLevel",
-                            @"StrikeMeta",
-                            @"StrikeTimbre",
-                            @"ResonatorGeometry",
-                            @"ResonatorBrightness",
-                            @"ResonatorDamping",
-                            @"ResonatorPosition",
-                            @"Space",
-                            @"LFORate",
-                            @"LFOAmount",
-                            @"Level",
-                            ];
-    
-    NSArray *bendRange = @[ @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"11", @"12"];
-    
-    NSArray *inputs = @[ @"Env", @"Res"];
-    
-    AUParameter *exciterEnvShape = [AUParameterTree createParameterWithIdentifier:@"exciterEnvShape" name:@"Env Shape"
-                                                                      address:ElementsParamExciterEnvShape
-                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *bowLevel = [AUParameterTree createParameterWithIdentifier:@"bowLevel" name:@"Bow Level"
-                                                                          address:ElementsParamBowLevel
-                                                                              min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                            flags: flags valueStrings:nil dependentParameters:nil];
-    
-    
-    AUParameter *bowTimbre = [AUParameterTree createParameterWithIdentifier:@"bowTimbre" name:@"Bow Timbre"
-                                                                   address:ElementsParamBowTimbre
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *blowLevel = [AUParameterTree createParameterWithIdentifier:@"blowLevel" name:@"Blow Level"
-                                                                   address:ElementsParamBlowLevel
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *blowMeta = [AUParameterTree createParameterWithIdentifier:@"blow" name:@"Blow"
-                                                                     address:ElementsParamBlowMeta
-                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *blowTimbre = [AUParameterTree createParameterWithIdentifier:@"blowTimbre" name:@"Blow Timbre"
-                                                                    address:ElementsParamBlowTimbre
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *strikeLevel = [AUParameterTree createParameterWithIdentifier:@"strikeLevel" name:@"Strike Level"
-                                                                    address:ElementsParamStrikeLevel
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *strikeMeta = [AUParameterTree createParameterWithIdentifier:@"strike" name:@"Strike"
-                                                                   address:ElementsParamStrikeMeta
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *strikeTimbre = [AUParameterTree createParameterWithIdentifier:@"strikeTimbre" name:@"Strike Timbre"
-                                                                     address:ElementsParamStrikeTimbre
-                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+                   @"Disabled",
+                   @"Tune",
+                   @"Frequency",
+                   @"ExciterEnvShape",
+                   @"BowLevel",
+                   @"BowTimbre",
+                   @"BlowLevel",
+                   @"BlowMeta",
+                   @"BlowTimbre",
+                   @"StrikeLevel",
+                   @"StrikeMeta",
+                   @"StrikeTimbre",
+                   @"ResonatorGeometry",
+                   @"ResonatorBrightness",
+                   @"ResonatorDamping",
+                   @"ResonatorPosition",
+                   @"Space",
+                   @"LFORate",
+                   @"LFOAmount",
+                   @"Level",
+                   ];
     
     AUParameter *inputGain = [AUParameterTree createParameterWithIdentifier:@"inputGain" name:@"Input Gain"
-                                                                    address:ElementsParamInputGain
+                                                                    address:RingsParamInputGain
                                                                         min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *inputDest = [AUParameterTree createParameterWithIdentifier:@"inputDest" name:@"Input Dest"
-                                                                    address:ElementsParamInputResonator
-                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                      flags: flags valueStrings:inputs dependentParameters:nil];
+    AUParameterGroup *inputPage = [AUParameterTree createGroupWithIdentifier:@"input" name:@"Input" children:@[inputGain]];
     
-    AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[exciterEnvShape, bowLevel, bowTimbre]];
-    
-    AUParameterGroup *blowGroup = [AUParameterTree createGroupWithIdentifier:@"blow" name:@"Blow" children:@[blowLevel, blowMeta, blowTimbre]];
-    
-    AUParameterGroup *strikeGroup = [AUParameterTree createGroupWithIdentifier:@"strike" name:@"Strike" children:@[strikeLevel, strikeMeta, strikeTimbre]];
-    
-    AUParameterGroup *exciterPage = [AUParameterTree createGroupWithIdentifier:@"exciter" name:@"Exciter" children:@[bowGroup, blowGroup, strikeGroup, inputGain, inputDest]];
-    
-    AUParameter *geometry = [AUParameterTree createParameterWithIdentifier:@"geometry" name:@"Geometry"
-                                                                       address:ElementsParamResonatorGeometry
-                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    AUParameter *structure = [AUParameterTree createParameterWithIdentifier:@"structure" name:@"Structure"
+                                                                   address:RingsParamStructure
+                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *brightness = [AUParameterTree createParameterWithIdentifier:@"brightness" name:@"Brightness"
-                                                                   address:ElementsParamResonatorBrightness
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+                                                                     address:RingsParamBrightness
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *damping = [AUParameterTree createParameterWithIdentifier:@"damping" name:@"Damping"
-                                                                   address:ElementsParamResonatorDamping
-                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+                                                                  address:RingsParamDamping
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *position = [AUParameterTree createParameterWithIdentifier:@"position" name:@"Position"
-                                                                   address:ElementsParamResonatorPosition
+                                                                   address:RingsParamPosition
                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *space = [AUParameterTree createParameterWithIdentifier:@"space" name:@"Space"
-                                                                   address:ElementsParamSpace
-                                                                       min:0.0 max:2.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                     flags: flags valueStrings:nil dependentParameters:nil];
+
     
     AUParameter *volume = [AUParameterTree createParameterWithIdentifier:@"volume" name:@"Volume"
-                                                                address:ElementsParamVolume
-                                                                    min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                  flags: flags valueStrings:nil dependentParameters:nil];
+                                                                 address:RingsParamVolume
+                                                                     min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                   flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[geometry, brightness, position, damping, space, volume]];
+    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[structure, brightness, position, damping, volume]];
     
     AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
     
     // LFO
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
-                                                                  address:ElementsParamLfoRate
+                                                                  address:RingsParamLfoRate
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
     NSArray *lfoShapes = @[@"Sine", @"Slope", @"Pulse", @"Stepped", @"Random"];
     
     AUParameter *lfoShape = [AUParameterTree createParameterWithIdentifier:@"lfoShape" name:@"LFO Shape"
-                                                                   address:ElementsParamLfoShape
+                                                                   address:RingsParamLfoShape
                                                                        min:0.0 max:4.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:lfoShapes dependentParameters:nil];
     
     AUParameter *lfoShapeMod = [AUParameterTree createParameterWithIdentifier:@"lfoShapeMod" name:@"ShapeMod"
-                                                                      address:ElementsParamLfoShapeMod
+                                                                      address:RingsParamLfoShapeMod
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
@@ -221,44 +156,44 @@
     
     
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
-
     
-
+    
+    
     
     // Env
     AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
-                                                                    address:ElementsParamEnvAttack
+                                                                    address:RingsParamEnvAttack
                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *envDecay = [AUParameterTree createParameterWithIdentifier:@"envDecay" name:@"Decay"
-                                                                   address:ElementsParamEnvDecay
+                                                                   address:RingsParamEnvDecay
                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *envSustain = [AUParameterTree createParameterWithIdentifier:@"envSustain" name:@"Sustain"
-                                                                     address:ElementsParamEnvSustain
+                                                                     address:RingsParamEnvSustain
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *envRelease = [AUParameterTree createParameterWithIdentifier:@"envRelease" name:@"Release"
-                                                                     address:ElementsParamEnvRelease
+                                                                     address:RingsParamEnvRelease
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
     
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
-                                                                        children:@[[self modMatrixRule:0 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:1 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:2 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:3 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:4 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:5 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:6 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:7 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:8 parameterOffset:ElementsParamModMatrixStart],
-                                                                                   [self modMatrixRule:9 parameterOffset:ElementsParamModMatrixStart],                                                             
+                                                                        children:@[[self modMatrixRule:0 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:1 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:2 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:3 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:4 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:5 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:6 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:7 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:8 parameterOffset:RingsParamModMatrixStart],
+                                                                                   [self modMatrixRule:9 parameterOffset:RingsParamModMatrixStart],
                                                                                    ]];
     
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
@@ -267,23 +202,27 @@
     
     
     AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
-                                                                       address:ElementsParamMode min:0.0 max:4.0
-                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                         flags:flags valueStrings:@[
-                                                                                                    @"Modal",
-                                                                                                    @"Non-linear",
-                                                                                                    @"Chords",
-                                                                                                    @"Ominous",
-                                                                                                    ]
-                                                           dependentParameters:nil];
+                                                                    address:RingsParamMode min:0.0 max:6.0
+                                                                       unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags:flags valueStrings:@[
+                                                                                                 @"Modal",
+                                                                                                 @"Sympathetic",
+                                                                                                 @"String",
+                                                                                                 @"FM",
+                                                                                                 @"Quantized",
+                                                                                                 @"Stringverb",
+                                                                                                 @"Disastrous Peace",
+                                                                        
+                                                                                                 ]
+                                                        dependentParameters:nil];
     
     AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
-                                                                     address:ElementsParamPitch
+                                                                     address:RingsParamPitch
                                                                          min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
-                                                                      address:ElementsParamDetune
+                                                                      address:RingsParamDetune
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
@@ -292,7 +231,7 @@
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[inputPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
     
     // Create the input and output busses.
     _inputBus.init(defaultFormat, 8);
@@ -304,7 +243,7 @@
     
     
     // Make a local pointer to the kernel to avoid capturing self.
-    __block ElementsDSPKernel *instrumentKernel = &_kernel;
+    __block RingsDSPKernel *instrumentKernel = &_kernel;
     
     // implementorValueObserver is called when a parameter changes value.
     _parameterTree.implementorValueObserver = ^(AUParameter *param, AUValue value) {
@@ -332,13 +271,11 @@
         AUParameter *param = _parameterTree.allParameters[i];
         
         switch(param.address) {
-            case ElementsParamVolume:
+            case RingsParamVolume:
                 param.value = 1.0f;
                 break;
-            case ElementsParamStrikeLevel:
-                param.value = 0.3f;
-                break;
-            case ElementsParamInputGain:
+            
+            case RingsParamInputGain:
                 param.value = 1.0;
                 break;
             default:
@@ -356,7 +293,7 @@
     //    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
     //                 ];
     //    self.currentPreset = _presets.firstObject;
-
+    
     self.maximumFramesToRender = 512;
     
     return self;
@@ -441,7 +378,7 @@
 
 - (void)deallocateRenderResources {
     _inputBus.deallocateRenderResources();
-
+    
     [super deallocateRenderResources];
 }
 
@@ -452,9 +389,9 @@
      Capture in locals to avoid ObjC member lookups. If "self" is captured in
      render, we're doing it wrong.
      */
-    __block ElementsDSPKernel *state = &_kernel;
+    __block RingsDSPKernel *state = &_kernel;
     __block BufferedInputBus *input = &_inputBus;
-
+    
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
                               const AudioTimeStamp       *timestamp,
@@ -508,7 +445,7 @@
     NSData *data = (NSData *)fullState[@"data"];
     if (data != nil) {
         NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    
+        
         [self loadData:params];
     }
 }
@@ -529,13 +466,13 @@ typedef struct {
     NSString *data;
 } FactoryPreset;
 
-static const UInt8 kElementsNumPresets = 0;
-static const FactoryPreset elementsPresets[kElementsNumPresets] =
+static const UInt8 kRingsNumPresets = 0;
+static const FactoryPreset ringsPresets[kRingsNumPresets] =
 {
-//    {
-//        @"Init",
-//        @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
-//    },
+    //    {
+    //        @"Init",
+    //        @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
+    //    },
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
@@ -567,7 +504,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             if (currentPreset.number == factoryPreset.number) {
                 
                 NSError *jsonError;
-                NSData *objectData = [elementsPresets[factoryPreset.number].data dataUsingEncoding:NSUTF8StringEncoding];
+                NSData *objectData = [ringsPresets[factoryPreset.number].data dataUsingEncoding:NSUTF8StringEncoding];
                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
                                                                      options:NSJSONReadingMutableContainers
                                                                        error:&jsonError];
