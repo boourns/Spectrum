@@ -471,16 +471,18 @@ public:
         patch->exciter_bow_level = clamp(basePatch.exciter_bow_level + modEngine.out[ModOutBowLevel], 0.0f, 1.0f);
         patch->exciter_bow_timbre = clamp(basePatch.exciter_bow_timbre + modEngine.out[ModOutBowTimbre], 0.0f, 0.9995f);
         patch->exciter_blow_level = clamp(basePatch.exciter_blow_level + modEngine.out[ModOutBlowLevel], 0.0f, 1.0f);
-        patch->exciter_blow_meta = clamp(basePatch.exciter_blow_meta + modEngine.out[ModOutBlowMeta], 0.0f, 0.9995f); // LP
+        
+        ONE_POLE(patch->exciter_blow_meta, clamp(basePatch.exciter_blow_meta + modEngine.out[ModOutBlowMeta], 0.0f, 0.9995f), 0.05f); // LP
+        
         patch->exciter_blow_timbre = clamp(basePatch.exciter_blow_timbre + modEngine.out[ModOutBlowTimbre], 0.0f, 0.9995f);
         patch->exciter_strike_level = clamp(basePatch.exciter_strike_level + modEngine.out[ModOutStrikeLevel], 0.0f, 1.0f);
-        patch->exciter_strike_meta = clamp(basePatch.exciter_strike_meta + modEngine.out[ModOutStrikeMeta], 0.0f, 0.9995f); //LP
+        ONE_POLE(patch->exciter_strike_meta, clamp(basePatch.exciter_strike_meta + modEngine.out[ModOutStrikeMeta], 0.0f, 0.9995f),  0.05f); //LP
         patch->exciter_strike_timbre = clamp(basePatch.exciter_strike_timbre + modEngine.out[ModOutStrikeTimbre], 0.0f, 0.9995f);
-        patch->resonator_geometry = clamp(basePatch.resonator_geometry + modEngine.out[ModOutResonatorGeometry], 0.0f, 0.9995f); // LP
+        ONE_POLE(patch->resonator_geometry, clamp(basePatch.resonator_geometry + modEngine.out[ModOutResonatorGeometry], 0.0f, 0.9995f), 0.05f); // LP
         patch->resonator_brightness = clamp(basePatch.resonator_brightness + modEngine.out[ModOutResonatorBrightness], 0.0f, 0.9995f);
         patch->resonator_damping = clamp(basePatch.resonator_damping + modEngine.out[ModOutResonatorDamping], 0.0f, 0.9995f);
-        patch->resonator_position = clamp(basePatch.resonator_position + modEngine.out[ModOutResonatorPosition], 0.0f, 0.9995f); // LP
-        patch->space = clamp(basePatch.space + modEngine.out[ModOutSpace], 0.0f, 2.0f); // LP
+        ONE_POLE(patch->resonator_position, clamp(basePatch.resonator_position + modEngine.out[ModOutResonatorPosition], 0.0f, 0.9995f), 0.01f); // LP
+        ONE_POLE(patch->space, clamp(basePatch.space + modEngine.out[ModOutSpace], 0.0f, 2.0f), 0.01f); // LP
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
