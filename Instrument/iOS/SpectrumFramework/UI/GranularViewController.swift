@@ -10,9 +10,9 @@ import AVFoundation
 import CoreAudioKit
 
 enum CloudsParam: AUParameterAddress {
-    case Position = 0
-    case Size = 1
-    case Density = 2
+    case PadX = 0
+    case PadY = 1
+    case PadGate = 2
     case Texture = 3
     case Feedback = 4
     case Wet = 5
@@ -22,9 +22,9 @@ enum CloudsParam: AUParameterAddress {
     case Trigger = 9
     case Freeze = 10
     case Mode = 11
-    case PadX = 12
-    case PadY = 13
-    case PadGate = 14
+    case Position = 12
+    case Size = 13
+    case Density = 14
     case Pitch = 16
     case Detune = 17
     case LfoRate = 18

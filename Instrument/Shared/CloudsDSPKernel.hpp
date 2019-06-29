@@ -23,9 +23,10 @@ const size_t kPolyphony = 1;
 const size_t kNumModulationRules = 10;
 
 enum {
-    CloudsParamPosition = 0,
-    CloudsParamSize = 1,
-    CloudsParamDensity = 2,
+    CloudsParamPadX = 0,
+    CloudsParamPadY = 1,
+    CloudsParamPadGate = 2,
+    
     CloudsParamTexture = 3,
     CloudsParamFeedback = 4,
     CloudsParamWet = 5,
@@ -35,9 +36,9 @@ enum {
     CloudsParamTrigger = 9,
     CloudsParamFreeze = 10,
     CloudsParamMode = 11,
-    CloudsParamPadX = 12,
-    CloudsParamPadY = 13,
-    CloudsParamPadGate = 14,
+    CloudsParamPosition = 12,
+    CloudsParamSize = 13,
+    CloudsParamDensity = 14,
     CloudsParamPitch = 16,
     CloudsParamDetune = 17,
     CloudsParamLfoRate = 18,
