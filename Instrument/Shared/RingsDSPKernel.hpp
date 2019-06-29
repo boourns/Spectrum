@@ -26,23 +26,27 @@ const size_t kPolyphony = 1;
 const size_t kNumModulationRules = 10;
 
 enum {
-    RingsParamStructure = 1,
-    RingsParamBrightness = 2,
-    RingsParamDamping = 3,
-    RingsParamPosition = 4,
-    RingsParamVolume = 5,
-    RingsParamMode = 6,
-    RingsParamPolyphony = 7,
-    RingsParamPitch = 8,
-    RingsParamDetune = 9,
-    RingsParamLfoRate = 10,
-    RingsParamLfoShape = 11,
-    RingsParamLfoShapeMod = 12,
-    RingsParamEnvAttack = 13,
-    RingsParamEnvDecay = 14,
-    RingsParamEnvSustain = 15,
-    RingsParamEnvRelease = 16,
-    RingsParamInputGain = 17,
+    RingsParamPadX = 0,
+    RingsParamPadY = 1,
+    RingsParamPadGate = 2,
+    RingsParamStructure = 4,
+    RingsParamBrightness = 5,
+    RingsParamDamping = 6,
+    RingsParamPosition = 7,
+    RingsParamVolume = 8,
+    RingsParamMode = 9,
+    RingsParamPolyphony = 10,
+    RingsParamPitch = 11,
+    RingsParamDetune = 12,
+    RingsParamLfoRate = 13,
+    RingsParamLfoShape = 14,
+    RingsParamLfoShapeMod = 15,
+    RingsParamEnvAttack = 16,
+    RingsParamEnvDecay = 17,
+    RingsParamEnvSustain = 18,
+    RingsParamEnvRelease = 19,
+    RingsParamInputGain = 20,
+    RingsParamStereoSpread = 21,
     RingsParamModMatrixStart = 400,
     RingsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
@@ -51,6 +55,9 @@ enum {
 
 enum {
     ModInDirect = 0,
+    ModInPadX,
+    ModInPadY,
+    ModInPadGate,
     ModInLFO,
     ModInEnvelope,
     ModInNote,
@@ -159,6 +166,9 @@ public:
             case RingsParamInputGain:
                 inputGain = clamp(value, 0.0f, 2.0f);
                 break;
+            case RingsParamStereoSpread:
+                stereo = clamp(value, 0.0f, 1.0f);
+                break;
             case RingsParamMode: {
                 uint16_t mode = round(clamp(value, 0.0f, 6.0f));
                 if (mode == 6) {
@@ -172,6 +182,28 @@ public:
             case RingsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
                 break;
+                
+            case RingsParamPadX: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadX] = val;
+                
+                break;
+            }
+                
+            case RingsParamPadY: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadY] = val;
+                
+                break;
+            }
+                
+            case RingsParamPadGate: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadGate] = val;
+                
+                break;
+            }
+                
             case RingsParamLfoShape: {
                 uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
                 if (newShape != lfoShape) {
@@ -270,6 +302,15 @@ public:
             case RingsParamDetune:
                 return detune;
                 
+            case RingsParamPadX:
+                return modEngine.in[ModInPadX];
+                
+            case RingsParamPadY:
+                return modEngine.in[ModInPadY];
+                
+            case RingsParamPadGate:
+                return modEngine.in[ModInPadGate];
+                
             case RingsParamLfoRate:
                 return lfoBaseRate;
                 
@@ -296,6 +337,9 @@ public:
                 
             case RingsParamInputGain:
                 return inputGain;
+                
+            case RingsParamStereoSpread:
+                return stereo;
                 
             default:
                 return 0.0f;
@@ -462,9 +506,11 @@ public:
                     envelope.TriggerHigh();
                 }
                 
+                float mix = 1.0f - stereo;
+                
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    renderedL[i] *= finalVolume;
-                    renderedR[i] *= finalVolume;
+                    renderedL[i] = (renderedL[i] + (renderedR[i] * mix)) * finalVolume;
+                    renderedR[i] = (renderedR[i] + (renderedL[i] * mix)) * finalVolume;;
                 }
                 
                 modEngine.in[ModInOut] = renderedL[kAudioBlockSize-1];
@@ -546,6 +592,8 @@ public:
     float lfoBaseAmount;
     float volume;
     float inputGain;
+    float stereo;
+    
     bool easterEgg = false;
 };
 

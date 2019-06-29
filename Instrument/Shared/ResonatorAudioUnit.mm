@@ -66,6 +66,9 @@
     
     modInputs = @[
                   @"Direct",
+                  @"PadX",
+                  @"PadY",
+                  @"PadGate",
                   @"LFO",
                   @"Envelope",
                   @"Note",
@@ -78,20 +81,10 @@
                    @"Disabled",
                    @"Tune",
                    @"Frequency",
-                   @"ExciterEnvShape",
-                   @"BowLevel",
-                   @"BowTimbre",
-                   @"BlowLevel",
-                   @"BlowMeta",
-                   @"BlowTimbre",
-                   @"StrikeLevel",
-                   @"StrikeMeta",
-                   @"StrikeTimbre",
-                   @"ResonatorGeometry",
-                   @"ResonatorBrightness",
-                   @"ResonatorDamping",
-                   @"ResonatorPosition",
-                   @"Space",
+                   @"Structure",
+                   @"Brightness",
+                   @"Damping",
+                   @"Position",
                    @"LFORate",
                    @"LFOAmount",
                    @"Level",
@@ -130,7 +123,12 @@
                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                    flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[structure, brightness, position, damping, volume]];
+    AUParameter *stereo = [AUParameterTree createParameterWithIdentifier:@"stereoSpread" name:@"Stereo Spread"
+                                                                 address:RingsParamStereoSpread
+                                                                     min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                   flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[structure, brightness, position, damping, volume, stereo]];
     
     AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
     
@@ -152,7 +150,22 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
+    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
+                                                               address:RingsParamPadX
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
+                                                               address:RingsParamPadY
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
+                                                                  address:RingsParamPadGate
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, padX, padY, padGate]];
     
     
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];

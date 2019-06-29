@@ -12,17 +12,17 @@ import CoreAudioKit
 
 // TODO:  HACK :( having to copy params enum into swift land
 enum PlaitsParam: AUParameterAddress {
-    case Timbre = 0
-    case Harmonics = 1
-    case Morph = 2
+    case PadX = 0
+    case PadY = 1
+    case PadGate = 2
     case Algorithm = 4
     case Pitch = 5
     case Detune = 6
     case LPGColour = 7
-    case Unison = 8
-    case Polyphony = 9
-    case Volume = 10
-    case Slop = 11
+    case Timbre = 8
+    case Harmonics = 9
+    case Morph = 10
+    case Volume = 11
     case LeftSource = 12
     case RightSource = 13
     case Pan = 14
@@ -30,7 +30,6 @@ enum PlaitsParam: AUParameterAddress {
     case LfoRate = 16
     case LfoShape = 17
     case LfoShapeMod = 18
-    case LfoAmount = 19
     case EnvAttack = 20
     case EnvDecay = 21
     case EnvSustain = 22
@@ -40,10 +39,10 @@ enum PlaitsParam: AUParameterAddress {
     case AmpEnvDecay = 29
     case AmpEnvSustain = 30
     case AmpEnvRelease = 31
-    case Portamento = 88
-    case PadX = 89
-    case PadY = 90
-    case PadGate = 91
+    case Portamento = 32
+    case Unison = 33
+    case Polyphony = 34
+    case Slop = 35
     case ModMatrixStart = 400
     case ModMatrixEnd = 448
 };

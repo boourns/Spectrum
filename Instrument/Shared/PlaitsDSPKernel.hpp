@@ -26,17 +26,17 @@ const size_t kMaxPolyphony = 8;
 const size_t kNumModulationRules = 12;
 
 enum {
-    PlaitsParamTimbre = 0,
-    PlaitsParamHarmonics = 1,
-    PlaitsParamMorph = 2,
+    PlaitsParamPadX = 0,
+    PlaitsParamPadY = 1,
+    PlaitsParamPadGate = 2,
     PlaitsParamAlgorithm = 4,
     PlaitsParamPitch = 5,
     PlaitsParamDetune = 6,
     PlaitsParamLPGColour = 7,
-    PlaitsParamUnison = 8,
-    PlaitsParamPolyphony = 9,
-    PlaitsParamVolume = 10,
-    PlaitsParamSlop = 11,
+    PlaitsParamTimbre = 8,
+    PlaitsParamHarmonics = 9,
+    PlaitsParamMorph = 10,
+    PlaitsParamVolume = 11,
     PlaitsParamLeftSource = 12,
     PlaitsParamRightSource = 13,
     PlaitsParamPan = 14,
@@ -53,10 +53,11 @@ enum {
     PlaitsParamAmpEnvDecay = 29,
     PlaitsParamAmpEnvSustain = 30,
     PlaitsParamAmpEnvRelease = 31,
-    PlaitsParamPortamento = 88,
-    PlaitsParamPadX = 89,
-    PlaitsParamPadY = 90,
-    PlaitsParamPadGate = 91,
+    PlaitsParamPortamento = 32,
+    PlaitsParamUnison = 33,
+    PlaitsParamPolyphony = 34,
+    PlaitsParamSlop = 35,
+
     PlaitsParamModMatrixStart = 400,
     PlaitsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 39 + 48 = 87
     PlaitsMaxParameters
@@ -414,9 +415,8 @@ public:
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
                 if (newPolyphony != midiProcessor.noteStack.getActivePolyphony()) {
                     midiProcessor.noteStack.setActivePolyphony(newPolyphony);
-                    gainCoefficient = 1.0f / std::pow((float) newPolyphony, 0.35f);
-                    printf("gain coefficient: %f\n", gainCoefficient);
                 }
+                gainCoefficient = 1.0f / std::pow((float) newPolyphony, 0.35f);
                 break;
             }
                 

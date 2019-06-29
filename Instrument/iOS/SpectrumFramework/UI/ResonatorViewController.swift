@@ -10,23 +10,28 @@ import AVFoundation
 import CoreAudioKit
 
 enum RingsParam: AUParameterAddress {
-    case Structure = 1
-    case Brightness = 2
-    case Damping = 3
-    case Position = 4
-    case Volume = 5
-    case Mode = 6
-    case Polyphony = 7
-    case Pitch = 8
-    case Detune = 9
-    case LfoRate = 10
-    case LfoShape = 11
-    case LfoShapeMod = 12
-    case EnvAttack = 13
-    case EnvDecay = 14
-    case EnvSustain = 15
-    case EnvRelease = 16
-    case InputGain = 17
+    case PadX = 0
+    case PadY = 1
+    case PadGate = 2
+    case Structure = 4
+    case Brightness = 5
+    case Damping = 6
+    case Position = 7
+    case Volume = 8
+    case Mode = 9
+    case Polyphony = 10
+    case Pitch = 11
+    case Detune = 12
+    case LfoRate = 13
+    case LfoShape = 14
+    case LfoShapeMod = 15
+    case EnvAttack = 16
+    case EnvDecay = 17
+    case EnvSustain = 18
+    case EnvRelease = 19
+    case InputGain = 20
+    case StereoSpread = 21
+    
     case ModMatrixStart = 400
     case ModMatrixEnd = 440 // 26 + 40 = 66
 }
@@ -51,7 +56,7 @@ class ResonatorViewController: BaseAudioUnitViewController {
         return UI([
             Page("Main",
                  CStack([
-                    Panel2(Stack([
+                    Panel(Stack([
                         HStack([
                             IntKnob(RingsParam.Pitch.rawValue),
                             Knob(RingsParam.Detune.rawValue),
@@ -64,10 +69,15 @@ class ResonatorViewController: BaseAudioUnitViewController {
                                 Knob(RingsParam.Position.rawValue),
                                 ]),
                             HStack([
+                                Knob(RingsParam.StereoSpread.rawValue),
                                 Knob(RingsParam.Volume.rawValue),
+                                
                                 ])
                             ]),
-                        ])) //stack
+                        ])), //stack
+                    Stack([
+                        Panel(TouchPad(RingsParam.PadX.rawValue, RingsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
+                        ]),
                     ]) // cstack
             ), // page
             SpectrumUI.modulationPage(lfoStart: RingsParam.LfoRate.rawValue, envStart: RingsParam.EnvAttack.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
