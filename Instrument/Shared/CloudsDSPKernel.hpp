@@ -469,15 +469,19 @@ public:
 
         p->trigger = trigger + modEngine.out[ModOutTrigger] > 0.9;
         p->freeze = freeze + modEngine.out[ModOutFreeze] > 0.9;
-        p->position = clamp(baseParameters.position + modEngine.out[ModOutPosition], 0.0f, 1.0f);
-        p->size = clamp(baseParameters.size + modEngine.out[ModOutSize], 0.0f, 1.0f);
+        
+        ONE_POLE(p->position, clamp(baseParameters.position + modEngine.out[ModOutPosition], 0.0f, 1.0f), 0.05f)
+        
+        ONE_POLE(p->size, clamp(baseParameters.size + modEngine.out[ModOutSize], 0.0f, 1.0f), 0.01f);
         p->pitch = (float) (currentNote - 48.0f) + pitch + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 24.0f);
-        p->density = clamp(baseParameters.density + modEngine.out[ModOutDensity], 0.0f, 1.0f);
-        p->texture = clamp(baseParameters.texture + modEngine.out[ModOutTexture], 0.0f, 1.0f);
-        p->feedback = clamp(baseParameters.feedback + modEngine.out[ModOutFeedback], 0.0f, 1.0f);
-        p->dry_wet = clamp(baseParameters.dry_wet + modEngine.out[ModOutWet], 0.0f, 1.0f);
-        p->reverb = clamp(baseParameters.reverb + modEngine.out[ModOutReverb], 0.0f, 1.0f);
-        p->stereo_spread = clamp(baseParameters.stereo_spread + modEngine.out[ModOutStereo], 0.0f, 1.0f);
+        
+        ONE_POLE(p->density, clamp(baseParameters.density + modEngine.out[ModOutDensity], 0.0f, 1.0f), 0.01f);
+        ONE_POLE(p->texture, clamp(baseParameters.texture + modEngine.out[ModOutTexture], 0.0f, 1.0f), 0.01f);
+        
+        ONE_POLE(p->feedback, clamp(baseParameters.feedback + modEngine.out[ModOutFeedback], 0.0f, 1.0f), 0.2f)
+        ONE_POLE(p->dry_wet, clamp(baseParameters.dry_wet + modEngine.out[ModOutWet], 0.0f, 1.0f), 0.2f)
+        ONE_POLE(p->reverb, clamp(baseParameters.reverb + modEngine.out[ModOutReverb], 0.0f, 1.0f), 0.2f)
+        ONE_POLE(p->stereo_spread, clamp(baseParameters.stereo_spread + modEngine.out[ModOutStereo], 0.0f, 1.0f), 0.2f)
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
