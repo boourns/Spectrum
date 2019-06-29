@@ -427,10 +427,10 @@ public:
             updateLfoRate(modEngine.out[ModOutLFORate]);
         }
         
-        patch.structure = clamp(basePatch.structure + modEngine.out[ModOutStructure], 0.0f, 0.9995f); // LP
-        patch.brightness = clamp(basePatch.brightness + modEngine.out[ModOutBrightness], 0.0f, 0.9995f);
-        patch.damping = clamp(basePatch.damping + modEngine.out[ModOutDamping], 0.0f, 0.9995f);
-        patch.position = clamp(basePatch.position + modEngine.out[ModOutPosition], 0.0f, 0.9995f); // LP
+        ONE_POLE(patch.structure, clamp(basePatch.structure + modEngine.out[ModOutStructure], 0.0f, 0.9995f), 0.01f); // LP
+        ONE_POLE(patch.brightness, clamp(basePatch.brightness + modEngine.out[ModOutBrightness], 0.0f, 0.9995f), 0.01f);
+        ONE_POLE(patch.damping, clamp(basePatch.damping + modEngine.out[ModOutDamping], 0.0f, 0.9995f), 0.01f);
+        ONE_POLE(patch.position, clamp(basePatch.position + modEngine.out[ModOutPosition], 0.0f, 0.9995f), 0.01f); // LP
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
