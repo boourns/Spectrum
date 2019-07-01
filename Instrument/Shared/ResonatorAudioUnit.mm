@@ -35,6 +35,7 @@
     bool loadAsEffect;
 }
 @synthesize parameterTree = _parameterTree;
+@synthesize factoryPresets = _presets;
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
@@ -297,16 +298,19 @@
         }
     }
     
-    _kernel.setupModulationRules();
-    
     [self setDefaultMIDIMap];
     
     // Create factory preset array.
-    //    _currentFactoryPresetIndex = 0;
-    //    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
-    //                 ];
-    //    self.currentPreset = _presets.firstObject;
+    _currentFactoryPresetIndex = 0;
     
+    _presets = @[NewAUPreset(0, ringsPresets[0].name),
+                 NewAUPreset(1, ringsPresets[1].name),
+                 ];
+    
+    self.currentPreset = _presets.firstObject;
+    
+    _kernel.setupModulationRules();
+
     self.maximumFramesToRender = 512;
     
     return self;
@@ -461,6 +465,7 @@
         
         [self loadData:params];
     }
+    _kernel.setupModulationRules();
 }
 
 - (void)loadData:(NSDictionary *)data {
@@ -479,13 +484,17 @@ typedef struct {
     NSString *data;
 } FactoryPreset;
 
-static const UInt8 kRingsNumPresets = 0;
+static const UInt8 kRingsNumPresets = 2;
 static const FactoryPreset ringsPresets[kRingsNumPresets] =
 {
-    //    {
-    //        @"Init",
-    //        @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
-    //    },
+        {
+            @"Init",
+            @"{\"414\":0,\"421\":0,\"407\":0,\"408\":0,\"415\":0,\"422\":1.1399997472763062,\"409\":0,\"416\":1,\"423\":3,\"430\":0,\"0\":0.24367509782314301,\"417\":0,\"424\":3,\"431\":0,\"1\":0.31490787863731384,\"2\":0,\"418\":0.94999980926513672,\"4\":0.21000000834465027,\"425\":0,\"432\":0,\"5\":0.29000008106231689,\"6\":0.51749980449676514,\"433\":0,\"7\":0.48499956727027893,\"419\":4,\"426\":0.71999990940093994,\"8\":1,\"9\":1,\"11\":0,\"427\":5,\"434\":0,\"12\":0,\"13\":0.090000338852405548,\"428\":0,\"435\":0,\"400\":0,\"20\":1,\"21\":0.39749985933303833,\"14\":0,\"429\":0,\"401\":0,\"15\":0,\"436\":0,\"16\":0,\"437\":0,\"402\":0,\"17\":0,\"18\":0,\"438\":0,\"403\":1,\"410\":0,\"19\":0,\"439\":0,\"404\":0,\"411\":0,\"405\":0,\"412\":0,\"420\":2,\"406\":0,\"413\":0}"
+        },
+    {
+        @"Blank",
+        @"{\"414\":0,\"421\":0,\"407\":0,\"408\":0,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":0,\"0\":0,\"417\":0,\"424\":0,\"431\":0,\"1\":0,\"2\":0,\"418\":0,\"4\":0,\"425\":0,\"432\":0,\"5\":0,\"6\":0,\"433\":0,\"7\":0,\"419\":0,\"426\":0,\"8\":1,\"9\":0,\"11\":0,\"427\":0,\"434\":0,\"12\":0,\"13\":0,\"428\":0,\"435\":0,\"400\":0,\"20\":1,\"21\":0,\"14\":0,\"429\":0,\"401\":0,\"15\":0,\"436\":0,\"16\":0,\"437\":0,\"402\":0,\"17\":0,\"18\":0,\"438\":0,\"403\":0,\"410\":0,\"19\":0,\"439\":0,\"404\":0,\"411\":0,\"405\":0,\"412\":0,\"420\":0,\"406\":0,\"413\":0}"
+    },
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
@@ -526,6 +535,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 
                 // set factory preset as current
                 _currentPreset = currentPreset;
+                
+                _kernel.setupModulationRules();
                 
                 break;
             }

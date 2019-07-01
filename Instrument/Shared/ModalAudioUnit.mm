@@ -35,6 +35,7 @@
     bool loadAsEffect;
 }
 @synthesize parameterTree = _parameterTree;
+@synthesize factoryPresets = _presets;
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
@@ -347,15 +348,16 @@
         }
     }
     
-    _kernel.setupModulationRules();
-    
     [self setDefaultMIDIMap];
     
-    // Create factory preset array.
-    //    _currentFactoryPresetIndex = 0;
-    //    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
-    //                 ];
-    //    self.currentPreset = _presets.firstObject;
+     //Create factory preset array.
+    _currentFactoryPresetIndex = 0;
+    _presets = @[NewAUPreset(0, elementsPresets[0].name),
+                 NewAUPreset(1, elementsPresets[1].name),
+                 ];
+    self.currentPreset = _presets.firstObject;
+
+    _kernel.setupModulationRules();
 
     self.maximumFramesToRender = 512;
     
@@ -511,6 +513,7 @@
     
         [self loadData:params];
     }
+    _kernel.setupModulationRules();
 }
 
 - (void)loadData:(NSDictionary *)data {
@@ -529,13 +532,17 @@ typedef struct {
     NSString *data;
 } FactoryPreset;
 
-static const UInt8 kElementsNumPresets = 0;
+static const UInt8 kElementsNumPresets = 2;
 static const FactoryPreset elementsPresets[kElementsNumPresets] =
 {
-//    {
-//        @"Init",
-//        @"{\"3\":0.58764940500259399,\"12\":0.43492692708969116,\"21\":0,\"4\":0,\"30\":0,\"13\":0.63545817136764526,\"5\":12,\"22\":12,\"6\":0,\"31\":0,\"14\":0,\"7\":0,\"23\":0,\"40\":0,\"32\":0,\"15\":0.20650728046894073,\"41\":0,\"24\":0.50530248880386353,\"50\":0,\"33\":0,\"16\":0,\"42\":0,\"25\":0.54248875379562378,\"8\":0,\"34\":0,\"17\":0.25165179371833801,\"43\":0,\"26\":0.51725029945373535,\"9\":7,\"35\":0,\"18\":0,\"44\":0,\"27\":0.24235904216766357,\"36\":0,\"19\":0,\"45\":0,\"28\":0,\"37\":0,\"46\":0,\"29\":0,\"38\":1,\"47\":0,\"39\":0,\"48\":0,\"49\":0,\"10\":0.99203187227249146,\"0\":0,\"1\":0.50265598297119141,\"11\":0,\"2\":0,\"20\":0}"
-//    },
+    {
+        @"Init",
+        @"{\"414\":0,\"421\":0,\"407\":0,\"408\":0,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":0,\"0\":0.14999997615814209,\"417\":0,\"424\":0,\"1\":0.22249987721443176,\"431\":0,\"2\":0,\"3\":0.4124998152256012,\"418\":0,\"4\":0.26749992370605469,\"425\":0,\"432\":0,\"5\":0,\"6\":0.66749972105026245,\"419\":0,\"7\":0.27749988436698914,\"426\":0,\"10\":0.58749997615814209,\"8\":0.24249991774559021,\"433\":0,\"9\":0.48499986529350281,\"11\":0.66999977827072144,\"427\":0,\"434\":0,\"12\":0.62749969959259033,\"13\":1.1949994564056396,\"428\":0,\"400\":0,\"20\":-1,\"435\":0,\"14\":0.34250062704086304,\"429\":0,\"401\":0,\"22\":0,\"436\":0,\"15\":1,\"23\":0,\"16\":0,\"437\":0,\"402\":1.1999995708465576,\"24\":0,\"17\":0,\"25\":0,\"18\":0.29749980568885803,\"438\":0,\"403\":13,\"410\":0,\"26\":1,\"19\":1,\"27\":0,\"439\":0,\"404\":0,\"411\":0,\"405\":0,\"412\":0,\"420\":0,\"406\":0,\"413\":0}"
+    },
+    {
+        @"Blank",
+        @"{\"414\":0,\"421\":0,\"407\":0,\"408\":0,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":0,\"0\":0,\"417\":0,\"424\":0,\"1\":0,\"431\":0,\"2\":0,\"3\":0,\"418\":0,\"4\":0,\"425\":0,\"432\":0,\"5\":0,\"6\":0.30000001192092896,\"419\":0,\"7\":0.21499945223331451,\"426\":0,\"10\":0.29749971628189087,\"8\":0,\"433\":0,\"9\":0.51999980211257935,\"11\":0.39250010251998901,\"427\":0,\"434\":0,\"12\":0.35249999165534973,\"13\":0.43500036001205444,\"428\":0,\"400\":0,\"20\":0,\"435\":0,\"14\":1,\"429\":0,\"401\":0,\"22\":0,\"436\":0,\"15\":0,\"23\":0,\"16\":0,\"437\":0,\"402\":0,\"24\":0,\"17\":0,\"25\":0,\"18\":0,\"438\":0,\"403\":0,\"410\":0,\"26\":1,\"19\":0,\"27\":0,\"439\":0,\"404\":0,\"411\":0,\"405\":0,\"412\":0,\"420\":0,\"406\":0,\"413\":0}",
+    }
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
@@ -576,6 +583,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 
                 // set factory preset as current
                 _currentPreset = currentPreset;
+                
+                _kernel.setupModulationRules();
                 
                 break;
             }

@@ -94,7 +94,7 @@ class MIDIProcessor {
                 voice->midiNoteOn(note, vel);
             }
 
-            printf("noteOn(%d, %d)\n", note, vel);
+//            printf("noteOn(%d, %d)\n", note, vel);
             printNoteState();
         }
         
@@ -114,7 +114,7 @@ class MIDIProcessor {
                     voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].vel);
                 }
             }
-            printf("noteOff(%d)\n", note);
+           // printf("noteOff(%d)\n", note);
             printNoteState();
         }
         

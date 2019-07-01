@@ -774,7 +774,6 @@ public:
         if (rand() % 2 == 1) {
             result *= -1;
         }
-        NSLog(@"Result %f", result);
         return result;
     }
     
