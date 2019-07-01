@@ -232,6 +232,7 @@
 		E22C342422C63F8D00185BB5 /* ResonatorEffect.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E22C342822C63FC700185BB5 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E22C342B22C6409F00185BB5 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C342922C63FE100185BB5 /* Dummy.swift */; };
+		E234605E22C8ED7400C9D005 /* Silver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234605D22C8ED7400C9D005 /* Silver.swift */; };
 		E235624222B5E11500762D39 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235623B22B5E0E100762D39 /* Knob.swift */; };
 		E235624722B6FCC300762D39 /* ModTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235624622B6FCC300762D39 /* ModTarget.swift */; };
 		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
@@ -647,6 +648,8 @@
 		E22C342022C63F8D00185BB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E22C342122C63F8D00185BB5 /* ResonatorEffect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ResonatorEffect-Bridging-Header.h"; sourceTree = "<group>"; };
 		E22C342922C63FE100185BB5 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		E234605C22C8E10400C9D005 /* SpectrumApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpectrumApp.entitlements; sourceTree = "<group>"; };
+		E234605D22C8ED7400C9D005 /* Silver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Silver.swift; sourceTree = "<group>"; };
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
 		E235624622B6FCC300762D39 /* ModTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModTarget.swift; sourceTree = "<group>"; };
@@ -807,6 +810,7 @@
 		91D3DA0B1B023C03008FFFBB = {
 			isa = PBXGroup;
 			children = (
+				E234605C22C8E10400C9D005 /* SpectrumApp.entitlements */,
 				E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */,
 				E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */,
 				30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */,
@@ -842,6 +846,7 @@
 				92A10C7D1B9517A50081EA80 /* LaunchScreen.storyboard */,
 				92A10C811B9517A50081EA80 /* Info.plist */,
 				E227A5C122C0625600152A79 /* Settings.bundle */,
+				E234605D22C8ED7400C9D005 /* Silver.swift */,
 			);
 			name = SpectrumApp;
 			path = iOS/SpectrumApp;
@@ -1756,6 +1761,11 @@
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = YC8HZ62228;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					92A10CE01B9521B00081EA80 = {
 						CreatedOnToolsVersion = 7.0;
@@ -1941,6 +1951,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
+				E234605E22C8ED7400C9D005 /* Silver.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,
 				92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */,
 			);
@@ -2279,6 +2290,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = SpectrumApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2333,6 +2345,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = SpectrumApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

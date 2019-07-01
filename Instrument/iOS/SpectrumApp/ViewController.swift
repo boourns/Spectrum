@@ -109,6 +109,7 @@ class ViewController: UIViewController {
             Text("Spectrum", font: UIFont.preferredFont(forTextStyle: .title1)),
           Text("Spectrum Audio Units are now installed."),
           Text("To use Spectrum you need an Audio Unit Host or DAW like AUM or Garageband."),
+          Button("Spectrum Manual", "https://burns.ca/spectrum.html"),
           Text("Spectrum is based on Eurorack modules by Mutable Instruments.  If you like it, support Mutable Instruments by buying their hardware."),
           Button("Mutable Instruments Home", "https://mutable-instruments.net"),
           Text("Spectrum Audio Units have been built by Tom Burns.  If you want to support my work consider buying one of my other apps.  Thanks!"),

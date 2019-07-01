@@ -56,14 +56,14 @@ class ResonatorViewController: BaseAudioUnitViewController {
         return UI([
             Page("Main",
                  CStack([
-                    Panel(Stack([
-                        HStack([
+                    Stack([
+                        Panel(HStack([
                             IntKnob(RingsParam.Pitch.rawValue),
                             Knob(RingsParam.Detune.rawValue),
                             Picker(RingsParam.Mode.rawValue)
-                            ]),
-                        HStack(main),
-                        CStack([
+                            ])),
+                        Panel(HStack(main)),
+                        Panel(CStack([
                             HStack([
                                 Knob(RingsParam.Damping.rawValue),
                                 Knob(RingsParam.Position.rawValue),
@@ -73,8 +73,8 @@ class ResonatorViewController: BaseAudioUnitViewController {
                                 Knob(RingsParam.Volume.rawValue),
                                 
                                 ])
-                            ]),
-                        ])), //stack
+                            ])),
+                        ]), //stack
                     Stack([
                         Panel(TouchPad(RingsParam.PadX.rawValue, RingsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
                         ]),
