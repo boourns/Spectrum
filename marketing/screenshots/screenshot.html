@@ -1,0 +1,125 @@
+<html>
+<head>
+	<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+	<style>
+		.size1 {
+			width: 2688px;
+			height: 1242px;
+		}
+		.size2 {
+			width: 2208px;
+			height: 1242px;
+		}
+		.size3 {
+			width: 2732px;
+			height: 2048px;
+		}
+		.size4 {
+			width: 2732px;
+			height: 2048px;
+		}
+		.head {
+			font-size: 80px;
+		}
+		.icon {
+			/* 2688 x 1242 */
+			/* 2208 x 1242 */
+			/* 2732 x 2048 */
+			/* 2732 x 2048 */
+
+			display: flex;
+			flex-direction: column;
+			background-color: #1d2132;
+			justify-content: space-evenly;
+			align-items: center;
+			color: white;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+	</style>
+	<script type="text/javascript">
+		var loadedContent = "";
+
+		function load(src) {
+			var item = document.getElementById(src);
+			loadedContent = src;
+
+			document.getElementById("size1").innerHTML = item.innerHTML;
+			document.getElementById("size2").innerHTML = item.innerHTML;
+			document.getElementById("size3").innerHTML = item.innerHTML;
+			document.getElementById("size4").innerHTML = item.innerHTML;
+		}
+
+		function capture(target) {
+			html2canvas(document.querySelector("#"+target)).then(canvas => {
+			    canvas.toBlob(function(blob) {
+			    	saveAs(blob, target + "-" + loadedContent + ".png");
+				});
+			});
+		}
+	</script>
+</head>
+<body>
+
+<div id="content1">
+	<div><img src="spectrum-main.jpg"> </div>
+	<div class="head">Spectrum: Polyphonic synthesizer, 14 oscillator algorithms</div>
+</div>
+<button onclick="load('content1')">Load</button>
+
+<div id="content2">
+	<div><img src="spectrum-modal-main.jpg"> </div>
+	<div class="head">Modal: Bowed/Blowed/Struck exciter into 64-band resonator</div>
+</div>
+<button onclick="load('content2')">Load</button>
+
+<div id="content3">
+	<div><img src="spectrum-resonator-main.jpg"> </div>
+	<div class="head">Resonator: 7-algorithm string synthesizer.</div>
+</div>
+<button onclick="load('content3')">Load</button>
+
+<div id="content4">
+	<div><img src="spectrum-granular-main.jpg"> </div>
+	<div class="head">Granular: Granular synthesis / pitch shift / reverb / looper FX</div>
+</div>
+<button onclick="load('content4')">Load</button>
+
+<div id="content5">
+	<div><img src="spectrum-modulation.jpg"> </div>
+	<div class="head">Modulation LFO and Env for each synthesizer</div>
+</div>
+<button onclick="load('content5')">Load</button>
+
+<div id="content6">
+	<div><img src="spectrum-modulation-matrix.jpg"> </div>
+	<div class="head">Flexible 2-source modulation routing engine</div>
+</div>
+<button onclick="load('content6')">Load</button>
+
+<div id="content7">
+	<div class="head">Flexible 2-source modulation routing engine</div>
+</div>
+<button onclick="load('content7')">Load</button>
+
+<div id="capture1">
+<div id="size1" class="icon size1">
+	<div class="head">Flexible 2-source modulation routing engine</div>
+</div>
+</div>
+
+<button onclick="capture('capture1')">Capture</button>
+
+<div id="size2" class="icon size2">
+</div>
+<button onclick="capture('size2')">Capture</button>
+
+<div id="size3" class="icon size3">
+</div>
+<button onclick="capture('size3')">Capture</button>
+
+<div id="size4" class="icon size4">
+</div>
+<button onclick="capture('size4')">Capture</button>
+
+</body>
