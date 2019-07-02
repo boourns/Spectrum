@@ -12,15 +12,20 @@
 			height: 1242px;
 		}
 		.size3 {
-			width: 2732px;
-			height: 2048px;
+			width: 1366px;
+			height: 1024px;
 		}
 		.size4 {
 			width: 2732px;
 			height: 2048px;
 		}
 		.head {
-			font-size: 80px;
+			font-size: 40px;
+		}
+
+		img {
+			max-width: 80%;
+			height: auto;
 		}
 		.icon {
 			/* 2688 x 1242 */
@@ -44,14 +49,11 @@
 			var item = document.getElementById(src);
 			loadedContent = src;
 
-			document.getElementById("size1").innerHTML = item.innerHTML;
-			document.getElementById("size2").innerHTML = item.innerHTML;
-			document.getElementById("size3").innerHTML = item.innerHTML;
 			document.getElementById("size4").innerHTML = item.innerHTML;
 		}
 
 		function capture(target) {
-			html2canvas(document.querySelector("#"+target)).then(canvas => {
+			html2canvas(document.querySelector("#" + target)).then(canvas => {
 			    canvas.toBlob(function(blob) {
 			    	saveAs(blob, target + "-" + loadedContent + ".png");
 				});
@@ -61,65 +63,50 @@
 </head>
 <body>
 
+<div id="capture1">
+<div id="size4" class="icon size4">
+	<div><img src="spectrum-modulation-matrix.jpg"> </div>
+	<div class="head">Flexible 2-source modulation routing engine</div>
+</div>
+</div>
+<button onclick="capture('size4')">Capture</button>
+
 <div id="content1">
-	<div><img src="spectrum-main.jpg"> </div>
+	<img src="spectrum-main.jpg">
 	<div class="head">Spectrum: Polyphonic synthesizer, 14 oscillator algorithms</div>
 </div>
 <button onclick="load('content1')">Load</button>
 
 <div id="content2">
-	<div><img src="spectrum-modal-main.jpg"> </div>
+	<img src="spectrum-modal-main.jpg">
 	<div class="head">Modal: Bowed/Blowed/Struck exciter into 64-band resonator</div>
 </div>
 <button onclick="load('content2')">Load</button>
 
 <div id="content3">
-	<div><img src="spectrum-resonator-main.jpg"> </div>
+	<img src="spectrum-resonator-main.jpg">
 	<div class="head">Resonator: 7-algorithm string synthesizer.</div>
 </div>
 <button onclick="load('content3')">Load</button>
 
 <div id="content4">
-	<div><img src="spectrum-granular-main.jpg"> </div>
+	<img src="spectrum-granular-main.jpg">
 	<div class="head">Granular: Granular synthesis / pitch shift / reverb / looper FX</div>
 </div>
 <button onclick="load('content4')">Load</button>
 
 <div id="content5">
-	<div><img src="spectrum-modulation.jpg"> </div>
-	<div class="head">Modulation LFO and Env for each synthesizer</div>
+	<img src="spectrum-modulation.jpg">
+	<div class="head">Modulation LFO and Env for each synthesizer.</div>
 </div>
 <button onclick="load('content5')">Load</button>
 
 <div id="content6">
-	<div><img src="spectrum-modulation-matrix.jpg"> </div>
-	<div class="head">Flexible 2-source modulation routing engine</div>
+	<img src="spectrum-modulation-matrix.jpg">
+	<div class="head">Flexible 2-source modulation routing engine.</div>
 </div>
 <button onclick="load('content6')">Load</button>
 
-<div id="content7">
-	<div class="head">Flexible 2-source modulation routing engine</div>
-</div>
-<button onclick="load('content7')">Load</button>
-
-<div id="capture1">
-<div id="size1" class="icon size1">
-	<div class="head">Flexible 2-source modulation routing engine</div>
-</div>
-</div>
-
-<button onclick="capture('capture1')">Capture</button>
-
-<div id="size2" class="icon size2">
-</div>
-<button onclick="capture('size2')">Capture</button>
-
-<div id="size3" class="icon size3">
-</div>
-<button onclick="capture('size3')">Capture</button>
-
-<div id="size4" class="icon size4">
-</div>
-<button onclick="capture('size4')">Capture</button>
-
 </body>
+</html>
+
