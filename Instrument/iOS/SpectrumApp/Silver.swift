@@ -35,7 +35,8 @@ class Silver {
         request.httpMethod = "POST"
         let parameters: [String: Any] = [
             "token": token,
-            "device": uuid
+            "device": uuid,
+            "app": "Spectrum"
         ]
         
         request.httpBody = parameters.percentEscaped().data(using: .utf8)
