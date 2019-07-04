@@ -306,11 +306,12 @@ public:
                 uint8_t fine = midiEvent.data[1];
                 int16_t midiPitchBend = (coarse << 7) + fine;
                 bendAmount = (((float) (midiPitchBend - 8192)) / 8192.0f) * bendRange;
+                break;
             }
             case 0xA0 : { // poly aftertouch
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
-                
+                break;
             }
             case 0xB0 : { // control
                 uint8_t num = midiEvent.data[1];

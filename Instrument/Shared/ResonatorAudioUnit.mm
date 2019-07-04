@@ -588,6 +588,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
         AUParameterAddress address = _parameterTree.allParameters[i].address;
+        if (address > 200) {
+            continue;
+        }
         uint8_t controller = [[midiCCMap objectForKey: @(address)] intValue];
         
         std::map<uint8_t, std::vector<MIDICCTarget>>::iterator existing = kernelMIDIMap.find(controller);
