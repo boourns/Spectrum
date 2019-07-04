@@ -29,8 +29,11 @@ class Button: UIView {
         }
     }
     
-    init(_ address: AUParameterAddress, momentary: Bool = false) {
-        guard let param = SpectrumUI.tree?.parameter(withAddress: address) else {
+    let state: SpectrumState
+    
+    init(_ state: SpectrumState, _ address: AUParameterAddress, momentary: Bool = false) {
+        self.state = state
+        guard let param = state.tree?.parameter(withAddress: address) else {
             fatalError("Could not find parameter for address \(address)")
         }
         
@@ -39,7 +42,7 @@ class Button: UIView {
         
         super.init(frame: CGRect.zero)
         
-        SpectrumUI.parameters[param.address] = (param, self)
+        state.parameters[param.address] = (param, self)
         
         setup()
     }
@@ -53,10 +56,10 @@ class Button: UIView {
         
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(param.displayName, for: .normal)
-        button.setTitleColor(SpectrumUI.colours.primary, for: .normal)
-        button.setTitleColor(SpectrumUI.colours.background, for: .highlighted)
+        button.setTitleColor(state.colours.primary, for: .normal)
+        button.setTitleColor(state.colours.background, for: .highlighted)
         addSubview(button)
-        button.layer.borderColor = SpectrumUI.colours.primary.cgColor
+        button.layer.borderColor = state.colours.primary.cgColor
         button.layer.borderWidth = 1.0 / UIScreen.main.scale
         button.layer.cornerRadius = 10
         

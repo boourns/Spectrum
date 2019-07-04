@@ -60,72 +60,72 @@ class SpectrumViewController: BaseAudioUnitViewController {
     let small = CGFloat(50.0)
     
     override func buildUI() -> UI {
-        SpectrumUI.colours = SpectrumUI.purple
+        state.colours = SpectrumUI.purple
 
-        return UI([
+        return UI(state: state, [
             Page("Spectrum",
-                 CStack([
+                 cStack([
                    Stack([
-                     Panel(HStack([
-                        Picker(PlaitsParam.Algorithm.rawValue),
-                        IntKnob(PlaitsParam.Pitch.rawValue),
-                        Knob(PlaitsParam.Detune.rawValue),
+                     panel(HStack([
+                        picker(PlaitsParam.Algorithm.rawValue),
+                        intKnob(PlaitsParam.Pitch.rawValue),
+                        knob(PlaitsParam.Detune.rawValue),
                      ])),
-                        Stack([Panel2(HStack([
-                            Knob(PlaitsParam.Harmonics.rawValue, size: big),
-                            Knob(PlaitsParam.Timbre.rawValue, size: big),
-                            Knob(PlaitsParam.Morph.rawValue, size: big),
+                        Stack([panel2(HStack([
+                            knob(PlaitsParam.Harmonics.rawValue, size: big),
+                            knob(PlaitsParam.Timbre.rawValue, size: big),
+                            knob(PlaitsParam.Morph.rawValue, size: big),
                          ])),
-                         Panel2(HStack([
-                            Knob(PlaitsParam.Slop.rawValue, size: small),
-                            Knob(PlaitsParam.Portamento.rawValue, size: small),
-                            IntKnob(PlaitsParam.PitchBendRange.rawValue, size: small),
+                         panel2(HStack([
+                            knob(PlaitsParam.Slop.rawValue, size: small),
+                            knob(PlaitsParam.Portamento.rawValue, size: small),
+                            intKnob(PlaitsParam.PitchBendRange.rawValue, size: small),
                          ])),
                          ]),
                    ]),
                    Stack([
-                     TouchPad(PlaitsParam.PadX.rawValue, PlaitsParam.PadY.rawValue, PlaitsParam.PadGate.rawValue)
+                     touchPad(PlaitsParam.PadX.rawValue, PlaitsParam.PadY.rawValue, PlaitsParam.PadGate.rawValue)
                    ]),
                 ]) //stack
             ), // page
             Page("Amp",
-                        CStack([
+                        cStack([
                             Stack([
-                                Panel2(Stack([
+                                panel2(Stack([
                                     HStack([
-                                        Knob(PlaitsParam.Volume.rawValue),
-                                        Knob(PlaitsParam.LPGColour.rawValue),
+                                        knob(PlaitsParam.Volume.rawValue),
+                                        knob(PlaitsParam.LPGColour.rawValue),
                                         ]),
                                     ])),
-                                Panel2(Stack([
-                                    Slider(PlaitsParam.AmpEnvAttack.rawValue),
-                                    Slider(PlaitsParam.AmpEnvDecay.rawValue),
-                                    Slider(PlaitsParam.AmpEnvSustain.rawValue),
-                                    Slider(PlaitsParam.AmpEnvRelease.rawValue),
+                                panel2(Stack([
+                                    slider(PlaitsParam.AmpEnvAttack.rawValue),
+                                    slider(PlaitsParam.AmpEnvDecay.rawValue),
+                                    slider(PlaitsParam.AmpEnvSustain.rawValue),
+                                    slider(PlaitsParam.AmpEnvRelease.rawValue),
                                     ]))
                                 ]),
-                            Panel(Stack([
+                            panel(Stack([
                                 HStack([
-                                    Knob(PlaitsParam.Pan.rawValue),
-                                    Knob(PlaitsParam.PanSpread.rawValue),
+                                    knob(PlaitsParam.Pan.rawValue),
+                                    knob(PlaitsParam.PanSpread.rawValue),
                                     ]),
                                 Stack([
                                     HStack([
-                                        Knob(PlaitsParam.LeftSource.rawValue),
-                                        Knob(PlaitsParam.RightSource.rawValue),
+                                        knob(PlaitsParam.LeftSource.rawValue),
+                                        knob(PlaitsParam.RightSource.rawValue),
                                         ]),
                                     ]),
                                 Stack([
                                     HStack([
-                                        Picker(PlaitsParam.Unison.rawValue),
-                                        IntKnob(PlaitsParam.Polyphony.rawValue),
+                                        picker(PlaitsParam.Unison.rawValue),
+                                        intKnob(PlaitsParam.Polyphony.rawValue),
                                         ]),
                                     ]),
                                 ])
                             )])),
             
-            SpectrumUI.modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
-            SpectrumUI.modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6)
+            modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
+            modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6)
         
             //LFOPage(),
             //EnvPage(),

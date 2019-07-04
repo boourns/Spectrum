@@ -40,49 +40,50 @@ class ResonatorViewController: BaseAudioUnitViewController {
     var loadAsEffect = false
     
     override func buildUI() -> UI {
-        SpectrumUI.colours = SpectrumUI.red
+        state.colours = SpectrumUI.red
         
         var main = [
-            Knob(RingsParam.Structure.rawValue, size: 70),
-            Knob(RingsParam.Brightness.rawValue, size: 70),
+            knob(RingsParam.Structure.rawValue, size: 70),
+            knob(RingsParam.Brightness.rawValue, size: 70),
         ]
         
         if (loadAsEffect) {
             main = [
-                Knob(RingsParam.InputGain.rawValue, size: 70),
+                knob(RingsParam.InputGain.rawValue, size: 70),
             ] + main
         }
         
-        return UI([
+        return UI(state: state, [
             Page("Main",
-                 CStack([
+                 cStack([
                     Stack([
-                        Panel(HStack([
-                            IntKnob(RingsParam.Pitch.rawValue),
-                            Knob(RingsParam.Detune.rawValue),
-                            Picker(RingsParam.Mode.rawValue)
+                        panel(HStack([
+                            intKnob(RingsParam.Pitch.rawValue),
+                            knob(RingsParam.Detune.rawValue),
+                            picker(RingsParam.Mode.rawValue)
                             ])),
-                        Panel(HStack(main)),
-                        Panel(CStack([
+                        panel(HStack(main)),
+                        panel(cStack([
                             HStack([
-                                Knob(RingsParam.Damping.rawValue),
-                                Knob(RingsParam.Position.rawValue),
+                                knob(RingsParam.Damping.rawValue),
+                                knob(RingsParam.Position.rawValue),
                                 ]),
                             HStack([
-                                Knob(RingsParam.StereoSpread.rawValue),
-                                Knob(RingsParam.Volume.rawValue),
+                                knob(RingsParam.StereoSpread.rawValue),
+                                knob(RingsParam.Volume.rawValue),
                                 
                                 ])
                             ])),
                         ]), //stack
                     Stack([
-                        Panel(TouchPad(RingsParam.PadX.rawValue, RingsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
+                        panel(touchPad(RingsParam.PadX.rawValue, RingsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
                         ]),
                     ]) // cstack
             ), // page
-            SpectrumUI.modulationPage(lfoStart: RingsParam.LfoRate.rawValue, envStart: RingsParam.EnvAttack.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
             
-            SpectrumUI.modMatrixPage(modStart: RingsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
+            modulationPage(lfoStart: RingsParam.LfoRate.rawValue, envStart: RingsParam.EnvAttack.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
+            
+            modMatrixPage(modStart: RingsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
 
             ]) // ui page list
         

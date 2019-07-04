@@ -43,46 +43,46 @@ let big = CGFloat(80)
 
 class GranularViewController: BaseAudioUnitViewController {
     override func buildUI() -> UI {
-        SpectrumUI.colours = SpectrumUI.green
+        state.colours = SpectrumUI.green
         
-        return UI([
+        return UI(state: state, [
             Page("Granular",
-                 CStack([
+                 cStack([
                     Stack([
-                        Stack([Panel2(HStack([
-                            Knob(CloudsParam.Position.rawValue, size: big),
-                            Knob(CloudsParam.Size.rawValue, size: big),
-                            Knob(CloudsParam.Pitch.rawValue, size: big),
+                        Stack([panel2(HStack([
+                            knob(CloudsParam.Position.rawValue, size: big),
+                            knob(CloudsParam.Size.rawValue, size: big),
+                            knob(CloudsParam.Pitch.rawValue, size: big),
                             ])),
-                               Panel2(HStack([
-                                Knob(CloudsParam.InputGain.rawValue),
-                                Knob(CloudsParam.Density.rawValue),
-                                Knob(CloudsParam.Texture.rawValue),
+                               panel2(HStack([
+                                knob(CloudsParam.InputGain.rawValue),
+                                knob(CloudsParam.Density.rawValue),
+                                knob(CloudsParam.Texture.rawValue),
                                 ])),
-                               Panel2(HStack([
-                                Button(CloudsParam.Freeze.rawValue),
-                                Button(CloudsParam.Trigger.rawValue, momentary: true)
+                               panel2(HStack([
+                                button(CloudsParam.Freeze.rawValue),
+                                button(CloudsParam.Trigger.rawValue, momentary: true)
                                 ])),
                             ]),
                         ]),
                     Stack([
-                        Panel(TouchPad(CloudsParam.PadX.rawValue, CloudsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
+                        panel(touchPad(CloudsParam.PadX.rawValue, CloudsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
                     ]),
                 ])),
             Page("Blend",
-                 CStack([
+                 cStack([
                     Stack([
-                        Panel(HStack([
-                            Picker(CloudsParam.Mode.rawValue)
+                        panel(HStack([
+                            picker(CloudsParam.Mode.rawValue)
                             ])),
-                        Panel2(HStack([
-                            Knob(CloudsParam.Wet.rawValue),
-                            Knob(CloudsParam.Stereo.rawValue),
+                        panel2(HStack([
+                            knob(CloudsParam.Wet.rawValue),
+                            knob(CloudsParam.Stereo.rawValue),
                             ])),
-                        Panel2(HStack([
-                            Knob(CloudsParam.Feedback.rawValue),
-                            Knob(CloudsParam.Reverb.rawValue),
-                            Knob(CloudsParam.Volume.rawValue),
+                        panel2(HStack([
+                            knob(CloudsParam.Feedback.rawValue),
+                            knob(CloudsParam.Reverb.rawValue),
+                            knob(CloudsParam.Volume.rawValue),
                             ]))
                     ]),
                     Stack([
@@ -91,8 +91,8 @@ class GranularViewController: BaseAudioUnitViewController {
                  ])
             ),
             
-            SpectrumUI.modulationPage(lfoStart: CloudsParam.LfoRate.rawValue, envStart: CloudsParam.EnvAttack.rawValue, modStart: CloudsParam.ModMatrixStart.rawValue),
-            SpectrumUI.modMatrixPage(modStart: CloudsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
+            modulationPage(lfoStart: CloudsParam.LfoRate.rawValue, envStart: CloudsParam.EnvAttack.rawValue, modStart: CloudsParam.ModMatrixStart.rawValue),
+            modMatrixPage(modStart: CloudsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
             
             ]) // ui page list
         

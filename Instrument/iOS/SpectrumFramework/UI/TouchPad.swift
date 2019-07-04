@@ -16,11 +16,13 @@ class TouchPad: UIView {
     }
     fileprivate let params: Params
     let pad = AKTouchPadView()
+    let state: SpectrumState
     
-    init(_ xAddress: AUParameterAddress, _ yAddress: AUParameterAddress, _ gateAddress: AUParameterAddress) {
-        guard let x = SpectrumUI.tree?.parameter(withAddress: xAddress),
-            let y = SpectrumUI.tree?.parameter(withAddress: yAddress),
-            let gate = SpectrumUI.tree?.parameter(withAddress: gateAddress) else {
+    init(_ state: SpectrumState, _ xAddress: AUParameterAddress, _ yAddress: AUParameterAddress, _ gateAddress: AUParameterAddress) {
+        self.state = state
+        guard let x = state.tree?.parameter(withAddress: xAddress),
+            let y = state.tree?.parameter(withAddress: yAddress),
+            let gate = state.tree?.parameter(withAddress: gateAddress) else {
             fatalError("Could not find parameter for touchpad")
         }
         self.params = Params(x: x, y: y, gate: gate)

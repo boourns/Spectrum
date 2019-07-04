@@ -22,8 +22,11 @@ class Picker: UIView, ParameterView {
         }
     }
     
-    init(_ address: AUParameterAddress) {
-        guard let param = SpectrumUI.tree?.parameter(withAddress: address) else {
+    let state: SpectrumState
+    
+    init(_ state: SpectrumState, _ address: AUParameterAddress) {
+        self.state = state
+        guard let param = state.tree?.parameter(withAddress: address) else {
             fatalError("Could not find param for address \(address)")
         }
         self.param = param
@@ -31,7 +34,7 @@ class Picker: UIView, ParameterView {
         self.value = param.value
         
         super.init(frame: CGRect.zero)
-        SpectrumUI.parameters[param.address] = (param, self)
+        state.parameters[param.address] = (param, self)
 
         setup()
     }

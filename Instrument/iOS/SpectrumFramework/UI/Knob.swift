@@ -10,8 +10,8 @@ import UIKit
 import CoreAudioKit
 
 class IntKnob : Knob {
-    override init(_ address: AUParameterAddress, size: CGFloat = 60.0) {
-        super.init(address, size: size)
+    override init(_ state: SpectrumState, _ address: AUParameterAddress, size: CGFloat = 60.0) {
+        super.init(state, address, size: size)
         knob.roundValue = true
     }
     
@@ -62,9 +62,11 @@ class Knob: UIView, ParameterView {
     }
     
     let size: CGFloat
+    let state: SpectrumState
     
-    init(_ address: AUParameterAddress, size: CGFloat = 60.0) {
-        guard let param = SpectrumUI.tree?.parameter(withAddress: address) else {
+    init(_ state: SpectrumState, _ address: AUParameterAddress, size: CGFloat = 60.0) {
+        self.state = state
+        guard let param = state.tree?.parameter(withAddress: address) else {
             fatalError("Could not find parameter for address \(address)")
         }
         
@@ -73,7 +75,7 @@ class Knob: UIView, ParameterView {
         
         super.init(frame: CGRect.zero)
         
-        SpectrumUI.parameters[param.address] = (param, self)
+        state.parameters[param.address] = (param, self)
         
         setup()
     }

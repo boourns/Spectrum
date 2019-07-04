@@ -9,9 +9,9 @@ import Foundation
 import CoreAudioKit
 
 class ModTarget: Stack {
-    convenience init(_ name: String, _ ruleAddress: AUParameterAddress) {
-        let knob = Knob(ruleAddress+2)
-        let picker = Picker(ruleAddress+3)
+    convenience init(_ state: SpectrumState, _ name: String, _ ruleAddress: AUParameterAddress) {
+        let knob = Knob(state, ruleAddress+2)
+        let picker = Picker(state, ruleAddress+3)
         self.init([
             knob,
             picker

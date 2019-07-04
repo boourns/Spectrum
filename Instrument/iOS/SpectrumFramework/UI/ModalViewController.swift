@@ -46,81 +46,81 @@ class ModalViewController: BaseAudioUnitViewController {
     var loadAsEffect = false
     
     override func buildUI() -> UI {
-        SpectrumUI.colours = SpectrumUI.blue
+        state.colours = SpectrumUI.blue
         
         var main = [
-            Knob(ElementsParam.BlowMeta.rawValue, size: 70),
-            Knob(ElementsParam.StrikeMeta.rawValue, size: 70),
+            knob(ElementsParam.BlowMeta.rawValue, size: 70),
+            knob(ElementsParam.StrikeMeta.rawValue, size: 70),
             ]
         
         var timbre: UIView = HStack([
-            Knob(ElementsParam.BowTimbre.rawValue),
-            Knob(ElementsParam.BlowTimbre.rawValue),
-            Knob(ElementsParam.StrikeTimbre.rawValue),
+            knob(ElementsParam.BowTimbre.rawValue),
+            knob(ElementsParam.BlowTimbre.rawValue),
+            knob(ElementsParam.StrikeTimbre.rawValue),
         ])
         
         if loadAsEffect {
             main = [
-                Knob(ElementsParam.InputGain.rawValue, size: 70),
+                knob(ElementsParam.InputGain.rawValue, size: 70),
             ] + main
             
-            timbre = CStack([
+            timbre = cStack([
                 HStack([
-                    Picker(ElementsParam.InputResonator.rawValue),
-                    Knob(ElementsParam.BowTimbre.rawValue),
+                    picker(ElementsParam.InputResonator.rawValue),
+                    knob(ElementsParam.BowTimbre.rawValue),
                     ]),
                 HStack([
-                    Knob(ElementsParam.BlowTimbre.rawValue),
-                    Knob(ElementsParam.StrikeTimbre.rawValue),
+                    knob(ElementsParam.BlowTimbre.rawValue),
+                    knob(ElementsParam.StrikeTimbre.rawValue),
                     ]),
                 ])
             
         }
         
         
-        return UI([
+        return UI(state: state, [
             Page("Main",
-                 CStack([
+                 cStack([
                     Stack([
-                        Panel(CStack([
+                        panel(cStack([
                             HStack([
-                                Knob(ElementsParam.ExciterEnvShape.rawValue),
-                                Knob(ElementsParam.BowLevel.rawValue),
+                                knob(ElementsParam.ExciterEnvShape.rawValue),
+                                knob(ElementsParam.BowLevel.rawValue),
                                 ]),
                             HStack([
-                                Knob(ElementsParam.BlowLevel.rawValue),
-                                Knob(ElementsParam.StrikeLevel.rawValue),
+                                knob(ElementsParam.BlowLevel.rawValue),
+                                knob(ElementsParam.StrikeLevel.rawValue),
                                 ]),
                             ])),
-                        Panel(HStack(main)),
-                        Panel(timbre),
+                        panel(HStack(main)),
+                        panel(timbre),
                         ]),
-                    Panel2(Stack([
+                    panel2(Stack([
                         HStack([
-                            IntKnob(ElementsParam.Pitch.rawValue),
-                            Knob(ElementsParam.Detune.rawValue),
-                            Picker(ElementsParam.Mode.rawValue)
+                            intKnob(ElementsParam.Pitch.rawValue),
+                            knob(ElementsParam.Detune.rawValue),
+                            picker(ElementsParam.Mode.rawValue)
                             ]),
                         HStack([
-                            Knob(ElementsParam.ResonatorGeometry.rawValue, size: 70),
-                            Knob(ElementsParam.ResonatorBrightness.rawValue, size: 70),
+                            knob(ElementsParam.ResonatorGeometry.rawValue, size: 70),
+                            knob(ElementsParam.ResonatorBrightness.rawValue, size: 70),
                             ]),
-                        CStack([
+                        cStack([
                             HStack([
-                                Knob(ElementsParam.ResonatorDamping.rawValue),
-                                Knob(ElementsParam.ResonatorPosition.rawValue),
+                                knob(ElementsParam.ResonatorDamping.rawValue),
+                                knob(ElementsParam.ResonatorPosition.rawValue),
                                 ]),
                             HStack([
-                                Knob(ElementsParam.Space.rawValue),
-                                Knob(ElementsParam.Volume.rawValue),
+                                knob(ElementsParam.Space.rawValue),
+                                knob(ElementsParam.Volume.rawValue),
                                 ])
                             ]),
                         ])) //stack
                     ]) // cstack
             ), // page
-            SpectrumUI.modulationPage(lfoStart: ElementsParam.LfoRate.rawValue, envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
+            modulationPage(lfoStart: ElementsParam.LfoRate.rawValue, envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
             
-            SpectrumUI.modMatrixPage(modStart: ElementsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
+            modMatrixPage(modStart: ElementsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
             //LFOPage(),
             //EnvPage(),
             //Page("Amp", UIView()),
