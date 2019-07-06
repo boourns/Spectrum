@@ -363,6 +363,10 @@
     // Deallocate resources as required.
 }
 
+-(NSString*) audioUnitShortName {
+    return @"Res";
+}
+
 #pragma mark - AUAudioUnit (Overrides)
 
 - (AUAudioUnitBusArray *)inputBusses {

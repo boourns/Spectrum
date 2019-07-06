@@ -43,7 +43,7 @@
     if (self == nil) {
         return nil;
     }
-    
+
     if (componentDescription.componentType == 1635085670) {
         printf("Loading as effect");
         loadAsEffect = true;
@@ -405,6 +405,9 @@
                                              children:@[input1Param, input2Param, depthParam, outParam]];
 }
 
+-(NSString*) audioUnitShortName {
+    return @"Modal";
+}
 
 -(void)dealloc {
     // Deallocate resources as required.

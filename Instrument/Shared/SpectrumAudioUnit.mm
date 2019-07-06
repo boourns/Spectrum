@@ -363,6 +363,10 @@
     // Deallocate resources as required.
 }
 
+-(NSString*) audioUnitShortName {
+    return @"Spec";
+}
+
 - (AUParameter *)unipolar:(AUParameterAddress) address name:(NSString*) name {
     return [AUParameterTree createParameterWithIdentifier:name name:name
                                                   address:address

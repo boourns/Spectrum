@@ -381,6 +381,10 @@ NSArray *modOutputs = @[
     // Deallocate resources as required.
 }
 
+-(NSString*) audioUnitShortName {
+    return @"Gran";
+}
+
 #pragma mark - AUAudioUnit (Overrides)
 
 - (AUAudioUnitBusArray *)inputBusses {
