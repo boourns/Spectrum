@@ -21,6 +21,12 @@
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
 
+#ifdef DEBUG
+#define KERNEL_DEBUG_LOG(...) printf(__VA_ARGS__);
+#else
+#define KERNEL_DEBUG_LOG(...)
+#endif
+
 const size_t kAudioBlockSize = 24;
 const size_t kMaxPolyphony = 8;
 const size_t kNumModulationRules = 12;
@@ -136,6 +142,7 @@ public:
         VoiceState() : modEngine(NumModulationInputs, NumModulationOutputs) { }
         
         void Init(ModulationEngineRuleList *rules) {
+            KERNEL_DEBUG_LOG("kernel voice Init")
             voice = new plaits::Voice();
             stmlib::BufferAllocator allocator(ram_block, 16384);
             voice->Init(&allocator);
@@ -320,6 +327,8 @@ public:
     
     PlaitsDSPKernel() : midiProcessor(kMaxPolyphony), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
     {
+        KERNEL_DEBUG_LOG("Kernel constructor")
+
         voices.resize(kMaxPolyphony);
         for (VoiceState& voice : voices) {
             voice.kernel = this;
@@ -354,6 +363,7 @@ public:
     }
     
     void init(int channelCount, double inSampleRate) {
+        KERNEL_DEBUG_LOG("Kernel init")
         if (outputSrc) {
             delete outputSrc;
         }
@@ -361,6 +371,8 @@ public:
     }
     
     void setupModulationRules() {
+        KERNEL_DEBUG_LOG("setupModulationRules")
+
         modulationEngineRules.rules[0].input1 = ModInLFO;
         modulationEngineRules.rules[1].input1 = ModInLFO;
         modulationEngineRules.rules[2].input1 = ModInEnvelope;

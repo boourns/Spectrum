@@ -248,11 +248,13 @@
     _parameterTree = [AUParameterTree createTreeWithChildren:@[inputPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
     
     // Create the input and output busses.
-    _inputBus.init(defaultFormat, 8);
-    _outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
+   // if (loadAsEffect) {
+        _inputBus.init(defaultFormat, 8);
+        _inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
+    //}
     
+    _outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
     // Create the input and output bus arrays.
-    _inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
     _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
     
     

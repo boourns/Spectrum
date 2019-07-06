@@ -9,6 +9,8 @@
 #define ElementsDSPKernel_h
 
 #import "peaks/multistage_envelope.h"
+#import "stmlib/dsp/parameter_interpolator.h"
+
 #import "DSPKernel.hpp"
 #import <vector>
 #import "elements/dsp/part.h"
@@ -538,9 +540,16 @@ public:
                     envelope.TriggerHigh();
                 }
                 
+                if (modulationEngineRules.isPatched(ModOutLevel)) {
+                    finalVolume *= modEngine.out[ModOutLevel];
+                }
+                
+                stmlib::ParameterInterpolator outputGain(&previousGain, finalVolume, kAudioBlockSize);
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    renderedL[i] *= finalVolume;
-                    renderedR[i] *= finalVolume;
+                    const float amount = outputGain.Next();
+
+                    renderedL[i] *= amount;
+                    renderedR[i] *= amount;
                 }
                 
                 modEngine.in[ModInOut] = renderedL[kAudioBlockSize-1];
@@ -617,6 +626,7 @@ public:
     float volume;
     float inputGain;
     bool inputResonator;
+    float previousGain = 0.0f;
 };
 
 #endif /* ElementsDSPKernel_h */

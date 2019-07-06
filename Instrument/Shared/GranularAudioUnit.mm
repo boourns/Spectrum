@@ -332,7 +332,7 @@ NSArray *modOutputs = @[
                         @"Stereo",
                         @"LFORate",
                         @"LFOAmount",
-                        @"Level",
+                        @"Volume",
                         ];
 
 - (AUParameterGroup *)modMatrixRule:(int) ruleNumber parameterOffset:(int) parameterOffset {

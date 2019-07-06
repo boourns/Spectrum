@@ -508,9 +508,15 @@ public:
                 
                 float mix = 1.0f - stereo;
                 
+                if (modulationEngineRules.isPatched(ModOutLevel)) {
+                    finalVolume *= modEngine.out[ModOutLevel];
+                }
+                rings::ParameterInterpolator outputGain(&previousGain, finalVolume, kAudioBlockSize);
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    renderedL[i] = (renderedL[i] + (renderedR[i] * mix)) * finalVolume;
-                    renderedR[i] = (renderedR[i] + (renderedL[i] * mix)) * finalVolume;;
+                    const float amount = outputGain.Next();
+
+                    renderedL[i] = (renderedL[i] + (renderedR[i] * mix)) * amount;
+                    renderedR[i] = (renderedR[i] + (renderedL[i] * mix)) * amount;
                 }
                 
                 modEngine.in[ModInOut] = renderedL[kAudioBlockSize-1];
@@ -593,6 +599,7 @@ public:
     float volume;
     float inputGain;
     float stereo;
+    float previousGain = 0.0f;
     
     bool easterEgg = false;
 };

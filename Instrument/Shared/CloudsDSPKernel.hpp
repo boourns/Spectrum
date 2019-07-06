@@ -10,6 +10,7 @@
 
 #import "clouds/dsp/granular_processor.h"
 #import "peaks/multistage_envelope.h"
+#import "stmlib/dsp/parameter_interpolator.h"
 #import "DSPKernel.hpp"
 #import <vector>
 #import "lfo.hpp"
@@ -129,6 +130,7 @@ public:
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
+        previousGain = 0.0f;
     }
     
     void setupModulationRules() {
@@ -522,9 +524,15 @@ public:
                 processor.Process(input, output, kAudioBlockSize);
                 
                 gain = gainCoefficient / 32768.0f;
+                if (modulationEngineRules.isPatched(ModOutLevel)) {
+                    gain *= modEngine.out[ModOutLevel];
+                }
+                clouds::ParameterInterpolator outputGain(&previousGain, gain, kAudioBlockSize);
                 for (int i = 0; i < kAudioBlockSize; i++) {
-                    renderedL[i] = output[i].l * gain;
-                    renderedR[i] = output[i].r * gain;
+                    const float amount = outputGain.Next();
+
+                    renderedL[i] = output[i].l * amount;
+                    renderedR[i] = output[i].r * amount;
                 }
                 
                 renderedFramesPos = 0;
@@ -605,6 +613,7 @@ public:
     float inputGain;
     float volume;
     float gainCoefficient;
+    float previousGain;
     float trigger;
     float freeze;
 };

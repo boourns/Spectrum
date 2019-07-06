@@ -5,6 +5,12 @@
 #import "BufferedAudioBus.hpp"
 #import "MIDIProcessor.hpp"
 
+#ifdef DEBUG
+#define DEBUG_LOG(...) NSLog(__VA_ARGS__);
+#else
+#define DEBUG_LOG(...)
+#endif
+
 @interface SpectrumAudioUnit ()
 
 @property AUAudioUnitBus *outputBus;
@@ -35,6 +41,8 @@
         return nil;
     }
     
+    DEBUG_LOG(@"initWithComponentDescription")
+    
     // Initialize a default format for the busses.
     AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
     
@@ -45,6 +53,8 @@
     AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
     kAudioUnitParameterFlag_IsReadable;
     
+    //struct AudioUnitParameterNameInfo name;
+    //self.audioUnitShortName = @"SPEC";
     // MAIN
     
     AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm"
@@ -269,6 +279,8 @@
                                                                                    
     AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
     
+    DEBUG_LOG(@"registering parameter tree")
+
     // Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, modMatrixPage, settingsPage]];
     
@@ -306,6 +318,8 @@
         }
     };
     
+    DEBUG_LOG(@"initializing variables")
+
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
         AUParameter *param = _parameterTree.allParameters[i];
         
@@ -480,6 +494,8 @@
 
 #pragma mark - fullstate - must override in order to call parameter observer when fullstate is reset.
 - (NSDictionary *)fullState {
+    DEBUG_LOG(@"fullState")
+    
     NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullState];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
@@ -499,6 +515,8 @@
 }
 
 - (void)setFullState:(NSDictionary *)fullState {
+    DEBUG_LOG(@"setFullState")
+
     NSData *data = (NSData *)fullState[@"data"];
     NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
@@ -507,6 +525,8 @@
 }
 
 - (void)loadData:(NSDictionary *)data {
+    DEBUG_LOG(@"loadData")
+
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
         NSNumber *savedValue = [data objectForKey: [@(_parameterTree.allParameters[i].address) stringValue]];
         if (savedValue != nil) {
@@ -547,6 +567,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 - (AUAudioUnitPreset *)currentPreset
 {
+    DEBUG_LOG(@"currentPreset")
+
     if (_currentPreset.number >= 0) {
         NSLog(@"Returning Current Factory Preset: %ld\n", (long)_currentFactoryPresetIndex);
         return [_presets objectAtIndex:_currentFactoryPresetIndex];
@@ -559,6 +581,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 - (void)setCurrentPreset:(AUAudioUnitPreset *)currentPreset
 {
     if (nil == currentPreset) { NSLog(@"nil passed to setCurrentPreset!"); return; }
+    
+    DEBUG_LOG(@"setCurrentPreset")
     
     if (currentPreset.number >= 0) {
         // factory preset
