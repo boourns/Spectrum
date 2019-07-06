@@ -300,7 +300,9 @@
     _outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
     
     // Create the input and output bus arrays.
-    _inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
+    if (loadAsEffect) {
+        _inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
+    }
     _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
     
     
@@ -456,6 +458,7 @@
      */
     __block ElementsDSPKernel *state = &_kernel;
     __block BufferedInputBus *input = &_inputBus;
+    __block bool isEffect = loadAsEffect;
 
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -466,11 +469,15 @@
                               const AURenderEvent        *realtimeEventListHead,
                               AURenderPullInputBlock      pullInputBlock) {
         
-        AudioUnitRenderActionFlags pullFlags = 0;
-        AUAudioUnitStatus err = input->pullInput(&pullFlags, timestamp, frameCount, 0, pullInputBlock);
-        if (err != 0) { return err; }
+        AudioBufferList *inAudioBufferList = 0;
         
-        AudioBufferList *inAudioBufferList = input->mutableAudioBufferList;
+        if (isEffect) {
+            AudioUnitRenderActionFlags pullFlags = 0;
+            AUAudioUnitStatus err = input->pullInput(&pullFlags, timestamp, frameCount, 0, pullInputBlock);
+            if (err != 0) { return err; }
+            
+            inAudioBufferList = input->mutableAudioBufferList;
+        }
         
         AudioBufferList *outAudioBufferList = outputData;
         if (outAudioBufferList->mBuffers[0].mData == nullptr) {

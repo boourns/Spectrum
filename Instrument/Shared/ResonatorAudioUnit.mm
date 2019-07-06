@@ -247,11 +247,12 @@
     // Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[inputPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
     
+    _inputBus.init(defaultFormat, 8);
+
     // Create the input and output busses.
-   // if (loadAsEffect) {
-        _inputBus.init(defaultFormat, 8);
+    if (loadAsEffect) {
         _inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
-    //}
+    }
     
     _outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
     // Create the input and output bus arrays.
@@ -410,6 +411,7 @@
      */
     __block RingsDSPKernel *state = &_kernel;
     __block BufferedInputBus *input = &_inputBus;
+    __block bool isEffect = loadAsEffect;
     
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -421,10 +423,14 @@
                               AURenderPullInputBlock      pullInputBlock) {
         
         AudioUnitRenderActionFlags pullFlags = 0;
-        AUAudioUnitStatus err = input->pullInput(&pullFlags, timestamp, frameCount, 0, pullInputBlock);
-        if (err != 0) { return err; }
-        
-        AudioBufferList *inAudioBufferList = input->mutableAudioBufferList;
+        AudioBufferList *inAudioBufferList = nil;
+        if (isEffect) {
+            AUAudioUnitStatus err = input->pullInput(&pullFlags, timestamp, frameCount, 0, pullInputBlock);
+            if (err != 0) { return err; }
+            
+            inAudioBufferList = input->mutableAudioBufferList;
+
+        }
         
         AudioBufferList *outAudioBufferList = outputData;
         if (outAudioBufferList->mBuffers[0].mData == nullptr) {

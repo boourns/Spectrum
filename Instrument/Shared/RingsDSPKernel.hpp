@@ -436,9 +436,13 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
-        float *inL = (float *)inBufferListPtr->mBuffers[0].mData + bufferOffset;
-        float *inR = (float *)inBufferListPtr->mBuffers[1].mData + bufferOffset;
+        float *inL = 0;
+        float *inR = 0;
         
+        if (useAudioInput) {
+            inL = (float *)inBufferListPtr->mBuffers[0].mData + bufferOffset;
+            inR = (float *)inBufferListPtr->mBuffers[1].mData + bufferOffset;
+        }
         float mixedInput[kAudioBlockSize];
         
         float *input = &silence[0];
@@ -534,7 +538,7 @@ public:
             outputFramesRemaining -= result.outputLength;
         }
         
-        if (inputFramesRemaining > 0) {
+        if (useAudioInput && inputFramesRemaining > 0) {
             ConverterResult result;
             inputSrc->convert(inL, inR, inputFramesRemaining, processedL, processedR, kAudioBlockSize, &result);
             carriedInputFrames = result.outputLength;
