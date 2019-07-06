@@ -572,7 +572,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         if (_parameterTree.allParameters[i].address > 200) {
             continue;
         }
-        if (i < 30) {
+        if (_parameterTree.allParameters[i].address < 30) {
             skip = 2;
         } else {
             skip = 4;

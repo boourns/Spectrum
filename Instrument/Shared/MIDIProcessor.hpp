@@ -348,6 +348,19 @@ public:
     
     void setCCMap(std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
         ccMap = map;
+        //printCCMap();
+    }
+    
+    void printCCMap() {
+        for (int i = 0; i < 128; i++) {
+            std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(i);
+            if (params != ccMap.end()) {
+                std::vector<MIDICCTarget>::iterator itr;
+                for (itr = params->second.begin(); itr != params->second.end(); ++itr) {
+                    printf("<tr><td>%d</td><td>%s</td></tr>\n", i, itr->parameter.displayName.UTF8String);
+                }
+            }
+        }
     }
     
     inline void calculateModwheel() {

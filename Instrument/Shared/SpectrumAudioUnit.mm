@@ -613,7 +613,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             continue;
         }
         
-        if (i < 30) {
+        if (_parameterTree.allParameters[i].address < 30) {
             skip = 2;
         } else {
             skip = 4;
