@@ -12,6 +12,7 @@ public class AKTouchPadView: UIView {
     
     // touch properties
     var firstTouch: UITouch?
+    var touching = false
     
     public typealias AKTouchPadCallback = (Double, Double, Bool) -> Void
     var callback: AKTouchPadCallback = { _, _, _ in }
@@ -114,7 +115,7 @@ public class AKTouchPadView: UIView {
         let centerPointX = self.bounds.size.width * CGFloat(newPercentX)
         let centerPointY = self.bounds.size.height * CGFloat(1 - newPercentY)
         UIView.animate(
-            withDuration: 0.2,
+            withDuration: 0.05,
             delay: 0.0,
             options: UIView.AnimationOptions(),
             animations: {
@@ -146,5 +147,6 @@ public class AKTouchPadView: UIView {
         horizontalValue = Double(x)
         verticalValue = Double(y)
         callback(horizontalValue, verticalValue, pressed)
+        touching = pressed
     }
 }

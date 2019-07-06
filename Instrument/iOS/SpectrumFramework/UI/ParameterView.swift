@@ -8,6 +8,6 @@
 import Foundation
 import UIKit
 
-protocol ParameterView: UIView {
+protocol ParameterView: class {
     var value: Float { get set }
 }

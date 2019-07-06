@@ -8,6 +8,29 @@
 import Foundation
 import UIKit
 
+class TouchPadParameterContainer: ParameterView {
+    let param: AUParameter
+    let touchpad: TouchPad
+    
+    var value: Float {
+        get {
+            return param.value
+        }
+        
+        set(val) {
+            if (!touchpad.pad.touching) {
+                param.value = val
+                touchpad.setFromParams()
+            }
+        }
+    }
+    
+    init(param: AUParameter, touchpad: TouchPad) {
+        self.param = param
+        self.touchpad = touchpad
+    }
+}
+
 class TouchPad: UIView {
     fileprivate struct Params {
         let x: AUParameter
@@ -17,6 +40,7 @@ class TouchPad: UIView {
     fileprivate let params: Params
     let pad = AKTouchPadView()
     let state: SpectrumState
+    var updaters: [TouchPadParameterContainer] = []
     
     init(_ state: SpectrumState, _ xAddress: AUParameterAddress, _ yAddress: AUParameterAddress, _ gateAddress: AUParameterAddress) {
         self.state = state
@@ -26,7 +50,17 @@ class TouchPad: UIView {
             fatalError("Could not find parameter for touchpad")
         }
         self.params = Params(x: x, y: y, gate: gate)
+        
         super.init(frame: CGRect.zero)
+        self.updaters = [
+            TouchPadParameterContainer(param: x, touchpad: self),
+            TouchPadParameterContainer(param: y, touchpad: self),
+            TouchPadParameterContainer(param: gate, touchpad: self),
+        ]
+        
+        state.parameters[x.address] = (x, updaters[0])
+        state.parameters[y.address] = (y, updaters[1])
+        state.parameters[gate.address] = (gate, updaters[2])
         addSubview(pad)
         pad.translatesAutoresizingMaskIntoConstraints = false
         translatesAutoresizingMaskIntoConstraints = false
@@ -42,6 +76,10 @@ class TouchPad: UIView {
             this.params.y.value = AUValue(y)
             this.params.gate.value = gate ? 1.0 : 0.0
         }
+    }
+    
+    func setFromParams() {
+        pad.updateTouchPoint(Double(params.x.value), Double(params.y.value))
     }
     
     required init?(coder aDecoder: NSCoder) {
