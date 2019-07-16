@@ -12,7 +12,9 @@
     BufferedInputBus _inputBus;
 }
 
--(void) initForAudioUnit:(AUAudioUnit*) audioUnit isEffect:(bool) isEffect withFormat:(AVAudioFormat*) format {
+-(id) initForAudioUnit:(AUAudioUnit*) audioUnit isEffect:(bool) isEffect withFormat:(AVAudioFormat*) format {
+    self = [super init];
+    
     _inputBus.init(format, 8);
     
     // Create the input and output busses.
@@ -24,6 +26,8 @@
     // Create the input and output bus arrays.
     
     _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:audioUnit busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
+    
+    return self;
 }
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError withMaximumFrames:(int)maximumFrames{

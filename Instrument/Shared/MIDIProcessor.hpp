@@ -346,7 +346,7 @@ public:
         modFine = 0;
     }
     
-    void setCCMap(std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
+    void setCCMap(const std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
         ccMap = map;
         //printCCMap();
     }

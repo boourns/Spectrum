@@ -17,7 +17,7 @@
 @property AUAudioUnitBusArray *outputBusArray;
 @property AUAudioUnitBusArray *inputBusArray;
 
--(void) initForAudioUnit:(AUAudioUnit*) audioUnit isEffect:(bool) isEffect withFormat:(AVAudioFormat*) format;
+-(id) initForAudioUnit:(AUAudioUnit*) audioUnit isEffect:(bool) isEffect withFormat:(AVAudioFormat*) format;
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError withMaximumFrames:(int)maximumFrames;
 - (void)deallocateRenderResources;
