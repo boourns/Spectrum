@@ -8,22 +8,24 @@
 #import "ResonatorAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RingsDSPKernel.hpp"
-#import "BufferedAudioBus.hpp"
+#import "AudioBuffers.h"
 
 @interface ResonatorAudioUnit ()
 
-@property AUAudioUnitBus *outputBus;
-@property AUAudioUnitBusArray *outputBusArray;
-@property AUAudioUnitBusArray *inputBusArray;
-
+@property AudioBuffers *audioBuffers;
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
 @end
 
+AudioStreamBasicDescription asbd;
+AUHostMusicalContextBlock _musicalContext;
+AUMIDIOutputEventBlock _outputEventBlock;
+AUHostTransportStateBlock _transportStateBlock;
+AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
+
 @implementation ResonatorAudioUnit {
     // C++ members need to be ivars; they would be copied on access if they were properties.
     RingsDSPKernel _kernel;
-    BufferedInputBus _inputBus;
     
     AUAudioUnitPreset   *_currentPreset;
     NSInteger           _currentFactoryPresetIndex;
@@ -34,6 +36,7 @@
     NSArray *modOutputs;
     bool loadAsEffect;
 }
+
 @synthesize parameterTree = _parameterTree;
 @synthesize factoryPresets = _presets;
 
@@ -54,6 +57,8 @@
     
     // Initialize a default format for the busses.
     AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
+    
+    [_audioBuffers initForAudioUnit:self isEffect:loadAsEffect withFormat:defaultFormat];
     
     // Create a DSP kernel to handle the signal processing.
     _kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
@@ -247,18 +252,6 @@
     // Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[inputPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
     
-    _inputBus.init(defaultFormat, 8);
-
-    // Create the input and output busses.
-    if (loadAsEffect) {
-        _inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
-    }
-    
-    _outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
-    // Create the input and output bus arrays.
-    _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
-    
-    
     // Make a local pointer to the kernel to avoid capturing self.
     __block RingsDSPKernel *instrumentKernel = &_kernel;
     
@@ -370,11 +363,11 @@
 #pragma mark - AUAudioUnit (Overrides)
 
 - (AUAudioUnitBusArray *)inputBusses {
-    return _inputBusArray;
+    return [_audioBuffers inputBusses];
 }
 
 - (AUAudioUnitBusArray *)outputBusses {
-    return _outputBusArray;
+    return [_audioBuffers outputBusses];
 }
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError {
@@ -382,26 +375,41 @@
         return NO;
     }
     
-    if (self.outputBus.format.channelCount != _inputBus.bus.format.channelCount) {
-        if (outError) {
-            *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:kAudioUnitErr_FailedInitialization userInfo:nil];
-        }
-        // Notify superclass that initialization was not successful
+    if (![_audioBuffers allocateRenderResourcesAndReturnError:outError withMaximumFrames:self.maximumFramesToRender]) {
         self.renderResourcesAllocated = NO;
         
         return NO;
     }
     
-    _inputBus.allocateRenderResources(self.maximumFramesToRender);
-    
-    _kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
+    _kernel.init(_audioBuffers.outputBus.format.channelCount, _audioBuffers.outputBus.format.sampleRate);
     _kernel.midiAllNotesOff();
+    
+    if (self.musicalContextBlock) {
+        _musicalContext = self.musicalContextBlock;
+    }
+    
+    if (self.MIDIOutputEventBlock) {
+        _outputEventBlock = self.MIDIOutputEventBlock;
+    }
+    
+    if (self.transportStateBlock) {
+        _transportStateBlock = self.transportStateBlock;
+    }
+    
+    if (self.scheduleMIDIEventBlock) {
+        _scheduleMIDIEventBlock = self.scheduleMIDIEventBlock;
+    }
     
     return YES;
 }
 
 - (void)deallocateRenderResources {
-    _inputBus.deallocateRenderResources();
+    [_audioBuffers deallocateRenderResources];
+    
+    _transportStateBlock = nil;
+    _outputEventBlock = nil;
+    _musicalContext = nil;
+    _scheduleMIDIEventBlock = nil;
     
     [super deallocateRenderResources];
 }
@@ -414,8 +422,13 @@
      render, we're doing it wrong.
      */
     __block RingsDSPKernel *state = &_kernel;
-    __block BufferedInputBus *input = &_inputBus;
+    __block BufferedInputBus *input = [_audioBuffers inputBus];
+    
     __block bool isEffect = loadAsEffect;
+    
+    // AU event block refs.
+    __block AUHostMusicalContextBlock musicalContextCapture = self.musicalContextBlock;
+    __block AUHostTransportStateBlock transportStateCapture = self.transportStateBlock;
     
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -426,6 +439,7 @@
                               const AURenderEvent        *realtimeEventListHead,
                               AURenderPullInputBlock      pullInputBlock) {
         
+        // MARK - setup buffers
         AudioUnitRenderActionFlags pullFlags = 0;
         AudioBufferList *inAudioBufferList = nil;
         if (isEffect) {
@@ -433,7 +447,6 @@
             if (err != 0) { return err; }
             
             inAudioBufferList = input->mutableAudioBufferList;
-
         }
         
         AudioBufferList *outAudioBufferList = outputData;
@@ -442,6 +455,16 @@
                 outAudioBufferList->mBuffers[i].mData = inAudioBufferList->mBuffers[i].mData;
             }
         }
+        
+        // MARK - get musical context
+        double currentTempo;
+        double currentBeatPosition;
+        NSInteger timeSignatureDenominator;
+        if (musicalContextCapture(&currentTempo, NULL, &timeSignatureDenominator, &currentBeatPosition, NULL, NULL) == false) {
+            return noErr;
+        }
+        
+        NSLog(@"tempo %f beatPosition %f timeSignatureDenominator %li", currentTempo, currentBeatPosition, (long) timeSignatureDenominator);
         
         state->setBuffers(inAudioBufferList, outAudioBufferList);
         state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
