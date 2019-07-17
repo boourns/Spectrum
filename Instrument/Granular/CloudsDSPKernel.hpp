@@ -400,7 +400,7 @@ public:
     
     // =========== MIDI
     
-    virtual void midiNoteOff() {
+    virtual void midiNoteOff() override {
         state = NoteStateReleasing;
         gate = false;
         envelope.TriggerLow();
@@ -416,7 +416,7 @@ public:
         state = NoteStatePlaying;
     }
     
-    virtual void midiNoteOn(uint8_t note, uint8_t vel) {
+    virtual void midiNoteOn(uint8_t note, uint8_t vel) override {
         currentNote = note;
         currentVelocity = ((float) vel) / 127.0;
         modEngine.in[ModInNote] = ((float) currentNote) / 127.0f;
@@ -425,16 +425,16 @@ public:
         add();
     }
     
-    virtual void midiAllNotesOff() {
+    virtual void midiAllNotesOff() override {
         state = NoteStateUnused;
         gate = false;
     }
     
-    virtual uint8_t Note() {
+    virtual uint8_t Note() override {
         return currentNote;
     }
     
-    virtual int State() {
+    virtual int State() override {
         return state;
     }
     

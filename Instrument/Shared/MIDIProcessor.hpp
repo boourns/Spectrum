@@ -309,8 +309,8 @@ public:
                 break;
             }
             case 0xA0 : { // poly aftertouch
-                uint8_t note = midiEvent.data[1];
-                uint8_t veloc = midiEvent.data[2];
+                //uint8_t note = midiEvent.data[1];
+                //uint8_t veloc = midiEvent.data[2];
                 break;
             }
             case 0xB0 : { // control

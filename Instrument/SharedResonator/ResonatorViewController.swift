@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import CoreAudioKit
+import SpectrumFramework
 
 enum RingsParam: AUParameterAddress {
     case PadX = 0
@@ -76,7 +77,7 @@ class ResonatorViewController: BaseAudioUnitViewController {
                             ])),
                         ]), //stack
                     Stack([
-                        panel(touchPad(RingsParam.PadX.rawValue, RingsParam.PadY.rawValue, CloudsParam.PadGate.rawValue))
+                        panel(touchPad(RingsParam.PadX.rawValue, RingsParam.PadY.rawValue, RingsParam.PadGate.rawValue))
                         ]),
                     ]) // cstack
             ), // page

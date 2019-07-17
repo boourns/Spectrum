@@ -1,19 +1,20 @@
 //
-//  ElementsDSPKernel.hpp
+//  RingsDSPKernel.hpp
 //  Spectrum
 //
 //  Created by tom on 2019-05-28.
 //
 
-#ifndef ElementsDSPKernel_h
-#define ElementsDSPKernel_h
+#ifndef RingsDSPKernel_h
+#define RingsDSPKernel_h
 
 #import "peaks/multistage_envelope.h"
-#import "stmlib/dsp/parameter_interpolator.h"
-
 #import "DSPKernel.hpp"
 #import <vector>
-#import "elements/dsp/part.h"
+
+#import "rings/dsp/strummer.h"
+#import "rings/dsp/string_synth_part.h"
+#import "rings/dsp/part.h"
 #import "lfo.hpp"
 #import "converter.hpp"
 
@@ -25,41 +26,38 @@ const size_t kPolyphony = 1;
 const size_t kNumModulationRules = 10;
 
 enum {
-    ElementsParamExciterEnvShape = 0,
-    ElementsParamBowLevel = 1,
-    ElementsParamBowTimbre = 2,
-    ElementsParamBlowLevel = 3,
-    ElementsParamBlowMeta = 4,
-    ElementsParamBlowTimbre = 5,
-    ElementsParamStrikeLevel = 6,
-    ElementsParamStrikeMeta = 7,
-    ElementsParamStrikeTimbre = 8,
-    ElementsParamResonatorGeometry = 9,
-    ElementsParamResonatorBrightness = 10,
-    ElementsParamResonatorDamping = 11,
-    ElementsParamResonatorPosition = 12,
-    ElementsParamSpace = 13,
-    ElementsParamVolume = 14,
-    ElementsParamMode = 15,
-    ElementsParamPitch = 16,
-    ElementsParamDetune = 17,
-    ElementsParamLfoRate = 18,
-    ElementsParamLfoShape = 19,
-    ElementsParamLfoShapeMod = 20,
-    ElementsParamEnvAttack = 22,
-    ElementsParamEnvDecay = 23,
-    ElementsParamEnvSustain = 24,
-    ElementsParamEnvRelease = 25,
-    ElementsParamInputGain = 26,
-    ElementsParamInputResonator = 27,
-    ElementsParamModMatrixStart = 400,
-    ElementsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
+    RingsParamPadX = 0,
+    RingsParamPadY = 1,
+    RingsParamPadGate = 2,
+    RingsParamStructure = 4,
+    RingsParamBrightness = 5,
+    RingsParamDamping = 6,
+    RingsParamPosition = 7,
+    RingsParamVolume = 8,
+    RingsParamMode = 9,
+    RingsParamPolyphony = 10,
+    RingsParamPitch = 11,
+    RingsParamDetune = 12,
+    RingsParamLfoRate = 13,
+    RingsParamLfoShape = 14,
+    RingsParamLfoShapeMod = 15,
+    RingsParamEnvAttack = 16,
+    RingsParamEnvDecay = 17,
+    RingsParamEnvSustain = 18,
+    RingsParamEnvRelease = 19,
+    RingsParamInputGain = 20,
+    RingsParamStereoSpread = 21,
+    RingsParamModMatrixStart = 400,
+    RingsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
-    ElementsMaxParameters
+    RingsMaxParameters
 };
 
 enum {
     ModInDirect = 0,
+    ModInPadX,
+    ModInPadY,
+    ModInPadGate,
     ModInLFO,
     ModInEnvelope,
     ModInNote,
@@ -73,20 +71,10 @@ enum {
     ModOutDisabled = 0,
     ModOutTune,
     ModOutFrequency,
-    ModOutExciterEnvShape,
-    ModOutBowLevel,
-    ModOutBowTimbre,
-    ModOutBlowLevel,
-    ModOutBlowMeta,
-    ModOutBlowTimbre,
-    ModOutStrikeLevel,
-    ModOutStrikeMeta,
-    ModOutStrikeTimbre,
-    ModOutResonatorGeometry,
-    ModOutResonatorBrightness,
-    ModOutResonatorDamping,
-    ModOutResonatorPosition,
-    ModOutSpace,
+    ModOutStructure,
+    ModOutBrightness,
+    ModOutDamping,
+    ModOutPosition,
     ModOutLFORate,
     ModOutLFOAmount,
     ModOutLevel,
@@ -99,34 +87,27 @@ enum {
  Performs our filter signal processing.
  As a non-ObjC class, this is safe to use from render thread.
  */
-class ElementsDSPKernel : public DSPKernel, public MIDIVoice {
+class RingsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    ElementsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
+    RingsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
     {
         midiProcessor.noteStack.voices.push_back(this);
         
         part.Init(reverb_buffer);
-        
-        patch = part.mutable_patch();
+        string_synth.Init(reverb_buffer);
+
+        part.set_polyphony(4);
         
         std::fill(&silence[0], &silence[kAudioBlockSize], 0.0f);
-        
-        basePatch.exciter_envelope_shape = 0.0f;
-        basePatch.exciter_bow_level = 0.0f;
-        basePatch.exciter_bow_timbre = 0.0f;
-        basePatch.exciter_blow_level = 0.0f;
-        basePatch.exciter_blow_meta = 0.0f;
-        basePatch.exciter_blow_timbre = 0.0f;
-        basePatch.exciter_strike_level = 0.5f;
-        basePatch.exciter_strike_meta = 0.5f;
-        basePatch.exciter_strike_timbre = 0.3f;
-        basePatch.resonator_geometry = 0.4f;
-        basePatch.resonator_brightness = 0.7f;
-        basePatch.resonator_damping = 0.8f;
-        basePatch.resonator_position = 0.3f;
-        basePatch.space = 0.1f;
+        memset(&basePatch, 0, sizeof(rings::Patch));
+        memset(&patch, 0, sizeof(rings::Patch));
+
+        basePatch.structure = 0.4f;
+        basePatch.brightness = 0.7f;
+        basePatch.damping = 0.8f;
+        basePatch.position = 0.3f;
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -136,9 +117,10 @@ public:
         if (outputSrc) {
             delete outputSrc;
         }
-        inputSrc = new Converter((int) inSampleRate, 32000);
-        outputSrc = new Converter(32000, (int) inSampleRate);
-        
+        inputSrc = new Converter((int) inSampleRate, 48000);
+        outputSrc = new Converter(48000, (int) inSampleRate);
+        strummer.Init(0.01f, 48000 / kAudioBlockSize);
+
         midiAllNotesOff();
         envelope.Init();
         lfo.Init();
@@ -155,77 +137,74 @@ public:
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
-        if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
-            modulationEngineRules.setParameter(address - ElementsParamModMatrixStart, value);
+        if (address >= RingsParamModMatrixStart && address <= RingsParamModMatrixEnd) {
+            modulationEngineRules.setParameter(address - RingsParamModMatrixStart, value);
             return;
         }
         
         switch (address) {
-            case ElementsParamPitch:
+            case RingsParamPitch:
                 pitch = round(clamp(value, -12.0f, 12.0f));
                 break;
-            case ElementsParamExciterEnvShape:
-                basePatch.exciter_envelope_shape = clamp(value, 0.0f, 1.0f);
+            case RingsParamStructure:
+                basePatch.structure = clamp(value, 0.0f, 1.0f);
+                chord = clamp((int) roundf(basePatch.structure * (rings::kNumChords - 1)), 0, rings::kNumChords - 1);
+
                 break;
-            case ElementsParamBowLevel:
-                basePatch.exciter_bow_level = clamp(value, 0.0f, 1.0f);
+            case RingsParamBrightness:
+                basePatch.brightness = clamp(value, 0.0f, 1.0f);
                 break;
-            case ElementsParamBowTimbre:
-                basePatch.exciter_bow_timbre = clamp(value, 0.0f, 1.0f);
+            case RingsParamDamping:
+                basePatch.damping = clamp(value, 0.0f, 1.0f);
                 break;
-            case ElementsParamBlowLevel:
-                basePatch.exciter_blow_level = clamp(value, 0.0f, 1.0f);
+            case RingsParamPosition:
+                basePatch.position = clamp(value, 0.0f, 1.0f);
                 break;
-            case ElementsParamBlowMeta:
-                basePatch.exciter_blow_meta = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamBlowTimbre:
-                basePatch.exciter_blow_timbre = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamStrikeLevel:
-                basePatch.exciter_strike_level = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamStrikeMeta:
-                basePatch.exciter_strike_meta = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamStrikeTimbre:
-                basePatch.exciter_strike_timbre = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamResonatorGeometry:
-                basePatch.resonator_geometry = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamResonatorBrightness:
-                basePatch.resonator_brightness = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamResonatorDamping:
-                basePatch.resonator_damping = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamResonatorPosition:
-                basePatch.resonator_position = clamp(value, 0.0f, 1.0f);
-                break;
-            case ElementsParamSpace:
-                basePatch.space = clamp(value, 0.0f, 2.0f);
-                break;
-            case ElementsParamVolume:
+            case RingsParamVolume:
                 volume = clamp(value, 0.0f, 1.0f);
                 break;
-            case ElementsParamInputGain:
+            case RingsParamInputGain:
                 inputGain = clamp(value, 0.0f, 2.0f);
                 break;
-                
-            case ElementsParamInputResonator:
-                inputResonator = (value > 0.7);
+            case RingsParamStereoSpread:
+                stereo = clamp(value, 0.0f, 1.0f);
                 break;
-                
-            case ElementsParamMode:
-                part.set_resonator_model((elements::ResonatorModel) clamp(value, 0.0f, 3.0f));
+            case RingsParamMode: {
+                uint16_t mode = round(clamp(value, 0.0f, 6.0f));
+                if (mode == 6) {
+                    easterEgg = true;
+                } else {
+                    easterEgg = false;
+                    part.set_model((rings::ResonatorModel) mode);
+                }
                 break;
-                
-            case ElementsParamDetune:
+            }
+            case RingsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
                 break;
                 
-            case ElementsParamLfoShape: {
+            case RingsParamPadX: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadX] = val;
+                
+                break;
+            }
+                
+            case RingsParamPadY: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadY] = val;
+                
+                break;
+            }
+                
+            case RingsParamPadGate: {
+                float val = clamp(value, 0.0f, 1.0f);
+                modEngine.in[ModInPadGate] = val;
+                
+                break;
+            }
+                
+            case RingsParamLfoShape: {
                 uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
                 if (newShape != lfoShape) {
                     lfoShape = newShape;
@@ -234,7 +213,7 @@ public:
                 break;
             }
                 
-            case ElementsParamLfoShapeMod: {
+            case RingsParamLfoShapeMod: {
                 float newShape = clamp(value, -1.0f, 1.0f);
                 if (newShape != lfoShapeMod) {
                     lfoShapeMod = newShape;
@@ -244,7 +223,7 @@ public:
                 break;
             }
                 
-            case ElementsParamLfoRate: {
+            case RingsParamLfoRate: {
                 float newRate = clamp(value, 0.0f, 1.0f);
                 
                 if (newRate != lfoBaseRate) {
@@ -253,8 +232,8 @@ public:
                 }
                 break;
             }
-            
-            case ElementsParamEnvAttack: {
+                
+            case RingsParamEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[0]) {
                     envParameters[0] = newValue;
@@ -263,7 +242,7 @@ public:
                 break;
             }
                 
-            case ElementsParamEnvDecay: {
+            case RingsParamEnvDecay: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[1]) {
                     envParameters[1] = newValue;
@@ -272,7 +251,7 @@ public:
                 break;
             }
                 
-            case ElementsParamEnvSustain: {
+            case RingsParamEnvSustain: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[2]) {
                     envParameters[2] = newValue;
@@ -281,7 +260,7 @@ public:
                 break;
             }
                 
-            case ElementsParamEnvRelease: {
+            case RingsParamEnvRelease: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[3]) {
                     envParameters[3] = newValue;
@@ -293,95 +272,74 @@ public:
     }
     
     AUValue getParameter(AUParameterAddress address) {
-        if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
-            return modulationEngineRules.getParameter(address - ElementsParamModMatrixStart);
+        if (address >= RingsParamModMatrixStart && address <= RingsParamModMatrixEnd) {
+            return modulationEngineRules.getParameter(address - RingsParamModMatrixStart);
         }
         
         switch (address) {
-            case ElementsParamPitch:
+            case RingsParamPitch:
                 return pitch;
                 
-            case ElementsParamExciterEnvShape:
-                return basePatch.exciter_envelope_shape;
+            case RingsParamStructure:
+                return basePatch.structure;
                 
-            case ElementsParamBowLevel:
-                return basePatch.exciter_bow_level;
+            case RingsParamBrightness:
+                return basePatch.brightness;
                 
-            case ElementsParamBowTimbre:
-                return basePatch.exciter_bow_timbre;
+            case RingsParamDamping:
+                return basePatch.damping;
                 
-            case ElementsParamBlowLevel:
-                return basePatch.exciter_blow_level;
+            case RingsParamPosition:
+                return basePatch.position;
                 
-            case ElementsParamBlowMeta:
-                return basePatch.exciter_blow_meta;
-                
-            case ElementsParamBlowTimbre:
-                return basePatch.exciter_blow_timbre;
-                
-            case ElementsParamStrikeLevel:
-                return basePatch.exciter_strike_level;
-                
-            case ElementsParamStrikeMeta:
-                return basePatch.exciter_strike_meta;
-                
-            case ElementsParamStrikeTimbre:
-                return basePatch.exciter_strike_timbre;
-                
-            case ElementsParamResonatorGeometry:
-                return basePatch.resonator_geometry;
-                
-            case ElementsParamResonatorBrightness:
-                return basePatch.resonator_brightness;
-                
-            case ElementsParamResonatorDamping:
-                return basePatch.resonator_damping;
-                
-            case ElementsParamResonatorPosition:
-                return basePatch.resonator_position;
-                
-            case ElementsParamSpace:
-                return basePatch.space;
-                
-            case ElementsParamMode:
-                if (part.easter_egg_) {
-                    return 3.0f;
+            case RingsParamMode:
+                if (easterEgg) {
+                    return 6.0f;
                 } else {
-                    return (float) part.resonator_model();
+                    return (float) part.model();
                 }
                 
-            case ElementsParamDetune:
+            case RingsParamDetune:
                 return detune;
                 
-            case ElementsParamLfoRate:
+            case RingsParamPadX:
+                return modEngine.in[ModInPadX];
+                
+            case RingsParamPadY:
+                return modEngine.in[ModInPadY];
+                
+            case RingsParamPadGate:
+                return modEngine.in[ModInPadGate];
+                
+            case RingsParamLfoRate:
                 return lfoBaseRate;
                 
-            case ElementsParamLfoShape:
+            case RingsParamLfoShape:
                 return lfoShape;
                 
-            case ElementsParamLfoShapeMod:
+            case RingsParamLfoShapeMod:
                 return lfoShapeMod;
                 
-            case ElementsParamEnvAttack:
+            case RingsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
                 
-            case ElementsParamEnvDecay:
+            case RingsParamEnvDecay:
                 return ((float) envParameters[1]) / (float) UINT16_MAX;
                 
-            case ElementsParamEnvSustain:
+            case RingsParamEnvSustain:
                 return ((float) envParameters[2]) / (float) UINT16_MAX;
                 
-            case ElementsParamEnvRelease:
+            case RingsParamEnvRelease:
                 return ((float) envParameters[3]) / (float) UINT16_MAX;
                 
-            case ElementsParamVolume:
+            case RingsParamVolume:
                 return volume;
                 
-            case ElementsParamInputResonator:
-                return inputResonator ? 1.0f : 0.0f;
-                
-            case ElementsParamInputGain:
+            case RingsParamInputGain:
                 return inputGain;
+                
+            case RingsParamStereoSpread:
+                return stereo;
                 
             default:
                 return 0.0f;
@@ -400,7 +358,7 @@ public:
     
     // =========== MIDI
     
-    virtual void midiNoteOff() {
+    virtual void midiNoteOff() override {
         state = NoteStateReleasing;
         gate = false;
         envelope.TriggerLow();
@@ -416,25 +374,25 @@ public:
         state = NoteStatePlaying;
     }
     
-    virtual void midiNoteOn(uint8_t note, uint8_t vel) {
+    virtual void midiNoteOn(uint8_t note, uint8_t vel) override {
         currentNote = note;
         currentVelocity = ((float) vel) / 127.0;
         modEngine.in[ModInNote] = ((float) currentNote) / 127.0f;
         modEngine.in[ModInVelocity] = currentVelocity;
-
+        
         add();
     }
     
-    virtual void midiAllNotesOff() {
+    virtual void midiAllNotesOff() override {
         state = NoteStateUnused;
         gate = false;
     }
     
-    virtual uint8_t Note() {
+    virtual uint8_t Note() override {
         return currentNote;
     }
     
-    virtual int State() {
+    virtual int State() override {
         return state;
     }
     
@@ -469,22 +427,10 @@ public:
             updateLfoRate(modEngine.out[ModOutLFORate]);
         }
         
-        patch->exciter_envelope_shape = clamp(basePatch.exciter_envelope_shape + modEngine.out[ModOutExciterEnvShape], 0.0f, 1.0f);
-        patch->exciter_bow_level = clamp(basePatch.exciter_bow_level + modEngine.out[ModOutBowLevel], 0.0f, 1.0f);
-        patch->exciter_bow_timbre = clamp(basePatch.exciter_bow_timbre + modEngine.out[ModOutBowTimbre], 0.0f, 0.9995f);
-        patch->exciter_blow_level = clamp(basePatch.exciter_blow_level + modEngine.out[ModOutBlowLevel], 0.0f, 1.0f);
-        
-        ONE_POLE(patch->exciter_blow_meta, clamp(basePatch.exciter_blow_meta + modEngine.out[ModOutBlowMeta], 0.0f, 0.9995f), 0.05f); // LP
-        
-        patch->exciter_blow_timbre = clamp(basePatch.exciter_blow_timbre + modEngine.out[ModOutBlowTimbre], 0.0f, 0.9995f);
-        patch->exciter_strike_level = clamp(basePatch.exciter_strike_level + modEngine.out[ModOutStrikeLevel], 0.0f, 1.0f);
-        ONE_POLE(patch->exciter_strike_meta, clamp(basePatch.exciter_strike_meta + modEngine.out[ModOutStrikeMeta], 0.0f, 0.9995f),  0.05f); //LP
-        patch->exciter_strike_timbre = clamp(basePatch.exciter_strike_timbre + modEngine.out[ModOutStrikeTimbre], 0.0f, 0.9995f);
-        ONE_POLE(patch->resonator_geometry, clamp(basePatch.resonator_geometry + modEngine.out[ModOutResonatorGeometry], 0.0f, 0.9995f), 0.05f); // LP
-        patch->resonator_brightness = clamp(basePatch.resonator_brightness + modEngine.out[ModOutResonatorBrightness], 0.0f, 0.9995f);
-        patch->resonator_damping = clamp(basePatch.resonator_damping + modEngine.out[ModOutResonatorDamping], 0.0f, 0.9995f);
-        ONE_POLE(patch->resonator_position, clamp(basePatch.resonator_position + modEngine.out[ModOutResonatorPosition], 0.0f, 0.9995f), 0.01f); // LP
-        ONE_POLE(patch->space, clamp(basePatch.space + modEngine.out[ModOutSpace], 0.0f, 2.0f), 0.01f); // LP
+        ONE_POLE(patch.structure, clamp(basePatch.structure + modEngine.out[ModOutStructure], 0.0f, 0.9995f), 0.01f); // LP
+        ONE_POLE(patch.brightness, clamp(basePatch.brightness + modEngine.out[ModOutBrightness], 0.0f, 0.9995f), 0.01f);
+        ONE_POLE(patch.damping, clamp(basePatch.damping + modEngine.out[ModOutDamping], 0.0f, 0.9995f), 0.01f);
+        ONE_POLE(patch.position, clamp(basePatch.position + modEngine.out[ModOutPosition], 0.0f, 0.9995f), 0.01f); // LP
     }
     
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -499,8 +445,7 @@ public:
         }
         float mixedInput[kAudioBlockSize];
         
-        float *extInputPtr = &silence[0];
-        float *resInputPtr = extInputPtr;
+        float *input = &silence[0];
         
         int outputFramesRemaining = frameCount;
         int inputFramesRemaining = frameCount;
@@ -516,44 +461,66 @@ public:
                     inR += result.inputConsumed;
                     inputFramesRemaining -= result.inputConsumed;
                     
-                    for (int i = 0; i < kAudioBlockSize; i++) {
-                        mixedInput[i] = ((processedL[i] + processedR[i]) / 2.0f) * inputGain;
+                    if (easterEgg) {
+                        for (int i = 0; i < kAudioBlockSize; ++i) {
+                            mixedInput[i] = ((processedL[i] + processedR[i]) / 2.0f) * inputGain;
+                        }
+                    } else {
+                        for (int i = 0; i < kAudioBlockSize; i++) {
+                            float in_sample = ((processedL[i] + processedR[i]) / 2.0f) * inputGain;
+                            float error, gain;
+                            error = in_sample * in_sample - in_level;
+                            in_level += error * (error > 0.0f ? 0.1f : 0.0001f);
+                            gain = in_level <= kNoiseGateThreshold
+                            ? (1.0f / kNoiseGateThreshold) * in_level : 1.0f;
+                            mixedInput[i] = gain * in_sample;
+                        }
                     }
                     
-                    extInputPtr = !inputResonator ? &mixedInput[0] : &silence[0];
-                    resInputPtr = inputResonator ? &mixedInput[0] : &silence[0];
+                    input = &mixedInput[0];
                 }
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
-                elements::PerformanceState performance;
-                performance.note = currentNote + pitch + detune + 12.0f + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+                rings::PerformanceState performance;
                 
-                performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
-                                                if (i > ::kSampleRate * 5) {
-                                                performance.modulation = 0;
-                                                }*/
-                performance.strength = currentVelocity;
-                performance.gate = gate;
+                performance.tonic = pitch + 12.0f;
+                performance.note = currentNote;
+                performance.fm = detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+                performance.chord = chord;
+                
+                // TODO unsure here yet
+                performance.strum = gate;
+                gate = false;
+                performance.internal_exciter = !useAudioInput;
+                performance.internal_strum = false;
+
                 float finalVolume = clamp(volume + modEngine.out[ModOutLevel], 0.0f, 1.0f);
                 
-                part.Process(performance, extInputPtr, resInputPtr, renderedL, renderedR, kAudioBlockSize);
-                
+                if (easterEgg) {
+                    strummer.Process(NULL, kAudioBlockSize, &performance);
+                    string_synth.Process(performance, patch, input, renderedL, renderedR, kAudioBlockSize);
+                } else {
+                    strummer.Process(input, kAudioBlockSize, &performance);
+                    part.Process(performance, patch, input, renderedL, renderedR, kAudioBlockSize);
+                }
+
                 if (delayed_trigger) {
                     gate = true;
                     delayed_trigger = false;
                     envelope.TriggerHigh();
                 }
                 
+                float mix = 1.0f - stereo;
+                
                 if (modulationEngineRules.isPatched(ModOutLevel)) {
                     finalVolume *= modEngine.out[ModOutLevel];
                 }
-                
-                stmlib::ParameterInterpolator outputGain(&previousGain, finalVolume, kAudioBlockSize);
+                rings::ParameterInterpolator outputGain(&previousGain, finalVolume, kAudioBlockSize);
                 for (int i = 0; i < kAudioBlockSize; i++) {
                     const float amount = outputGain.Next();
 
-                    renderedL[i] *= amount;
-                    renderedR[i] *= amount;
+                    renderedL[i] = (renderedL[i] + (renderedR[i] * mix)) * amount;
+                    renderedR[i] = (renderedR[i] + (renderedL[i] * mix)) * amount;
                 }
                 
                 modEngine.in[ModInOut] = renderedL[kAudioBlockSize-1];
@@ -587,9 +554,15 @@ private:
     unsigned int activePolyphony = 1;
     
 public:
-    elements::Part part;
-    elements::Patch *patch;
-    elements::Patch basePatch;
+    rings::Part part;
+    rings::StringSynthPart string_synth;
+    rings::Strummer strummer;
+    rings::Patch patch;
+    rings::Patch basePatch;
+    float chord;
+    
+    const float kNoiseGateThreshold = 0.00003f;
+    float in_level = 0.0f;
     
     Converter *inputSrc = 0;
     float processedL[kAudioBlockSize] = {};
@@ -618,7 +591,7 @@ public:
     
     ModulationEngine modEngine;
     ModulationEngineRuleList modulationEngineRules;
-
+    
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;
     peaks::Lfo lfo;
@@ -629,8 +602,10 @@ public:
     float lfoBaseAmount;
     float volume;
     float inputGain;
-    bool inputResonator;
+    float stereo;
     float previousGain = 0.0f;
+    
+    bool easterEgg = false;
 };
 
-#endif /* ElementsDSPKernel_h */
+#endif /* RingsDSPKernel_h */

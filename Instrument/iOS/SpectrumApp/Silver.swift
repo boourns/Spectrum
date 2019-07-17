@@ -56,7 +56,7 @@ class Silver {
             }
             
             let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
+            print("responseString = \(responseString ?? "empty")")
         }
         
         task.resume()
