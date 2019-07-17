@@ -4,7 +4,4 @@
    <FileRef
       location = "group:Instrument/Spectrum.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:AUv3Host/AUv3Host.xcodeproj">
-   </FileRef>
 </Workspace>

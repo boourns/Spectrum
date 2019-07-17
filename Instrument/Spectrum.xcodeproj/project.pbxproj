@@ -18,7 +18,6 @@
 		92A10D181B95291B0081EA80 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
 		92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
 		92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
-		92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
 		E2154AA9229249AA00CEED2E /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2C229249AA00CEED2E /* resources.h */; };
 		E2154AAC229249AA00CEED2E /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2F229249AA00CEED2E /* resources.cc */; };
 		E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A30229249AA00CEED2E /* pot_controller.h */; };
@@ -410,8 +409,6 @@
 		1688EA141C7BD08F0008B611 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2B4A917B1C75403100F61BDD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
-		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
-		91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = drumLoop.caf; sourceTree = "<group>"; };
 		92A10C7B1B9517A50081EA80 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		92A10C7E1B9517A50081EA80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		92A10C811B9517A50081EA80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -793,16 +790,6 @@
 			name = "Instrument (iOS)";
 			sourceTree = "<group>";
 		};
-		91236D861B08F64600734C5E /* SimplePlayEngine */ = {
-			isa = PBXGroup;
-			children = (
-				91236D871B08F66200734C5E /* SimplePlayEngine.swift */,
-				91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */,
-			);
-			name = SimplePlayEngine;
-			path = ../Shared;
-			sourceTree = SOURCE_ROOT;
-		};
 		9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -819,8 +806,6 @@
 				E2154B342292D09C00CEED2E /* ActionKit.xcodeproj */,
 				E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */,
 				30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */,
-				92A10CA51B951C660081EA80 /* Shared Framework Code */,
-				91236D861B08F64600734C5E /* SimplePlayEngine */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
 				91D3DA171B023C1E008FFFBB /* Products */,
 				E2154B322292523600CEED2E /* Frameworks */,
@@ -860,23 +845,13 @@
 		92A10C8A1B9517A50081EA80 /* SpectrumFramework */ = {
 			isa = PBXGroup;
 			children = (
+				E2A2D08922DEC8260062FB57 /* Framework */,
 				E22AFB10229C415E00679F99 /* UI */,
 				B5234C811CA0963600902296 /* Shared */,
 				92A10C8E1B9517A50081EA80 /* Info.plist */,
 			);
 			name = SpectrumFramework;
 			path = iOS/SpectrumFramework;
-			sourceTree = SOURCE_ROOT;
-		};
-		92A10CA51B951C660081EA80 /* Shared Framework Code */ = {
-			isa = PBXGroup;
-			children = (
-				92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */,
-				92A10CA71B951C660081EA80 /* DSPKernel.hpp */,
-				92A10CA81B951C660081EA80 /* DSPKernel.mm */,
-			);
-			name = "Shared Framework Code";
-			path = ../Shared;
 			sourceTree = SOURCE_ROOT;
 		};
 		B5234C811CA0963600902296 /* Shared */ = {
@@ -1364,6 +1339,16 @@
 				E2495047229F82DF0073FBDC /* resample_sse.h */,
 			);
 			path = resampler;
+			sourceTree = "<group>";
+		};
+		E2A2D08922DEC8260062FB57 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */,
+				92A10CA71B951C660081EA80 /* DSPKernel.hpp */,
+				92A10CA81B951C660081EA80 /* DSPKernel.mm */,
+			);
+			path = Framework;
 			sourceTree = "<group>";
 		};
 		E2ABBB9722C47827001FA69B /* ModalEffect */ = {
@@ -1961,7 +1946,6 @@
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
 				E234605E22C8ED7400C9D005 /* Silver.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,
-				92A10D1F1B952A1F0081EA80 /* SimplePlayEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
