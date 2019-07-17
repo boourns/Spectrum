@@ -4,6 +4,8 @@
 #import "PlaitsDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
 #import "MIDIProcessor.hpp"
+#import "AudioBuffers.h"
+#import "StateManager.h"
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);
@@ -13,8 +15,8 @@
 
 @interface SpectrumAudioUnit ()
 
-@property AUAudioUnitBus *outputBus;
-@property AUAudioUnitBusArray *outputBusArray;
+@property AudioBuffers *audioBuffers;
+@property StateManager *stateManager;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -46,6 +48,8 @@
     // Initialize a default format for the busses.
     AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
     
+    _audioBuffers = [[AudioBuffers alloc] initForAudioUnit:self isEffect:false withFormat:defaultFormat];
+
     // Create a DSP kernel to handle the signal processing.
     _kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
     
@@ -284,15 +288,6 @@
     // Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, modMatrixPage, settingsPage]];
     
-    // Create the output bus.
-    _outputBusBuffer.init(defaultFormat, 2);
-    _outputBus = _outputBusBuffer.bus;
-    
-    // Create the input and output bus arrays.
-    _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self
-                                                             busType:AUAudioUnitBusTypeOutput
-                                                              busses: @[_outputBus]];
-    
     // Make a local pointer to the kernel to avoid capturing self.
     __block PlaitsDSPKernel *instrumentKernel = &_kernel;
     
@@ -344,15 +339,14 @@
     
     self.maximumFramesToRender = 512;
     
-    // Create factory preset array.
-    _currentFactoryPresetIndex = 0;
-    _presets = @[NewAUPreset(0, spectrumPresets[0].name),
-                 NewAUPreset(1, spectrumPresets[1].name),
-                 ];
-    self.currentPreset = _presets.firstObject;
+    _stateManager = [[StateManager alloc] initWithParameterTree:_parameterTree presets:@[NewAUPreset(0, spectrumPresets[0].name),
+                                                                                         NewAUPreset(1, spectrumPresets[1].name),
+                                                                                         ]
+                                                     presetData: &spectrumPresets[0]];
     
-    // assign midi map
-    [self setDefaultMIDIMap];
+    [self setCurrentPreset:[[_stateManager presets] objectAtIndex:0]];
+    
+    _kernel.midiProcessor.setCCMap([_stateManager defaultMIDIMap]);
     
     _kernel.setupModulationRules();
     
@@ -446,18 +440,29 @@
                                              children:@[input1Param, input2Param, depthParam, outParam]];
 }
 
-- (AUAudioUnitBusArray *)outputBusses {
-    return _outputBusArray;
+#pragma mark - AUAudioUnit (Overrides)
+
+- (AUAudioUnitBusArray *)inputBusses {
+    return [_audioBuffers inputBusses];
 }
+
+- (AUAudioUnitBusArray *)outputBusses {
+    return [_audioBuffers outputBusses];
+}
+
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError {
     if (![super allocateRenderResourcesAndReturnError:outError]) {
         return NO;
     }
     
-    _outputBusBuffer.allocateRenderResources(self.maximumFramesToRender);
+    if (![_audioBuffers allocateRenderResourcesAndReturnError:outError withMaximumFrames:self.maximumFramesToRender]) {
+        self.renderResourcesAllocated = NO;
+        
+        return NO;
+    }
     
-    _kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
+    _kernel.init(_audioBuffers.outputBus.format.channelCount, _audioBuffers.outputBus.format.sampleRate);
     _kernel.reset();
     
     return YES;
@@ -477,7 +482,6 @@
      render, we're doing it wrong.
      */
     __block PlaitsDSPKernel *state = &_kernel;
-    __block BufferedOutputBus *outputBusBuffer = &_outputBusBuffer;
     
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -488,63 +492,12 @@
                               const AURenderEvent        *realtimeEventListHead,
                               AURenderPullInputBlock      pullInputBlock) {
         
-        outputBusBuffer->prepareOutputBufferList(outputData, frameCount, true);
         state->setBuffers(outputData);
         state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
         
         return noErr;
     };
 }
-
-#pragma mark - fullstate - must override in order to call parameter observer when fullstate is reset.
-- (NSDictionary *)fullState {
-    DEBUG_LOG(@"fullState")
-    
-    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullState];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    
-    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        params[[@(_parameterTree.allParameters[i].address) stringValue]] = @(_parameterTree.allParameters[i].value);
-    }
-    
-    NSError* error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    printf("===========START============");
-    printf("%s", [[jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""] UTF8String]);
-    printf("===========END============");
-    
-    state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];
-    return state;
-}
-
-- (void)setFullState:(NSDictionary *)fullState {
-    DEBUG_LOG(@"setFullState")
-
-    NSData *data = (NSData *)fullState[@"data"];
-    NSDictionary *params = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    
-    [self loadData:params];
-    _kernel.setupModulationRules();
-}
-
-- (void)loadData:(NSDictionary *)data {
-    DEBUG_LOG(@"loadData")
-
-    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        NSNumber *savedValue = [data objectForKey: [@(_parameterTree.allParameters[i].address) stringValue]];
-        if (savedValue != nil) {
-            _parameterTree.allParameters[i].value = savedValue.floatValue;
-        }
-    }
-}
-
-#pragma mark- Preset Management
-
-typedef struct {
-    NSString *name;
-    NSString *data;
-} FactoryPreset;
 
 static const UInt8 kSpectrumNumPresets = 2;
 static const FactoryPreset spectrumPresets[kSpectrumNumPresets] =
@@ -559,8 +512,6 @@ static const FactoryPreset spectrumPresets[kSpectrumNumPresets] =
     }
 };
 
-
-
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 {
     AUAudioUnitPreset *aPreset = [AUAudioUnitPreset new];
@@ -569,117 +520,32 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     return aPreset;
 }
 
-- (AUAudioUnitPreset *)currentPreset
-{
-    DEBUG_LOG(@"currentPreset")
+// MARK - state management
 
-    if (_currentPreset.number >= 0) {
-        NSLog(@"Returning Current Factory Preset: %ld\n", (long)_currentFactoryPresetIndex);
-        return [_presets objectAtIndex:_currentFactoryPresetIndex];
-    } else {
-        NSLog(@"Returning Current Custom Preset: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
-        return _currentPreset;
-    }
+- (NSDictionary *)fullState {
+    return [_stateManager fullStateWithDictionary:[super fullState]];
 }
 
-- (void)setCurrentPreset:(AUAudioUnitPreset *)currentPreset
-{
-    if (nil == currentPreset) { NSLog(@"nil passed to setCurrentPreset!"); return; }
+- (void)setFullState:(NSDictionary *)fullState {
+    [_stateManager setFullState:fullState];
     
-    DEBUG_LOG(@"setCurrentPreset")
-    
-    if (currentPreset.number >= 0) {
-        // factory preset
-        for (AUAudioUnitPreset *factoryPreset in _presets) {
-            if (currentPreset.number == factoryPreset.number) {
-                
-                NSError *jsonError;
-                NSData *objectData = [spectrumPresets[factoryPreset.number].data dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
-                                                                     options:NSJSONReadingMutableContainers
-                                                                       error:&jsonError];
-                
-                [self loadData:json];
-                
-                // set factory preset as current
-                _currentPreset = currentPreset;
-                
-                _kernel.setupModulationRules();
-
-                break;
-            }
-        }
-    } else if (nil != currentPreset.name) {
-        // set custom preset as current
-        _currentPreset = currentPreset;
-        NSLog(@"currentPreset Custom: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
-    } else {
-        NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
-    }
+    _kernel.setupModulationRules();
 }
 
-//#pragma mark- MIDI CC Map
-//- (NSDictionary *)fullStateForDocument {
-//    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
-//    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
-//    return state;
-//}
-//
-//- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
-//    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
-//    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//    [self updateKernelMIDIMap];
-//}
+// MARK - preset management
 
-- (void)setDefaultMIDIMap {
-    int skip;
-    
-    midiCCMap = [[NSMutableDictionary alloc] init];
-    
-    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        if (_parameterTree.allParameters[i].address > 200) {
-            continue;
-        }
-        
-        if (_parameterTree.allParameters[i].address < 30) {
-            skip = 2;
-        } else {
-            skip = 4;
-        }
-        midiCCMap[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].address + skip);
-    }
-    
-    [self updateKernelMIDIMap];
+- (NSArray*)factoryPresets {
+    return [_stateManager presets];
 }
 
-- (void)updateKernelMIDIMap {
-    std::map<uint8_t, std::vector<MIDICCTarget>> kernelMIDIMap;
-    
-    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        AUParameterAddress address = _parameterTree.allParameters[i].address;
-        if (address > 200) {
-            continue;
-        }
-        uint8_t controller = [[midiCCMap objectForKey: @(address)] intValue];
-        
-        MIDICCTarget target;
-        target.parameter = _parameterTree.allParameters[i];
-        target.minimum = _parameterTree.allParameters[i].minValue;
-        target.maximum = _parameterTree.allParameters[i].maxValue;
-        
-        std::map<uint8_t, std::vector<MIDICCTarget>>::iterator existing = kernelMIDIMap.find(controller);
+- (AUAudioUnitPreset *)currentPreset {
+    return [_stateManager currentPreset];
+}
 
-        if(existing == kernelMIDIMap.end())
-        {
-            std::vector<MIDICCTarget> params;
-            params.push_back(target);
-            kernelMIDIMap[controller] = params;
-        } else {
-            existing->second.push_back(target);
-        }
-    }
+- (void)setCurrentPreset:(AUAudioUnitPreset *)currentPreset {
+    [_stateManager setCurrentPreset:currentPreset];
     
-    _kernel.midiProcessor.setCCMap(kernelMIDIMap);
+    _kernel.setupModulationRules();
 }
 
 @end
