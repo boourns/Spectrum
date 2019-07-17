@@ -11,7 +11,7 @@ import CoreAudioKit
 
 let ResponsiveBreak = CGFloat(540.0)
 
-public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDelegate {
+open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDelegate {
     // MARK: Properties
     
     public var audioUnit: AUAudioUnit? {
@@ -24,11 +24,11 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         }
     }
     var parameterObserverToken: AUParameterObserverToken?
-    var state: SpectrumState = SpectrumState()
+    public var state: SpectrumState = SpectrumState()
     
     var ui: UI?
 
-    public override func loadView() {
+    open override func loadView() {
         super.loadView()
         view.backgroundColor = state.colours.background
         
@@ -37,13 +37,13 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         UIButton.appearance().tintColor = state.colours.primary
     }
     
-    public override func viewWillLayoutSubviews() {
+    open override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
         layout()
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         // Respond to changes in the instrumentView (attack and/or release changes).
@@ -101,51 +101,51 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
         }
     }
     
-    func buildUI() -> UI {
+    open func buildUI() -> UI {
         fatalError("Override buildUI() in child VC")
     }
     
-    func knob(_ address: AUParameterAddress, size: CGFloat = 60.0) -> Knob {
+    public func knob(_ address: AUParameterAddress, size: CGFloat = 60.0) -> Knob {
         return Knob(state, address, size: size)
     }
     
-    func intKnob(_ address: AUParameterAddress, size: CGFloat = 60.0) -> IntKnob {
+    public func intKnob(_ address: AUParameterAddress, size: CGFloat = 60.0) -> IntKnob {
         return IntKnob(state, address, size: size)
     }
     
-    func picker(_ address: AUParameterAddress) -> Picker {
+    public func picker(_ address: AUParameterAddress) -> Picker {
         return Picker( state, address)
     }
     
-    func slider(_ address: AUParameterAddress) -> Slider {
+    public func slider(_ address: AUParameterAddress) -> Slider {
         return Slider( state, address)
     }
     
-    func touchPad(_ xAddress: AUParameterAddress, _ yAddress: AUParameterAddress, _ gateAddress: AUParameterAddress) -> TouchPad {
+    public func touchPad(_ xAddress: AUParameterAddress, _ yAddress: AUParameterAddress, _ gateAddress: AUParameterAddress) -> TouchPad {
         return TouchPad(state, xAddress, yAddress, gateAddress)
     }
     
-    func modTarget(_ name: String, _ address: AUParameterAddress) -> ModTarget {
+    public func modTarget(_ name: String, _ address: AUParameterAddress) -> ModTarget {
         return ModTarget(state, name, address)
     }
     
-    func panel(_ child: UIView) -> Panel {
+    public func panel(_ child: UIView) -> Panel {
         return Panel(state, child)
     }
     
-    func panel2(_ child: UIView) -> Panel2 {
+    public func panel2(_ child: UIView) -> Panel2 {
         return Panel2(state, child)
     }
     
-    func cStack(_ children: [UIView]) -> CStack {
+    public func cStack(_ children: [UIView]) -> CStack {
         return CStack(state, children)
     }
     
-    func button(_ address: AUParameterAddress, momentary: Bool = false) -> Button {
+    public func button(_ address: AUParameterAddress, momentary: Bool = false) -> Button {
         return Button(state, address, momentary: momentary)
     }
     
-    func modulationPage(lfoStart: AUParameterAddress, envStart: AUParameterAddress, modStart: AUParameterAddress) -> Page {
+    public func modulationPage(lfoStart: AUParameterAddress, envStart: AUParameterAddress, modStart: AUParameterAddress) -> Page {
         return Page("Modulation",
                     cStack([
                         Stack([
@@ -178,7 +178,7 @@ public class BaseAudioUnitViewController: AUViewController { //, InstrumentViewD
                         ]))
     }
     
-    func modMatrixPage(modStart: AUParameterAddress, numberOfRules: Int) -> Page {
+    public func modMatrixPage(modStart: AUParameterAddress, numberOfRules: Int) -> Page {
         let ruleStack: [Panel] = (0...numberOfRules-1).map { index in
             let start: AUParameterAddress = modStart + UInt64(index*4)
             return panel(cStack([HStack([picker(start + 0), picker(start + 1)]), HStack([knob(start + 2), picker(start+3)])]))

@@ -11,7 +11,7 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
-class Picker: UIView, ParameterView {
+open class Picker: UIView, ParameterView {
     let param: AUParameter
     let valueStrings: [String]
     let valueLabel = UILabel()
@@ -39,7 +39,7 @@ class Picker: UIView, ParameterView {
         setup()
     }
     
-    required init(coder: NSCoder) {
+    public required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

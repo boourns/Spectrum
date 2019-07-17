@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         }
     }
     
-    class HStack: UIStackView {
+    public class HStack: UIStackView {
         convenience init(_ children: [UIView]) {
             self.init()
             

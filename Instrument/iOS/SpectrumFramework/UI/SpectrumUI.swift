@@ -8,18 +8,18 @@
 import Foundation
 import UIKit
 
-struct SpectrumColours {
+public struct SpectrumColours {
     let primary: UIColor
     let panel2: UIColor
     let panel1: UIColor
     let background: UIColor
 }
 
-class SpectrumState {
+open class SpectrumState {
     var tree: AUParameterTree?
     var parameters: [AUParameterAddress: (AUParameter, ParameterView)] = [:]
     var isVertical: Bool = false
-    var colours: SpectrumColours = SpectrumUI.blue
+    public var colours: SpectrumColours = SpectrumUI.blue
     var cStacks: [UIStackView] = []
     
     func update(address: AUParameterAddress, value: Float) {
@@ -30,37 +30,37 @@ class SpectrumState {
     }
 }
 
-class SpectrumUI {
+open class SpectrumUI {
     
-    static let greyscale = SpectrumColours(
+    public static let greyscale = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
         panel2: UIColor.init(hex: "#38393bff")!,
         panel1: UIColor.init(hex: "#292a30ff")!, //"#313335ff")!,
         background: UIColor.init(hex: "#1e2022ff")!
     )
     
-    static let blue = SpectrumColours(
+    public static let blue = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
         panel2: UIColor.init(hex: "#092d81ff")!,
         panel1: UIColor.init(hex: "#072364ff")!, //"#313335ff")!,
         background: UIColor.init(hex: "#111111ff")!
     )
     
-    static let red = SpectrumColours(
+    public static let red = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
         panel2: UIColor.init(hex: "#890916ff")!,
         panel1: UIColor.init(hex: "#640710ff")!, //"#313335ff")!,
         background: UIColor.init(hex: "#111111ff")!
     )
     
-    static let purple = SpectrumColours(
+    public static let purple = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
         panel2: UIColor.init(hex: "#890948ff")!,
         panel1: UIColor.init(hex: "#640735ff")!, //"#313335ff")!,
         background: UIColor.init(hex: "#111111ff")!
     )
     
-    static let green = SpectrumColours(
+    public static let green = SpectrumColours(
         primary: UIColor.init(hex: "#d0d6d9ff")!,
         panel2: UIColor.init(hex: "#147129ff")!,
         panel1: UIColor.init(hex: "#00570Fff")!, //"#313335ff")!,
@@ -68,7 +68,7 @@ class SpectrumUI {
     )
 }
 
-class UI: UIView {
+open class UI: UIView {
     let state: SpectrumState
     let containerView = UIScrollView()
     let navigationView = UIStackView()
@@ -76,7 +76,7 @@ class UI: UIView {
     var currentPage: Page
     var stackVertically = false
     
-    init(state: SpectrumState, _ pages: [Page]) {
+    public init(state: SpectrumState, _ pages: [Page]) {
         self.state = state
         self.pages = pages
         self.currentPage = self.pages[0]
@@ -159,16 +159,16 @@ class UI: UIView {
         containerView.isScrollEnabled = (state.isVertical || currentPage.requiresScroll)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-class Page: UIView {
+open class Page: UIView {
     public let name: String
     public let requiresScroll: Bool
     
-    init(_ name: String, _ child: UIView, requiresScroll: Bool = false) {
+    public init(_ name: String, _ child: UIView, requiresScroll: Bool = false) {
         self.name = name
         self.requiresScroll = requiresScroll
         super.init(frame: CGRect.zero)
@@ -178,13 +178,13 @@ class Page: UIView {
         NSLayoutConstraint.activate(child.constraints(filling: self))
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-class Stack: UIStackView {
-    convenience init(_ children: [UIView]) {
+open class Stack: UIStackView {
+    public convenience init(_ children: [UIView]) {
         self.init()
         
         axis = .vertical
@@ -197,8 +197,8 @@ class Stack: UIStackView {
     }
 }
 
-class HStack: UIStackView {
-    convenience init(_ children: [UIView]) {
+open class HStack: UIStackView {
+    public convenience init(_ children: [UIView]) {
         self.init()
         
         axis = .horizontal
@@ -211,7 +211,7 @@ class HStack: UIStackView {
     }
 }
 
-class CStack: UIStackView {
+open class CStack: UIStackView {
     let state: SpectrumState
     
     init(_ state: SpectrumState, _ children: [UIView]) {
@@ -229,12 +229,12 @@ class CStack: UIStackView {
         state.cStacks.append(self)
     }
     
-    required init(coder: NSCoder) {
+    public required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-class Panel: UIView {
+open class Panel: UIView {
     var outline: UIView? = nil
     
     let state: SpectrumState
@@ -246,7 +246,7 @@ class Panel: UIView {
         setup(child: child)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -265,14 +265,14 @@ class Panel: UIView {
     }
 }
 
-class Panel2: Panel {
+open class Panel2: Panel {
     override init(_ state: SpectrumState, _ child: UIView) {
         super.init(state, child)
         setup(child: child)
         outline?.backgroundColor = state.colours.panel2
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

@@ -31,7 +31,7 @@ class TouchPadParameterContainer: ParameterView {
     }
 }
 
-class TouchPad: UIView {
+open class TouchPad: UIView {
     fileprivate struct Params {
         let x: AUParameter
         let y: AUParameter
@@ -82,7 +82,7 @@ class TouchPad: UIView {
         pad.updateTouchPoint(Double(params.x.value), Double(params.y.value))
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

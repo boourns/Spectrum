@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
-class Slider: UIView {
+open class Slider: UIView {
     let param: AUParameter
     let label = UILabel()
     let slider: PSlider
@@ -54,7 +54,7 @@ class Slider: UIView {
         setup()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

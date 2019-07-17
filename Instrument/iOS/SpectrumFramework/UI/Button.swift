@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
-class Button: UIView {
+open class Button: UIView {
     let param: AUParameter
     let button = UIButton()
     let momentary: Bool
@@ -47,7 +47,7 @@ class Button: UIView {
         setup()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

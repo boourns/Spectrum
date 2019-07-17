@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
-class IntKnob : Knob {
+open class IntKnob : Knob {
     override init(_ state: SpectrumState, _ address: AUParameterAddress, size: CGFloat = 60.0) {
         super.init(state, address, size: size)
         knob.roundValue = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -38,7 +38,7 @@ class IntKnob : Knob {
     }
 }
 
-class Knob: UIView, ParameterView {
+open class Knob: UIView, ParameterView {
     let param: AUParameter
     let label = UILabel()
     let knob: LiveKnob = LiveKnob()
@@ -80,7 +80,7 @@ class Knob: UIView, ParameterView {
         setup()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
