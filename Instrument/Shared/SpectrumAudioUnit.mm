@@ -25,16 +25,9 @@
 @implementation SpectrumAudioUnit {
     // C++ members need to be ivars; they would be copied on access if they were properties.
     PlaitsDSPKernel _kernel;
-    BufferedOutputBus _outputBusBuffer;
-    
-    AUAudioUnitPreset   *_currentPreset;
-    NSInteger           _currentFactoryPresetIndex;
-    NSArray<AUAudioUnitPreset *> *_presets;
-    
-    NSMutableDictionary *midiCCMap;
 }
+
 @synthesize parameterTree = _parameterTree;
-@synthesize factoryPresets = _presets;
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
@@ -469,8 +462,8 @@
 }
 
 - (void)deallocateRenderResources {
-    _outputBusBuffer.deallocateRenderResources();
-    
+    [_audioBuffers deallocateRenderResources];
+
     [super deallocateRenderResources];
 }
 

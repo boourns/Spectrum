@@ -29,14 +29,12 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
     // C++ members need to be ivars; they would be copied on access if they were properties.
     RingsDSPKernel _kernel;
     
-    NSMutableDictionary *midiCCMap;
     NSArray *modInputs;
     NSArray *modOutputs;
     bool loadAsEffect;
 }
 
 @synthesize parameterTree = _parameterTree;
-@synthesize factoryPresets = _presets;
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
