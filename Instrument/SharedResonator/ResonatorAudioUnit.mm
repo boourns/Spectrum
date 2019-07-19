@@ -10,20 +10,17 @@
 #import "RingsDSPKernel.hpp"
 #import "AudioBuffers.h"
 #import "StateManager.h"
+#import "HostTransport.h"
 
 @interface ResonatorAudioUnit ()
 
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
+@property HostTransport *hostTransport;
+
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
 @end
-
-AudioStreamBasicDescription asbd;
-AUHostMusicalContextBlock _musicalContext;
-AUMIDIOutputEventBlock _outputEventBlock;
-AUHostTransportStateBlock _transportStateBlock;
-AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
 
 @implementation ResonatorAudioUnit {
     // C++ members need to be ivars; they would be copied on access if they were properties.
@@ -302,6 +299,8 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
 
     self.maximumFramesToRender = 512;
     
+    _hostTransport = [HostTransport alloc];
+    
     return self;
 }
 
@@ -378,19 +377,11 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
     _kernel.midiAllNotesOff();
     
     if (self.musicalContextBlock) {
-        _musicalContext = self.musicalContextBlock;
-    }
-    
-    if (self.MIDIOutputEventBlock) {
-        _outputEventBlock = self.MIDIOutputEventBlock;
+        [_hostTransport setMusicalContextBlock: self.musicalContextBlock];
     }
     
     if (self.transportStateBlock) {
-        _transportStateBlock = self.transportStateBlock;
-    }
-    
-    if (self.scheduleMIDIEventBlock) {
-        _scheduleMIDIEventBlock = self.scheduleMIDIEventBlock;
+        [_hostTransport setTransportStateBlock: self.transportStateBlock];
     }
     
     return YES;
@@ -399,10 +390,7 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
 - (void)deallocateRenderResources {
     [_audioBuffers deallocateRenderResources];
     
-    _transportStateBlock = nil;
-    _outputEventBlock = nil;
-    _musicalContext = nil;
-    _scheduleMIDIEventBlock = nil;
+    _hostTransport = nil;
     
     [super deallocateRenderResources];
 }
@@ -420,9 +408,8 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
     __block bool isEffect = loadAsEffect;
     
     // AU event block refs.
-    __block AUHostMusicalContextBlock musicalContextCapture = self.musicalContextBlock;
-    __block AUHostTransportStateBlock transportStateCapture = self.transportStateBlock;
-    
+    __block HostTransport *hostTransport = _hostTransport;
+
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
                               const AudioTimeStamp       *timestamp,
@@ -449,16 +436,8 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
             }
         }
         
-        // MARK - get musical context
-        double currentTempo;
-        double currentBeatPosition;
-        NSInteger timeSignatureDenominator;
-        if (musicalContextCapture(&currentTempo, NULL, &timeSignatureDenominator, &currentBeatPosition, NULL, NULL) == false) {
-            return noErr;
-        }
-        
-       // NSLog(@"tempo %f beatPosition %f timeSignatureDenominator %li", currentTempo, currentBeatPosition, (long) timeSignatureDenominator);
-        
+        [hostTransport updateTransportState];
+        state->setTransportState([hostTransport kernelTransportState]);
         state->setBuffers(inAudioBufferList, outAudioBufferList);
         state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
         

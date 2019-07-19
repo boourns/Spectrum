@@ -225,6 +225,7 @@
 		E2495054229F82DF0073FBDC /* resample_sse.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495047229F82DF0073FBDC /* resample_sse.h */; };
 		E2495056229F83E30073FBDC /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495055229F83E30073FBDC /* arch.h */; };
 		E2495058229F84730073FBDC /* stack_alloc.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495057229F84730073FBDC /* stack_alloc.h */; };
+		E252330622DFA17600C437DA /* HostTransport.mm in Sources */ = {isa = PBXBuildFile; fileRef = E252330522DFA17600C437DA /* HostTransport.mm */; };
 		E27AD077229395240003C69C /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27AD076229395240003C69C /* Slider.swift */; };
 		E290DD1322DECC0800948C48 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2184A99229E294B00CA4DFE /* ModalViewController.swift */; };
 		E290DD1422DECC0800948C48 /* ModalAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2184A9B229E29C300CA4DFE /* ModalAudioUnit.mm */; };
@@ -656,6 +657,10 @@
 		E2495047229F82DF0073FBDC /* resample_sse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resample_sse.h; sourceTree = "<group>"; };
 		E2495055229F83E30073FBDC /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arch.h; sourceTree = "<group>"; };
 		E2495057229F84730073FBDC /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_alloc.h; sourceTree = "<group>"; };
+		E252330522DFA17600C437DA /* HostTransport.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HostTransport.mm; sourceTree = "<group>"; };
+		E252330C22DFA18800C437DA /* HostTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HostTransport.h; sourceTree = "<group>"; };
+		E252330D22E0C1A500C437DA /* KernelTransportState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KernelTransportState.h; sourceTree = "<group>"; };
+		E252330E22E0E02900C437DA /* LFOKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LFOKernel.hpp; sourceTree = "<group>"; };
 		E265FF14229CCF9700340255 /* iOSSpectrumFramework-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOSSpectrumFramework-Bridging-Header.h"; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		E2A2D07B22DDFF4F0062FB57 /* AudioBuffers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioBuffers.mm; sourceTree = "<group>"; };
@@ -870,6 +875,10 @@
 				E2A2D08222DDFF760062FB57 /* AudioBuffers.h */,
 				E2A2D08522DE3A6D0062FB57 /* StateManager.h */,
 				E2A2D08322DE3A0E0062FB57 /* StateManager.mm */,
+				E252330522DFA17600C437DA /* HostTransport.mm */,
+				E252330C22DFA18800C437DA /* HostTransport.h */,
+				E252330D22E0C1A500C437DA /* KernelTransportState.h */,
+				E252330E22E0E02900C437DA /* LFOKernel.hpp */,
 			);
 			name = Shared;
 			path = ../../Shared;
@@ -1960,6 +1969,7 @@
 				E2A2D08622DE725C0062FB57 /* AudioBuffers.mm in Sources */,
 				E216B03E22B9DE4E00467133 /* TouchPad.swift in Sources */,
 				E216B03B22B9DA8500467133 /* AKTouchPad.swift in Sources */,
+				E252330622DFA17600C437DA /* HostTransport.mm in Sources */,
 				E235624222B5E11500762D39 /* Knob.swift in Sources */,
 				E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */,
 				E225107922B53EA100DD88E8 /* SpectrumUI.swift in Sources */,

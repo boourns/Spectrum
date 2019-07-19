@@ -8,6 +8,8 @@
 #ifndef RingsDSPKernel_h
 #define RingsDSPKernel_h
 
+#import "KernelTransportState.h"
+
 #import "peaks/multistage_envelope.h"
 #import "DSPKernel.hpp"
 #import <vector>
@@ -15,8 +17,8 @@
 #import "rings/dsp/strummer.h"
 #import "rings/dsp/string_synth_part.h"
 #import "rings/dsp/part.h"
-#import "lfo.hpp"
 #import "converter.hpp"
+#import "LFOKernel.hpp"
 
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
@@ -91,7 +93,8 @@ class RingsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    RingsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
+    RingsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs),
+        lfo(RingsParamLfoRate, RingsParamLfoShape, RingsParamLfoShapeMod)
     {
         midiProcessor.noteStack.voices.push_back(this);
         
@@ -123,7 +126,6 @@ public:
 
         midiAllNotesOff();
         envelope.Init();
-        lfo.Init();
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
@@ -201,35 +203,6 @@ public:
                 float val = clamp(value, 0.0f, 1.0f);
                 modEngine.in[ModInPadGate] = val;
                 
-                break;
-            }
-                
-            case RingsParamLfoShape: {
-                uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
-                if (newShape != lfoShape) {
-                    lfoShape = newShape;
-                    lfo.set_shape((peaks::LfoShape) lfoShape);
-                }
-                break;
-            }
-                
-            case RingsParamLfoShapeMod: {
-                float newShape = clamp(value, -1.0f, 1.0f);
-                if (newShape != lfoShapeMod) {
-                    lfoShapeMod = newShape;
-                    uint16_t par = (newShape * 32767.0f);
-                    lfo.set_parameter(par);
-                }
-                break;
-            }
-                
-            case RingsParamLfoRate: {
-                float newRate = clamp(value, 0.0f, 1.0f);
-                
-                if (newRate != lfoBaseRate) {
-                    lfoBaseRate = newRate;
-                    updateLfoRate(0.0f);
-                }
                 break;
             }
                 
@@ -311,15 +284,6 @@ public:
             case RingsParamPadGate:
                 return modEngine.in[ModInPadGate];
                 
-            case RingsParamLfoRate:
-                return lfoBaseRate;
-                
-            case RingsParamLfoShape:
-                return lfoShape;
-                
-            case RingsParamLfoShapeMod:
-                return lfoShapeMod;
-                
             case RingsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
                 
@@ -354,6 +318,10 @@ public:
     void setBuffers(AudioBufferList* inBufferList, AudioBufferList* outBufferList) {
         inBufferListPtr = inBufferList;
         outBufferListPtr = outBufferList;
+    }
+    
+    void setTransportState(KernelTransportState state) {
+        transportState = state;
     }
     
     // =========== MIDI
@@ -401,11 +369,7 @@ public:
     }
     
     // ================= Modulations
-    void updateLfoRate(float modulationAmount) {
-        float calculatedRate = clamp(lfoBaseRate + modulationAmount, 0.0f, 1.0f);
-        uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
-        lfo.set_rate(rateParameter);
-    }
+    
     
     void runModulations(int blockSize) {
         envelope.Process(blockSize);
@@ -415,7 +379,7 @@ public:
             lfoAmount = modEngine.out[ModOutLFOAmount];
         }
         
-        lfoOutput = lfoAmount * ((float) lfo.Process(blockSize)) / INT16_MAX;
+        float lfoOutput = lfoAmount * lfo.process(blockSize);
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
@@ -424,7 +388,7 @@ public:
         modEngine.run();
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
-            updateLfoRate(modEngine.out[ModOutLFORate]);
+            lfo.updateRate(modEngine.out[ModOutLFORate]);
         }
         
         ONE_POLE(patch.structure, clamp(basePatch.structure + modEngine.out[ModOutStructure], 0.0f, 0.9995f), 0.01f); // LP
@@ -559,6 +523,7 @@ public:
     rings::Strummer strummer;
     rings::Patch patch;
     rings::Patch basePatch;
+    KernelTransportState transportState;
     float chord;
     
     const float kNoiseGateThreshold = 0.00003f;
@@ -594,12 +559,9 @@ public:
     
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;
-    peaks::Lfo lfo;
-    float lfoOutput;
-    float lfoBaseRate;
-    float lfoShape;
-    float lfoShapeMod;
-    float lfoBaseAmount;
+    
+    LFOKernel lfo;
+    
     float volume;
     float inputGain;
     float stereo;
