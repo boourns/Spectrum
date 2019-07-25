@@ -49,6 +49,9 @@ enum {
     RingsParamEnvRelease = 19,
     RingsParamInputGain = 20,
     RingsParamStereoSpread = 21,
+    RingsParamLfoTempoSync = 22,
+    RingsParamLfoResetPhase = 23,
+    RingsParamLfoKeyReset = 24,
     RingsParamModMatrixStart = 400,
     RingsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
@@ -94,7 +97,7 @@ public:
     // MARK: Member Functions
     
     RingsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs),
-        lfo(RingsParamLfoRate, RingsParamLfoShape, RingsParamLfoShapeMod)
+        lfo(RingsParamLfoRate, RingsParamLfoShape, RingsParamLfoShapeMod, RingsParamLfoTempoSync, RingsParamLfoResetPhase, RingsParamLfoKeyReset)
     {
         midiProcessor.noteStack.voices.push_back(this);
         
@@ -126,6 +129,7 @@ public:
 
         midiAllNotesOff();
         envelope.Init();
+        lfo.Init(48000);
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
@@ -141,6 +145,11 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= RingsParamModMatrixStart && address <= RingsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - RingsParamModMatrixStart, value);
+            return;
+        }
+        
+        if (lfo.ownParameter(address)) {
+            lfo.setParameter(address, value);
             return;
         }
         
@@ -249,6 +258,10 @@ public:
             return modulationEngineRules.getParameter(address - RingsParamModMatrixStart);
         }
         
+        if (lfo.ownParameter(address)) {
+            return lfo.getParameter(address);
+        }
+        
         switch (address) {
             case RingsParamPitch:
                 return pitch;
@@ -322,6 +335,7 @@ public:
     
     void setTransportState(KernelTransportState state) {
         transportState = state;
+        lfo.setTransportState(&transportState);
     }
     
     // =========== MIDI
@@ -336,6 +350,7 @@ public:
         if (state == NoteStateUnused) {
             gate = true;
             envelope.TriggerHigh();
+            lfo.trigger();
         } else {
             delayed_trigger = true;
         }
@@ -449,7 +464,7 @@ public:
                 
                 performance.tonic = pitch + 12.0f;
                 performance.note = currentNote;
-                performance.fm = detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+                performance.fm = clamp(detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f), -127.0f, 127.0f);
                 performance.chord = chord;
                 
                 // TODO unsure here yet
@@ -472,6 +487,7 @@ public:
                     gate = true;
                     delayed_trigger = false;
                     envelope.TriggerHigh();
+                    lfo.trigger();
                 }
                 
                 float mix = 1.0f - stereo;

@@ -6,6 +6,7 @@
 #import "MIDIProcessor.hpp"
 #import "AudioBuffers.h"
 #import "StateManager.h"
+#import "HostTransport.h"
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);
@@ -17,6 +18,7 @@
 
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
+@property HostTransport *hostTransport;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -254,10 +256,26 @@
                                                                         min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                       flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameter *lfoTempoSync = [AUParameterTree createParameterWithIdentifier:@"lfoTempoSync" name:@"Tempo Sync"
+                                                                  address:PlaitsParamLfoTempoSync
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoResetPhase = [AUParameterTree createParameterWithIdentifier:@"lfoResetPhase" name:@"Reset Phase"
+                                                                  address:PlaitsParamLfoResetPhase
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoKeyReset = [AUParameterTree createParameterWithIdentifier:@"lfoKeyReset" name:@"Key Reset"
+                                                                  address:PlaitsParamLfoKeyReset
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    
     AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam, portamento]];
     
     
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"modulation" name:@"Modulation" children:@[lfoRate, lfoShape, lfoShapeMod, padX, padY, padGate]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"modulation" name:@"Modulation" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset, padX, padY, padGate]];
     
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
                                                                         children:@[[self modMatrixRule:0 parameterOffset:PlaitsParamModMatrixStart],
@@ -330,6 +348,8 @@
         }
     }
     
+    _hostTransport = [HostTransport alloc];
+
     self.maximumFramesToRender = 512;
     
     _stateManager = [[StateManager alloc] initWithParameterTree:_parameterTree presets:@[NewAUPreset(0, spectrumPresets[0].name),
@@ -458,11 +478,21 @@
     _kernel.init(_audioBuffers.outputBus.format.channelCount, _audioBuffers.outputBus.format.sampleRate);
     _kernel.reset();
     
+    if (self.musicalContextBlock) {
+        [_hostTransport setMusicalContextBlock: self.musicalContextBlock];
+    }
+    
+    if (self.transportStateBlock) {
+        [_hostTransport setTransportStateBlock: self.transportStateBlock];
+    }
+    
     return YES;
 }
 
 - (void)deallocateRenderResources {
     [_audioBuffers deallocateRenderResources];
+
+    _hostTransport = nil;
 
     [super deallocateRenderResources];
 }
@@ -475,6 +505,7 @@
      render, we're doing it wrong.
      */
     __block PlaitsDSPKernel *state = &_kernel;
+    __block HostTransport *hostTransport = _hostTransport;
     
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -484,6 +515,9 @@
                               AudioBufferList            *outputData,
                               const AURenderEvent        *realtimeEventListHead,
                               AURenderPullInputBlock      pullInputBlock) {
+        
+        [hostTransport updateTransportState];
+        state->setTransportState([hostTransport kernelTransportState]);
         
         state->setBuffers(outputData);
         state->processWithEvents(timestamp, frameCount, realtimeEventListHead);

@@ -79,6 +79,14 @@ namespace peaks {
         return sample * level_ >> 15;
     }
     
+    int16_t Lfo::Process(size_t size, uint32_t phase_increment) {
+        phase_increment_ = phase_increment;
+        
+        phase_ += phase_increment_ * size;
+        int32_t sample = (this->*compute_sample_fn_table_[shape_])();
+        return sample * level_ >> 15;
+    }
+    
     void Lfo::Trigger() {
 //        bool reset_phase = true;
 //        if (sync_) {

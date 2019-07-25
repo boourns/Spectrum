@@ -32,6 +32,9 @@ enum RingsParam: AUParameterAddress {
     case EnvRelease = 19
     case InputGain = 20
     case StereoSpread = 21
+    case LfoTempoSync = 22
+    case LfoResetPhase = 23
+    case LfoKeyReset = 24
     
     case ModMatrixStart = 400
     case ModMatrixEnd = 440 // 26 + 40 = 66
@@ -82,7 +85,9 @@ class ResonatorViewController: BaseAudioUnitViewController {
                     ]) // cstack
             ), // page
             
-            modulationPage(lfoStart: RingsParam.LfoRate.rawValue, envStart: RingsParam.EnvAttack.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
+            lfoPage(rate: RingsParam.LfoRate.rawValue, shape: RingsParam.LfoShape.rawValue, shapeMod: RingsParam.LfoShapeMod.rawValue, tempoSync: RingsParam.LfoTempoSync.rawValue, resetPhase: RingsParam.LfoResetPhase.rawValue, keyReset: RingsParam.LfoKeyReset.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
+                
+            envPage(envStart: RingsParam.EnvAttack.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
             
             modMatrixPage(modStart: RingsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
 

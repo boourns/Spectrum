@@ -38,6 +38,9 @@ enum ElementsParam: AUParameterAddress {
     case EnvRelease = 25
     case InputGain = 26
     case InputResonator = 27
+    case LfoTempoSync = 28
+    case LfoResetPhase = 29
+    case LfoKeyReset = 30
     case ModMatrixStart = 400
     case ModMatrixEnd = 440
 };
@@ -119,7 +122,10 @@ class ModalViewController: BaseAudioUnitViewController {
                         ])) //stack
                     ]) // cstack
             ), // page
-            modulationPage(lfoStart: ElementsParam.LfoRate.rawValue, envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
+            
+            lfoPage(rate: ElementsParam.LfoRate.rawValue, shape: ElementsParam.LfoShape.rawValue, shapeMod: ElementsParam.LfoShapeMod.rawValue, tempoSync: ElementsParam.LfoTempoSync.rawValue, resetPhase: ElementsParam.LfoResetPhase.rawValue, keyReset: ElementsParam.LfoKeyReset.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
+            
+            envPage(envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
             
             modMatrixPage(modStart: ElementsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
             //LFOPage(),

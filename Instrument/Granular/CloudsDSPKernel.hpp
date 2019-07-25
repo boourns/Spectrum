@@ -50,6 +50,9 @@ enum {
     CloudsParamEnvSustain = 24,
     CloudsParamEnvRelease = 25,
     CloudsParamVolume = 26,
+    CloudsParamLfoTempoSync = 27,
+    CloudsParamLfoResetPhase = 28,
+    CloudsParamLfoKeyReset = 29,
     CloudsParamModMatrixStart = 400,
     CloudsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     

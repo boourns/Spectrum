@@ -11,11 +11,13 @@
 #import "BufferedAudioBus.hpp"
 #import "AudioBuffers.h"
 #import "StateManager.h"
+#import "HostTransport.h"
 
 @interface ModalAudioUnit ()
 
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
+@property HostTransport *hostTransport;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -213,7 +215,23 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod]];
+    AUParameter *lfoTempoSync = [AUParameterTree createParameterWithIdentifier:@"lfoTempoSync" name:@"Tempo Sync"
+                                                                       address:ElementsParamLfoTempoSync
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoResetPhase = [AUParameterTree createParameterWithIdentifier:@"lfoResetPhase" name:@"Reset Phase"
+                                                                        address:ElementsParamLfoResetPhase
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoKeyReset = [AUParameterTree createParameterWithIdentifier:@"lfoKeyReset" name:@"Key Reset"
+                                                                      address:ElementsParamLfoKeyReset
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset]];
     
     
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
@@ -344,6 +362,7 @@
     
     _kernel.setupModulationRules();
     
+    _hostTransport = [HostTransport alloc];
 
     self.maximumFramesToRender = 512;
     
@@ -420,11 +439,21 @@
     _kernel.init(_audioBuffers.outputBus.format.channelCount, _audioBuffers.outputBus.format.sampleRate);
     _kernel.midiAllNotesOff();
     
+    if (self.musicalContextBlock) {
+        [_hostTransport setMusicalContextBlock: self.musicalContextBlock];
+    }
+    
+    if (self.transportStateBlock) {
+        [_hostTransport setTransportStateBlock: self.transportStateBlock];
+    }
+    
     return YES;
 }
 
 - (void)deallocateRenderResources {
     [_audioBuffers deallocateRenderResources];
+
+    _hostTransport = nil;
 
     [super deallocateRenderResources];
 }
@@ -439,6 +468,8 @@
     __block ElementsDSPKernel *state = &_kernel;
     __block BufferedInputBus *input = [_audioBuffers inputBus];
     __block bool isEffect = loadAsEffect;
+    __block HostTransport *hostTransport = _hostTransport;
+
 
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -465,6 +496,9 @@
                 outAudioBufferList->mBuffers[i].mData = inAudioBufferList->mBuffers[i].mData;
             }
         }
+        
+        [hostTransport updateTransportState];
+        state->setTransportState([hostTransport kernelTransportState]);
         
         state->setBuffers(inAudioBufferList, outAudioBufferList);
         state->processWithEvents(timestamp, frameCount, realtimeEventListHead);

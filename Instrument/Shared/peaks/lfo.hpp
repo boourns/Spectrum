@@ -91,13 +91,11 @@ namespace peaks {
         uint16_t rate_;
         LfoShape shape_;
         int16_t parameter_;
-        int32_t reset_phase_;
         int32_t level_;
         
         bool sync_;
         uint32_t sync_counter_;
         
-        uint32_t phase_;
         uint32_t phase_increment_;
         
         uint32_t period_;
@@ -112,12 +110,16 @@ namespace peaks {
         static ComputeSampleFn compute_sample_fn_table_[];
         
     public:
+        uint32_t phase_;
+        uint32_t reset_phase_;
         
         Lfo() { }
         ~Lfo() { }
         
         void Init();
         int16_t Process(size_t size);
+        int16_t Process(size_t size, uint32_t phase_increment);
+
         void Trigger();
         
         inline void set_rate(uint16_t rate) {

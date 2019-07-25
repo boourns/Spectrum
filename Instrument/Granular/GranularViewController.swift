@@ -36,6 +36,10 @@ enum CloudsParam: AUParameterAddress {
     case EnvSustain = 24
     case EnvRelease = 25
     case Volume = 26
+    case LfoTempoSync = 27
+    case LfoResetPhase = 28
+    case LfoKeyReset = 29
+    
     case ModMatrixStart = 400
     case ModMatrixEnd = 440
 };
@@ -92,7 +96,10 @@ class GranularViewController: BaseAudioUnitViewController {
                  ])
             ),
             
-            modulationPage(lfoStart: CloudsParam.LfoRate.rawValue, envStart: CloudsParam.EnvAttack.rawValue, modStart: CloudsParam.ModMatrixStart.rawValue),
+            lfoPage(rate: CloudsParam.LfoRate.rawValue, shape: CloudsParam.LfoShape.rawValue, shapeMod: CloudsParam.LfoShapeMod.rawValue, tempoSync: CloudsParam.LfoTempoSync.rawValue, resetPhase: CloudsParam.LfoResetPhase.rawValue, keyReset: CloudsParam.LfoKeyReset.rawValue, modStart: CloudsParam.ModMatrixStart.rawValue),
+            
+            envPage(envStart: CloudsParam.EnvAttack.rawValue, modStart: CloudsParam.ModMatrixStart.rawValue),
+            
             modMatrixPage(modStart: CloudsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
             
             ]) // ui page list

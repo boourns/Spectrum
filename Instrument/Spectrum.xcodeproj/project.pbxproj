@@ -243,7 +243,6 @@
 		E290DD2122DECCFF00948C48 /* ResonatorAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E22C340B22C5BACF00185BB5 /* ResonatorAudioUnit.mm */; };
 		E290DD2222DECCFF00948C48 /* ResonatorAudioUnit.h in Sources */ = {isa = PBXBuildFile; fileRef = E22C340D22C5BB1100185BB5 /* ResonatorAudioUnit.h */; };
 		E290DD2322DECCFF00948C48 /* RingsDSPKernel.hpp in Sources */ = {isa = PBXBuildFile; fileRef = E22C340F22C5BB3200185BB5 /* RingsDSPKernel.hpp */; };
-		E2A2D07C22DDFF4F0062FB57 /* AudioBuffers.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A2D07B22DDFF4F0062FB57 /* AudioBuffers.mm */; };
 		E2A2D08422DE3A0E0062FB57 /* StateManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A2D08322DE3A0E0062FB57 /* StateManager.mm */; };
 		E2A2D08622DE725C0062FB57 /* AudioBuffers.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A2D07B22DDFF4F0062FB57 /* AudioBuffers.mm */; };
 		E2A2D08722DEC35A0062FB57 /* SpectrumAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5234C831CA0966600902296 /* SpectrumAudioUnit.mm */; };
@@ -1955,7 +1954,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2A2D07C22DDFF4F0062FB57 /* AudioBuffers.mm in Sources */,
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
 				E234605E22C8ED7400C9D005 /* Silver.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,

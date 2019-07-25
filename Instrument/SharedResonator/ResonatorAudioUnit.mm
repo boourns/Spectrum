@@ -149,6 +149,21 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameter *lfoTempoSync = [AUParameterTree createParameterWithIdentifier:@"lfoTempoSync" name:@"Tempo Sync"
+                                                                       address:RingsParamLfoTempoSync
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoResetPhase = [AUParameterTree createParameterWithIdentifier:@"lfoResetPhase" name:@"Reset Phase"
+                                                                        address:RingsParamLfoResetPhase
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *lfoKeyReset = [AUParameterTree createParameterWithIdentifier:@"lfoKeyReset" name:@"Key Reset"
+                                                                      address:RingsParamLfoKeyReset
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
     AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
                                                                address:RingsParamPadX
                                                                    min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -164,7 +179,7 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, padX, padY, padGate]];
+    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset, padX, padY, padGate]];
     
     
     AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];

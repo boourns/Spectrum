@@ -145,17 +145,37 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
         return Button(state, address, momentary: momentary)
     }
     
-    public func modulationPage(lfoStart: AUParameterAddress, envStart: AUParameterAddress, modStart: AUParameterAddress) -> Page {
-        return Page("Modulation",
+    public func lfoPage(rate: AUParameterAddress, shape: AUParameterAddress, shapeMod: AUParameterAddress, tempoSync: AUParameterAddress, resetPhase: AUParameterAddress, keyReset: AUParameterAddress, modStart: AUParameterAddress) -> Page {
+        return Page("LFO",
+            cStack([
+                Stack([
+                    panel(Stack([
+                        HStack([
+                            knob(rate), // LFO Speed
+                            picker(shape), // LFO Wave
+                            knob(shapeMod), // LFO Shape Mod
+                            ]),
+                        ])),
+                    panel2(HStack([
+                        button(tempoSync, momentary: false),
+                        knob(resetPhase),
+                        button(keyReset, momentary: false)
+                        ]))
+                    ]),
+                Stack([
+                    panel(HStack([
+                        modTarget("LFO -> 1", modStart),
+                        modTarget("LFO -> 2", modStart+4),
+                        ])),
+                ])
+            ])
+        )
+    }
+    
+    public func envPage(envStart: AUParameterAddress, modStart: AUParameterAddress) -> Page {
+        return Page("Env",
                     cStack([
                         Stack([
-                            panel(Stack([
-                                HStack([
-                                    knob(lfoStart), // LFO Speed
-                                    picker(lfoStart+1), // LFO Wave
-                                    knob(lfoStart+2), // LFO Shape Mod
-                                    ]),
-                                ])),
                             panel2(Stack([
                                 slider(envStart),
                                 slider(envStart+1),
@@ -163,18 +183,20 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
                                 slider(envStart+3),
                                 ]))
                             ]),
-                        Stack([
-                            panel(HStack([
-                                modTarget("LFO -> 1", modStart),
-                                modTarget("LFO -> 2", modStart+4),
+                            panel(Stack([
+                                HStack([
+                                    ]),
                                 ])),
+                        Stack([
                             panel2(Stack([
                                 HStack([
                                     modTarget("Env -> 1", modStart+8),
                                     modTarget("Env -> 2", modStart+12),
                                     ]),
                                 ])),
-                            ])
+                            ]),
+                            panel(HStack([
+                                ])),
                         ]))
     }
     

@@ -44,6 +44,9 @@ enum PlaitsParam: AUParameterAddress {
     case Unison = 33
     case Polyphony = 34
     case Slop = 35
+    case LfoTempoSync = 36
+    case LfoResetPhase = 37
+    case LfoKeyReset = 38
     case ModMatrixStart = 400
     case ModMatrixEnd = 448
 };
@@ -125,7 +128,10 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                 ])
                             )])),
             
-            modulationPage(lfoStart: PlaitsParam.LfoRate.rawValue, envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
+            lfoPage(rate: PlaitsParam.LfoRate.rawValue, shape: PlaitsParam.LfoShape.rawValue, shapeMod: PlaitsParam.LfoShapeMod.rawValue, tempoSync: PlaitsParam.LfoTempoSync.rawValue, resetPhase: PlaitsParam.LfoResetPhase.rawValue, keyReset: PlaitsParam.LfoKeyReset.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
+            
+            envPage(envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
+            
             modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6)
         
             //LFOPage(),

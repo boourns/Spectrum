@@ -13,13 +13,13 @@
 #import "plaits/dsp/voice.h"
 #import "peaks/multistage_envelope.h"
 #import "stmlib/dsp/parameter_interpolator.h"
-#import "lfo.hpp"
-
 #import "converter.hpp"
 #import "DSPKernel.hpp"
 
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
+#import "LFOKernel.hpp"
+
 
 #ifdef DEBUG
 #define KERNEL_DEBUG_LOG(...) printf(__VA_ARGS__);
@@ -63,6 +63,9 @@ enum {
     PlaitsParamUnison = 33,
     PlaitsParamPolyphony = 34,
     PlaitsParamSlop = 35,
+    PlaitsParamLfoTempoSync = 36,
+    PlaitsParamLfoResetPhase = 37,
+    PlaitsParamLfoKeyReset = 38,
 
     PlaitsParamModMatrixStart = 400,
     PlaitsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 39 + 48 = 87
@@ -124,7 +127,7 @@ public:
         
         peaks::MultistageEnvelope envelope;
         peaks::MultistageEnvelope ampEnvelope;
-        peaks::Lfo lfo;
+        LFOKernel lfo;
         float lfoOutput;
         float out, aux;
         float rightGain, leftGain, rightGainTarget, leftGainTarget;
@@ -139,7 +142,10 @@ public:
         
         bool delayed_trigger = false;
         
-        VoiceState() : modEngine(NumModulationInputs, NumModulationOutputs) { }
+        VoiceState() : modEngine(NumModulationInputs, NumModulationOutputs),
+        lfo(PlaitsParamLfoRate, PlaitsParamLfoShape, PlaitsParamLfoShapeMod, PlaitsParamLfoTempoSync, PlaitsParamLfoResetPhase, PlaitsParamLfoKeyReset) {
+            
+        }
         
         void Init(ModulationEngineRuleList *rules) {
             KERNEL_DEBUG_LOG("kernel voice Init")
@@ -149,7 +155,7 @@ public:
             plaitsFramesIndex = kAudioBlockSize;
             envelope.Init();
             ampEnvelope.Init();
-            lfo.Init();
+            lfo.Init(48000);
             modEngine.rules = rules;
             modEngine.in[ModInDirect] = 1.0f;
         }
@@ -217,12 +223,6 @@ public:
         
         // === MODULATIONS
         
-        void updateLfoRate(float modulationAmount) {
-            float calculatedRate = clamp(kernel->lfoBaseRate + modulationAmount, 0.0f, 1.0f);
-            uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
-            lfo.set_rate(rateParameter);
-        }
-        
         void updatePortamento(float modulationAmount) {
             portamento = clamp(kernel->portamento + modulationAmount, 0.0, 0.9995);
             portamento = std::pow(portamento, 0.05f);
@@ -237,7 +237,7 @@ public:
                 lfoAmount = modEngine.out[ModOutLFOAmount];
             }
             
-            lfoOutput = lfoAmount * ((float) lfo.Process(blockSize)) / INT16_MAX;
+            lfoOutput = lfoAmount * lfo.process(blockSize);
             
             modEngine.in[ModInLFO] = lfoOutput;
             modEngine.in[ModInEnvelope] = envelope.value;
@@ -254,7 +254,7 @@ public:
             modEngine.run();
             
             if (kernel->modulationEngineRules.isPatched(ModOutLFORate)) {
-                updateLfoRate(modEngine.out[ModOutLFORate]);
+                lfo.updateRate(modEngine.out[ModOutLFORate]);
             }
             
             modulations.engine = modEngine.out[ModOutEngine];
@@ -392,6 +392,13 @@ public:
             return;
         }
         
+        if (voices[0].lfo.ownParameter(address)) {
+            for (int i = 0; i < kMaxPolyphony; i++) {
+                voices[i].lfo.setParameter(address, value);
+            }
+            return;
+        }
+        
         switch (address) {
             case PlaitsParamTimbre:
                 patch.timbre = clamp(value, 0.0f, 1.0f);
@@ -461,41 +468,6 @@ public:
             case PlaitsParamPanSpread:
                 panSpread = clamp(value, 0.0f, 1.0f);
                 break;
-                
-            case PlaitsParamLfoShape: {
-                uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
-                if (newShape != lfoShape) {
-                    lfoShape = newShape;
-                    for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].lfo.set_shape((peaks::LfoShape) lfoShape);
-                    }
-                }
-                break;
-            }
-                
-            case PlaitsParamLfoShapeMod: {
-                float newShape = clamp(value, -1.0f, 1.0f);
-                if (newShape != lfoShapeMod) {
-                    lfoShapeMod = newShape;
-                    uint16_t par = (newShape * 32767.0f);
-                    for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].lfo.set_parameter(par);
-                    }
-                }
-                break;
-            }
-                
-            case PlaitsParamLfoRate: {
-                float newRate = clamp(value, 0.0f, 1.0f);
-
-                if (newRate != lfoBaseRate) {
-                    lfoBaseRate = newRate;
-                    for (int i = 0; i < kMaxPolyphony; i++) {
-                        voices[i].updateLfoRate(0.0f);
-                    }
-                }
-                break;
-            }
                 
             case PlaitsParamPitchBendRange:
                 midiProcessor.bendRange = round(clamp(value, 0.0f, 12.0f));
@@ -621,6 +593,10 @@ public:
             return modulationEngineRules.getParameter(address - PlaitsParamModMatrixStart);
         }
         
+        if (voices[0].lfo.ownParameter(address)) {
+            return voices[0].lfo.getParameter(address);
+        }
+        
         switch (address) {
             case PlaitsParamTimbre:
                 return patch.timbre;
@@ -733,6 +709,13 @@ public:
         midiProcessor.handleMIDIEvent(midiEvent);
     }
     
+    void setTransportState(KernelTransportState state) {
+        transportState = state;
+        for (int i = 0; i < kMaxPolyphony; i++) {
+            voices[i].lfo.setTransportState(&transportState);
+        }
+    }
+    
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         float* outL = (float*)outBufferListPtr->mBuffers[0].mData + bufferOffset;
         float* outR = (float*)outBufferListPtr->mBuffers[1].mData + bufferOffset;
@@ -812,6 +795,7 @@ public:
     
     plaits::Modulations modulations;
     plaits::Patch patch;
+    KernelTransportState transportState;
     
     Converter *outputSrc = 0;
     float renderedL[kAudioBlockSize] = {};

@@ -14,7 +14,7 @@
 #import "DSPKernel.hpp"
 #import <vector>
 #import "elements/dsp/part.h"
-#import "lfo.hpp"
+#import "LFOKernel.hpp"
 #import "converter.hpp"
 
 #import "MIDIProcessor.hpp"
@@ -52,6 +52,9 @@ enum {
     ElementsParamEnvRelease = 25,
     ElementsParamInputGain = 26,
     ElementsParamInputResonator = 27,
+    ElementsParamLfoTempoSync = 28,
+    ElementsParamLfoResetPhase = 29,
+    ElementsParamLfoKeyReset = 30,
     ElementsParamModMatrixStart = 400,
     ElementsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
@@ -103,7 +106,9 @@ class ElementsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    ElementsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
+    ElementsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs),
+        lfo(ElementsParamLfoRate, ElementsParamLfoShape, ElementsParamLfoShapeMod, ElementsParamLfoTempoSync, ElementsParamLfoResetPhase, ElementsParamLfoKeyReset)
+
     {
         midiProcessor.noteStack.voices.push_back(this);
         
@@ -141,7 +146,7 @@ public:
         
         midiAllNotesOff();
         envelope.Init();
-        lfo.Init();
+        lfo.Init(32000);
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
@@ -157,6 +162,11 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - ElementsParamModMatrixStart, value);
+            return;
+        }
+        
+        if (lfo.ownParameter(address)) {
+            lfo.setParameter(address, value);
             return;
         }
         
@@ -224,35 +234,6 @@ public:
             case ElementsParamDetune:
                 detune = clamp(value, -1.0f, 1.0f);
                 break;
-                
-            case ElementsParamLfoShape: {
-                uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
-                if (newShape != lfoShape) {
-                    lfoShape = newShape;
-                    lfo.set_shape((peaks::LfoShape) lfoShape);
-                }
-                break;
-            }
-                
-            case ElementsParamLfoShapeMod: {
-                float newShape = clamp(value, -1.0f, 1.0f);
-                if (newShape != lfoShapeMod) {
-                    lfoShapeMod = newShape;
-                    uint16_t par = (newShape * 32767.0f);
-                    lfo.set_parameter(par);
-                }
-                break;
-            }
-                
-            case ElementsParamLfoRate: {
-                float newRate = clamp(value, 0.0f, 1.0f);
-                
-                if (newRate != lfoBaseRate) {
-                    lfoBaseRate = newRate;
-                    updateLfoRate(0.0f);
-                }
-                break;
-            }
             
             case ElementsParamEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
@@ -295,6 +276,10 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         if (address >= ElementsParamModMatrixStart && address <= ElementsParamModMatrixEnd) {
             return modulationEngineRules.getParameter(address - ElementsParamModMatrixStart);
+        }
+        
+        if (lfo.ownParameter(address)) {
+            return lfo.getParameter(address);
         }
         
         switch (address) {
@@ -353,15 +338,6 @@ public:
             case ElementsParamDetune:
                 return detune;
                 
-            case ElementsParamLfoRate:
-                return lfoBaseRate;
-                
-            case ElementsParamLfoShape:
-                return lfoShape;
-                
-            case ElementsParamLfoShapeMod:
-                return lfoShapeMod;
-                
             case ElementsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
                 
@@ -398,6 +374,11 @@ public:
         outBufferListPtr = outBufferList;
     }
     
+    void setTransportState(KernelTransportState state) {
+        transportState = state;
+        lfo.setTransportState(&transportState);
+    }
+    
     // =========== MIDI
     
     virtual void midiNoteOff() override {
@@ -410,6 +391,7 @@ public:
         if (state == NoteStateUnused) {
             gate = true;
             envelope.TriggerHigh();
+            lfo.trigger();
         } else {
             delayed_trigger = true;
         }
@@ -442,13 +424,6 @@ public:
         midiProcessor.handleMIDIEvent(midiEvent);
     }
     
-    // ================= Modulations
-    void updateLfoRate(float modulationAmount) {
-        float calculatedRate = clamp(lfoBaseRate + modulationAmount, 0.0f, 1.0f);
-        uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
-        lfo.set_rate(rateParameter);
-    }
-    
     void runModulations(int blockSize) {
         envelope.Process(blockSize);
         
@@ -457,8 +432,8 @@ public:
             lfoAmount = modEngine.out[ModOutLFOAmount];
         }
         
-        lfoOutput = lfoAmount * ((float) lfo.Process(blockSize)) / INT16_MAX;
-        
+        float lfoOutput = lfoAmount * lfo.process(blockSize);
+
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
         modEngine.in[ModInModwheel] = midiProcessor.modwheelAmount;
@@ -466,7 +441,7 @@ public:
         modEngine.run();
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
-            updateLfoRate(modEngine.out[ModOutLFORate]);
+            lfo.updateRate(modEngine.out[ModOutLFORate]);
         }
         
         patch->exciter_envelope_shape = clamp(basePatch.exciter_envelope_shape + modEngine.out[ModOutExciterEnvShape], 0.0f, 1.0f);
@@ -542,6 +517,7 @@ public:
                     gate = true;
                     delayed_trigger = false;
                     envelope.TriggerHigh();
+                    lfo.trigger();
                 }
                 
                 if (modulationEngineRules.isPatched(ModOutLevel)) {
@@ -591,6 +567,8 @@ public:
     elements::Patch *patch;
     elements::Patch basePatch;
     
+    KernelTransportState transportState;
+    
     Converter *inputSrc = 0;
     float processedL[kAudioBlockSize] = {};
     float processedR[kAudioBlockSize] = {};
@@ -621,12 +599,8 @@ public:
 
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;
-    peaks::Lfo lfo;
-    float lfoOutput;
-    float lfoBaseRate;
-    float lfoShape;
-    float lfoShapeMod;
-    float lfoBaseAmount;
+    LFOKernel lfo;
+   
     float volume;
     float inputGain;
     bool inputResonator;
