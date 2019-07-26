@@ -643,15 +643,6 @@ public:
             case PlaitsParamPanSpread:
                 return panSpread;
                 
-            case PlaitsParamLfoRate:
-                return lfoBaseRate;
-                
-            case PlaitsParamLfoShape:
-                return lfoShape;
-                
-            case PlaitsParamLfoShapeMod:
-                return lfoShapeMod;
-                
             case PlaitsParamPitchBendRange:
                 return (float) midiProcessor.bendRange;
                 
@@ -804,10 +795,6 @@ public:
     
     uint16_t envParameters[4];
     uint16_t ampEnvParameters[4];
-    
-    float lfoBaseRate;
-    float lfoShape;
-    float lfoShapeMod;
     
     bool lastPanSpreadWasNegative = 0;
     

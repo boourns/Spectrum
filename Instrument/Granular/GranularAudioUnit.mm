@@ -11,11 +11,13 @@
 #import "BufferedAudioBus.hpp"
 #import "AudioBuffers.h"
 #import "StateManager.h"
+#import "HostTransport.h"
 
 @interface GranularAudioUnit ()
 
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
+@property HostTransport *hostTransport;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -290,6 +292,8 @@
     
     self.maximumFramesToRender = 512;
     
+    _hostTransport = [HostTransport alloc];
+    
     _stateManager = [[StateManager alloc] initWithParameterTree:_parameterTree presets:@[NewAUPreset(0, cloudsPresets[0].name),
                                                                                          NewAUPreset(1, cloudsPresets[1].name),
                                                                                          ]
@@ -411,11 +415,21 @@ NSArray *modOutputs = @[
     _kernel.init(_audioBuffers.outputBus.format.channelCount, _audioBuffers.outputBus.format.sampleRate);
     _kernel.midiAllNotesOff();
     
+    if (self.musicalContextBlock) {
+        [_hostTransport setMusicalContextBlock: self.musicalContextBlock];
+    }
+    
+    if (self.transportStateBlock) {
+        [_hostTransport setTransportStateBlock: self.transportStateBlock];
+    }
+    
     return YES;
 }
 
 - (void)deallocateRenderResources {
     [_audioBuffers deallocateRenderResources];
+    
+    _hostTransport = nil;
 
     [super deallocateRenderResources];
 }
@@ -429,6 +443,8 @@ NSArray *modOutputs = @[
      */
     __block CloudsDSPKernel *state = &_kernel;
     __block BufferedInputBus *input = [_audioBuffers inputBus];
+    
+    __block HostTransport *hostTransport = _hostTransport;
 
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
@@ -451,6 +467,9 @@ NSArray *modOutputs = @[
                 outAudioBufferList->mBuffers[i].mData = inAudioBufferList->mBuffers[i].mData;
             }
         }
+        
+        [hostTransport updateTransportState];
+        state->setTransportState([hostTransport kernelTransportState]);
         
         state->setBuffers(inAudioBufferList, outAudioBufferList);
         state->processWithEvents(timestamp, frameCount, realtimeEventListHead);

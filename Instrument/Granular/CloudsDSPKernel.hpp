@@ -8,16 +8,18 @@
 #ifndef CloudsDSPKernel_h
 #define CloudsDSPKernel_h
 
+#import "KernelTransportState.h"
+
 #import "clouds/dsp/granular_processor.h"
 #import "peaks/multistage_envelope.h"
 #import "stmlib/dsp/parameter_interpolator.h"
 #import "DSPKernel.hpp"
 #import <vector>
-#import "lfo.hpp"
 #import "converter.hpp"
 
 #import "MIDIProcessor.hpp"
 #import "ModulationEngine.hpp"
+#import "LFOKernel.hpp"
 
 const size_t kAudioBlockSize = 32;
 const size_t kPolyphony = 1;
@@ -103,7 +105,8 @@ class CloudsDSPKernel : public DSPKernel, public MIDIVoice {
 public:
     // MARK: Member Functions
     
-    CloudsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs)
+    CloudsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs),
+    lfo(CloudsParamLfoRate, CloudsParamLfoShape, CloudsParamLfoShapeMod, CloudsParamLfoTempoSync, CloudsParamLfoResetPhase, CloudsParamLfoKeyReset)
     {
         midiProcessor.noteStack.voices.push_back(this);
     }
@@ -129,7 +132,7 @@ public:
         
         midiAllNotesOff();
         envelope.Init();
-        lfo.Init();
+        lfo.Init(32000);
         
         modEngine.rules = &modulationEngineRules;
         modEngine.in[ModInDirect] = 1.0f;
@@ -146,6 +149,11 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         if (address >= CloudsParamModMatrixStart && address <= CloudsParamModMatrixEnd) {
             modulationEngineRules.setParameter(address - CloudsParamModMatrixStart, value);
+            return;
+        }
+        
+        if (lfo.ownParameter(address)) {
+            lfo.setParameter(address, value);
             return;
         }
         
@@ -238,35 +246,6 @@ public:
                 break;
             }
                 
-            case CloudsParamLfoShape: {
-                uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
-                if (newShape != lfoShape) {
-                    lfoShape = newShape;
-                    lfo.set_shape((peaks::LfoShape) lfoShape);
-                }
-                break;
-            }
-                
-            case CloudsParamLfoShapeMod: {
-                float newShape = clamp(value, -1.0f, 1.0f);
-                if (newShape != lfoShapeMod) {
-                    lfoShapeMod = newShape;
-                    uint16_t par = (newShape * 32767.0f);
-                    lfo.set_parameter(par);
-                }
-                break;
-            }
-                
-            case CloudsParamLfoRate: {
-                float newRate = clamp(value, 0.0f, 1.0f);
-                
-                if (newRate != lfoBaseRate) {
-                    lfoBaseRate = newRate;
-                    updateLfoRate(0.0f);
-                }
-                break;
-            }
-                
             case CloudsParamEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != envParameters[0]) {
@@ -308,6 +287,10 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         if (address >= CloudsParamModMatrixStart && address <= CloudsParamModMatrixEnd) {
             return modulationEngineRules.getParameter(address - CloudsParamModMatrixStart);
+        }
+        
+        if (lfo.ownParameter(address)) {
+            return lfo.getParameter(address);
         }
         
         switch (address) {
@@ -401,6 +384,12 @@ public:
         outBufferListPtr = outBufferList;
     }
     
+    
+    void setTransportState(KernelTransportState state) {
+        transportState = state;
+        lfo.setTransportState(&transportState);
+    }
+    
     // =========== MIDI
     
     virtual void midiNoteOff() override {
@@ -413,6 +402,7 @@ public:
         if (state == NoteStateUnused) {
             gate = true;
             envelope.TriggerHigh();
+            lfo.trigger();
         } else {
             delayed_trigger = true;
         }
@@ -446,16 +436,11 @@ public:
     }
     
     // ================= Modulations
-    void updateLfoRate(float modulationAmount) {
-        float calculatedRate = clamp(lfoBaseRate + modulationAmount, 0.0f, 1.0f);
-        uint16_t rateParameter = (uint16_t) (calculatedRate * (float) UINT16_MAX);
-        lfo.set_rate(rateParameter);
-    }
     
     void runModulations(int blockSize) {
         envelope.Process(blockSize);
         
-        lfoOutput = ((float) lfo.Process(blockSize)) / INT16_MAX;
+        lfoOutput = lfo.process(blockSize);
         if (modulationEngineRules.isPatched(ModOutLFOAmount)) {
             lfoOutput *= modEngine.out[ModOutLFOAmount];
         }
@@ -467,7 +452,7 @@ public:
         modEngine.run();
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
-            updateLfoRate(modEngine.out[ModOutLFORate]);
+            lfo.updateRate(modEngine.out[ModOutLFORate]);
         }
         
         clouds::Parameters* p = processor.mutable_parameters();
@@ -546,6 +531,7 @@ public:
                     gate = true;
                     delayed_trigger = false;
                     envelope.TriggerHigh();
+                    lfo.trigger();
                 }
             }
             
@@ -578,6 +564,8 @@ private:
 public:
     clouds::Parameters baseParameters;
     clouds::GranularProcessor processor;
+    KernelTransportState transportState;
+
     uint8_t large_buffer[118784];
     uint8_t small_buffer[65536 - 128];
     
@@ -607,12 +595,9 @@ public:
 
     uint16_t envParameters[4];
     peaks::MultistageEnvelope envelope;
-    peaks::Lfo lfo;
+    LFOKernel lfo;
     float lfoOutput;
-    float lfoBaseRate;
-    float lfoShape;
-    float lfoShapeMod;
-    float lfoBaseAmount;
+
     float inputGain;
     float volume;
     float gainCoefficient;
