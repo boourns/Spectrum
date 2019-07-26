@@ -43,8 +43,8 @@ enum {
     PlaitsParamHarmonics = 9,
     PlaitsParamMorph = 10,
     PlaitsParamVolume = 11,
-    PlaitsParamLeftSource = 12,
-    PlaitsParamRightSource = 13,
+    PlaitsParamSource = 12,
+    PlaitsParamSourceSpread = 13,
     PlaitsParamPan = 14,
     PlaitsParamPanSpread = 15,
     PlaitsParamLfoRate = 16,
@@ -98,8 +98,8 @@ enum {
     ModOutEngine,
     ModOutLFORate,
     ModOutLFOAmount,
-    ModOutLeftSource,
-    ModOutRightSource,
+    ModOutSource,
+    ModOutSourceSpread,
     ModOutPan,
     ModOutLevel,
     ModOutPortamento,
@@ -277,8 +277,13 @@ public:
             
             modulations.level = clamp(ampEnvelope.value + modEngine.out[ModOutLevel], 0.0f, 1.0f);
             
-            leftSourceTarget = (1.0f + clamp(kernel->leftSource + modEngine.out[ModOutLeftSource], -1.0f, 1.0f)) / 2.0f;
-            rightSourceTarget = (1.0f + clamp(kernel->rightSource + modEngine.out[ModOutRightSource], -1.0f, 1.0f)) / 2.0f;
+            float source = kernel->source + modEngine.out[ModOutSource];
+            float sourceSpread = kernel->sourceSpread + modEngine.out[ModOutSourceSpread];
+            float leftSource = clamp(source - sourceSpread, -1.0f, 1.0f);
+            float rightSource = clamp(source + sourceSpread, -1.0f, 1.0f);
+            
+            leftSourceTarget = (1.0f + leftSource) / 2.0f;
+            rightSourceTarget = (1.0f + rightSource) / 2.0f;
             
             float pan = clamp(kernel->pan + modEngine.out[ModOutPan] + panSpread, -1.0f, 1.0f);
             if (pan > 0) {
@@ -462,12 +467,12 @@ public:
                 slop = clamp(value, 0.0f, 1.0f);
                 break;
                 
-            case PlaitsParamLeftSource:
-                leftSource = clamp(value, -1.0f, 1.0f);
+            case PlaitsParamSource:
+                source = clamp(value, -1.0f, 1.0f);
                 break;
             
-            case PlaitsParamRightSource:
-                rightSource = clamp(value, -1.0f, 1.0f);
+            case PlaitsParamSourceSpread:
+                sourceSpread = clamp(value, -1.0f, 1.0f);
                 break;
                 
             case PlaitsParamPan:
@@ -640,11 +645,11 @@ public:
             case PlaitsParamSlop:
                 return slop;
                 
-            case PlaitsParamLeftSource:
-                return leftSource;
+            case PlaitsParamSource:
+                return source;
                 
-            case PlaitsParamRightSource:
-                return rightSource;
+            case PlaitsParamSourceSpread:
+                return sourceSpread;
                 
             case PlaitsParamPan:
                 return pan;
@@ -810,8 +815,8 @@ public:
     float slop = 0.0f;
     float volume = 1.0f;
     float gainCoefficient = 0.1f;
-    float leftSource = 0.0f;
-    float rightSource = 1.0f;
+    float source = 0.0f;
+    float sourceSpread = 1.0f;
     
     float pan = 0.0f;
     float panSpread = 0.0f;

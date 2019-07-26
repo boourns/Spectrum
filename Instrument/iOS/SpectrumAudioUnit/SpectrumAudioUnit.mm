@@ -165,13 +165,13 @@
                                                                           min:0.0 max:1.5 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"leftSource" name:@"Left Source"
-                                                                          address:PlaitsParamLeftSource
+    AUParameter *leftSourceParam = [AUParameterTree createParameterWithIdentifier:@"source" name:@"Source"
+                                                                          address:PlaitsParamSource
                                                                               min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                             flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *rightSourceParam = [AUParameterTree createParameterWithIdentifier:@"rightSource" name:@"Right Source"
-                                                                           address:PlaitsParamRightSource
+    AUParameter *rightSourceParam = [AUParameterTree createParameterWithIdentifier:@"sourceSpread" name:@"Source Spread"
+                                                                           address:PlaitsParamSourceSpread
                                                                                min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                              flags: flags valueStrings:nil dependentParameters:nil];
     
@@ -409,8 +409,8 @@
     @"Engine",
     @"LFORate",
     @"LFOAmount",
-    @"LeftSource",
-    @"RightSource",
+    @"Source",
+    @"SourceSpread",
     @"Pan",
     @"Level",
     @"Portamento",

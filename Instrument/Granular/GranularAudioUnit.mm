@@ -40,7 +40,7 @@
     // Initialize a default format for the busses.
     AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100. channels:2];
     
-    _audioBuffers = [[AudioBuffers alloc] initForAudioUnit:self isEffect:false withFormat:defaultFormat];
+    _audioBuffers = [[AudioBuffers alloc] initForAudioUnit:self isEffect:true withFormat:defaultFormat];
     
     // Create a DSP kernel to handle the signal processing.
     _kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);

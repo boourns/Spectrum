@@ -24,8 +24,8 @@ enum PlaitsParam: AUParameterAddress {
     case Harmonics = 9
     case Morph = 10
     case Volume = 11
-    case LeftSource = 12
-    case RightSource = 13
+    case Source = 12
+    case SourceSpread = 13
     case Pan = 14
     case PanSpread = 15
     case LfoRate = 16
@@ -115,8 +115,8 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                     ]),
                                 Stack([
                                     HStack([
-                                        knob(PlaitsParam.LeftSource.rawValue),
-                                        knob(PlaitsParam.RightSource.rawValue),
+                                        knob(PlaitsParam.Source.rawValue),
+                                        knob(PlaitsParam.SourceSpread.rawValue),
                                         ]),
                                     ]),
                                 Stack([
