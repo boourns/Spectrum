@@ -404,6 +404,10 @@ public:
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
             lfo.updateRate(modEngine.out[ModOutLFORate]);
+            lfoRatePatched = true;
+        } else if (lfoRatePatched) {
+            lfoRatePatched = false;
+            lfo.updateRate(0.0f);
         }
         
         ONE_POLE(patch.structure, clamp(basePatch.structure + modEngine.out[ModOutStructure], 0.0f, 0.9995f), 0.01f); // LP
@@ -569,6 +573,7 @@ public:
     int bendRange = 0;
     float bendAmount = 0.0f;
     bool useAudioInput = false;
+    bool lfoRatePatched = false;
     
     ModulationEngine modEngine;
     ModulationEngineRuleList modulationEngineRules;

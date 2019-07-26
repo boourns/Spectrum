@@ -128,6 +128,7 @@ public:
         processor.set_num_channels(2);
         processor.set_low_fidelity(false);
         processor.set_playback_mode(clouds::PLAYBACK_MODE_GRANULAR);
+        playback_mode = clouds::PLAYBACK_MODE_GRANULAR;
         processor.Prepare();
         
         midiAllNotesOff();
@@ -217,11 +218,7 @@ public:
                 break;
                 
             case CloudsParamMode: {
-                clouds::PlaybackMode newMode = (clouds::PlaybackMode) round(clamp(value, 0.0f, 3.0f));
-                if (newMode != processor.playback_mode()) {
-                    processor.set_playback_mode(newMode);
-                    processor.Prepare();
-                }
+                playback_mode = (clouds::PlaybackMode) round(clamp(value, 0.0f, 3.0f));
                 break;
             }
                 
@@ -328,7 +325,7 @@ public:
                 return baseParameters.stereo_spread;
                 
             case CloudsParamMode:
-                return (float) processor.playback_mode();
+                return (float) playback_mode;
                 
             case CloudsParamPadX:
                 return modEngine.in[ModInPadX];
@@ -347,15 +344,6 @@ public:
                 
             case CloudsParamVolume:
                 return volume;
-                
-            case CloudsParamLfoRate:
-                return lfoBaseRate;
-                
-            case CloudsParamLfoShape:
-                return lfoShape;
-                
-            case CloudsParamLfoShapeMod:
-                return lfoShapeMod;
                 
             case CloudsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
@@ -453,6 +441,10 @@ public:
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
             lfo.updateRate(modEngine.out[ModOutLFORate]);
+            lfoRatePatched = true;
+        } else if (lfoRatePatched) {
+            lfoRatePatched = false;
+            lfo.updateRate(0.0f);
         }
         
         clouds::Parameters* p = processor.mutable_parameters();
@@ -482,6 +474,11 @@ public:
         
         int outputFramesRemaining = frameCount;
         int inputFramesRemaining = frameCount;
+        
+        if (playback_mode != processor.playback_mode()) {
+            processor.set_playback_mode((clouds::PlaybackMode) playback_mode);
+            processor.Prepare();
+        }
         
         while (outputFramesRemaining) {
             
@@ -513,7 +510,7 @@ public:
                 
                 gain = gainCoefficient / 32768.0f;
                 if (modulationEngineRules.isPatched(ModOutLevel)) {
-                    gain *= modEngine.out[ModOutLevel];
+                    gain *= clamp(modEngine.out[ModOutLevel], 0.0f, 1.0f);
                 }
                 clouds::ParameterInterpolator outputGain(&previousGain, gain, kAudioBlockSize);
                 for (int i = 0; i < kAudioBlockSize; i++) {
@@ -565,6 +562,7 @@ public:
     clouds::Parameters baseParameters;
     clouds::GranularProcessor processor;
     KernelTransportState transportState;
+    int playback_mode;
 
     uint8_t large_buffer[118784];
     uint8_t small_buffer[65536 - 128];
@@ -589,6 +587,7 @@ public:
     float detune = 0;
     int bendRange = 0;
     float bendAmount = 0.0f;
+    bool lfoRatePatched = false;
     
     ModulationEngine modEngine;
     ModulationEngineRuleList modulationEngineRules;

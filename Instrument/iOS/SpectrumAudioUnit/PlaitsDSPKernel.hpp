@@ -139,6 +139,8 @@ public:
         double portamento = 0.0;
         
         float panSpread = 0;
+        bool lfoRatePatched = false;
+        bool portamentoPatched = false;
         
         bool delayed_trigger = false;
         
@@ -207,11 +209,10 @@ public:
         {
             if (state == NoteStateUnused) {
                 memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
-
-                // TODO When stealing don't take new pan spread value
-                panSpread = kernel->nextPanSpread();
             }
             
+            panSpread = kernel->nextPanSpread();
+
             noteTarget = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
 
             note = noteNumber;
@@ -247,6 +248,10 @@ public:
             
             if (kernel->modulationEngineRules.isPatched(ModOutPortamento)) {
                 updatePortamento(modEngine.out[ModOutPortamento]);
+                portamentoPatched = true;
+            } else if (portamentoPatched) {
+                portamentoPatched = false;
+                updatePortamento(0.0f);
             }
             
             ONE_POLE(modulations.note, noteTarget, 1.0f - portamento);
@@ -255,6 +260,10 @@ public:
             
             if (kernel->modulationEngineRules.isPatched(ModOutLFORate)) {
                 lfo.updateRate(modEngine.out[ModOutLFORate]);
+                lfoRatePatched = true;
+            } else if (lfoRatePatched) {
+                lfoRatePatched = false;
+                lfo.updateRate(0.0f);
             }
             
             modulations.engine = modEngine.out[ModOutEngine];
@@ -266,7 +275,7 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph];
             
-            modulations.level = ampEnvelope.value + modEngine.out[ModOutLevel];
+            modulations.level = clamp(ampEnvelope.value + modEngine.out[ModOutLevel], 0.0f, 1.0f);
             
             leftSourceTarget = (1.0f + clamp(kernel->leftSource + modEngine.out[ModOutLeftSource], -1.0f, 1.0f)) / 2.0f;
             rightSourceTarget = (1.0f + clamp(kernel->rightSource + modEngine.out[ModOutRightSource], -1.0f, 1.0f)) / 2.0f;
