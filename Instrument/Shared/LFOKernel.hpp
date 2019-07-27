@@ -83,7 +83,6 @@ public:
         } else if (address == resetPhaseAddress) {
             resetPhase = clamp(value, 0.0f, 1.0f);
             lfo.reset_phase_ = value * ((float) UINT32_MAX);
-            printf("reset phase %lu\n", lfo.reset_phase_);
         } else if (address == keyResetAddress) {
             keyReset = (value > 0.9f);
         }
