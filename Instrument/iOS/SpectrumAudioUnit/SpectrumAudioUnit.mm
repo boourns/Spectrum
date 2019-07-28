@@ -316,11 +316,17 @@
     _parameterTree.implementorStringFromValueCallback = ^(AUParameter *param, const AUValue *__nullable valuePtr) {
         AUValue value = valuePtr == nil ? param.value : *valuePtr;
         
-        if (param.valueStrings != nil) {
-            int index = round(value);
-            return param.valueStrings[index];
+        char valueString[32];
+        
+        if (instrumentKernel->getParameterValueString(param.address, value, &valueString[0])) {
+            return [NSString stringWithUTF8String:valueString];
         } else {
-            return [NSString stringWithFormat:@"%.1f", value];
+            if (param.valueStrings != nil) {
+                int index = round(value);
+                return param.valueStrings[index];
+            } else {
+                return [NSString stringWithFormat:@"%.1f", value];
+            }
         }
     };
     

@@ -364,6 +364,14 @@ public:
         }
     }
     
+    bool getParameterValueString(AUParameterAddress address, AUValue value, char *dst) {
+        if (lfo.ownParameter(address)) {
+            return lfo.getParameterValueString(address, value, dst);
+        }
+        
+        return false;
+    }
+    
     void startRamp(AUParameterAddress address, AUValue value, AUAudioFrameCount duration) override {
         // The attack and release parameters are not ramped.
         setParameter(address, value);

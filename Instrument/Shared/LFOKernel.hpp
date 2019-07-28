@@ -17,9 +17,15 @@ typedef struct {
     double beatsPerCycle;
 } syncedLfoRate;
 
-const int numLFORates = 8;
+const int numLFORates = 14;
 
 const syncedLfoRate lfoRates[numLFORates] = {
+    {"16 Bar", 64.0, 64},
+    {"8 Bar", 32.0, 32},
+    {"4 Bar", 16.0, 16},
+    {"2 Bar", 8.0, 8},
+    {"1 Bar", 4.0, 4},
+    {"1/2", 2.0, 2},
     {"1/4", 1.0, 1},
     {"1/4T", 2.0 / 3.0, 2},
     {"1/8", 1.0 / 2.0, 1},
@@ -104,6 +110,17 @@ public:
         }
         return 0.0f;
     }
+    
+    bool getParameterValueString(AUParameterAddress address, AUValue value, char *dst) {
+        if (address == rateAddress && sync) {
+            int index = (int) (value * (numLFORates - 1));
+            snprintf(dst, 31, "%s", lfoRates[index].name);
+            return true;
+        }
+        
+        return false;
+    }
+
     
     void updateRate(float modulationAmount) {
         float calculatedRate = clamp(baseRate + modulationAmount, 0.0f, 1.0f);
