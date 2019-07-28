@@ -152,7 +152,8 @@ open class Knob: UIView, ParameterView {
                     return "??"
                 }
             } else {
-                return String(format:"%.03f", val)
+                var auval: AUValue = AUValue(val)
+                return param.string(fromValue: &auval)
             }
         } else  {
             return param.displayName
