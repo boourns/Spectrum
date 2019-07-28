@@ -155,8 +155,8 @@ void GranularProcessor::ProcessGranular(
 }
 
 void GranularProcessor::Process(
-    ShortFrame* input,
-    ShortFrame* output,
+    FloatFrame* input,
+    FloatFrame* output,
     size_t size) {
   // TIC
   if (bypass_) {
@@ -166,15 +166,15 @@ void GranularProcessor::Process(
   
   if (silence_ || reset_buffers_ ||
       previous_playback_mode_ != playback_mode_) {
-    short* output_samples = &output[0].l;
+    float* output_samples = &output[0].l;
     fill(&output_samples[0], &output_samples[size << 1], 0);
     return;
   }
   
   // Convert input buffers to float, and mixdown for mono processing.
   for (size_t i = 0; i < size; ++i) {
-    in_[i].l = static_cast<float>(input[i].l) / 32768.0f;
-    in_[i].r = static_cast<float>(input[i].r) / 32768.0f;
+    in_[i].l = input[i].l;
+    in_[i].r = input[i].r;
   }
   if (num_channels_ == 1) {
     for (size_t i = 0; i < size; ++i) {
@@ -279,8 +279,8 @@ void GranularProcessor::Process(
     float r = static_cast<float>(input[i].r) / 32768.0f * fade_out;
     l += out_[i].l * post_gain * fade_in;
     r += out_[i].r * post_gain * fade_in;
-    output[i].l = SoftConvert(l);
-    output[i].r = SoftConvert(r);
+    output[i].l = SoftLimit(l * 0.5f);
+    output[i].r = SoftLimit(r * 0.5f);
   }
 }
 

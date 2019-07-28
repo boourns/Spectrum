@@ -518,23 +518,23 @@ public:
                 inputFramesRemaining -= result.inputConsumed;
                 
                 // convert inputBuffer into clouds Input
-                clouds::ShortFrame input[kAudioBlockSize] = {};
+                clouds::FloatFrame input[kAudioBlockSize] = {};
                     
                 // We might not fill all of the input buffer if there is a deficiency, but this cannot be avoided due to imprecisions between the input and output SRC.
-                float gain = inputGain * 32767.0f;
+                float gain = inputGain;
                 
                 for (int i = 0; i < carriedInputFrames + result.outputLength; i++) {
-                    input[i].l = clamp(processedL[i] * gain, -32768.0f, 32767.0f);
-                    input[i].r = clamp(processedR[i] * gain, -32768.0f, 32767.0f);
+                    input[i].l = clamp(processedL[i] * gain, -1.0f, 1.0f);
+                    input[i].r = clamp(processedR[i] * gain, -1.0f, 1.0f);
                 }
                 
                 carriedInputFrames = 0;
                 
                 // process
-                clouds::ShortFrame output[kAudioBlockSize];
+                clouds::FloatFrame output[kAudioBlockSize];
                 processor.Process(input, output, kAudioBlockSize);
                 
-                gain = gainCoefficient / 32768.0f;
+                gain = gainCoefficient;
                 if (modulationEngineRules.isPatched(ModOutLevel)) {
                     gain *= clamp(modEngine.out[ModOutLevel], 0.0f, 1.0f);
                 }
