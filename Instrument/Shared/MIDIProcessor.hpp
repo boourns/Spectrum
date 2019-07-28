@@ -73,13 +73,17 @@ class MIDIProcessor {
             this->activePolyphony = maxPolyphony;
             this->unison = false;
             this->nextVoice = 0;
-            this->unisonVoices.push_back({.voice = new UnisonMIDIVoice(this)});
+            VoiceRecord *unisonVoice = new VoiceRecord();
+            unisonVoice->note = 0;
+            unisonVoice->chan = 0;
+            unisonVoice->voice = new UnisonMIDIVoice(this);
+            this->unisonVoices.push_back(unisonVoice);
         }
         
         void reset() {
             activeNotes.clear();
             for (int i = 0; i < maxPolyphony; i++) {
-                voices[i].voice->midiAllNotesOff();
+                voices[i]->voice->midiAllNotesOff();
             }
             nextVoice = 0;
         }
@@ -97,13 +101,15 @@ class MIDIProcessor {
             activeNotes.push_back(p);
             std::sort(activeNotes.begin(), activeNotes.end(), MIDIProcessor::noteSort);
 
-            MIDIVoice *voice = voiceForNote(chan, note);
-            if (!voice) {
-                voice = freeVoice(chan, note);
+            VoiceRecord *vr = voiceForNote(chan, note);
+            if (!vr) {
+                vr = freeVoice(chan, note);
             }
             
-            if (voice) {
-                voice->midiNoteOn(note, vel);
+            if (vr) {
+                vr->chan = chan;
+                vr->note = note;
+                vr->voice->midiNoteOn(note, vel);
             }
 
 //            printf("noteOn(%d, %d)\n", note, vel);
@@ -116,14 +122,14 @@ class MIDIProcessor {
 
             activeNotes.erase(std::remove(activeNotes.begin(), activeNotes.end(), p), activeNotes.end());
 
-            MIDIVoice *voice = voiceForNote(chan, note);
+            VoiceRecord *vr = voiceForNote(chan, note);
             if (activeNotes.size() < poly) {
-                if (voice) {
-                    voice->midiNoteOff();
+                if (vr) {
+                    vr->voice->midiNoteOff();
                 }
             } else {
-                if (voice) {
-                    voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].vel);
+                if (vr) {
+                    vr->voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].vel);
                 }
             }
            // printf("noteOff(%d)\n", note);
@@ -131,52 +137,52 @@ class MIDIProcessor {
         }
         
         void channelMessage(uint8_t chan, MIDIControlMessage msg, int16_t val) {
-            std::vector<VoiceRecord> v = getVoices();
+            std::vector<VoiceRecord *> v = getVoices();
             int poly = polyphony();
             
             for (int i = 0; i < poly; i++) {
-                if (v[i].chan == chan) {
-                    v[i].voice->midiControlMessage(msg, val);
+                if (v[i]->chan == chan) {
+                    v[i]->voice->midiControlMessage(msg, val);
                 }
             }
         }
         
         void noteMessage(uint8_t chan, uint8_t note, MIDIControlMessage msg, int16_t val) {
-            MIDIVoice *v = voiceForNote(chan, note);
+            VoiceRecord *vr = voiceForNote(chan, note);
             
-            if (v) {
-                v->midiControlMessage(msg, val);
+            if (vr) {
+                vr->voice->midiControlMessage(msg, val);
             }
         }
         
         std::vector<PlayingNote> activeNotes;
 
-        MIDIVoice *voiceForNote(uint8_t chan, uint8_t note) {
-            std::vector<VoiceRecord> v = getVoices();
+        VoiceRecord *voiceForNote(uint8_t chan, uint8_t note) {
+            std::vector<VoiceRecord *> v = getVoices();
             int poly = polyphony();
             
             for (int i = 0; i < poly; i++) {
-                if (v[i].chan == chan && v[i].note == note) {
-                    return v[i].voice;
+                if (v[i]->chan == chan && v[i]->note == note) {
+                    return v[i];
                 }
             }
             return nullptr;
         }
         
-        MIDIVoice *freeVoice(uint8_t chan, uint8_t note) {
+        VoiceRecord *freeVoice(uint8_t chan, uint8_t note) {
             // Choose which voice for the new note.
             // Acts like a ring buffer to let latest played voices ring out for the longest.
             
-            std::vector<VoiceRecord> v = getVoices();
+            std::vector<VoiceRecord *> v = getVoices();
             int poly = polyphony();
             
             // first try to find an unused voice.
             int startingPoint = nextVoice;
             do {
-                if (v[nextVoice].voice->State() == NoteStateUnused) {
+                if (v[nextVoice]->voice->State() == NoteStateUnused) {
                     int found = nextVoice;
                     nextVoice = (nextVoice + 1) % poly;
-                    return v[found].voice;
+                    return v[found];
                 }
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);
@@ -184,10 +190,10 @@ class MIDIProcessor {
             // then try to find a voice that is releasing.
             startingPoint = nextVoice;
             do {
-                if (v[nextVoice].voice->State() == NoteStateReleasing) {
+                if (v[nextVoice]->voice->State() == NoteStateReleasing) {
                     int found = nextVoice;
                     nextVoice = (nextVoice + 1) % poly;
-                    return v[found].voice;
+                    return v[found];
                 }
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);
@@ -228,16 +234,20 @@ class MIDIProcessor {
         }
         
         void addVoice(MIDIVoice *voice) {
-            voices.push_back({.note = 0, .chan = 0, .voice = voice});
+            VoiceRecord *vr = new VoiceRecord();
+            vr->note = 0;
+            vr->chan = 0;
+            vr->voice = voice;
+            voices.push_back(vr);
         }
         
         MIDIProcessor *engine;
 
-        std::vector<VoiceRecord> voices;
+        std::vector<VoiceRecord *> voices;
 
     private:
         
-        std::vector<VoiceRecord> unisonVoices;
+        std::vector<VoiceRecord *> unisonVoices;
         
         inline int polyphony() {
             if (unison) {
@@ -247,7 +257,7 @@ class MIDIProcessor {
             }
         }
         
-        inline std::vector<VoiceRecord> getVoices() {
+        inline std::vector<VoiceRecord *> getVoices() {
             if (unison) {
                 return unisonVoices;
             } else {
@@ -283,30 +293,30 @@ class MIDIProcessor {
         
         virtual void midiNoteOn(uint8_t note, uint8_t vel) {
             for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
-                noteStack->voices[i].voice->midiNoteOn(note, vel);
+                noteStack->voices[i]->voice->midiNoteOn(note, vel);
             }
         }
         
         virtual void midiNoteOff() {
             for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
-                noteStack->voices[i].voice->midiNoteOff();
+                noteStack->voices[i]->voice->midiNoteOff();
             }
         }
         
         virtual void midiAllNotesOff() {
             for (int i = 0; i < noteStack->getMaxPolyphony(); i++) {
-                noteStack->voices[i].voice->midiAllNotesOff();
+                noteStack->voices[i]->voice->midiAllNotesOff();
             }
         }
         
         virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) {
             for (int i = 0; i < noteStack->getMaxPolyphony(); i++) {
-                noteStack->voices[i].voice->midiControlMessage(msg, val);
+                noteStack->voices[i]->voice->midiControlMessage(msg, val);
             }
         }
         
         virtual int State() {
-            return noteStack->voices[0].voice->State();
+            return noteStack->voices[0]->voice->State();
         }
         
         NoteStack *noteStack;
