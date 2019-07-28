@@ -183,10 +183,7 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
                                 slider(envStart+3),
                                 ]))
                             ]),
-                            panel(Stack([
-                                HStack([
-                                    ]),
-                                ])),
+                        
                         Stack([
                             panel2(Stack([
                                 HStack([
@@ -195,8 +192,7 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
                                     ]),
                                 ])),
                             ]),
-                            panel(HStack([
-                                ])),
+                            
                         ]))
     }
     

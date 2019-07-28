@@ -263,7 +263,7 @@
                 int index = round(value);
                 return param.valueStrings[index];
             } else {
-                return [NSString stringWithFormat:@"%.1f", value];
+                return [NSString stringWithFormat:@"%.3f", value];
             }
         }
     };

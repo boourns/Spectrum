@@ -275,8 +275,8 @@ void GranularProcessor::Process(
     float dry_wet = dry_wet_mod.Next();
     float fade_in = Interpolate(lut_xfade_in, dry_wet, 16.0f);
     float fade_out = Interpolate(lut_xfade_out, dry_wet, 16.0f);
-    float l = static_cast<float>(input[i].l) / 32768.0f * fade_out;
-    float r = static_cast<float>(input[i].r) / 32768.0f * fade_out;
+    float l = static_cast<float>(input[i].l) * fade_out;
+    float r = static_cast<float>(input[i].r) * fade_out;
     l += out_[i].l * post_gain * fade_in;
     r += out_[i].r * post_gain * fade_in;
     output[i].l = SoftLimit(l * 0.5f);

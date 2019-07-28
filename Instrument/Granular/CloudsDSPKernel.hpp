@@ -503,7 +503,6 @@ public:
         
         if (playback_mode != processor.playback_mode()) {
             processor.set_playback_mode((clouds::PlaybackMode) playback_mode);
-            processor.Prepare();
         }
         
         while (outputFramesRemaining) {
@@ -532,6 +531,7 @@ public:
                 
                 // process
                 clouds::FloatFrame output[kAudioBlockSize];
+                processor.Prepare();
                 processor.Process(input, output, kAudioBlockSize);
                 
                 gain = gainCoefficient;
