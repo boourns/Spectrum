@@ -68,6 +68,8 @@ enum {
     ModInNote,
     ModInVelocity,
     ModInModwheel,
+    ModInAftertouch,
+    ModInSustain,
     ModInOut,
     NumModulationInputs
 };
@@ -110,7 +112,7 @@ public:
         lfo(ElementsParamLfoRate, ElementsParamLfoShape, ElementsParamLfoShapeMod, ElementsParamLfoTempoSync, ElementsParamLfoResetPhase, ElementsParamLfoKeyReset)
 
     {
-        midiProcessor.noteStack.voices.push_back(this);
+        midiProcessor.noteStack.addVoice(this);
         
         part.Init(reverb_buffer);
         
@@ -410,10 +412,27 @@ public:
     virtual void midiAllNotesOff() override {
         state = NoteStateUnused;
         gate = false;
+        bendAmount = 0.0f;
+        modEngine.in[ModInModwheel] = 0.0f;
+        modEngine.in[ModInAftertouch] = 0.0f;
+        modEngine.in[ModInSustain] = 0.0f;
     }
     
-    virtual uint8_t Note() override {
-        return currentNote;
+    virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
+        switch(msg) {
+            case MIDIControlMessage::Pitchbend:
+                bendAmount = (((float) (val - 8192)) / 8192.0f) * bendRange;
+                break;
+            case MIDIControlMessage::Modwheel:
+                modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
+                break;
+            case MIDIControlMessage::Aftertouch:
+                modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                break;
+            case MIDIControlMessage::Sustain:
+                modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                break;
+        }
     }
     
     virtual int State() override {
@@ -436,7 +455,6 @@ public:
 
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
-        modEngine.in[ModInModwheel] = midiProcessor.modwheelAmount;
         
         modEngine.run();
         
@@ -505,7 +523,7 @@ public:
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
-                performance.note = currentNote + pitch + detune + 12.0f + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+                performance.note = currentNote + pitch + detune + bendAmount + 12.0f + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
                 
                 performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
                                                 if (i > ::kSampleRate * 5) {
@@ -594,7 +612,7 @@ public:
     bool delayed_trigger = false;
     int pitch = 0;
     float detune = 0;
-    int bendRange = 0;
+    int bendRange = 12;
     float bendAmount = 0.0f;
     bool useAudioInput = false;
     bool lfoRatePatched = false;

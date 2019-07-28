@@ -73,6 +73,8 @@
                   @"Note",
                   @"Velocity",
                   @"Modwheel",
+                  @"Aftertouch",
+                  @"Sustain",
                   @"Out",
                   ];
     

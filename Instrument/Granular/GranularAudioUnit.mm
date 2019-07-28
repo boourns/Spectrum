@@ -319,6 +319,8 @@ NSArray *modInputs = @[
                        @"PadY",
                        @"Pad Gate",
                        @"Out",
+                       @"Aftertouch",
+                       @"Sustain",
                        ];
 
 NSArray *modOutputs = @[

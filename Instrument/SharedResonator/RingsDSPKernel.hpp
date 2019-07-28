@@ -68,6 +68,8 @@ enum {
     ModInNote,
     ModInVelocity,
     ModInModwheel,
+    ModInAftertouch,
+    ModInSustain,
     ModInOut,
     NumModulationInputs
 };
@@ -99,7 +101,7 @@ public:
     RingsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs),
         lfo(RingsParamLfoRate, RingsParamLfoShape, RingsParamLfoShapeMod, RingsParamLfoTempoSync, RingsParamLfoResetPhase, RingsParamLfoKeyReset)
     {
-        midiProcessor.noteStack.voices.push_back(this);
+        midiProcessor.noteStack.addVoice(this);
         
         part.Init(reverb_buffer);
         string_synth.Init(reverb_buffer);
@@ -369,22 +371,38 @@ public:
     virtual void midiAllNotesOff() override {
         state = NoteStateUnused;
         gate = false;
-    }
-    
-    virtual uint8_t Note() override {
-        return currentNote;
-    }
-    
-    virtual int State() override {
-        return state;
+        bendAmount = 0.0f;
+        modEngine.in[ModInModwheel] = 0.0f;
+        modEngine.in[ModInAftertouch] = 0.0f;
+        modEngine.in[ModInSustain] = 0.0f;
     }
     
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
         midiProcessor.handleMIDIEvent(midiEvent);
     }
     
-    // ================= Modulations
+    virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
+        switch(msg) {
+            case MIDIControlMessage::Pitchbend:
+                bendAmount = (((float) (val - 8192)) / 8192.0f) * bendRange;
+                break;
+            case MIDIControlMessage::Modwheel:
+                modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
+                break;
+            case MIDIControlMessage::Aftertouch:
+                modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                break;
+            case MIDIControlMessage::Sustain:
+                modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                break;
+        }
+    }
     
+    virtual int State() override {
+        return state;
+    }
+    
+    // ================= Modulations
     
     void runModulations(int blockSize) {
         envelope.Process(blockSize);
@@ -398,8 +416,6 @@ public:
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
-        modEngine.in[ModInModwheel] = midiProcessor.modwheelAmount;
-        
         modEngine.run();
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
@@ -468,7 +484,7 @@ public:
                 
                 performance.tonic = pitch + 12.0f;
                 performance.note = currentNote;
-                performance.fm = clamp(detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f), -127.0f, 127.0f);
+                performance.fm = clamp(bendAmount + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f), -127.0f, 127.0f);
                 performance.chord = chord;
                 
                 // TODO unsure here yet
@@ -570,8 +586,10 @@ public:
     bool delayed_trigger = false;
     int pitch = 0;
     float detune = 0;
-    int bendRange = 0;
+    
+    int bendRange = 12;
     float bendAmount = 0.0f;
+    
     bool useAudioInput = false;
     bool lfoRatePatched = false;
     

@@ -85,6 +85,8 @@ enum {
     ModInPadX,
     ModInPadY,
     ModInPadGate,
+    ModInAftertouch,
+    ModInSustain,
     NumModulationInputs
 };
 
@@ -137,7 +139,7 @@ public:
         plaits::Modulations modulations;
         ModulationEngine modEngine;
         double portamento = 0.0;
-        
+        float bendAmount;
         float panSpread = 0;
         bool lfoRatePatched = false;
         bool portamentoPatched = false;
@@ -164,7 +166,7 @@ public:
         
         // ================ MIDIProcessor
         
-        virtual void midiAllNotesOff() {
+        virtual void midiAllNotesOff() override {
             modulations.trigger = 0.0f;
             modEngine.in[ModInGate] = 0.0f;
             envelope.value = 0;
@@ -173,10 +175,14 @@ public:
             ampEnvelope.TriggerLow();
             state = NoteStateUnused;
             plaitsFramesIndex = kAudioBlockSize;
+            bendAmount = 0.0f;
+            modEngine.in[ModInModwheel] = 0.0f;
+            modEngine.in[ModInAftertouch] = 0.0f;
+            modEngine.in[ModInSustain] = 0.0f;
         }
         
         // linked list management
-        virtual void midiNoteOff() {
+        virtual void midiNoteOff() override {
             modulations.trigger = 0.0f;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
@@ -185,11 +191,24 @@ public:
             state = NoteStateReleasing;
         }
         
-        virtual uint8_t Note() {
-            return note;
+        virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
+            switch(msg) {
+                case MIDIControlMessage::Pitchbend:
+                    bendAmount = (((float) (val - 8192)) / 8192.0f) * kernel->bendRange;
+                    break;
+                case MIDIControlMessage::Modwheel:
+                    modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
+                    break;
+                case MIDIControlMessage::Aftertouch:
+                    modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                    break;
+                case MIDIControlMessage::Sustain:
+                    modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                    break;
+            }
         }
         
-        virtual int State() {
+        virtual int State() override {
             return state;
         }
         
@@ -205,7 +224,7 @@ public:
             state = NoteStatePlaying;
         }
         
-        virtual void midiNoteOn(uint8_t noteNumber, uint8_t velocity)
+        virtual void midiNoteOn(uint8_t noteNumber, uint8_t velocity) override
         {
             if (state == NoteStateUnused) {
                 memcpy(&modulations, &kernel->modulations, sizeof(plaits::Modulations));
@@ -244,7 +263,6 @@ public:
             modEngine.in[ModInEnvelope] = envelope.value;
             modEngine.in[ModInOut] = out;
             modEngine.in[ModInAux] = aux;
-            modEngine.in[ModInModwheel] = kernel->midiProcessor.modwheelAmount;
             
             if (kernel->modulationEngineRules.isPatched(ModOutPortamento)) {
                 updatePortamento(modEngine.out[ModOutPortamento]);
@@ -267,7 +285,7 @@ public:
             }
             
             modulations.engine = modEngine.out[ModOutEngine];
-            modulations.frequency = kernel->modulations.frequency + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+            modulations.frequency = kernel->modulations.frequency + bendAmount + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
             
             modulations.harmonics = kernel->modulations.harmonics + modEngine.out[ModOutHarmonics];
             
@@ -347,7 +365,7 @@ public:
         for (VoiceState& voice : voices) {
             voice.kernel = this;
             voice.Init(&modulationEngineRules);
-            midiProcessor.noteStack.voices.push_back(&voice);
+            midiProcessor.noteStack.addVoice(&voice);
         }
         envParameters[2] = UINT16_MAX;
         
@@ -484,7 +502,7 @@ public:
                 break;
                 
             case PlaitsParamPitchBendRange:
-                midiProcessor.bendRange = round(clamp(value, 0.0f, 12.0f));
+                bendRange = round(clamp(value, 0.0f, 12.0f));
                 break;
             
             case PlaitsParamEnvAttack: {
@@ -658,7 +676,7 @@ public:
                 return panSpread;
                 
             case PlaitsParamPitchBendRange:
-                return (float) midiProcessor.bendRange;
+                return (float) bendRange;
                 
             case PlaitsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
@@ -730,8 +748,6 @@ public:
         while (frameCount > 0) {
             
             if (renderedFramesPos == kAudioBlockSize) {
-                modulations.frequency = midiProcessor.bendAmount;
-                
                 memset(renderedL, 0, sizeof(float) * kAudioBlockSize);
                 memset(renderedR, 0, sizeof(float) * kAudioBlockSize);
 
@@ -812,6 +828,7 @@ public:
     
     bool lastPanSpreadWasNegative = 0;
     
+    float bendRange = 0.0f;
     float slop = 0.0f;
     float volume = 1.0f;
     float gainCoefficient = 0.1f;

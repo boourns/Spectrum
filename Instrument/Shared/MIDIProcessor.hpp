@@ -20,6 +20,13 @@ enum {
     NoteStateReleasing = 2
 };
 
+typedef enum {
+    Modwheel = 0,
+    Pitchbend,
+    Aftertouch,
+    Sustain
+} MIDIControlMessage;
+
 typedef struct {
     AUParameter *parameter;
     float minimum;
@@ -30,10 +37,9 @@ class MIDIVoice {
 public:
     virtual void midiNoteOn(uint8_t note, uint8_t vel) = 0;
     virtual void midiNoteOff() = 0;
+    virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) = 0;
     virtual void midiAllNotesOff() = 0;
-    virtual uint8_t Note() = 0;
     virtual int State() = 0;
-    
 };
 
 class MIDISynthesizer {
@@ -44,14 +50,20 @@ public:
 };
 
 typedef struct PlayingNote {
+    uint8_t chan;
     uint8_t note;
     uint8_t vel;
     
     bool operator== (const PlayingNote &r) {
-        return (r.note == note);
+        return (r.note == note && r.chan == chan);
     }
 } PlayingNote;
 
+typedef struct {
+    uint8_t note;
+    uint8_t chan;
+    MIDIVoice *voice;
+} VoiceRecord;
 
 class MIDIProcessor {
     class NoteStack {
@@ -61,23 +73,23 @@ class MIDIProcessor {
             this->activePolyphony = maxPolyphony;
             this->unison = false;
             this->nextVoice = 0;
-            this->unisonVoices.push_back(new UnisonMIDIVoice(this));
+            this->unisonVoices.push_back({.voice = new UnisonMIDIVoice(this)});
         }
         
         void reset() {
             activeNotes.clear();
             for (int i = 0; i < maxPolyphony; i++) {
-                voices[i]->midiAllNotesOff();
+                voices[i].voice->midiAllNotesOff();
             }
             nextVoice = 0;
         }
         
-        void noteOn(uint8_t note, uint8_t vel) {
+        void noteOn(uint8_t chan, uint8_t note, uint8_t vel) {
             if (vel == 0) {
-                noteOff(note);
+                noteOff(chan, note);
                 return;
             }
-            PlayingNote p = {.note = note, .vel = vel};
+            PlayingNote p = {.chan = chan, .note = note, .vel = vel};
             if (std::find(activeNotes.begin(), activeNotes.end(), p) != activeNotes.end()) {
                 // note on for note we're already playing.
                 return;
@@ -85,9 +97,9 @@ class MIDIProcessor {
             activeNotes.push_back(p);
             std::sort(activeNotes.begin(), activeNotes.end(), MIDIProcessor::noteSort);
 
-            MIDIVoice *voice = voiceForNote(note);
+            MIDIVoice *voice = voiceForNote(chan, note);
             if (!voice) {
-                voice = freeVoice(note);
+                voice = freeVoice(chan, note);
             }
             
             if (voice) {
@@ -98,13 +110,13 @@ class MIDIProcessor {
             printNoteState();
         }
         
-        void noteOff(uint8_t note) {
+        void noteOff(uint8_t chan, uint8_t note) {
             int poly = polyphony();
-            PlayingNote p = {.note = note, .vel = 0};
+            PlayingNote p = {.chan = chan, .note = note, .vel = 0};
 
             activeNotes.erase(std::remove(activeNotes.begin(), activeNotes.end(), p), activeNotes.end());
 
-            MIDIVoice *voice = voiceForNote(note);
+            MIDIVoice *voice = voiceForNote(chan, note);
             if (activeNotes.size() < poly) {
                 if (voice) {
                     voice->midiNoteOff();
@@ -118,34 +130,53 @@ class MIDIProcessor {
             printNoteState();
         }
         
-        std::vector<PlayingNote> activeNotes;
-
-        MIDIVoice *voiceForNote(uint8_t note) {
-            std::vector<MIDIVoice *> v = getVoices();
+        void channelMessage(uint8_t chan, MIDIControlMessage msg, int16_t val) {
+            std::vector<VoiceRecord> v = getVoices();
             int poly = polyphony();
             
             for (int i = 0; i < poly; i++) {
-                if (v[i]->Note() == note) {
-                    return v[i];
+                if (v[i].chan == chan) {
+                    v[i].voice->midiControlMessage(msg, val);
+                }
+            }
+        }
+        
+        void noteMessage(uint8_t chan, uint8_t note, MIDIControlMessage msg, int16_t val) {
+            MIDIVoice *v = voiceForNote(chan, note);
+            
+            if (v) {
+                v->midiControlMessage(msg, val);
+            }
+        }
+        
+        std::vector<PlayingNote> activeNotes;
+
+        MIDIVoice *voiceForNote(uint8_t chan, uint8_t note) {
+            std::vector<VoiceRecord> v = getVoices();
+            int poly = polyphony();
+            
+            for (int i = 0; i < poly; i++) {
+                if (v[i].chan == chan && v[i].note == note) {
+                    return v[i].voice;
                 }
             }
             return nullptr;
         }
         
-        MIDIVoice *freeVoice(uint8_t note) {
+        MIDIVoice *freeVoice(uint8_t chan, uint8_t note) {
             // Choose which voice for the new note.
             // Acts like a ring buffer to let latest played voices ring out for the longest.
             
-            std::vector<MIDIVoice *> v = getVoices();
+            std::vector<VoiceRecord> v = getVoices();
             int poly = polyphony();
             
             // first try to find an unused voice.
             int startingPoint = nextVoice;
             do {
-                if (v[nextVoice]->State() == NoteStateUnused) {
+                if (v[nextVoice].voice->State() == NoteStateUnused) {
                     int found = nextVoice;
                     nextVoice = (nextVoice + 1) % poly;
-                    return v[found];
+                    return v[found].voice;
                 }
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);
@@ -153,10 +184,10 @@ class MIDIProcessor {
             // then try to find a voice that is releasing.
             startingPoint = nextVoice;
             do {
-                if (v[nextVoice]->State() == NoteStateReleasing) {
+                if (v[nextVoice].voice->State() == NoteStateReleasing) {
                     int found = nextVoice;
                     nextVoice = (nextVoice + 1) % poly;
-                    return v[found];
+                    return v[found].voice;
                 }
                 nextVoice = (nextVoice + 1) % poly;
             } while (nextVoice != startingPoint);
@@ -164,9 +195,8 @@ class MIDIProcessor {
             // didn't find a voice.  Check our position in activeNotes to determine if we should replace a note.
             if (activeNotes.size() > poly) {
                 for (int i = 0; i < poly; i++) {
-                    if (activeNotes[i].note == note) {
-                        uint8_t noteToTurnOff = activeNotes[poly].note;
-                        return voiceForNote(noteToTurnOff);
+                    if (activeNotes[i].chan == chan && activeNotes[i].note == note) {
+                        return voiceForNote(activeNotes[poly].chan, activeNotes[poly].note);
                     }
                 }
             }
@@ -197,11 +227,17 @@ class MIDIProcessor {
             return this->unison;
         }
         
-        MIDIProcessor *engine;
-        std::vector<MIDIVoice *> voices;
-        std::vector<MIDIVoice *> unisonVoices;
+        void addVoice(MIDIVoice *voice) {
+            voices.push_back({.note = 0, .chan = 0, .voice = voice});
+        }
         
+        MIDIProcessor *engine;
+
+        std::vector<VoiceRecord> voices;
+
     private:
+        
+        std::vector<VoiceRecord> unisonVoices;
         
         inline int polyphony() {
             if (unison) {
@@ -211,7 +247,7 @@ class MIDIProcessor {
             }
         }
         
-        inline std::vector<MIDIVoice *> getVoices() {
+        inline std::vector<VoiceRecord> getVoices() {
             if (unison) {
                 return unisonVoices;
             } else {
@@ -247,28 +283,30 @@ class MIDIProcessor {
         
         virtual void midiNoteOn(uint8_t note, uint8_t vel) {
             for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
-                noteStack->voices[i]->midiNoteOn(note, vel);
+                noteStack->voices[i].voice->midiNoteOn(note, vel);
             }
         }
         
         virtual void midiNoteOff() {
             for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
-                noteStack->voices[i]->midiNoteOff();
+                noteStack->voices[i].voice->midiNoteOff();
             }
         }
         
         virtual void midiAllNotesOff() {
             for (int i = 0; i < noteStack->getMaxPolyphony(); i++) {
-                noteStack->voices[i]->midiAllNotesOff();
+                noteStack->voices[i].voice->midiAllNotesOff();
             }
         }
         
-        virtual uint8_t Note() {
-            return noteStack->voices[0]->Note();
+        virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) {
+            for (int i = 0; i < noteStack->getMaxPolyphony(); i++) {
+                noteStack->voices[i].voice->midiControlMessage(msg, val);
+            }
         }
         
         virtual int State() {
-            return noteStack->voices[0]->State();
+            return noteStack->voices[0].voice->State();
         }
         
         NoteStack *noteStack;
@@ -286,43 +324,61 @@ public:
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {
         if (midiEvent.length != 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
-        //uint8_t channel = midiEvent.data[0] & 0x0F; // works in omni mode.
+        uint8_t channel = midiEvent.data[0] & 0x0F;
+        
+        if (channelSetting != -1 && channelSetting != channel) {
+            return;
+        }
+        
         switch (status) {
             case 0x80 : { // note off
                 uint8_t note = midiEvent.data[1];
                 if (note > 127) break;
-                noteStack.noteOff(note);
+                noteStack.noteOff(channel, note);
                 break;
             }
             case 0x90 : { // note on
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
-                noteStack.noteOn(note, veloc);
+                noteStack.noteOn(channel, note, veloc);
                 break;
             }
             case 0xE0 : { // pitch bend
                 uint8_t coarse = midiEvent.data[2];
                 uint8_t fine = midiEvent.data[1];
                 int16_t midiPitchBend = (coarse << 7) + fine;
-                bendAmount = (((float) (midiPitchBend - 8192)) / 8192.0f) * bendRange;
+                
+                noteStack.channelMessage(channel, MIDIControlMessage::Pitchbend, midiPitchBend);
+                
                 break;
             }
             case 0xA0 : { // poly aftertouch
-                //uint8_t note = midiEvent.data[1];
-                //uint8_t veloc = midiEvent.data[2];
+                uint8_t note = midiEvent.data[1];
+                uint8_t pressure = midiEvent.data[2];
+                
+                noteStack.noteMessage(channel, note, MIDIControlMessage::Aftertouch, pressure);
                 break;
             }
+            case 0xD0 : { // channel aftertouch
+                uint8_t pressure = midiEvent.data[1];
+
+                noteStack.channelMessage(channel, MIDIControlMessage::Aftertouch, pressure);
+                break;
+            }
+            
             case 0xB0 : { // control
                 uint8_t num = midiEvent.data[1];
                 if (num == 123) { // all notes off
                     reset();
                 } else if (num == 1) {
-                    modCoarse = midiEvent.data[2];
-                    calculateModwheel();
+                    modCoarse[channel] = midiEvent.data[2];
+                    sendModwheel(channel);
                 } else if (num == 32) {
-                    modFine = midiEvent.data[2];
-                    calculateModwheel();
+                    modFine[channel] = midiEvent.data[2];
+                    sendModwheel(channel);
+                }  else if (num == 64) {
+                    noteStack.channelMessage(channel, MIDIControlMessage::Sustain, midiEvent.data[2]);
                 } else {
                     std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(num);
                     if (params != ccMap.end()) {
@@ -340,10 +396,10 @@ public:
     
     void reset() {
         noteStack.reset();
-        bendAmount = 0.0f;
-        modwheelAmount = 0.0f;
-        modCoarse = 0;
-        modFine = 0;
+        for (int i = 0; i < 16; i++) {
+            modCoarse[i] = 0;
+            modFine[i] = 0;
+        }
     }
     
     void setCCMap(const std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
@@ -363,30 +419,29 @@ public:
         }
     }
     
-    inline void calculateModwheel() {
-        int16_t wheel = (modCoarse << 7) + modFine;
-
-        modwheelAmount = (((float) wheel) / 16384.0f);
+    inline void sendModwheel(int channel) {
+        int16_t wheel = (modCoarse[channel] << 7) + modFine[channel];
+        noteStack.channelMessage(channel, MIDIControlMessage::Modwheel, wheel);
     }
     
+    void setChannel(int chan) {
+        if (chan != channelSetting) {
+            channelSetting = chan;
+            noteStack.reset();
+        }
+    }
+    
+    int channelSetting = -1;
     NoteStack noteStack;
     std::map<uint8_t, std::vector<MIDICCTarget>> ccMap;
     
-    int bendRange = 0;
-    float bendAmount = 0.0f;
-    
-    uint8_t modCoarse = 0;
-    uint8_t modFine = 0;
-    float modwheelAmount = 0.0f;
+    uint8_t modCoarse[16];
+    uint8_t modFine[16];
     
     static bool noteSort (PlayingNote i, PlayingNote j) { return (i.note > j.note); }
 
 private:
     MIDISynthesizer *engine;
-    
-    // vector of voices
-    // vector of uint8_t playingNotes
-
 };
 
 

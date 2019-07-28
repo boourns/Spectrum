@@ -72,6 +72,8 @@ enum {
     ModInPadY,
     ModInPadGate,
     ModInOut,
+    ModInAftertouch,
+    ModInSustain,
     NumModulationInputs
 };
 
@@ -108,7 +110,7 @@ public:
     CloudsDSPKernel() : midiProcessor(1), modEngine(NumModulationInputs, NumModulationOutputs), modulationEngineRules(kNumModulationRules, NumModulationInputs, NumModulationOutputs),
     lfo(CloudsParamLfoRate, CloudsParamLfoShape, CloudsParamLfoShapeMod, CloudsParamLfoTempoSync, CloudsParamLfoResetPhase, CloudsParamLfoKeyReset)
     {
-        midiProcessor.noteStack.voices.push_back(this);
+        midiProcessor.noteStack.addVoice(this);
     }
     
     void init(int channelCount, double inSampleRate) {
@@ -409,10 +411,27 @@ public:
     virtual void midiAllNotesOff() override {
         state = NoteStateUnused;
         gate = false;
+        bendAmount = 0.0f;
+        modEngine.in[ModInModwheel] = 0.0f;
+        modEngine.in[ModInAftertouch] = 0.0f;
+        modEngine.in[ModInSustain] = 0.0f;
     }
     
-    virtual uint8_t Note() override {
-        return currentNote;
+    virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
+        switch(msg) {
+            case MIDIControlMessage::Pitchbend:
+                bendAmount = (((float) (val - 8192)) / 8192.0f) * bendRange;
+                break;
+            case MIDIControlMessage::Modwheel:
+                modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
+                break;
+            case MIDIControlMessage::Aftertouch:
+                modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                break;
+            case MIDIControlMessage::Sustain:
+                modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                break;
+        }
     }
     
     virtual int State() override {
@@ -435,7 +454,6 @@ public:
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
-        modEngine.in[ModInModwheel] = midiProcessor.modwheelAmount;
         
         modEngine.run();
         
@@ -455,7 +473,7 @@ public:
         ONE_POLE(p->position, clamp(baseParameters.position + modEngine.out[ModOutPosition], 0.0f, 1.0f), 0.05f)
         
         ONE_POLE(p->size, clamp(baseParameters.size + modEngine.out[ModOutSize], 0.0f, 1.0f), 0.01f);
-        p->pitch = (float) (currentNote - 48.0f) + pitch + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 24.0f);
+        p->pitch = (float) (currentNote - 48.0f) + pitch + detune + bendAmount + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 24.0f);
         
         ONE_POLE(p->density, clamp(baseParameters.density + modEngine.out[ModOutDensity], 0.0f, 1.0f), 0.01f);
         ONE_POLE(p->texture, clamp(baseParameters.texture + modEngine.out[ModOutTexture], 0.0f, 1.0f), 0.01f);
@@ -585,7 +603,7 @@ public:
     bool delayed_trigger = false;
     int pitch = 0;
     float detune = 0;
-    int bendRange = 0;
+    int bendRange = 12;
     float bendAmount = 0.0f;
     bool lfoRatePatched = false;
     
