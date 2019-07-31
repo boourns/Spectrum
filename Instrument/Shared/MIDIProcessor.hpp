@@ -8,7 +8,7 @@
 #ifndef MIDIEngine_h
 #define MIDIEngine_h
 
-//#define MIDIPROCESSOR_DEBUG
+#define MIDIPROCESSOR_DEBUG
 
 #include <vector>
 #include <map>
@@ -129,6 +129,8 @@ class MIDIProcessor {
                 }
             } else {
                 if (vr) {
+                    vr->note = activeNotes[poly-1].note;
+                    vr->chan = activeNotes[poly-1].chan;
                     vr->voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].vel);
                 }
             }
@@ -268,13 +270,13 @@ class MIDIProcessor {
         inline void printNoteState() {
 #ifdef MIDIPROCESSOR_DEBUG
             printf("polyphony() = %d, unison() = %d\n", polyphony(), unison);
-            printf("activeNotes.size() = %d\n", activeNotes.size());
+            printf("activeNotes.size() = %u\n", activeNotes.size());
             for (int i = 0; i < activeNotes.size(); i++) {
                 printf("%d, ", activeNotes[i].note);
             }
             printf("\nVoice states:\n");
             for (int i = 0; i < activePolyphony; i++) {
-                printf("note = %d, state = %d\n", voices[i]->Note(), voices[i]->State());
+                printf("chan = %d, note = %d, state = %d\n", voices[i]->chan, voices[i]->note, voices[i]->voice->State());
             }
 #endif
         }
@@ -389,6 +391,8 @@ public:
                     sendModwheel(channel);
                 }  else if (num == 64) {
                     noteStack.channelMessage(channel, MIDIControlMessage::Sustain, midiEvent.data[2]);
+                } else if (num >= 98 && num <= 101) {
+                    // TODO: RPN / NRPM for MPE
                 } else {
                     std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(num);
                     if (params != ccMap.end()) {

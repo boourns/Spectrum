@@ -393,8 +393,11 @@ public:
     
     virtual void midiNoteOff() override {
         state = NoteStateReleasing;
+        printf("note state releasing");
+
         gate = false;
         envelope.TriggerLow();
+        delayed_trigger = false;
     }
     
     void add() {
@@ -406,6 +409,7 @@ public:
             delayed_trigger = true;
         }
         state = NoteStatePlaying;
+        printf("note state playing");
     }
     
     virtual void midiNoteOn(uint8_t note, uint8_t vel) override {
@@ -419,6 +423,8 @@ public:
     
     virtual void midiAllNotesOff() override {
         state = NoteStateUnused;
+        printf("note state unused");
+        delayed_trigger = false;
         gate = false;
         bendAmount = 0.0f;
         modEngine.in[ModInModwheel] = 0.0f;

@@ -394,6 +394,7 @@ public:
         state = NoteStateReleasing;
         gate = false;
         envelope.TriggerLow();
+        delayed_trigger = false;
     }
     
     void add() {
@@ -423,6 +424,7 @@ public:
         modEngine.in[ModInModwheel] = 0.0f;
         modEngine.in[ModInAftertouch] = 0.0f;
         modEngine.in[ModInSustain] = 0.0f;
+        delayed_trigger = false;
     }
     
     virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {

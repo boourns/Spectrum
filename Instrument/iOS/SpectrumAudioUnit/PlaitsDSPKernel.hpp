@@ -179,6 +179,7 @@ public:
             modEngine.in[ModInModwheel] = 0.0f;
             modEngine.in[ModInAftertouch] = 0.0f;
             modEngine.in[ModInSustain] = 0.0f;
+            delayed_trigger = false;
         }
         
         // linked list management
@@ -187,6 +188,7 @@ public:
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
             modEngine.in[ModInGate] = 0.0f;
+            delayed_trigger = false;
 
             state = NoteStateReleasing;
         }
@@ -335,7 +337,6 @@ public:
                         envelope.TriggerHigh();
                         ampEnvelope.TriggerHigh();
                         modEngine.in[ModInGate] = 1.0f;
-
                     }
                 }
                 
