@@ -9,8 +9,51 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
-open class Slider: UIView {
+open class ParameterSlider: Slider {
     let param: AUParameter
+    let spectrumState: SpectrumState
+
+    init(_ state: SpectrumState, _ address: AUParameterAddress) {
+        self.spectrumState = state
+        guard let param = state.tree?.parameter(withAddress: address) else {
+            fatalError("Could not find parameter for address \(address)")
+        }
+        
+        self.param = param
+        
+        super.init(name: param.displayName, value: param.value, minValue: param.minValue, maxValue: param.maxValue, stackVertically: false)
+        
+        spectrumState.parameters[param.address] = (param, self)
+        
+        addControlEvent(.valueChanged) { [weak self] in
+            guard let this = self else { return }
+            this.param.value = this.value
+        }
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func displayString(_ val: Float) -> String {
+        if pressed {
+            if let values = param.valueStrings {
+                let index = Int(round(val))
+                if values.count > index {
+                    return values[index]
+                } else {
+                    return "??"
+                }
+            } else {
+                return String(format:"%.03f", val)
+            }
+        } else  {
+            return param.displayName
+        }
+    }
+}
+
+open class Slider: UIControl {
     let label = UILabel()
     let slider: PSlider
     var pressed = false {
@@ -23,6 +66,7 @@ open class Slider: UIView {
         get {
             return slider.value
         }
+        
         set(val) {
             slider.value = val
             label.text = displayString(val)
@@ -30,18 +74,17 @@ open class Slider: UIView {
     }
     
     let stackVertically: Bool
-    let state: SpectrumState
+    let name: String
+    let minValue: Float
+    let maxValue: Float
     
-    init(_ state: SpectrumState, _ address: AUParameterAddress) {
-        self.state = state
-        guard let param = state.tree?.parameter(withAddress: address) else {
-            fatalError("Could not find parameter for address \(address)")
-        }
+    init(name: String, value: Float, minValue: Float, maxValue: Float, stackVertically: Bool) {
+        self.name = name
+        self.minValue = minValue
+        self.maxValue = maxValue
+        self.stackVertically = stackVertically
         
-        self.param = param
-        self.stackVertically = false //stackVertically
-        
-        if (param.minValue < 0) {
+        if (minValue < 0) {
             self.slider = PSlider(bipolar: true)
         } else {
             self.slider = PSlider(bipolar: false)
@@ -49,7 +92,7 @@ open class Slider: UIView {
         
         super.init(frame: CGRect.zero)
         
-        state.parameters[param.address] = (param, self)
+        self.value = value
         
         setup()
     }
@@ -62,17 +105,19 @@ open class Slider: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         label.textColor = UILabel.appearance().tintColor
-        label.text = param.displayName
+        label.text = name
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.isUserInteractionEnabled = true
+        
         let tapGesture = UITapGestureRecognizer() { [weak self] in
             guard let this = self else { return }
-            this.param.value = 0.0
+            this.value = 0.0
+            
         }
         label.addGestureRecognizer(tapGesture)
         
-        slider.minimumValue = param.minValue
-        slider.maximumValue = param.maxValue
+        slider.minimumValue = minValue
+        slider.maximumValue = maxValue
         slider.isContinuous = true
         
         slider.addControlEvent(.touchDown) { [weak self] in
@@ -89,7 +134,7 @@ open class Slider: UIView {
         
         slider.addControlEvent(.valueChanged) { [weak self] in
             guard let this = self else { return }
-            this.param.value = this.slider.value
+            this.sendActions(for: .valueChanged)
         }
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -122,23 +167,13 @@ open class Slider: UIView {
             ]
         }
         NSLayoutConstraint.activate(constraints)
-        value = param.value
     }
     
     func displayString(_ val: Float) -> String {
         if pressed {
-            if let values = param.valueStrings {
-                let index = Int(round(val))
-                if values.count > index {
-                    return values[index]
-                } else {
-                    return "??"
-                }
-            } else {
-                return String(format:"%.03f", val)
-            }
+            return String(format:"%.03f", val)
         } else  {
-            return param.displayName
+            return name
         }
     }
 }
