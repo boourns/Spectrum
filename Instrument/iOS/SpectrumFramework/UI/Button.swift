@@ -24,7 +24,6 @@ open class Button: UIView {
         }
         
         set(val) {
-            param.value = val
             updateButton()
         }
     }
@@ -76,20 +75,20 @@ open class Button: UIView {
         if momentary {
             button.addControlEvent(.touchDown) { [weak self] in
                 guard let this = self else { return }
-                this.value = 1.0
+                this.param.value = 1.0
             }
             button.addControlEvent(.touchUpInside) { [weak self] in
                 guard let this = self else { return }
-                this.value = 0.0
+                this.param.value = 0.0
             }
             button.addControlEvent(.touchUpOutside) { [weak self] in
                 guard let this = self else { return }
-                this.value = 0.0
+                this.param.value = 0.0
             }
         } else {
             button.addControlEvent(.touchUpInside) { [weak self] in
                 guard let this = self else { return }
-                this.value = this.pressed ? 0.0 : 1.0
+                this.param.value = this.pressed ? 0.0 : 1.0
             }
         }
         
