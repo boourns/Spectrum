@@ -19,7 +19,6 @@ class TouchPadParameterContainer: ParameterView {
         
         set(val) {
             if (!touchpad.pad.touching) {
-                param.value = val
                 touchpad.setFromParams()
             }
         }
