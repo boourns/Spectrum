@@ -64,6 +64,8 @@ public:
     }
     
     void setParameter(AUParameterAddress address, AUValue value) {
+        drawingDirty = true;
+        
         if (address == shapeAddress) {
             uint16_t newShape = round(clamp(value, 0.0f, 4.0f));
             if (newShape != shape) {
@@ -161,6 +163,17 @@ public:
         return ((float) lfo.Process(blockSize)) / INT16_MAX;
     }
     
+    void draw(float *levels, int count) {
+        drawingDirty = false;
+        
+        peaks::Lfo drawLfo = lfo;
+        drawLfo.phase_ = drawLfo.reset_phase_;
+        int incr = UINT32_MAX / count;
+        for (int i = 0; i < count; i++) {
+            levels[i] = ((float) drawLfo.Process(1, incr)) / INT16_MAX;
+        }
+    }
+    
     AUParameterAddress shapeAddress;
     AUParameterAddress shapeModAddress;
     AUParameterAddress rateAddress;
@@ -180,6 +193,8 @@ public:
     bool sync;
     float resetPhase;
     bool keyReset;
+    
+    bool drawingDirty;
     
     double sampleRate;
     int syncRateIndex;

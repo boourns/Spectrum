@@ -583,4 +583,22 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setupModulationRules();
 }
 
+// MARK - lfo graphic
+- (NSArray<NSNumber *> *)drawLFO {
+    float pt[100];
+    _kernel.drawLFO(&pt[0], 100);
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < 100; i++) {
+        NSNumber *number = [NSNumber numberWithFloat:pt[i]];
+        [result addObject:number];
+    }
+    
+    return result;
+}
+
+- (bool) lfoDrawingDirty {
+    return _kernel.lfoDrawingDirty();
+}
+
 @end

@@ -811,6 +811,14 @@ public:
         return result;
     }
     
+    void drawLFO(float *points, int count) {
+        voices[0].lfo.draw(points, count);
+    }
+    
+    bool lfoDrawingDirty() {
+        return voices[0].lfo.drawingDirty;
+    }
+    
     // MARK: Member Variables
     
 private:

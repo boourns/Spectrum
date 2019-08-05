@@ -282,6 +282,8 @@
 		E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60617229CE9E0004B33CB /* MainInterface.storyboard */; };
+		E2F45C1822F141C500668AC5 /* LFOImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F45C1722F141C500668AC5 /* LFOImage.swift */; };
+		E2F45C1922F1436D00668AC5 /* LFOImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F45C1722F141C500668AC5 /* LFOImage.swift */; };
 		E2F494D222DECA7000A1D487 /* GranularAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E225106A22B1F8E900DD88E8 /* GranularAudioUnit.mm */; };
 		E2F494D322DECA8400A1D487 /* GranularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107122B1FCE700DD88E8 /* GranularViewController.swift */; };
 /* End PBXBuildFile section */
@@ -705,6 +707,7 @@
 		E2E60618229CE9E0004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E2E6061B229CE9E0004B33CB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2F45C1722F141C500668AC5 /* LFOImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LFOImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1286,6 +1289,7 @@
 				E235623B22B5E0E100762D39 /* Knob.swift */,
 				E235624622B6FCC300762D39 /* ModTarget.swift */,
 				E216B03C22B9DDEE00467133 /* TouchPad.swift */,
+				E2F45C1722F141C500668AC5 /* LFOImage.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1955,6 +1959,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */,
+				E2F45C1822F141C500668AC5 /* LFOImage.swift in Sources */,
 				E234605E22C8ED7400C9D005 /* Silver.swift in Sources */,
 				92A10D051B9527D10081EA80 /* ViewController.swift in Sources */,
 			);
@@ -1964,6 +1969,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2F45C1922F1436D00668AC5 /* LFOImage.swift in Sources */,
 				E2A2D08622DE725C0062FB57 /* AudioBuffers.mm in Sources */,
 				E216B03E22B9DE4E00467133 /* TouchPad.swift in Sources */,
 				E216B03B22B9DA8500467133 /* AKTouchPad.swift in Sources */,

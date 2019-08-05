@@ -62,9 +62,29 @@ extension UILabel {
 class SpectrumViewController: BaseAudioUnitViewController {
     let big = CGFloat(70.0)
     let small = CGFloat(50.0)
+    var lfoImage: LFOImage!
+    
+    @objc func step(displaylink: CADisplayLink) {
+        guard let audioUnit = audioUnit as? SpectrumAudioUnit else { return }
+        if audioUnit.lfoDrawingDirty() {
+            lfoImage.setNeedsDisplay()
+        }
+    }
     
     override func buildUI() -> UI {
         state.colours = SpectrumUI.purple
+        
+        lfoImage = LFOImage(
+            renderLfo: { [weak self] in
+            guard let this = self else { return nil }
+            return (this.audioUnit as? SpectrumAudioUnit)?.drawLFO()
+        })
+        
+        let displaylink = CADisplayLink(target: self,
+                                        selector: #selector(step))
+            
+        displaylink.add(to: .current,
+                        forMode: RunLoop.Mode.default)
 
         return UI(state: state, [
             Page("Spectrum",
@@ -128,7 +148,8 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                 ])
                             )])),
             
-            lfoPage(rate: PlaitsParam.LfoRate.rawValue, shape: PlaitsParam.LfoShape.rawValue, shapeMod: PlaitsParam.LfoShapeMod.rawValue, tempoSync: PlaitsParam.LfoTempoSync.rawValue, resetPhase: PlaitsParam.LfoResetPhase.rawValue, keyReset: PlaitsParam.LfoKeyReset.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
+            lfoPage(rate: PlaitsParam.LfoRate.rawValue, shape: PlaitsParam.LfoShape.rawValue, shapeMod: PlaitsParam.LfoShapeMod.rawValue, tempoSync: PlaitsParam.LfoTempoSync.rawValue, resetPhase: PlaitsParam.LfoResetPhase.rawValue, keyReset: PlaitsParam.LfoKeyReset.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue,
+                    injectedView: lfoImage),
             
             envPage(envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
             

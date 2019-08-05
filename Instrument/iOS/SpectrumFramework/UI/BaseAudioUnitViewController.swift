@@ -118,7 +118,7 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
     }
     
     public func slider(_ address: AUParameterAddress) -> Slider {
-        return Slider( state, address)
+        return ParameterSlider( state, address)
     }
     
     public func touchPad(_ xAddress: AUParameterAddress, _ yAddress: AUParameterAddress, _ gateAddress: AUParameterAddress) -> TouchPad {
@@ -145,7 +145,10 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
         return Button(state, address, momentary: momentary)
     }
     
-    public func lfoPage(rate: AUParameterAddress, shape: AUParameterAddress, shapeMod: AUParameterAddress, tempoSync: AUParameterAddress, resetPhase: AUParameterAddress, keyReset: AUParameterAddress, modStart: AUParameterAddress) -> Page {
+    public func lfoPage(rate: AUParameterAddress, shape: AUParameterAddress, shapeMod: AUParameterAddress, tempoSync: AUParameterAddress, resetPhase: AUParameterAddress, keyReset: AUParameterAddress, modStart: AUParameterAddress, injectedView: UIView? = nil) -> Page {
+        
+        let view = injectedView ?? UIView()
+        
         return Page("LFO",
             cStack([
                 Stack([
@@ -162,8 +165,9 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
                         button(keyReset, momentary: false)
                         ]))
                     ]),
-                Stack([
-                    panel(HStack([
+                Stack([view,
+                    panel(
+                        HStack([
                         modTarget("LFO -> 1", modStart),
                         modTarget("LFO -> 2", modStart+4),
                         ])),
