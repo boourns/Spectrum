@@ -11,8 +11,34 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 
-open class Picker: UIView, ParameterView {
+open class ParameterPicker: Picker, ParameterView {
     let param: AUParameter
+
+    let spectrumState: SpectrumState
+    
+    init(_ state: SpectrumState, _ address: AUParameterAddress) {
+        self.spectrumState = state
+        guard let param = spectrumState.tree?.parameter(withAddress: address) else {
+            fatalError("Could not find param for address \(address)")
+        }
+        self.param = param
+        
+        super.init(name: param.displayName, value: param.value, valueStrings: param.valueStrings!)
+        
+        spectrumState.parameters[param.address] = (param, self)
+        
+        addControlEvent(.valueChanged) { [weak self] in
+            guard let this = self else { return }
+            this.param.value = this.value
+        }
+    }
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+open class Picker: UIControl {
     let valueStrings: [String]
     let valueLabel = UILabel()
     let label = UILabel()
@@ -21,20 +47,14 @@ open class Picker: UIView, ParameterView {
             updateDisplay()
         }
     }
+    let name: String
     
-    let state: SpectrumState
-    
-    init(_ state: SpectrumState, _ address: AUParameterAddress) {
-        self.state = state
-        guard let param = state.tree?.parameter(withAddress: address) else {
-            fatalError("Could not find param for address \(address)")
-        }
-        self.param = param
-        self.valueStrings = param.valueStrings!
-        self.value = param.value
+    init(name: String, value: Float, valueStrings: [String]) {
+        self.valueStrings = valueStrings
+        self.value = value
+        self.name = name
         
         super.init(frame: CGRect.zero)
-        state.parameters[param.address] = (param, self)
 
         setup()
     }
@@ -47,7 +67,7 @@ open class Picker: UIView, ParameterView {
         translatesAutoresizingMaskIntoConstraints = false
         
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        label.text = param.displayName
+        label.text = name
         label.textColor = UILabel.appearance().tintColor
 
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -110,7 +130,7 @@ open class Picker: UIView, ParameterView {
             } else {
                 this.value = newValue
             }
-            this.param.value = this.value
+            this.sendActions(for: .valueChanged)
         }
         
         rightButton.addControlEvent(.touchUpInside) { [weak self] in
@@ -121,9 +141,8 @@ open class Picker: UIView, ParameterView {
             } else {
                 this.value = newValue
             }
-            this.param.value = this.value
+            this.sendActions(for: .valueChanged)
         }
-        value = param.value
     }
     
     private func updateDisplay() {

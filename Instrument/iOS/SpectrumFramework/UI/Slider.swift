@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreAudioKit
 
-open class ParameterSlider: Slider {
+open class ParameterSlider: Slider, ParameterView {
     let param: AUParameter
     let spectrumState: SpectrumState
 
@@ -177,5 +177,3 @@ open class Slider: UIControl {
         }
     }
 }
-
-extension Slider: ParameterView { }

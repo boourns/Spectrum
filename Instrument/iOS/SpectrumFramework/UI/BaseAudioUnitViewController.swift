@@ -114,7 +114,7 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
     }
     
     public func picker(_ address: AUParameterAddress) -> Picker {
-        return Picker( state, address)
+        return ParameterPicker( state, address)
     }
     
     public func slider(_ address: AUParameterAddress) -> Slider {
