@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class TouchPadParameterContainer: ParameterView {
     let param: AUParameter

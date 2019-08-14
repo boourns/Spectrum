@@ -219,6 +219,7 @@
 		E234605E22C8ED7400C9D005 /* Silver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234605D22C8ED7400C9D005 /* Silver.swift */; };
 		E235624222B5E11500762D39 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235623B22B5E0E100762D39 /* Knob.swift */; };
 		E235624722B6FCC300762D39 /* ModTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E235624622B6FCC300762D39 /* ModTarget.swift */; };
+		E2388E552302658A0019AEB5 /* MIDIProcessorWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2388E542302658A0019AEB5 /* MIDIProcessorWrapper.mm */; };
 		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
 		E2495051229F82DF0073FBDC /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = E2495044229F82DF0073FBDC /* resample.c */; };
 		E2495053229F82DF0073FBDC /* frame.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495046229F82DF0073FBDC /* frame.hpp */; };
@@ -652,6 +653,8 @@
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
 		E235624622B6FCC300762D39 /* ModTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModTarget.swift; sourceTree = "<group>"; };
+		E2388E542302658A0019AEB5 /* MIDIProcessorWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIProcessorWrapper.mm; sourceTree = "<group>"; };
+		E2388E56230265A70019AEB5 /* MIDIProcessorWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIProcessorWrapper.h; sourceTree = "<group>"; };
 		E2495041229F82DF0073FBDC /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		E2495044229F82DF0073FBDC /* resample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = resample.c; sourceTree = "<group>"; };
 		E2495046229F82DF0073FBDC /* frame.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = frame.hpp; sourceTree = "<group>"; };
@@ -881,6 +884,8 @@
 				E252330C22DFA18800C437DA /* HostTransport.h */,
 				E252330D22E0C1A500C437DA /* KernelTransportState.h */,
 				E252330E22E0E02900C437DA /* LFOKernel.hpp */,
+				E2388E542302658A0019AEB5 /* MIDIProcessorWrapper.mm */,
+				E2388E56230265A70019AEB5 /* MIDIProcessorWrapper.h */,
 			);
 			name = Shared;
 			path = ../../Shared;
@@ -1974,6 +1979,7 @@
 				E216B03E22B9DE4E00467133 /* TouchPad.swift in Sources */,
 				E216B03B22B9DA8500467133 /* AKTouchPad.swift in Sources */,
 				E252330622DFA17600C437DA /* HostTransport.mm in Sources */,
+				E2388E552302658A0019AEB5 /* MIDIProcessorWrapper.mm in Sources */,
 				E235624222B5E11500762D39 /* Knob.swift in Sources */,
 				E225107C22B57C2800DD88E8 /* UIView+extensions.swift in Sources */,
 				E225107922B53EA100DD88E8 /* SpectrumUI.swift in Sources */,

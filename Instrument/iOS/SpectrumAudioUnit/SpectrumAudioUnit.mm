@@ -3,10 +3,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PlaitsDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
-#import "MIDIProcessor.hpp"
 #import "AudioBuffers.h"
 #import "StateManager.h"
 #import "HostTransport.h"
+#import "MIDIProcessor.hpp"
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);
@@ -19,6 +19,7 @@
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
 @property HostTransport *hostTransport;
+@property MIDIProcessorWrapper *midiProcessor;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -369,6 +370,12 @@
     
     _kernel.setupModulationRules();
     
+    _midiProcessor = [MIDIProcessorWrapper alloc];
+    
+    [_midiProcessor setMIDIProcessor: &_kernel.midiProcessor];
+    
+    [_stateManager setMIDIProcessor: _midiProcessor];
+
     return self;
 }
 
@@ -558,13 +565,36 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 // MARK - state management
 
 - (NSDictionary *)fullState {
+    DEBUG_LOG(@"fullState")
+
     return [_stateManager fullStateWithDictionary:[super fullState]];
 }
 
 - (void)setFullState:(NSDictionary *)fullState {
+    DEBUG_LOG(@"setFullState start")
+
     [_stateManager setFullState:fullState];
     
     _kernel.setupModulationRules();
+    DEBUG_LOG(@"setFullState end")
+
+}
+
+- (NSDictionary *)fullStateForDocument {
+    DEBUG_LOG(@"fullStateForDocument")
+
+    return [_stateManager fullStateForDocumentWithDictionary:[super fullStateForDocument]];
+}
+
+- (void)setFullStateForDocument:(NSDictionary *)fullStateForDocument {
+    DEBUG_LOG(@"setFullStateForDocument start")
+
+    [_stateManager setFullStateForDocument:fullStateForDocument];
+    [super setFullStateForDocument:fullStateForDocument];
+
+    _kernel.setupModulationRules();
+    DEBUG_LOG(@"setFullStateForDocument end")
+
 }
 
 // MARK - preset management

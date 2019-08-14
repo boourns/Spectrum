@@ -153,14 +153,33 @@ class SpectrumViewController: BaseAudioUnitViewController {
             
             envPage(envStart: PlaitsParam.EnvAttack.rawValue, modStart: PlaitsParam.ModMatrixStart.rawValue),
             
-            modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6)
-        
-            //LFOPage(),
-            //EnvPage(),
-            //Page("Amp", UIView()),
-            //ModMatrixPage(),
+            modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6),
+            
+            settingsPage()
+
             ]) // ui page list
         
+    }
+    
+    func settingsPage() -> Page {
+        guard let audioUnit = audioUnit as? SpectrumAudioUnit else { fatalError("Wrong audiounit class") }
+        let processor = audioUnit.midiProcessor()!
+        
+        let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" })
+        
+        midiChannel.addControlEvent(.valueChanged) {
+            processor.setChannel(Int32(midiChannel.value - 1))
+        }
+        
+        let midiCC = Picker(name: "MIDI CC Control", value: 0.0, valueStrings: ["Enabled", "Disabled"])
+        
+        processor.onSettingsUpdate() { [weak self] in
+            midiChannel.value = Float(processor.channel() + 1)
+        }
+        
+        return Page("⚙︎", Stack([
+            midiChannel
+            ]), requiresScroll: true)
     }
 }
 

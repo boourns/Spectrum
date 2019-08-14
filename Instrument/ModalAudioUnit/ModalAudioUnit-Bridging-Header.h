@@ -8,6 +8,6 @@
 #ifndef ModalAudioUnit_Bridging_Header_h
 #define ModalAudioUnit_Bridging_Header_h
 
-#import "iOSSpectrumFramework-Bridging-Header.h"
+#import "ModalAudioUnit.h"
 
 #endif /* ModalAudioUnit_Bridging_Header_h */

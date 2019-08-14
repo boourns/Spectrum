@@ -5,4 +5,4 @@
 //  Created by tom on 2019-06-12.
 //
 
-#import "iOSSpectrumFramework-Bridging-Header.h"
+#import "GranularAudioUnit.h"

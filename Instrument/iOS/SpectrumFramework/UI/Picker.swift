@@ -42,14 +42,14 @@ open class Picker: UIControl {
     let valueStrings: [String]
     let valueLabel = UILabel()
     let label = UILabel()
-    var value: Float {
+    public var value: Float {
         didSet {
             updateDisplay()
         }
     }
     let name: String
     
-    init(name: String, value: Float, valueStrings: [String]) {
+    public init(name: String, value: Float, valueStrings: [String]) {
         self.valueStrings = valueStrings
         self.value = value
         self.name = name
@@ -143,6 +143,8 @@ open class Picker: UIControl {
             }
             this.sendActions(for: .valueChanged)
         }
+        
+        updateDisplay()
     }
     
     private func updateDisplay() {

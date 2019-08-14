@@ -10,7 +10,7 @@
 
 #define MIDIPROCESSOR_DEBUG
 
-#include <vector>
+#import <vector>
 #include <map>
 #import "DSPKernel.hpp"
 

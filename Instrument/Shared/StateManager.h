@@ -10,6 +10,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "MIDIProcessor.hpp"
+#import "MIDIProcessorWrapper.h"
 
 typedef struct {
     NSString *name;
@@ -23,9 +24,13 @@ typedef struct {
 
 - (id) initWithParameterTree:(AUParameterTree *) tree presets:(NSArray<AUAudioUnitPreset *>*) presets presetData:(const FactoryPreset *)presetData;
 
+- (void) setMIDIProcessor: (MIDIProcessorWrapper *)midiProcessor;
+
 // MARK - State
 - (NSDictionary *)fullStateWithDictionary: (NSDictionary *) parentState;
 - (void)setFullState:(NSDictionary *)fullState;
+- (NSDictionary *)fullStateForDocumentWithDictionary: (NSDictionary *) parentState;
+- (void)setFullStateForDocument:(NSDictionary *)fullState;
 
 // MARK - Presets
 - (AUAudioUnitPreset *)currentPreset;

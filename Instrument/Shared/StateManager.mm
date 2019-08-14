@@ -18,6 +18,7 @@
     NSInteger           _currentFactoryPresetIndex;
     NSArray<AUAudioUnitPreset *> *_presets;
     const FactoryPreset *_presetData;
+    MIDIProcessorWrapper *_midiProcessor;
 }
 
 - (id) initWithParameterTree:(AUParameterTree *) tree presets:(NSArray<AUAudioUnitPreset *>*) presets presetData:(const FactoryPreset *)presetData {
@@ -28,6 +29,10 @@
     _parameterTree = tree;
     
     return self;
+}
+
+- (void) setMIDIProcessor:(MIDIProcessorWrapper *)midiProcessor {
+    _midiProcessor = midiProcessor;
 }
 
 #pragma mark - fullstate - must override in order to call parameter observer when fullstate is reset.
@@ -113,18 +118,24 @@
     }
 }
 
+- (NSDictionary *)fullStateForDocumentWithDictionary: (NSDictionary *) parentState {
+    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:parentState];
+    if (_midiProcessor != nil) {
+        state[@"midi"] = [NSKeyedArchiver archivedDataWithRootObject:[_midiProcessor settings]];
+    }
+    return state;
+}
+
+- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
+    if (_midiProcessor != nil) {
+        NSData *data = (NSData *)fullStateForDocument[@"midi"];
+        [_midiProcessor updateSettings: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    } else {
+        NSLog(@"midiProcessor nil");
+    }
+}
+
 //#pragma mark- MIDI CC Map
-//- (NSDictionary *)fullStateForDocument {
-//    NSMutableDictionary *state = [[NSMutableDictionary alloc] initWithDictionary:super.fullStateForDocument];
-//    state[@"midiMap"] = [NSKeyedArchiver archivedDataWithRootObject:midiCCMap];
-//    return state;
-//}
-//
-//- (void) setFullStateForDocument:(NSDictionary<NSString *,id> *)fullStateForDocument {
-//    NSData *data = (NSData *)fullStateForDocument[@"midiMap"];
-//    midiCCMap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//    [self updateKernelMIDIMap];
-//}
 
 - (std::map<uint8_t, std::vector<MIDICCTarget>>) defaultMIDIMap {
     int skip;

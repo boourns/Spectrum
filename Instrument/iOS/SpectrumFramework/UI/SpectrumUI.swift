@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 public struct SpectrumColours {
     let primary: UIColor
