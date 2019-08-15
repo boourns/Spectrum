@@ -165,20 +165,26 @@ class SpectrumViewController: BaseAudioUnitViewController {
         guard let audioUnit = audioUnit as? SpectrumAudioUnit else { fatalError("Wrong audiounit class") }
         let processor = audioUnit.midiProcessor()!
         
-        let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" })
+        let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" }, horizontal: true)
         
         midiChannel.addControlEvent(.valueChanged) {
             processor.setChannel(Int32(midiChannel.value - 1))
         }
         
-        let midiCC = Picker(name: "MIDI CC Control", value: 0.0, valueStrings: ["Enabled", "Disabled"])
+        let midiCC = Picker(name: "MIDI CC Control", value: processor.automation() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
+        midiCC.addControlEvent(.valueChanged) {
+            processor.setAutomation(midiCC.value > 0.9)
+        }
         
-        processor.onSettingsUpdate() { [weak self] in
+        processor.onSettingsUpdate() {
             midiChannel.value = Float(processor.channel() + 1)
+            midiCC.value = processor.automation() ? 1.0 : 0.0
         }
         
         return Page("⚙︎", Stack([
-            midiChannel
+            Header("MIDI"),
+            midiChannel,
+            midiCC
             ]), requiresScroll: true)
     }
 }

@@ -20,6 +20,10 @@
 
 - (int) channel;
 - (void) setChannel: (int) ch;
+
+- (bool) automation;
+- (void) setAutomation: (bool) automation;
+
 @end
 
 #endif /* MIDIProcessorWrapper_h */

@@ -48,11 +48,13 @@ open class Picker: UIControl {
         }
     }
     let name: String
+    let horizontal: Bool
     
-    public init(name: String, value: Float, valueStrings: [String]) {
+    public init(name: String, value: Float, valueStrings: [String], horizontal: Bool = false) {
         self.valueStrings = valueStrings
         self.value = value
         self.name = name
+        self.horizontal = horizontal
         
         super.init(frame: CGRect.zero)
 
@@ -99,28 +101,12 @@ open class Picker: UIControl {
 
         addSubview(label)
         
-        let constraints = [
-            container.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: Spacing.inner),
-            container.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.inner),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: container.trailingAnchor, multiplier: Spacing.inner),
-            label.topAnchor.constraint(equalToSystemSpacingBelow: container.bottomAnchor, multiplier: Spacing.inner),
-            
-            leftButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            leftButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            rightButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            rightButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            leftButton.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor),
-            container.bottomAnchor.constraint(greaterThanOrEqualTo: leftButton.bottomAnchor),
-            valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-//            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-            valueLabel.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor),
-            valueLabel.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: Spacing.margin),
-            label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.margin),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.margin),
-            container.heightAnchor.constraint(lessThanOrEqualTo: container.widthAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        if horizontal {
+            setupHorizontal(container: container, leftButton: leftButton, rightButton: rightButton)
+        } else {
+            setupVertical(container: container, leftButton: leftButton, rightButton: rightButton)
+        }
+        
         
         leftButton.addControlEvent(.touchUpInside) { [weak self] in
             guard let this = self else { return }
@@ -145,6 +131,57 @@ open class Picker: UIControl {
         }
         
         updateDisplay()
+    }
+    
+    private func setupHorizontal(container: UIView, leftButton: UIButton, rightButton: UIButton) {
+        let constraints = [
+            container.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: Spacing.inner),
+            container.leadingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.inner),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: container.trailingAnchor, multiplier: Spacing.inner),
+            bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: container.bottomAnchor, multiplier: Spacing.inner),
+            
+            rightButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            leftButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            leftButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            rightButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            leftButton.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor),
+            container.bottomAnchor.constraint(greaterThanOrEqualTo: leftButton.bottomAnchor),
+            valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            //            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            valueLabel.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor),
+            valueLabel.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor),
+            
+            bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: label.bottomAnchor, multiplier: Spacing.margin),
+            label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.margin),
+            container.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5),
+            container.heightAnchor.constraint(lessThanOrEqualTo: container.widthAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func setupVertical(container: UIView, leftButton: UIButton, rightButton: UIButton) {
+        let constraints = [
+            container.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: Spacing.inner),
+            container.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.inner),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: container.trailingAnchor, multiplier: Spacing.inner),
+            label.topAnchor.constraint(equalToSystemSpacingBelow: container.bottomAnchor, multiplier: Spacing.inner),
+            
+            leftButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            leftButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            rightButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            rightButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            leftButton.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor),
+            container.bottomAnchor.constraint(greaterThanOrEqualTo: leftButton.bottomAnchor),
+            valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            //            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            valueLabel.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor),
+            valueLabel.trailingAnchor.constraint(equalTo: rightButton.leadingAnchor),
+            bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: Spacing.margin),
+            label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: Spacing.margin),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: Spacing.margin),
+            container.heightAnchor.constraint(lessThanOrEqualTo: container.widthAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     private func updateDisplay() {

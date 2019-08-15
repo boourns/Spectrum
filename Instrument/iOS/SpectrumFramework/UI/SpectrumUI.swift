@@ -277,3 +277,25 @@ open class Panel2: Panel {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+open class Header: UIView {
+    public init(_ text: String) {
+        super.init(frame: CGRect.zero)
+        setup(text: text)
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup(text: String) {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.text = text
+        label.textColor = UILabel.appearance().tintColor
+        
+        addSubview(label)
+        NSLayoutConstraint.activate(label.constraints(insideWithSystemSpacing: self, multiplier: 1.0))
+    }
+}

@@ -26,6 +26,7 @@
 - (NSDictionary *) settings {
     NSMutableDictionary *settings = [[NSMutableDictionary alloc] init];
     settings[@"channel"] = @(processor->channelSetting);
+    settings[@"automation"] = @(processor->automation ? 1 : 0);
     return settings;
 }
 
@@ -35,6 +36,11 @@
     value = (NSNumber *) settings[@"channel"];
     if (value != nil) {
         processor->setChannel(value.intValue);
+    }
+    
+    value = (NSNumber *) settings[@"automation"];
+    if (value != nil) {
+        processor->setAutomation(value.intValue == 1);
     }
     
     if (settingsUpdateCallback != nil) {
@@ -48,6 +54,14 @@
 
 - (void) setChannel: (int) ch {
     processor->setChannel(ch);
+}
+
+- (bool) automation {
+    return processor->automation;
+}
+
+- (void) setAutomation: (bool) automation {
+    processor->setAutomation(automation);
 }
 
 @end

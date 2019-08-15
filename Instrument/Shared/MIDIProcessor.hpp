@@ -394,12 +394,14 @@ public:
                 } else if (num >= 98 && num <= 101) {
                     // TODO: RPN / NRPM for MPE
                 } else {
-                    std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(num);
-                    if (params != ccMap.end()) {
-                        std::vector<MIDICCTarget>::iterator itr;
-                        for (itr = params->second.begin(); itr != params->second.end(); ++itr) {
-                            float value = itr->minimum + (itr->maximum - itr->minimum) * (((float) midiEvent.data[2]) / 127.0f);
-                            itr->parameter.value = value;
+                    if (automation) {
+                        std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(num);
+                        if (params != ccMap.end()) {
+                            std::vector<MIDICCTarget>::iterator itr;
+                            for (itr = params->second.begin(); itr != params->second.end(); ++itr) {
+                                float value = itr->minimum + (itr->maximum - itr->minimum) * (((float) midiEvent.data[2]) / 127.0f);
+                                itr->parameter.value = value;
+                            }
                         }
                     }
                 }
@@ -445,7 +447,13 @@ public:
         }
     }
     
+    void setAutomation(bool automation) {
+        this->automation = automation;
+    }
+    
     int channelSetting = -1;
+    bool automation = true;
+    
     NoteStack noteStack;
     std::map<uint8_t, std::vector<MIDICCTarget>> ccMap;
     
