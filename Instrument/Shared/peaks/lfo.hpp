@@ -89,7 +89,6 @@ namespace peaks {
         int16_t ComputeSampleNoise();
         
         uint16_t rate_;
-        LfoShape shape_;
         int16_t parameter_;
         int32_t level_;
         
@@ -110,8 +109,10 @@ namespace peaks {
         static ComputeSampleFn compute_sample_fn_table_[];
         
     public:
+        LfoShape shape_;
         uint32_t phase_;
         uint32_t reset_phase_;
+        uint32_t last_phase_;
         
         Lfo() { }
         ~Lfo() { }

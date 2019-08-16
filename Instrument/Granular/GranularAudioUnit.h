@@ -9,9 +9,14 @@
 #define GranularAudioUnit_h
 
 #import <AudioToolbox/AudioToolbox.h>
+#import "MIDIProcessorWrapper.h"
+
 
 @interface GranularAudioUnit : AUAudioUnit
+- (NSArray<NSNumber *> *)drawLFO;
+- (bool) lfoDrawingDirty;
 
+- (MIDIProcessorWrapper *) midiProcessor;
 @end
 
 #endif /* GranularAudioUnit_h */

@@ -152,20 +152,21 @@ open class BaseAudioUnitViewController: AUViewController { //, InstrumentViewDel
         return Page("LFO",
             cStack([
                 Stack([
-                    panel(Stack([
+                    view,
+                    panel2(Stack([
                         HStack([
                             knob(rate), // LFO Speed
                             picker(shape), // LFO Wave
                             knob(shapeMod), // LFO Shape Mod
                             ]),
                         ])),
+                    ]),
+                Stack([
                     panel2(HStack([
                         button(tempoSync, momentary: false),
                         knob(resetPhase),
                         button(keyReset, momentary: false)
-                        ]))
-                    ]),
-                Stack([view,
+                        ])),
                     panel(
                         HStack([
                         modTarget("LFO -> 1", modStart),

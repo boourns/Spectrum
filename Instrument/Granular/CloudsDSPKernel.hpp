@@ -578,6 +578,14 @@ public:
         }
     }
     
+    void drawLFO(float *points, int count) {
+        lfo.draw(points, count);
+    }
+    
+    bool lfoDrawingDirty() {
+        return lfo.drawingDirty;
+    }
+    
     // MARK: Member Variables
     
 private:

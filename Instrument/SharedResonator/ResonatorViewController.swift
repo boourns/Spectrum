@@ -42,9 +42,29 @@ enum RingsParam: AUParameterAddress {
 
 class ResonatorViewController: BaseAudioUnitViewController {
     var loadAsEffect = false
+    var lfoImage: LFOImage!
+    
+    @objc func step(displaylink: CADisplayLink) {
+        guard let audioUnit = audioUnit as? ResonatorAudioUnit else { return }
+        if audioUnit.lfoDrawingDirty() {
+            lfoImage.setNeedsDisplay()
+        }
+    }
     
     override func buildUI() -> UI {
         state.colours = SpectrumUI.red
+        
+        lfoImage = LFOImage(
+            renderLfo: { [weak self] in
+                guard let this = self else { return nil }
+                return (this.audioUnit as? ResonatorAudioUnit)?.drawLFO()
+        })
+        
+        let displaylink = CADisplayLink(target: self,
+                                        selector: #selector(step))
+        
+        displaylink.add(to: .current,
+                        forMode: RunLoop.Mode.default)
         
         var main = [
             knob(RingsParam.Structure.rawValue, size: 70),
@@ -85,14 +105,42 @@ class ResonatorViewController: BaseAudioUnitViewController {
                     ]) // cstack
             ), // page
             
-            lfoPage(rate: RingsParam.LfoRate.rawValue, shape: RingsParam.LfoShape.rawValue, shapeMod: RingsParam.LfoShapeMod.rawValue, tempoSync: RingsParam.LfoTempoSync.rawValue, resetPhase: RingsParam.LfoResetPhase.rawValue, keyReset: RingsParam.LfoKeyReset.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
+            lfoPage(rate: RingsParam.LfoRate.rawValue, shape: RingsParam.LfoShape.rawValue, shapeMod: RingsParam.LfoShapeMod.rawValue, tempoSync: RingsParam.LfoTempoSync.rawValue, resetPhase: RingsParam.LfoResetPhase.rawValue, keyReset: RingsParam.LfoKeyReset.rawValue, modStart: RingsParam.ModMatrixStart.rawValue, injectedView: lfoImage),
                 
             envPage(envStart: RingsParam.EnvAttack.rawValue, modStart: RingsParam.ModMatrixStart.rawValue),
             
-            modMatrixPage(modStart: RingsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
+            modMatrixPage(modStart: RingsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6),
+            
+            settingsPage()
 
             ]) // ui page list
+    }
+    
+    func settingsPage() -> Page {
+        guard let audioUnit = audioUnit as? ResonatorAudioUnit else { fatalError("Wrong audiounit class") }
+        let processor = audioUnit.midiProcessor()!
         
+        let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" }, horizontal: true)
+        
+        midiChannel.addControlEvent(.valueChanged) {
+            processor.setChannel(Int32(midiChannel.value - 1))
+        }
+        
+        let midiCC = Picker(name: "MIDI CC Control", value: processor.automation() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
+        midiCC.addControlEvent(.valueChanged) {
+            processor.setAutomation(midiCC.value > 0.9)
+        }
+        
+        processor.onSettingsUpdate() {
+            midiChannel.value = Float(processor.channel() + 1)
+            midiCC.value = processor.automation() ? 1.0 : 0.0
+        }
+        
+        return Page("⚙︎", Stack([
+            Header("MIDI"),
+            midiChannel,
+            midiCC
+            ]), requiresScroll: true)
     }
 }
 

@@ -13,11 +13,18 @@
 #import "StateManager.h"
 #import "HostTransport.h"
 
+#ifdef DEBUG
+#define DEBUG_LOG(...) NSLog(__VA_ARGS__);
+#else
+#define DEBUG_LOG(...)
+#endif
+
 @interface GranularAudioUnit ()
 
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
 @property HostTransport *hostTransport;
+@property MIDIProcessorWrapper *midiProcessor;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -311,6 +318,12 @@
     
     _kernel.setupModulationRules();
     
+    _midiProcessor = [MIDIProcessorWrapper alloc];
+    
+    [_midiProcessor setMIDIProcessor: &_kernel.midiProcessor];
+    
+    [_stateManager setMIDIProcessor: _midiProcessor];
+    
     return self;
 }
 
@@ -519,6 +532,23 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setupModulationRules();
 }
 
+- (NSDictionary *)fullStateForDocument {
+    DEBUG_LOG(@"fullStateForDocument")
+    
+    return [_stateManager fullStateForDocumentWithDictionary:[super fullStateForDocument]];
+}
+
+- (void)setFullStateForDocument:(NSDictionary *)fullStateForDocument {
+    DEBUG_LOG(@"setFullStateForDocument start")
+    
+    [_stateManager setFullStateForDocument:fullStateForDocument];
+    [super setFullStateForDocument:fullStateForDocument];
+    
+    _kernel.setupModulationRules();
+    DEBUG_LOG(@"setFullStateForDocument end")
+    
+}
+
 // MARK - preset management
 
 - (NSArray*)factoryPresets {
@@ -533,6 +563,24 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [_stateManager setCurrentPreset:currentPreset];
     
     _kernel.setupModulationRules();
+}
+
+// MARK - lfo graphic
+- (NSArray<NSNumber *> *)drawLFO {
+    float pt[100];
+    _kernel.drawLFO(&pt[0], 100);
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < 100; i++) {
+        NSNumber *number = [NSNumber numberWithFloat:pt[i]];
+        [result addObject:number];
+    }
+    
+    return result;
+}
+
+- (bool) lfoDrawingDirty {
+    return _kernel.lfoDrawingDirty();
 }
 
 @end

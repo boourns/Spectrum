@@ -174,7 +174,6 @@ public:
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
             state = NoteStateUnused;
-            plaitsFramesIndex = kAudioBlockSize;
             bendAmount = 0.0f;
             modEngine.in[ModInModwheel] = 0.0f;
             modEngine.in[ModInAftertouch] = 0.0f;
@@ -219,6 +218,7 @@ public:
                 modulations.trigger = 1.0f;
                 envelope.TriggerHigh();
                 ampEnvelope.TriggerHigh();
+                lfo.trigger();
                 modEngine.in[ModInGate] = 1.0f;
             } else if (state == NoteStateReleasing) {
                 delayed_trigger = true;
@@ -336,6 +336,7 @@ public:
                         modulations.trigger = 1.0f;
                         envelope.TriggerHigh();
                         ampEnvelope.TriggerHigh();
+                        lfo.trigger();
                         modEngine.in[ModInGate] = 1.0f;
                     }
                 }

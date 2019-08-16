@@ -13,11 +13,18 @@
 #import "StateManager.h"
 #import "HostTransport.h"
 
+#ifdef DEBUG
+#define DEBUG_LOG(...) NSLog(__VA_ARGS__);
+#else
+#define DEBUG_LOG(...)
+#endif
+
 @interface ModalAudioUnit ()
 
 @property AudioBuffers *audioBuffers;
 @property StateManager *stateManager;
 @property HostTransport *hostTransport;
+@property MIDIProcessorWrapper *midiProcessor;
 
 @property (nonatomic, readwrite) AUParameterTree *parameterTree;
 
@@ -370,6 +377,12 @@
     
     _kernel.setupModulationRules();
     
+    _midiProcessor = [MIDIProcessorWrapper alloc];
+    
+    [_midiProcessor setMIDIProcessor: &_kernel.midiProcessor];
+    
+    [_stateManager setMIDIProcessor: _midiProcessor];
+    
     _hostTransport = [HostTransport alloc];
 
     self.maximumFramesToRender = 512;
@@ -522,7 +535,7 @@ static const FactoryPreset elementsPresets[kElementsNumPresets] =
 {
     {
         @"Init",
-        @"{\"414\":0,\"421\":0,\"407\":0,\"408\":0,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":0,\"0\":0.14999997615814209,\"417\":0,\"424\":0,\"1\":0.22249987721443176,\"431\":0,\"2\":0,\"3\":0.4124998152256012,\"418\":0,\"4\":0.26749992370605469,\"425\":0,\"432\":0,\"5\":0,\"6\":0.66749972105026245,\"419\":0,\"7\":0.27749988436698914,\"426\":0,\"10\":0.58749997615814209,\"8\":0.24249991774559021,\"433\":0,\"9\":0.48499986529350281,\"11\":0.66999977827072144,\"427\":0,\"434\":0,\"12\":0.62749969959259033,\"13\":1.1949994564056396,\"428\":0,\"400\":0,\"20\":-1,\"435\":0,\"14\":0.34250062704086304,\"429\":0,\"401\":0,\"22\":0,\"436\":0,\"15\":1,\"23\":0,\"16\":0,\"437\":0,\"402\":1.1999995708465576,\"24\":0,\"17\":0,\"25\":0,\"18\":0.29749980568885803,\"438\":0,\"403\":13,\"410\":0,\"26\":1,\"19\":1,\"27\":0,\"439\":0,\"404\":0,\"411\":0,\"405\":0,\"412\":0,\"420\":0,\"406\":0,\"413\":0}"
+        @"{\"414\":0,\"421\":0,\"407\":0,\"408\":2,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":0,\"0\":0.82749956846237183,\"417\":0,\"424\":0,\"1\":0.75250041484832764,\"431\":0,\"2\":0.5074998140335083,\"3\":0,\"418\":0,\"4\":0.7799994945526123,\"425\":0,\"432\":0,\"5\":0,\"6\":0.70500028133392334,\"419\":0,\"7\":0.51499927043914795,\"426\":0,\"10\":0.15249940752983093,\"8\":0.57999992370605469,\"433\":0,\"9\":0.33500015735626221,\"11\":0.69999974966049194,\"427\":0,\"434\":0,\"12\":0.35750013589859009,\"13\":0.69000053405761719,\"400\":1,\"20\":0,\"428\":0,\"435\":0,\"14\":1,\"429\":0,\"401\":0,\"22\":0,\"436\":0,\"15\":0,\"30\":0,\"23\":0,\"16\":0,\"437\":0,\"402\":0,\"24\":0,\"17\":0,\"25\":0,\"18\":0,\"438\":0,\"403\":0,\"410\":0,\"26\":1,\"19\":0,\"27\":0,\"439\":0,\"404\":1,\"411\":0,\"28\":0,\"29\":0,\"405\":0,\"412\":2,\"420\":0,\"406\":0,\"413\":0}"
     },
     {
         @"Blank",
@@ -550,6 +563,23 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setupModulationRules();
 }
 
+- (NSDictionary *)fullStateForDocument {
+    DEBUG_LOG(@"fullStateForDocument")
+    
+    return [_stateManager fullStateForDocumentWithDictionary:[super fullStateForDocument]];
+}
+
+- (void)setFullStateForDocument:(NSDictionary *)fullStateForDocument {
+    DEBUG_LOG(@"setFullStateForDocument start")
+    
+    [_stateManager setFullStateForDocument:fullStateForDocument];
+    [super setFullStateForDocument:fullStateForDocument];
+    
+    _kernel.setupModulationRules();
+    DEBUG_LOG(@"setFullStateForDocument end")
+    
+}
+
 // MARK - preset management
 
 - (NSArray*)factoryPresets {
@@ -564,6 +594,24 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [_stateManager setCurrentPreset:currentPreset];
     
     _kernel.setupModulationRules();
+}
+
+// MARK - lfo graphic
+- (NSArray<NSNumber *> *)drawLFO {
+    float pt[100];
+    _kernel.drawLFO(&pt[0], 100);
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < 100; i++) {
+        NSNumber *number = [NSNumber numberWithFloat:pt[i]];
+        [result addObject:number];
+    }
+    
+    return result;
+}
+
+- (bool) lfoDrawingDirty {
+    return _kernel.lfoDrawingDirty();
 }
 
 @end

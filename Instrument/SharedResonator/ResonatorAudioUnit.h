@@ -9,9 +9,13 @@
 #define ResonatorAudioUnit_h
 
 #import <AudioToolbox/AudioToolbox.h>
+#import "MIDIProcessorWrapper.h"
 
 @interface ResonatorAudioUnit : AUAudioUnit
+- (NSArray<NSNumber *> *)drawLFO;
+- (bool) lfoDrawingDirty;
 
+- (MIDIProcessorWrapper *) midiProcessor;
 @end
 
 #endif /* ResonatorAudioUnit_h */

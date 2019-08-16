@@ -9,6 +9,44 @@ import Foundation
 import UIKit
 
 public class LFOImage: UIView {
+    let waveform: Waveform
+    
+    public init(renderLfo: @escaping ()->[NSNumber]?) {
+        waveform = Waveform(renderLfo: renderLfo)
+        super.init(frame: CGRect.zero)
+        
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override public func setNeedsDisplay() {
+        super.setNeedsDisplay()
+        waveform.setNeedsDisplay()
+    }
+    
+    private func setup() {
+        addSubview(waveform)
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        let constraints = [
+            waveform.centerXAnchor.constraint(equalTo: centerXAnchor),
+            waveform.centerYAnchor.constraint(equalTo: centerYAnchor),
+            waveform.heightAnchor.constraint(equalToConstant: 100.0),
+            waveform.leadingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
+            waveform.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
+            trailingAnchor.constraint(greaterThanOrEqualToSystemSpacingAfter: waveform.trailingAnchor, multiplier: 1.0),
+            bottomAnchor.constraint(equalToSystemSpacingBelow: waveform.bottomAnchor, multiplier: 1.0)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+
+}
+
+public class Waveform: UIView {
     let renderLfo: ()->[NSNumber]?
     
     var data: [NSNumber] = []
@@ -17,7 +55,7 @@ public class LFOImage: UIView {
     public init(renderLfo: @escaping ()->[NSNumber]?) {
         self.renderLfo = renderLfo
         
-        super.init(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
+        super.init(frame: CGRect.zero)
         setup()
     }
     
@@ -28,10 +66,9 @@ public class LFOImage: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         let constraints = [
-          widthAnchor.constraint(greaterThanOrEqualToConstant: 300),
-          heightAnchor.constraint(greaterThanOrEqualToConstant: 200)
+          widthAnchor.constraint(equalTo: heightAnchor, multiplier: 4.0/2.0)
         ]
-        
+                
         NSLayoutConstraint.activate(constraints)
     }
     

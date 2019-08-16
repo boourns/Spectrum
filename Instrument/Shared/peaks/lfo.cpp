@@ -51,6 +51,7 @@ namespace peaks {
         previous_parameter_ = 32767;
         sync_counter_ = kSyncCounterMaxTime;
         level_ = 32767;
+        next_value_ = Random::GetSample();
     }
     
     const int16_t presets[7][2] = {
@@ -181,10 +182,11 @@ namespace peaks {
     
     int16_t Lfo::ComputeSampleNoise() {
         uint32_t phase = phase_;
-        if (phase < phase_increment_) {
+        if (phase < last_phase_) {
             value_ = next_value_;
             next_value_ = Random::GetSample();
         }
+        last_phase_ = phase;
         int16_t sample;
         int32_t linear_interpolation = value_ + \
         ((next_value_ - value_) * static_cast<int32_t>(phase >> 17) >> 15);

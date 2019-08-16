@@ -57,6 +57,9 @@ public:
         this->sampleRate = sampleRate;
         
         lfo.Init();
+        lfo.set_shape((peaks::LfoShape) shape);
+        lfo.set_parameter(shapeMod);
+        updateRate(0.0f);
     }
     
     bool ownParameter(AUParameterAddress address) {
@@ -76,7 +79,7 @@ public:
             float newShape = clamp(value, -1.0f, 1.0f);
             if (newShape != shapeMod) {
                 shapeMod = newShape;
-                uint16_t par = (newShape * 32767.0f);
+                uint16_t par = (newShape * 32766.0f);
                 lfo.set_parameter(par);
             }
         } else if (address == rateAddress) {
@@ -142,8 +145,9 @@ public:
             
             double lfoPhase = position / lfoRates[syncRateIndex].beatFrequency;
             
-            lfo.phase_ = (lfo.reset_phase_ + (uint64_t) (UINT32_MAX * lfoPhase)) & 0xffffffff;
-            
+            if (!keyReset) {
+                lfo.phase_ = (lfo.reset_phase_ + (uint64_t) (UINT32_MAX * lfoPhase)) & 0xffffffff;
+            }
         }
         double lfoRate = 60.0 * sampleRate / transportState->currentTempo * lfoRates[syncRateIndex].beatFrequency;
         
@@ -151,7 +155,7 @@ public:
     }
     
     void trigger() {
-        if (keyReset && !sync) {
+        if (keyReset) {
             lfo.phase_ = lfo.reset_phase_;
         }
     }
@@ -168,7 +172,7 @@ public:
         
         peaks::Lfo drawLfo = lfo;
         drawLfo.phase_ = drawLfo.reset_phase_;
-        int incr = UINT32_MAX / count;
+        int incr = UINT32_MAX / count * ((drawLfo.shape_ == peaks::LFO_SHAPE_NOISE ? 4 : 1));
         for (int i = 0; i < count; i++) {
             levels[i] = ((float) drawLfo.Process(1, incr)) / INT16_MAX;
         }

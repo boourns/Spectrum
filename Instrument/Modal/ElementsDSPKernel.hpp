@@ -590,6 +590,14 @@ public:
         }
     }
     
+    void drawLFO(float *points, int count) {
+        lfo.draw(points, count);
+    }
+    
+    bool lfoDrawingDirty() {
+        return lfo.drawingDirty;
+    }
+    
     // MARK: Member Variables
     
 private:
@@ -597,6 +605,8 @@ private:
     AudioBufferList* outBufferListPtr = nullptr;
     
     unsigned int activePolyphony = 1;
+    
+    
     
 public:
     elements::Part part;

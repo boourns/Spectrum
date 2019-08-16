@@ -49,8 +49,29 @@ enum ElementsParam: AUParameterAddress {
 class ModalViewController: BaseAudioUnitViewController {
     var loadAsEffect = false
     
+    var lfoImage: LFOImage!
+    
+    @objc func step(displaylink: CADisplayLink) {
+        guard let audioUnit = audioUnit as? ModalAudioUnit else { return }
+        if audioUnit.lfoDrawingDirty() {
+            lfoImage.setNeedsDisplay()
+        }
+    }
+    
     override func buildUI() -> UI {
         state.colours = SpectrumUI.blue
+        
+        lfoImage = LFOImage(
+            renderLfo: { [weak self] in
+                guard let this = self else { return nil }
+                return (this.audioUnit as? ModalAudioUnit)?.drawLFO()
+        })
+        
+        let displaylink = CADisplayLink(target: self,
+                                        selector: #selector(step))
+        
+        displaylink.add(to: .current,
+                        forMode: RunLoop.Mode.default)
         
         var main = [
             knob(ElementsParam.BlowMeta.rawValue, size: 70),
@@ -123,17 +144,42 @@ class ModalViewController: BaseAudioUnitViewController {
                     ]) // cstack
             ), // page
             
-            lfoPage(rate: ElementsParam.LfoRate.rawValue, shape: ElementsParam.LfoShape.rawValue, shapeMod: ElementsParam.LfoShapeMod.rawValue, tempoSync: ElementsParam.LfoTempoSync.rawValue, resetPhase: ElementsParam.LfoResetPhase.rawValue, keyReset: ElementsParam.LfoKeyReset.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
+            lfoPage(rate: ElementsParam.LfoRate.rawValue, shape: ElementsParam.LfoShape.rawValue, shapeMod: ElementsParam.LfoShapeMod.rawValue, tempoSync: ElementsParam.LfoTempoSync.rawValue, resetPhase: ElementsParam.LfoResetPhase.rawValue, keyReset: ElementsParam.LfoKeyReset.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue, injectedView: lfoImage),
             
             envPage(envStart: ElementsParam.EnvAttack.rawValue, modStart: ElementsParam.ModMatrixStart.rawValue),
             
-            modMatrixPage(modStart: ElementsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6)
-            //LFOPage(),
-            //EnvPage(),
-            //Page("Amp", UIView()),
-            //ModMatrixPage(),
+            modMatrixPage(modStart: ElementsParam.ModMatrixStart.rawValue + 16, numberOfRules: 6),
+            
+            settingsPage()
+
             ]) // ui page list
+    }
+    
+    func settingsPage() -> Page {
+        guard let audioUnit = audioUnit as? ModalAudioUnit else { fatalError("Wrong audiounit class") }
+        let processor = audioUnit.midiProcessor()!
         
+        let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" }, horizontal: true)
+        
+        midiChannel.addControlEvent(.valueChanged) {
+            processor.setChannel(Int32(midiChannel.value - 1))
+        }
+        
+        let midiCC = Picker(name: "MIDI CC Control", value: processor.automation() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
+        midiCC.addControlEvent(.valueChanged) {
+            processor.setAutomation(midiCC.value > 0.9)
+        }
+        
+        processor.onSettingsUpdate() {
+            midiChannel.value = Float(processor.channel() + 1)
+            midiCC.value = processor.automation() ? 1.0 : 0.0
+        }
+        
+        return Page("⚙︎", Stack([
+            Header("MIDI"),
+            midiChannel,
+            midiCC
+            ]), requiresScroll: true)
     }
 }
 
