@@ -143,6 +143,9 @@ public:
         double portamento = 0.0;
         float bendAmount;
         float panSpread = 0;
+        
+        float aftertouchTarget = 0.0f;
+        
         bool lfoRatePatched = false;
         bool portamentoPatched = false;
         
@@ -204,7 +207,7 @@ public:
                     modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
                     break;
                 case MIDIControlMessage::Aftertouch:
-                    modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                    aftertouchTarget = ((float) val / 127.0f);
                     break;
                 case MIDIControlMessage::Sustain:
                     modEngine.in[ModInSustain] = ((float) val / 127.0f);
@@ -283,6 +286,7 @@ public:
             }
             
             ONE_POLE(modulations.note, noteTarget, 1.0f - portamento);
+            ONE_POLE(modEngine.in[ModInAftertouch], aftertouchTarget, 0.1f);
 
             modEngine.run();
             

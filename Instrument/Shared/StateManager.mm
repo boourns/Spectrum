@@ -138,7 +138,7 @@
 //#pragma mark- MIDI CC Map
 
 - (std::map<uint8_t, std::vector<MIDICCTarget>>) defaultMIDIMap {
-    int skip;
+    int skip = 2;
     
     NSMutableDictionary *midiCCMap = [[NSMutableDictionary alloc] init];
     
@@ -146,10 +146,11 @@
         if (_parameterTree.allParameters[i].address > 200) {
             continue;
         }
-        if (_parameterTree.allParameters[i].address < 30) {
-            skip = 2;
-        } else {
-            skip = 4;
+        if (_parameterTree.allParameters[i].address + skip == 32) {
+            skip += 2;
+        }
+        if (_parameterTree.allParameters[i].address + skip == 64 || _parameterTree.allParameters[i].address + skip == 74) {
+            skip++;
         }
         midiCCMap[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].address + skip);
     }

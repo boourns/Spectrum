@@ -403,7 +403,7 @@ public:
                 modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
                 break;
             case MIDIControlMessage::Aftertouch:
-                modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                aftertouchTarget = ((float) val / 127.0f);
                 break;
             case MIDIControlMessage::Sustain:
                 modEngine.in[ModInSustain] = ((float) val / 127.0f);
@@ -427,6 +427,7 @@ public:
         if (modulationEngineRules.isPatched(ModOutLFOAmount)) {
             lfoAmount = modEngine.out[ModOutLFOAmount];
         }
+        ONE_POLE(modEngine.in[ModInAftertouch], aftertouchTarget, 0.1f);
         
         float lfoOutput = lfoAmount * lfo.process(blockSize);
         
@@ -613,7 +614,8 @@ public:
     
     int bendRange = 12;
     float bendAmount = 0.0f;
-    
+    float aftertouchTarget = 0.0f;
+
     bool useAudioInput = false;
     bool lfoRatePatched = false;
     

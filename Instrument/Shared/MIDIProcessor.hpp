@@ -9,7 +9,7 @@
 #define MIDIEngine_h
 
 #ifdef DEBUG
-#define MIDIPROCESSOR_DEBUG
+//#define MIDIPROCESSOR_DEBUG
 #endif
 
 #import <vector>

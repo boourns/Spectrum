@@ -140,7 +140,9 @@ public:
         transportState = state;
         
         if (sync) {
-            int startOfCycle = (transportState->currentBeatPosition / lfoRates[syncRateIndex].beatsPerCycle) * lfoRates[syncRateIndex].beatsPerCycle;
+            
+            int startOfCycle = ((int) (transportState->currentBeatPosition / lfoRates[syncRateIndex].beatsPerCycle)) * lfoRates[syncRateIndex].beatsPerCycle;
+            
             double position = transportState->currentBeatPosition - (double) startOfCycle;
             
             double lfoPhase = position / lfoRates[syncRateIndex].beatFrequency;

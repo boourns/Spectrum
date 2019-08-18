@@ -441,7 +441,7 @@ public:
                 modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
                 break;
             case MIDIControlMessage::Aftertouch:
-                modEngine.in[ModInAftertouch] = ((float) val / 127.0f);
+                aftertouchTarget = ((float) val / 127.0f);
                 break;
             case MIDIControlMessage::Sustain:
                 modEngine.in[ModInSustain] = ((float) val / 127.0f);
@@ -472,7 +472,8 @@ public:
         
         modEngine.in[ModInLFO] = lfoOutput;
         modEngine.in[ModInEnvelope] = envelope.value;
-        
+        ONE_POLE(modEngine.in[ModInAftertouch], aftertouchTarget, 0.1f);
+
         modEngine.run();
         
         if (modulationEngineRules.isPatched(ModOutLFORate)) {
@@ -632,6 +633,7 @@ public:
     int bendRange = 12;
     float bendAmount = 0.0f;
     bool lfoRatePatched = false;
+    float aftertouchTarget = 0.0f;
     
     ModulationEngine modEngine;
     ModulationEngineRuleList modulationEngineRules;
