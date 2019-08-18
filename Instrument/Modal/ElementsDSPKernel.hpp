@@ -71,6 +71,8 @@ enum {
     ModInAftertouch,
     ModInSustain,
     ModInOut,
+    ModInSlide,
+    ModInLift,
     NumModulationInputs
 };
 
@@ -391,11 +393,10 @@ public:
     
     // =========== MIDI
     
-    virtual void midiNoteOff() override {
+    virtual void midiNoteOff(uint8_t vel) override {
         state = NoteStateReleasing;
-        printf("note state releasing");
-
         gate = false;
+        modEngine.in[ModInLift] = ((float) vel )/ 127.0f;
         envelope.TriggerLow();
         delayed_trigger = false;
     }
@@ -417,6 +418,7 @@ public:
         currentVelocity = ((float) vel) / 127.0;
         modEngine.in[ModInNote] = ((float) currentNote) / 127.0f;
         modEngine.in[ModInVelocity] = currentVelocity;
+        modEngine.in[ModInLift] = 0.0f;
 
         add();
     }
@@ -430,6 +432,7 @@ public:
         modEngine.in[ModInModwheel] = 0.0f;
         modEngine.in[ModInAftertouch] = 0.0f;
         modEngine.in[ModInSustain] = 0.0f;
+        
     }
     
     virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
@@ -445,6 +448,9 @@ public:
                 break;
             case MIDIControlMessage::Sustain:
                 modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                break;
+            case MIDIControlMessage::Slide:
+                modEngine.in[ModInSlide] = ((float) val / 127.0f);
                 break;
         }
     }

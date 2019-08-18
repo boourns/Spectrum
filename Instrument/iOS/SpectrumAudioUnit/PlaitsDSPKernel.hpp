@@ -87,6 +87,8 @@ enum {
     ModInPadGate,
     ModInAftertouch,
     ModInSustain,
+    ModInSlide,
+    ModInLift,
     NumModulationInputs
 };
 
@@ -182,11 +184,12 @@ public:
         }
         
         // linked list management
-        virtual void midiNoteOff() override {
+        virtual void midiNoteOff(uint8_t vel) override {
             modulations.trigger = 0.0f;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
             modEngine.in[ModInGate] = 0.0f;
+            modEngine.in[ModInLift] = ((float) vel )/ 127.0f;
             delayed_trigger = false;
 
             state = NoteStateReleasing;
@@ -205,6 +208,9 @@ public:
                     break;
                 case MIDIControlMessage::Sustain:
                     modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                    break;
+                case MIDIControlMessage::Slide:
+                    modEngine.in[ModInSlide] = ((float) val / 127.0f);
                     break;
             }
         }
@@ -239,6 +245,8 @@ public:
             note = noteNumber;
             modEngine.in[ModInNote] = ((float) note) / 127.0f;
             modEngine.in[ModInVelocity] = ((float) velocity) / 127.0f;
+            modEngine.in[ModInLift] = 0.0f;
+
             
             add();
         }

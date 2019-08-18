@@ -340,6 +340,8 @@ NSArray *modInputs = @[
                        @"Out",
                        @"Aftertouch",
                        @"Sustain",
+                       @"Slide",
+                       @"Lift",
                        ];
 
 NSArray *modOutputs = @[

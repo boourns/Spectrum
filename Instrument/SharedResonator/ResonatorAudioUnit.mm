@@ -83,6 +83,8 @@
                   @"Aftertouch",
                   @"Sustain",
                   @"Out",
+                  @"Slide",
+                  @"Lift",
                   ];
     
     modOutputs = @[

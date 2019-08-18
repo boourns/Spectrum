@@ -8,7 +8,9 @@
 #ifndef MIDIEngine_h
 #define MIDIEngine_h
 
+#ifdef DEBUG
 #define MIDIPROCESSOR_DEBUG
+#endif
 
 #import <vector>
 #include <map>
@@ -24,7 +26,8 @@ typedef enum {
     Modwheel = 0,
     Pitchbend,
     Aftertouch,
-    Sustain
+    Sustain,
+    Slide,
 } MIDIControlMessage;
 
 typedef struct {
@@ -36,17 +39,10 @@ typedef struct {
 class MIDIVoice {
 public:
     virtual void midiNoteOn(uint8_t note, uint8_t vel) = 0;
-    virtual void midiNoteOff() = 0;
+    virtual void midiNoteOff(uint8_t vel) = 0;
     virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) = 0;
     virtual void midiAllNotesOff() = 0;
     virtual int State() = 0;
-};
-
-class MIDISynthesizer {
-public:
-    virtual void midiPitchBend(uint16_t value) = 0;
-    virtual void midiModWheel(uint16_t value) = 0;
-    virtual void setParameter(AUParameterAddress address, AUValue value);
 };
 
 typedef struct PlayingNote {
@@ -90,7 +86,7 @@ class MIDIProcessor {
         
         void noteOn(uint8_t chan, uint8_t note, uint8_t vel) {
             if (vel == 0) {
-                noteOff(chan, note);
+                noteOff(chan, note, 0);
                 return;
             }
             PlayingNote p = {.chan = chan, .note = note, .vel = vel};
@@ -116,7 +112,7 @@ class MIDIProcessor {
             printNoteState();
         }
         
-        void noteOff(uint8_t chan, uint8_t note) {
+        void noteOff(uint8_t chan, uint8_t note, uint8_t vel) {
             int poly = polyphony();
             PlayingNote p = {.chan = chan, .note = note, .vel = 0};
 
@@ -125,7 +121,7 @@ class MIDIProcessor {
             VoiceRecord *vr = voiceForNote(chan, note);
             if (activeNotes.size() < poly) {
                 if (vr) {
-                    vr->voice->midiNoteOff();
+                    vr->voice->midiNoteOff(vel);
                 }
             } else {
                 if (vr) {
@@ -299,9 +295,9 @@ class MIDIProcessor {
             }
         }
         
-        virtual void midiNoteOff() {
+        virtual void midiNoteOff(uint8_t vel) {
             for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
-                noteStack->voices[i]->voice->midiNoteOff();
+                noteStack->voices[i]->voice->midiNoteOff(vel);
             }
         }
         
@@ -334,7 +330,7 @@ public:
     }
     
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {
-        if (midiEvent.length != 3) return;
+        if (midiEvent.length > 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
         uint8_t channel = midiEvent.data[0] & 0x0F;
         
@@ -342,11 +338,22 @@ public:
             return;
         }
         
+#ifdef MIDIPROCESSOR_DEBUG
+        printf("------------------\nMIDI event: status %d(0x%02x), channel %d, length %d\nRaw: ", status, status, channel, midiEvent.length);
+        
+        for (int i = 0; i < midiEvent.length; i++) {
+            printf("%02x ", midiEvent.data[i]);
+        }
+        printf("\n");
+#endif
+        
         switch (status) {
             case 0x80 : { // note off
                 uint8_t note = midiEvent.data[1];
-                if (note > 127) break;
-                noteStack.noteOff(channel, note);
+                uint8_t veloc = midiEvent.data[2];
+
+                if (note > 127 || veloc > 127) break;
+                noteStack.noteOff(channel, note, veloc);
                 break;
             }
             case 0x90 : { // note on
@@ -389,8 +396,10 @@ public:
                 } else if (num == 32) {
                     modFine[channel] = midiEvent.data[2];
                     sendModwheel(channel);
-                }  else if (num == 64) {
+                } else if (num == 64) {
                     noteStack.channelMessage(channel, MIDIControlMessage::Sustain, midiEvent.data[2]);
+                } else if (num == 74) {
+                    noteStack.channelMessage(channel, MIDIControlMessage::Slide, midiEvent.data[2]);
                 } else if (num >= 98 && num <= 101) {
                     // TODO: RPN / NRPM for MPE
                 } else {
@@ -461,9 +470,7 @@ public:
     uint8_t modFine[16];
     
     static bool noteSort (PlayingNote i, PlayingNote j) { return (i.note > j.note); }
-
-private:
-    MIDISynthesizer *engine;
+    
 };
 
 
