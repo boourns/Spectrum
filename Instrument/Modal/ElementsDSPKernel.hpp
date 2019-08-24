@@ -544,7 +544,7 @@ public:
                 
                 //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 elements::PerformanceState performance;
-                performance.note = currentNote + pitch + detune + bendAmount + 12.0f + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+                performance.note = currentNote + pitch + detune + bendAmount + 12.0f + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 48.0f);
                 
                 performance.modulation = 0.0f; /*i & 16 ? 60.0f : -60.0f;
                                                 if (i > ::kSampleRate * 5) {

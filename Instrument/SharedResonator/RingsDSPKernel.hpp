@@ -496,12 +496,11 @@ public:
                     input = &mixedInput[0];
                 }
                 
-                //voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                 rings::PerformanceState performance;
                 
                 performance.tonic = pitch + 12.0f;
                 performance.note = currentNote;
-                performance.fm = clamp(bendAmount + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f), -127.0f, 127.0f);
+                performance.fm = clamp(bendAmount + detune + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 48.0), -48.0, 48.0);
                 performance.chord = chord;
                 
                 // TODO unsure here yet

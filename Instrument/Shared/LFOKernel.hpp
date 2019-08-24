@@ -147,7 +147,7 @@ public:
             
             double lfoPhase = position / lfoRates[syncRateIndex].beatFrequency;
             
-            if (!keyReset) {
+            if (!keyReset && (state->transportStateFlags & AUHostTransportStateMoving)) {
                 lfo.phase_ = (lfo.reset_phase_ + (uint64_t) (UINT32_MAX * lfoPhase)) & 0xffffffff;
             }
         }
