@@ -37,7 +37,8 @@ typedef struct {
 - (void)setCurrentPreset:(AUAudioUnitPreset *)currentPreset;
 
 // MARK - MIDI CC Map
-- (std::map<uint8_t, std::vector<MIDICCTarget>>) defaultMIDIMap;
+- (std::map<uint8_t, std::vector<MIDICCTarget>>) kernelMIDIMap;
+- (void)setCustomMIDIMap:(NSDictionary<NSNumber*, NSNumber*> *) map;
 
 @end
 

@@ -429,7 +429,7 @@ public:
     
     void setCCMap(const std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
         ccMap = map;
-        //printCCMap();
+        printCCMap();
     }
     
     void printCCMap() {

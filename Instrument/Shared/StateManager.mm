@@ -19,6 +19,7 @@
     NSArray<AUAudioUnitPreset *> *_presets;
     const FactoryPreset *_presetData;
     MIDIProcessorWrapper *_midiProcessor;
+    NSDictionary *_midiMap;
 }
 
 - (id) initWithParameterTree:(AUParameterTree *) tree presets:(NSArray<AUAudioUnitPreset *>*) presets presetData:(const FactoryPreset *)presetData {
@@ -27,6 +28,7 @@
     _presets = presets;
     _presetData = presetData;
     _parameterTree = tree;
+    [self setCustomMIDIMap:@{}];
     
     return self;
 }
@@ -135,30 +137,7 @@
     }
 }
 
-//#pragma mark- MIDI CC Map
-
-- (std::map<uint8_t, std::vector<MIDICCTarget>>) defaultMIDIMap {
-    int skip = 2;
-    
-    NSMutableDictionary *midiCCMap = [[NSMutableDictionary alloc] init];
-    
-    for(int i = 0; i < _parameterTree.allParameters.count; i++) {
-        if (_parameterTree.allParameters[i].address > 200) {
-            continue;
-        }
-        if (_parameterTree.allParameters[i].address + skip == 32) {
-            skip += 2;
-        }
-        if (_parameterTree.allParameters[i].address + skip == 64 || _parameterTree.allParameters[i].address + skip == 74) {
-            skip++;
-        }
-        midiCCMap[@(_parameterTree.allParameters[i].address)] = @(_parameterTree.allParameters[i].address + skip);
-    }
-    
-    return [self kernelMidiMapFor: midiCCMap];
-}
-
-- (std::map<uint8_t, std::vector<MIDICCTarget>>) kernelMidiMapFor: (NSMutableDictionary *) midiCCMap {
+- (std::map<uint8_t, std::vector<MIDICCTarget>>) kernelMIDIMap {
     std::map<uint8_t, std::vector<MIDICCTarget>> kernelMIDIMap;
     
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
@@ -166,7 +145,9 @@
         if (address > 200) {
             continue;
         }
-        uint8_t controller = [[midiCCMap objectForKey: @(address)] intValue];
+        NSNumber *mapping = [_midiMap objectForKey: @(address)];
+        assert(mapping != nil);
+        uint8_t controller = [[_midiMap objectForKey: @(address)] intValue];
         
         std::map<uint8_t, std::vector<MIDICCTarget>>::iterator existing = kernelMIDIMap.find(controller);
         
@@ -181,11 +162,53 @@
             params.push_back(target);
             kernelMIDIMap[controller] = params;
         } else {
-            existing->second.push_back(target);
+            assert(false);
         }
     }
     
     return kernelMIDIMap;
+}
+
+- (void)setCustomMIDIMap:(NSDictionary<NSNumber*, NSNumber*> *) inputMap {
+    NSMutableDictionary <NSNumber*, NSNumber*> *map = [[NSMutableDictionary alloc] init];
+    
+    NSArray<AUParameter *> *params = [_parameterTree.allParameters sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSNumber *first = @([(AUParameter*)a address]);
+        NSNumber *second = @([(AUParameter*)b address]);
+        return [first compare: second];
+    }];
+    
+    NSArray *blacklist = @[@0, @1, @6, @7, @8, @10, @32, @33, @38, @64, @74, @96, @97, @98, @99, @100, @101, @120, @121, @122, @123, @124, @125, @126, @127];
+    
+    bool used[128];
+    for (int i = 0; i < 128; i++) {
+        used[i] = false;
+    }
+    for (int i = 0; i < blacklist.count; i++) {
+        used[[blacklist[i] intValue]] = true;
+    }
+    
+    for (int i = 0; i < inputMap.allKeys.count; i++) {
+        uint8_t cc = (uint8_t) [inputMap[inputMap.allKeys[i]] intValue];
+        used[cc] = true;
+    }
+    
+    uint8_t count = 0;
+    for(int i = 0; i < params.count; i++) {
+        if (inputMap[@(params[i].address)] != nil) {
+            map[@(params[i].address)] = inputMap[@(params[i].address)];
+        } else {
+            do {
+                count++;
+            } while (used[count]);
+            if (count >= 128) {
+                assert(false);
+            }
+            map[@(params[i].address)] = @(count);
+        }
+    }
+    
+    _midiMap = map;
 }
 
 @end

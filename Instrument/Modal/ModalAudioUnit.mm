@@ -375,7 +375,7 @@
                                                      presetData: &elementsPresets[0]];
     
     [self setCurrentPreset:[[_stateManager presets] objectAtIndex:0]];
-    _kernel.midiProcessor.setCCMap([_stateManager defaultMIDIMap]);
+    _kernel.midiProcessor.setCCMap([_stateManager kernelMIDIMap]);
     
     _kernel.setupModulationRules();
     
