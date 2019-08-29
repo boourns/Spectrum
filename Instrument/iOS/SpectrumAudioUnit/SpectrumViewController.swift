@@ -181,10 +181,27 @@ class SpectrumViewController: BaseAudioUnitViewController {
             midiCC.value = processor.automation() ? 1.0 : 0.0
         }
         
+        let loadDefault = SettingsButton()
+        loadDefault.button.setTitle("Load Defaults", for: .normal)
+        loadDefault.button.addControlEvent(.touchUpInside) { [weak self] in
+            guard let this = self else { return }
+            audioUnit.loadFromDefaults()
+            this.showToast(message: "Settings loaded", font: UIFont.preferredFont(forTextStyle: .subheadline))
+        }
+        
+        let saveDefault = SettingsButton()
+        saveDefault.button.setTitle("Save as Default", for: .normal)
+        saveDefault.button.addControlEvent(.touchUpInside) {[weak self] in
+            guard let this = self else { return }
+            audioUnit.saveDefaults()
+            this.showToast(message: "Settings saved", font: UIFont.preferredFont(forTextStyle: .subheadline))
+        }
+        
         return Page("⚙︎", Stack([
             Header("MIDI"),
             midiChannel,
-            midiCC
+            midiCC,
+            HStack([loadDefault, saveDefault]),
             ]), requiresScroll: true)
     }
 }

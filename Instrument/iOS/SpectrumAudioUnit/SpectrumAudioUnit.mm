@@ -375,6 +375,8 @@
     [_midiProcessor setMIDIProcessor: &_kernel.midiProcessor];
     
     [_stateManager setMIDIProcessor: _midiProcessor];
+    
+    [self loadFromDefaults];
 
     return self;
 }
@@ -597,6 +599,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setupModulationRules();
     DEBUG_LOG(@"setFullStateForDocument end")
 
+}
+
+- (void) saveDefaults {
+    [_stateManager saveDefaultsForName:@"Spectrum"];
+}
+
+- (void) loadFromDefaults {
+    [_stateManager loadDefaultsForName:@"Spectrum"];
 }
 
 // MARK - preset management

@@ -137,6 +137,22 @@
     }
 }
 
+- (void) saveDefaultsForName: (NSString *)name {
+    NSDictionary *settings = [self fullStateForDocumentWithDictionary: @{}];
+    
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.burnsAudio.spectrum"];
+    [sharedDefaults setObject:[NSKeyedArchiver archivedDataWithRootObject:settings] forKey:name];
+    [sharedDefaults synchronize];
+}
+
+- (void) loadDefaultsForName: (NSString *)name {
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.burnsAudio.spectrum"];
+    NSData *data = (NSData *) [sharedDefaults objectForKey:name];
+    if (data != nil) {
+        [self setFullStateForDocument: [NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    }
+}
+
 - (std::map<uint8_t, std::vector<MIDICCTarget>>) kernelMIDIMap {
     std::map<uint8_t, std::vector<MIDICCTarget>> kernelMIDIMap;
     

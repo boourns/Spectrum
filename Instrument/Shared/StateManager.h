@@ -31,6 +31,8 @@ typedef struct {
 - (void)setFullState:(NSDictionary *)fullState;
 - (NSDictionary *)fullStateForDocumentWithDictionary: (NSDictionary *) parentState;
 - (void)setFullStateForDocument:(NSDictionary *)fullState;
+- (void) loadDefaultsForName: (NSString *)name;
+- (void) saveDefaultsForName: (NSString *)name;
 
 // MARK - Presets
 - (AUAudioUnitPreset *)currentPreset;
