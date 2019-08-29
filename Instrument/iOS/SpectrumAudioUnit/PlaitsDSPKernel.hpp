@@ -20,12 +20,13 @@
 #import "ModulationEngine.hpp"
 #import "LFOKernel.hpp"
 
-
 #ifdef DEBUG
 #define KERNEL_DEBUG_LOG(...) printf(__VA_ARGS__);
 #else
 #define KERNEL_DEBUG_LOG(...)
 #endif
+
+//#define DEADVOICE
 
 const size_t kAudioBlockSize = 24;
 const size_t kMaxPolyphony = 8;
@@ -150,6 +151,15 @@ public:
         bool portamentoPatched = false;
         
         bool delayed_trigger = false;
+
+#ifdef DEADVOICE
+        int deadCount = 0;
+        float maxSample = 0.0f;
+        float maxAmpSample = 0.0f;
+
+        bool voiceIsDead = false;
+        int deadNotes = 0;
+#endif
         
         VoiceState() : modEngine(NumModulationInputs, NumModulationOutputs),
         lfo(PlaitsParamLfoRate, PlaitsParamLfoShape, PlaitsParamLfoShapeMod, PlaitsParamLfoTempoSync, PlaitsParamLfoResetPhase, PlaitsParamLfoKeyReset) {
@@ -193,9 +203,14 @@ public:
             ampEnvelope.TriggerLow();
             modEngine.in[ModInGate] = 0.0f;
             modEngine.in[ModInLift] = ((float) vel )/ 127.0f;
+            if (delayed_trigger) {
+                printf("delayed trigger while note off\n");
+            }
             delayed_trigger = false;
-
             state = NoteStateReleasing;
+#ifdef DEADVOICE
+            deadCount = 20000;
+#endif
         }
         
         virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
@@ -229,6 +244,11 @@ public:
                 ampEnvelope.TriggerHigh();
                 lfo.trigger();
                 modEngine.in[ModInGate] = 1.0f;
+#ifdef DEADVOICE
+                deadCount = 0;
+                maxSample = 0.0f;
+                maxAmpSample = 0.0f;
+#endif
             } else if (state == NoteStateReleasing) {
                 delayed_trigger = true;
             }
@@ -339,7 +359,13 @@ public:
                     }
                     
                     runModulations(kAudioBlockSize);
-                    
+
+#ifdef DEADVOICE
+                    if (voiceIsDead) {
+                        printf("here\n");
+                        voiceIsDead = false;
+                    }
+#endif
                     voice->Render(kernel->patch, modulations, &frames[0], kAudioBlockSize);
                     plaitsFramesIndex = 0;
                     
@@ -350,6 +376,13 @@ public:
                         ampEnvelope.TriggerHigh();
                         lfo.trigger();
                         modEngine.in[ModInGate] = 1.0f;
+                        assert(state == NoteStatePlaying);
+                        
+#ifdef DEADVOICE
+                        deadCount = 0;
+                        maxSample = 0.0f;
+                        maxAmpSample = 0.0f;
+#endif
                     }
                 }
                 
@@ -360,8 +393,38 @@ public:
                 ONE_POLE(leftGain, leftGainTarget, 0.01);
                 ONE_POLE(rightGain, rightGainTarget, 0.01);
                 
+#ifdef DEADVOICE
+                float l = ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
+                float r = ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
+                
+                if (abs(l) > maxSample) {
+                    maxSample = abs(l);
+                }
+                if (abs(r) > maxSample) {
+                    maxSample = abs(r);
+                }
+                if (ampEnvelope.value > maxAmpSample) {
+                    maxAmpSample = ampEnvelope.value;
+                }
+                deadCount++;
+                if (deadCount == 10000) {
+                    deadCount++;
+                    if (maxSample < 0.1 || maxAmpSample < 0.1) {
+                        printf("voice is dead (voice %f amp %f)\n", maxSample, maxAmpSample);
+                        deadNotes++;
+                        if (deadNotes >= 4) {
+                            voiceIsDead = true;
+                        }
+                    } else {
+                        deadNotes = 0;
+                    }
+                }
+                *outL++ += l;
+                *outR++ += r;
+#else
                 *outL++ += ((out * (1.0f - leftSource)) + (aux * (leftSource))) * leftGain;
                 *outR++ += ((out * (1.0f - rightSource)) + (aux * (rightSource))) * rightGain;
+#endif
                 
                 plaitsFramesIndex++;
                 framesRemaining--;
