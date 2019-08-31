@@ -45,15 +45,15 @@ public:
     virtual int State() = 0;
 };
 
-typedef struct PlayingNote {
-    uint8_t chan;
+typedef struct MIDINote {
+    uint8_t channel;
     uint8_t note;
-    uint8_t vel;
+    uint8_t velocity;
     
-    bool operator== (const PlayingNote &r) {
-        return (r.note == note && r.chan == chan);
+    bool operator== (const MIDINote &r) {
+        return (r.note == note && r.channel == channel);
     }
-} PlayingNote;
+} MIDINote;
 
 typedef struct {
     uint8_t note;
@@ -74,6 +74,7 @@ class MIDIProcessor {
             unisonVoice->chan = 0;
             unisonVoice->voice = new UnisonMIDIVoice(this);
             this->unisonVoices.push_back(unisonVoice);
+            activeNotes.reserve(128);
         }
         
         void reset() {
@@ -85,11 +86,7 @@ class MIDIProcessor {
         }
         
         void noteOn(uint8_t chan, uint8_t note, uint8_t vel) {
-            if (vel == 0) {
-                noteOff(chan, note, 0);
-                return;
-            }
-            PlayingNote p = {.chan = chan, .note = note, .vel = vel};
+            MIDINote p = {.channel = chan, .note = note, .velocity = vel};
             if (std::find(activeNotes.begin(), activeNotes.end(), p) != activeNotes.end()) {
                 // note on for note we're already playing.
                 return;
@@ -114,7 +111,7 @@ class MIDIProcessor {
         
         void noteOff(uint8_t chan, uint8_t note, uint8_t vel) {
             int poly = polyphony();
-            PlayingNote p = {.chan = chan, .note = note, .vel = 0};
+            MIDINote p = {.channel = chan, .note = note, .velocity = 0};
 
             activeNotes.erase(std::remove(activeNotes.begin(), activeNotes.end(), p), activeNotes.end());
 
@@ -126,8 +123,8 @@ class MIDIProcessor {
             } else {
                 if (vr) {
                     vr->note = activeNotes[poly-1].note;
-                    vr->chan = activeNotes[poly-1].chan;
-                    vr->voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].vel);
+                    vr->chan = activeNotes[poly-1].channel;
+                    vr->voice->midiNoteOn(activeNotes[poly-1].note, activeNotes[poly-1].velocity);
                 }
             }
            // printf("noteOff(%d)\n", note);
@@ -153,7 +150,7 @@ class MIDIProcessor {
             }
         }
         
-        std::vector<PlayingNote> activeNotes;
+        std::vector<MIDINote> activeNotes;
 
         VoiceRecord *voiceForNote(uint8_t chan, uint8_t note) {
             std::vector<VoiceRecord *> v = getVoices();
@@ -199,8 +196,8 @@ class MIDIProcessor {
             // didn't find a voice.  Check our position in activeNotes to determine if we should replace a note.
             if (activeNotes.size() > poly) {
                 for (int i = 0; i < poly; i++) {
-                    if (activeNotes[i].chan == chan && activeNotes[i].note == note) {
-                        return voiceForNote(activeNotes[poly].chan, activeNotes[poly].note);
+                    if (activeNotes[i].channel == chan && activeNotes[i].note == note) {
+                        return voiceForNote(activeNotes[poly].channel, activeNotes[poly].note);
                     }
                 }
             }
@@ -323,10 +320,22 @@ class MIDIProcessor {
 public:
     MIDIProcessor(int maxPolyphony): noteStack(maxPolyphony) {
         noteStack.engine = this;
+        sustainedNotes.reserve(128);
     }
     
     ~MIDIProcessor() {
         
+    }
+    
+    void noteOff(uint8_t channel, uint8_t note, uint8_t vel) {
+        if (sustainSetting && sustainPressed) {
+            MIDINote p = {.channel = channel, .note = note, .velocity = vel};
+            if (std::find(sustainedNotes.begin(), sustainedNotes.end(), p) == sustainedNotes.end()) {
+                sustainedNotes.push_back(p);
+            }
+        } else {
+            noteStack.noteOff(channel, note, vel);
+        }
     }
     
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {
@@ -353,14 +362,18 @@ public:
                 uint8_t veloc = midiEvent.data[2];
 
                 if (note > 127 || veloc > 127) break;
-                noteStack.noteOff(channel, note, veloc);
+                noteOff(channel, note, veloc);
                 break;
             }
             case 0x90 : { // note on
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
-                noteStack.noteOn(channel, note, veloc);
+                if (veloc == 0) {
+                    noteOff(channel, note, veloc);
+                } else {
+                    noteStack.noteOn(channel, note, veloc);
+                }
                 break;
             }
             case 0xE0 : { // pitch bend
@@ -398,6 +411,13 @@ public:
                     sendModwheel(channel);
                 } else if (num == 64) {
                     noteStack.channelMessage(channel, MIDIControlMessage::Sustain, midiEvent.data[2]);
+                    if (sustainSetting) {
+                        if (midiEvent.data[2] >= 64) {
+                            sustainPress();
+                        } else {
+                            sustainRelease();
+                        }
+                    }
                 } else if (num == 74) {
                     noteStack.channelMessage(channel, MIDIControlMessage::Slide, midiEvent.data[2]);
                 } else if (num >= 98 && num <= 101) {
@@ -421,10 +441,24 @@ public:
     
     void reset() {
         noteStack.reset();
+        sustainPressed = false;
         for (int i = 0; i < 16; i++) {
             modCoarse[i] = 0;
             modFine[i] = 0;
         }
+    }
+    
+    void sustainPress() {
+        sustainPressed = true;
+    }
+    
+    void sustainRelease() {
+        sustainPressed = false;
+        std::vector<MIDINote>::iterator itr;
+        for (itr = sustainedNotes.begin(); itr != sustainedNotes.end(); ++itr) {
+            noteOff((*itr).channel, (*itr).note, (*itr).velocity);
+        }
+        sustainedNotes.clear();
     }
     
     void setCCMap(const std::map<uint8_t, std::vector<MIDICCTarget>> &map) {
@@ -456,21 +490,30 @@ public:
         }
     }
     
+    void setSustainSetting(bool sustain) {
+        if (sustainSetting != sustain) {
+            sustainSetting = sustain;
+            noteStack.reset();
+        }
+    }
+    
     void setAutomation(bool automation) {
         this->automation = automation;
     }
     
     int channelSetting = -1;
     bool automation = true;
+    bool sustainSetting = true;
+    bool sustainPressed = false;
     
     NoteStack noteStack;
     std::map<uint8_t, std::vector<MIDICCTarget>> ccMap;
+    std::vector<MIDINote> sustainedNotes;
     
     uint8_t modCoarse[16];
     uint8_t modFine[16];
     
-    static bool noteSort (PlayingNote i, PlayingNote j) { return (i.note > j.note); }
-    
+    static bool noteSort (MIDINote i, MIDINote j) { return (i.note > j.note); }
 };
 
 
