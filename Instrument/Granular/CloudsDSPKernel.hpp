@@ -412,6 +412,11 @@ public:
         state = NoteStatePlaying;
     }
     
+    virtual void retrigger() override {
+        envelope.TriggerHigh();
+        lfo.trigger();
+    }
+    
     virtual void midiNoteOn(uint8_t note, uint8_t vel) override {
         currentNote = note;
         currentVelocity = ((float) vel) / 127.0;

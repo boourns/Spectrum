@@ -41,6 +41,7 @@ public:
     virtual void midiNoteOn(uint8_t note, uint8_t vel) = 0;
     virtual void midiNoteOff(uint8_t vel) = 0;
     virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) = 0;
+    virtual void retrigger() = 0;
     virtual void midiAllNotesOff() = 0;
     virtual int State() = 0;
 };
@@ -89,6 +90,10 @@ class MIDIProcessor {
             MIDINote p = {.channel = chan, .note = note, .velocity = vel};
             if (std::find(activeNotes.begin(), activeNotes.end(), p) != activeNotes.end()) {
                 // note on for note we're already playing.
+                VoiceRecord *vr = voiceForNote(chan, note);
+                if (vr) {
+                    vr->voice->retrigger();
+                }
                 return;
             }
             activeNotes.push_back(p);
@@ -289,6 +294,12 @@ class MIDIProcessor {
         virtual void midiNoteOn(uint8_t note, uint8_t vel) {
             for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
                 noteStack->voices[i]->voice->midiNoteOn(note, vel);
+            }
+        }
+        
+        virtual void retrigger() {
+            for (int i = 0; i < noteStack->getActivePolyphony(); i++) {
+                noteStack->voices[i]->voice->retrigger();
             }
         }
         

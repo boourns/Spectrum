@@ -413,6 +413,11 @@ public:
         printf("note state playing");
     }
     
+    virtual void retrigger() override {
+        envelope.TriggerHigh();
+        lfo.trigger();
+    }
+    
     virtual void midiNoteOn(uint8_t note, uint8_t vel) override {
         currentNote = note;
         currentVelocity = ((float) vel) / 127.0;
@@ -637,7 +642,7 @@ public:
     
     MIDIProcessor midiProcessor;
     bool gate;
-    uint8_t currentNote;
+    uint8_t currentNote = 48;
     float currentVelocity;
     int state;
     bool delayed_trigger = false;
