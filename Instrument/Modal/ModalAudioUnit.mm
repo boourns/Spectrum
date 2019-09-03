@@ -389,6 +389,8 @@
 
     self.maximumFramesToRender = 512;
     
+    [self loadFromDefaults];
+    
     return self;
 }
 
@@ -580,6 +582,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setupModulationRules();
     DEBUG_LOG(@"setFullStateForDocument end")
     
+}
+
+- (void) saveDefaults {
+    [_stateManager saveDefaultsForName:@"Modal"];
+}
+
+- (void) loadFromDefaults {
+    [_stateManager loadDefaultsForName:@"Modal"];
 }
 
 // MARK - preset management

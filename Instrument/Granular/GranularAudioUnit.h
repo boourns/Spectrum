@@ -17,6 +17,8 @@
 - (bool) lfoDrawingDirty;
 
 - (MIDIProcessorWrapper *) midiProcessor;
+- (void) saveDefaults;
+- (void) loadFromDefaults;
 @end
 
 #endif /* GranularAudioUnit_h */

@@ -255,6 +255,12 @@ public:
             state = NoteStatePlaying;
         }
         
+        virtual void retrigger() override {
+            envelope.TriggerHigh();
+            ampEnvelope.TriggerHigh();
+            lfo.trigger();
+        }
+        
         virtual void midiNoteOn(uint8_t noteNumber, uint8_t velocity) override
         {
             if (state == NoteStateUnused) {

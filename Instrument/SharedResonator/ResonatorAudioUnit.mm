@@ -339,6 +339,8 @@
     
     _hostTransport = [HostTransport alloc];
     
+    [self loadFromDefaults];
+    
     return self;
 }
 
@@ -531,6 +533,14 @@ static const FactoryPreset ringsPresets[kRingsNumPresets] =
     _kernel.setupModulationRules();
     DEBUG_LOG(@"setFullStateForDocument end")
     
+}
+
+- (void) saveDefaults {
+    [_stateManager saveDefaultsForName:@"Resonator"];
+}
+
+- (void) loadFromDefaults {
+    [_stateManager loadDefaultsForName:@"Resonator"];
 }
 
 // MARK - preset management

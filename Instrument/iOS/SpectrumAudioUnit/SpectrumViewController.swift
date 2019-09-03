@@ -197,7 +197,24 @@ class SpectrumViewController: BaseAudioUnitViewController {
             this.showToast(message: "Settings saved", font: UIFont.preferredFont(forTextStyle: .subheadline))
         }
         
+        let exportPreset = SettingsButton()
+        exportPreset.button.setTitle("Export", for: .normal)
+        exportPreset.button.addControlEvent(.touchUpInside) {[weak self] in
+            guard let this = self else { return }
+            let result = PresetExporter.init(audioUnit: audioUnit, name: "Spectrum").saveAndPresent(filename: "preset.specs")
+            switch(result) {
+            case .error(let message):
+                this.showToast(message: message, font: UIFont.preferredFont(forTextStyle: .subheadline))
+            case .success(let activity):
+                activity.popoverPresentationController?.sourceView = exportPreset
+                this.present(activity, animated: true, completion: nil)
+                print("Success exporting preset")
+            }
+        }
+        
         return Page("⚙︎", Stack([
+//            Header("Presets"),
+//            HStack([exportPreset]),
             Header("MIDI"),
             midiChannel,
             midiCC,
