@@ -8,6 +8,7 @@
 
 import UIKit
 import UserNotifications
+import SpectrumFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,13 +16,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
- 
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = ViewController()
         window!.makeKeyAndVisible()
         
         registerForPushNotifications()
+        
+        if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject],
+            let aps = notification["aps"] as? [String: AnyObject],
+            let link = aps["link"] as? String,
+            let url = URL(string: link) {
+                UIApplication.shared.open(url)
+        }
 
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return true
     }
     
