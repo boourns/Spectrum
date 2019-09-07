@@ -213,22 +213,22 @@ public:
 #endif
         }
         
-        virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) override {
+        virtual void midiControlMessage(MIDIControlMessage msg, int16_t val) override {
             switch(msg) {
                 case MIDIControlMessage::Pitchbend:
-                    bendAmount = (((float) (val - 8192)) / 8192.0f) * kernel->bendRange;
+                    bendAmount = (clamp((float) val, -8192.0f, 8192.0f) / 8192.0f) * kernel->bendRange;
                     break;
                 case MIDIControlMessage::Modwheel:
-                    modEngine.in[ModInModwheel] = ((float) val) / 16384.0f;
+                    modEngine.in[ModInModwheel] = clamp((float) val, 0.0f, 16384.0f) / 16384.0f;
                     break;
                 case MIDIControlMessage::Aftertouch:
-                    aftertouchTarget = ((float) val / 127.0f);
+                    aftertouchTarget = clamp((float) val, 0.0f, 127.0f) / 127.0f;
                     break;
                 case MIDIControlMessage::Sustain:
-                    modEngine.in[ModInSustain] = ((float) val / 127.0f);
+                    modEngine.in[ModInSustain] = clamp((float) val, 0.0f, 127.0f) / 127.0f;
                     break;
                 case MIDIControlMessage::Slide:
-                    modEngine.in[ModInSlide] = ((float) val / 127.0f);
+                    modEngine.in[ModInSlide] = clamp((float) val, 0.0f, 127.0f) / 127.0f;
                     break;
             }
         }

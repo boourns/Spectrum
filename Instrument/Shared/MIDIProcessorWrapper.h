@@ -24,6 +24,9 @@
 - (bool) automation;
 - (void) setAutomation: (bool) automation;
 
+- (bool) mpeEnabled;
+- (void) setMPEEnabled: (bool) enabled;
+
 @end
 
 #endif /* MIDIProcessorWrapper_h */

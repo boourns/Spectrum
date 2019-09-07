@@ -176,9 +176,15 @@ class SpectrumViewController: BaseAudioUnitViewController {
             processor.setAutomation(midiCC.value > 0.9)
         }
         
+        let mpe = Picker(name: "MPE", value: processor.mpeEnabled() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
+        midiCC.addControlEvent(.valueChanged) {
+            processor.setMPEEnabled(mpe.value > 0.9)
+        }
+        
         processor.onSettingsUpdate() {
             midiChannel.value = Float(processor.channel() + 1)
             midiCC.value = processor.automation() ? 1.0 : 0.0
+            mpe.value = processor.mpeEnabled() ? 1.0 : 0.0
         }
         
         let loadDefault = SettingsButton()
@@ -218,6 +224,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
             Header("MIDI"),
             midiChannel,
             midiCC,
+            mpe,
             HStack([loadDefault, saveDefault]),
             ]), requiresScroll: true)
     }

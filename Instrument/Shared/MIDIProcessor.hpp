@@ -40,7 +40,7 @@ class MIDIVoice {
 public:
     virtual void midiNoteOn(uint8_t note, uint8_t vel) = 0;
     virtual void midiNoteOff(uint8_t vel) = 0;
-    virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) = 0;
+    virtual void midiControlMessage(MIDIControlMessage msg, int16_t val) = 0;
     virtual void retrigger() = 0;
     virtual void midiAllNotesOff() = 0;
     virtual int State() = 0;
@@ -63,6 +63,22 @@ typedef struct {
 } VoiceRecord;
 
 class MIDIProcessor {
+    
+    class MPE {
+    public:
+        MPE() { }
+        ~MPE() { }
+        
+        bool channelInZone(uint8_t ch) {
+            return (masterChannel == 0 && ch <= lowChannels) || (masterChannel == 15 && ch >= 15-highChannels);
+        }
+        
+        bool enabled = false;
+        uint8_t masterChannel = 0;
+        uint8_t lowChannels = 15;
+        uint8_t highChannels = 0;
+    };
+    
     class NoteStack {
     public:
         NoteStack(int maxPolyphony) {
@@ -84,6 +100,7 @@ class MIDIProcessor {
                 voices[i]->voice->midiAllNotesOff();
             }
             nextVoice = 0;
+            resetModulations();
         }
         
         void noteOn(uint8_t chan, uint8_t note, uint8_t vel) {
@@ -107,6 +124,13 @@ class MIDIProcessor {
             if (vr) {
                 vr->chan = chan;
                 vr->note = note;
+                for (int i = 0; i < 5; i++) {
+                    if (mpe->enabled) {
+                        vr->voice->midiControlMessage((MIDIControlMessage) i, modulations[chan][i] + modulations[mpe->masterChannel][i]);
+                    } else {
+                        vr->voice->midiControlMessage((MIDIControlMessage) i, modulations[chan][i]);
+                    }
+                }
                 vr->voice->midiNoteOn(note, vel);
             }
 
@@ -139,11 +163,28 @@ class MIDIProcessor {
         void channelMessage(uint8_t chan, MIDIControlMessage msg, int16_t val) {
             std::vector<VoiceRecord *> v = getVoices();
             int poly = polyphony();
+            modulations[chan][msg] = val;
             
             for (int i = 0; i < poly; i++) {
                 if (v[i]->chan == chan) {
-                    v[i]->voice->midiControlMessage(msg, val);
+                    if (mpe->enabled) {
+                        v[i]->voice->midiControlMessage(msg, val + modulations[mpe->masterChannel][msg]);
+                    } else {
+                        v[i]->voice->midiControlMessage(msg, val);
+                    }
                 }
+            }
+        }
+        
+        void zoneMessage(MIDIControlMessage msg, int16_t val) {
+            std::vector<VoiceRecord *> v = getVoices();
+            int poly = polyphony();
+            assert(mpe->enabled);
+            
+            modulations[mpe->masterChannel][msg] = val;
+            
+            for (int i = 0; i < poly; i++) {
+                v[i]->voice->midiControlMessage(msg, val + modulations[v[i]->chan][msg]);
             }
         }
         
@@ -244,6 +285,7 @@ class MIDIProcessor {
         MIDIProcessor *engine;
 
         std::vector<VoiceRecord *> voices;
+        MPE *mpe;
 
     private:
         
@@ -283,6 +325,18 @@ class MIDIProcessor {
         int activePolyphony;
         bool unison;
         int nextVoice;
+        
+        int16_t modulations[16][5];
+        
+        void resetModulations() {
+            for (int ch = 0; ch < 16; ch++) {
+                for (int i = 0; i < 5; i++) {
+                    modulations[ch][i] = 0;
+                }
+                modulations[ch][1] = 8192;
+            }
+        }
+        
     };
     
     class UnisonMIDIVoice: public MIDIVoice {
@@ -315,7 +369,7 @@ class MIDIProcessor {
             }
         }
         
-        virtual void midiControlMessage(MIDIControlMessage msg, uint16_t val) {
+        virtual void midiControlMessage(MIDIControlMessage msg, int16_t val) {
             for (int i = 0; i < noteStack->getMaxPolyphony(); i++) {
                 noteStack->voices[i]->voice->midiControlMessage(msg, val);
             }
@@ -332,6 +386,7 @@ public:
     MIDIProcessor(int maxPolyphony): noteStack(maxPolyphony) {
         noteStack.engine = this;
         sustainedNotes.reserve(128);
+        noteStack.mpe = &mpe;
     }
     
     ~MIDIProcessor() {
@@ -350,13 +405,16 @@ public:
     }
     
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {
-        if (midiEvent.length > 3) return;
+        //if (midiEvent.length > 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
         uint8_t channel = midiEvent.data[0] & 0x0F;
         
-        if (channelSetting != -1 && channelSetting != channel) {
+        if ((mpe.enabled && mpe.channelInZone(channel)) ||
+             (!mpe.enabled && channelSetting != -1 && channelSetting != channel)) {
             return;
         }
+        
+        bool isMasterChannel = mpe.enabled && channel == mpe.masterChannel;
         
 #ifdef MIDIPROCESSOR_DEBUG
         printf("------------------\nMIDI event: status %d(0x%02x), channel %d, length %d\nRaw: ", status, status, channel, midiEvent.length);
@@ -392,7 +450,11 @@ public:
                 uint8_t fine = midiEvent.data[1];
                 int16_t midiPitchBend = (coarse << 7) + fine;
                 
-                noteStack.channelMessage(channel, MIDIControlMessage::Pitchbend, midiPitchBend);
+                if (isMasterChannel) {
+                    noteStack.zoneMessage(MIDIControlMessage::Pitchbend, midiPitchBend - 8192);
+                } else {
+                    noteStack.channelMessage(channel, MIDIControlMessage::Pitchbend, midiPitchBend - 8192);
+                }
                 
                 break;
             }
@@ -406,7 +468,11 @@ public:
             case 0xD0 : { // channel aftertouch
                 uint8_t pressure = midiEvent.data[1];
 
-                noteStack.channelMessage(channel, MIDIControlMessage::Aftertouch, pressure);
+                if (isMasterChannel) {
+                    noteStack.zoneMessage(MIDIControlMessage::Aftertouch, pressure);
+                } else {
+                    noteStack.channelMessage(channel, MIDIControlMessage::Aftertouch, pressure);
+                }
                 break;
             }
             
@@ -421,16 +487,27 @@ public:
                     modFine[channel] = midiEvent.data[2];
                     sendModwheel(channel);
                 } else if (num == 64) {
-                    noteStack.channelMessage(channel, MIDIControlMessage::Sustain, midiEvent.data[2]);
-                    if (sustainSetting) {
-                        if (midiEvent.data[2] >= 64) {
-                            sustainPress();
+                    if (!mpe.enabled || isMasterChannel) {
+                        // TODO: all message
+                        if (mpe.enabled) {
+                            noteStack.zoneMessage(MIDIControlMessage::Sustain, midiEvent.data[2]);
                         } else {
-                            sustainRelease();
+                            noteStack.channelMessage(channel, MIDIControlMessage::Sustain, midiEvent.data[2]);
+                        }
+                        if (sustainSetting) {
+                            if (midiEvent.data[2] >= 64) {
+                                sustainPress();
+                            } else {
+                                sustainRelease();
+                            }
                         }
                     }
                 } else if (num == 74) {
-                    noteStack.channelMessage(channel, MIDIControlMessage::Slide, midiEvent.data[2]);
+                    if (mpe.enabled) {
+                        noteStack.zoneMessage(MIDIControlMessage::Slide, midiEvent.data[2]);
+                    } else {
+                        noteStack.channelMessage(channel, MIDIControlMessage::Slide, midiEvent.data[2]);
+                    }
                 } else if (num >= 98 && num <= 101) {
                     // TODO: RPN / NRPM for MPE
                 } else {
@@ -512,10 +589,15 @@ public:
         this->automation = automation;
     }
     
+    void setMPEEnabled(bool mpe) {
+        this->mpe.enabled = mpe;
+    }
+    
     int channelSetting = -1;
     bool automation = true;
     bool sustainSetting = true;
     bool sustainPressed = false;
+    MPE mpe;
     
     NoteStack noteStack;
     std::map<uint8_t, std::vector<MIDICCTarget>> ccMap;

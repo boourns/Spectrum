@@ -14,7 +14,6 @@
     void (^settingsUpdateCallback)(void);
 }
 
-
 - (void) setMIDIProcessor: (void *) midiProcessor {
     processor = (MIDIProcessor *) midiProcessor;
 }
@@ -27,6 +26,7 @@
     NSMutableDictionary *settings = [[NSMutableDictionary alloc] init];
     settings[@"channel"] = @(processor->channelSetting);
     settings[@"automation"] = @(processor->automation ? 1 : 0);
+    settings[@"mpeEnabled"] = @(processor->mpe.enabled ? 1 : 0);
     return settings;
 }
 
@@ -41,6 +41,11 @@
     value = (NSNumber *) settings[@"automation"];
     if (value != nil) {
         processor->setAutomation(value.intValue == 1);
+    }
+    
+    value = (NSNumber *) settings[@"mpeEnabled"];
+    if (value != nil) {
+        processor->setMPEEnabled(value.intValue == 1);
     }
     
     if (settingsUpdateCallback != nil) {
@@ -62,6 +67,14 @@
 
 - (void) setAutomation: (bool) automation {
     processor->setAutomation(automation);
+}
+
+- (bool) mpeEnabled {
+    return processor->mpe.enabled;
+}
+
+- (void) setMPEEnabled: (bool) enabled {
+    processor->setMPEEnabled(enabled);
 }
 
 @end

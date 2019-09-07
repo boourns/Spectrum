@@ -34,7 +34,7 @@
 
 namespace plaits {
 
-const int kNumStrings = 3;
+const int kNumStrings = 1;
 
 class StringEngine : public Engine {
  public:
