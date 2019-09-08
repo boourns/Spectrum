@@ -78,7 +78,7 @@ void MultistageEnvelope::Process(size_t size) {
       }
     }
   
-    bool done = segment_ == num_segments_;
+    done = segment_ == num_segments_;
     bool sustained = sustain_point_ && segment_ == sustain_point_ &&
         gate_high;
 

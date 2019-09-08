@@ -86,6 +86,14 @@
 		E205C3BF23249DA70003B8BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E205C3BE23249DA70003B8BB /* Assets.xcassets */; };
 		E205C3C223249DA70003B8BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E205C3C023249DA70003B8BB /* LaunchScreen.storyboard */; };
 		E205C3C723249ECD0003B8BB /* Silver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234605D22C8ED7400C9D005 /* Silver.swift */; };
+		E205C3D12324A23B0003B8BB /* OrgoneAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E205C3D02324A23B0003B8BB /* OrgoneAudioUnit.mm */; };
+		E205C3D32324A23B0003B8BB /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3D22324A23B0003B8BB /* AudioUnitViewController.swift */; };
+		E205C3D62324A23B0003B8BB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E205C3D42324A23B0003B8BB /* MainInterface.storyboard */; };
+		E205C3DB2324A23B0003B8BB /* Orgone.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E205C3CD2324A23B0003B8BB /* Orgone.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E205C3E02324A2510003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
+		E205C4052324A8670003B8BB /* consts.c in Sources */ = {isa = PBXBuildFile; fileRef = E205C3E72324A8660003B8BB /* consts.c */; };
+		E20F64492324B62900555ABC /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
+		E20F644A2324B62900555ABC /* BurnsAudioFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2154AA9229249AA00CEED2E /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2C229249AA00CEED2E /* resources.h */; };
 		E2154AAC229249AA00CEED2E /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2F229249AA00CEED2E /* resources.cc */; };
 		E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A30229249AA00CEED2E /* pot_controller.h */; };
@@ -345,6 +353,20 @@
 			remoteGlobalIDString = E205C34223244F6C0003B8BB;
 			remoteInfo = BurnsAudioFramework;
 		};
+		E205C3D92324A23B0003B8BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E205C3CC2324A23B0003B8BB;
+			remoteInfo = Orgone;
+		};
+		E20F644B2324B62900555ABC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E205C34223244F6C0003B8BB;
+			remoteInfo = BurnsAudioFramework;
+		};
 		E2154B2C2292522200CEED2E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */;
@@ -460,6 +482,28 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E205C3DF2324A23B0003B8BB /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E205C3DB2324A23B0003B8BB /* Orgone.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E20F64522324B62900555ABC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E20F644A2324B62900555ABC /* BurnsAudioFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -515,6 +559,44 @@
 		E205C3BE23249DA70003B8BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E205C3C123249DA70003B8BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E205C3C323249DA70003B8BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E205C3CD2324A23B0003B8BB /* Orgone.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Orgone.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E205C3CF2324A23B0003B8BB /* OrgoneAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrgoneAudioUnit.h; sourceTree = "<group>"; };
+		E205C3D02324A23B0003B8BB /* OrgoneAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OrgoneAudioUnit.mm; sourceTree = "<group>"; };
+		E205C3D22324A23B0003B8BB /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
+		E205C3D52324A23B0003B8BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		E205C3D72324A23B0003B8BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E205C3D82324A23B0003B8BB /* Orgone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Orgone-Bridging-Header.h"; sourceTree = "<group>"; };
+		E205C3E12324A3A00003B8BB /* OrgoneDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OrgoneDSPKernel.hpp; sourceTree = "<group>"; };
+		E205C3E42324A8660003B8BB /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
+		E205C3E52324A8660003B8BB /* orgone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = orgone.hpp; sourceTree = "<group>"; };
+		E205C3E62324A8660003B8BB /* osc_isr_spectrum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = osc_isr_spectrum.c; sourceTree = "<group>"; };
+		E205C3E72324A8660003B8BB /* consts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = consts.c; sourceTree = "<group>"; };
+		E205C3E82324A8660003B8BB /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
+		E205C3E92324A8660003B8BB /* update_controls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update_controls.h; sourceTree = "<group>"; };
+		E205C3EA2324A8660003B8BB /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		E205C3EB2324A8660003B8BB /* osc_irs_del.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = osc_irs_del.c; sourceTree = "<group>"; };
+		E205C3EC2324A8660003B8BB /* detuning.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = detuning.c; sourceTree = "<group>"; };
+		E205C3ED2324A8660003B8BB /* assign_increments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assign_increments.h; sourceTree = "<group>"; };
+		E205C3EE2324A8660003B8BB /* bistromath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bistromath.h; sourceTree = "<group>"; };
+		E205C3F02324A8660003B8BB /* osc_isr_dists.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = osc_isr_dists.c; sourceTree = "<group>"; };
+		E205C3F12324A8660003B8BB /* shim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shim.c; sourceTree = "<group>"; };
+		E205C3F22324A8660003B8BB /* osc_isrs_twin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = osc_isrs_twin.c; sourceTree = "<group>"; };
+		E205C3F32324A8660003B8BB /* osc_irs_detune.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = osc_irs_detune.c; sourceTree = "<group>"; };
+		E205C3F42324A8660003B8BB /* osc_isr_drum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = osc_isr_drum.c; sourceTree = "<group>"; };
+		E205C3F52324A8660003B8BB /* main_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main_loop.c; sourceTree = "<group>"; };
+		E205C3F62324A8660003B8BB /* Bounce.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Bounce.hpp; sourceTree = "<group>"; };
+		E205C3F72324A8660003B8BB /* orgone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = orgone.c; sourceTree = "<group>"; };
+		E205C3F82324A8660003B8BB /* IntervalTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntervalTimer.h; sourceTree = "<group>"; };
+		E205C3F92324A8660003B8BB /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E205C3FA2324A8660003B8BB /* assign_increments.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = assign_increments.c; sourceTree = "<group>"; };
+		E205C3FB2324A8660003B8BB /* update_controls.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = update_controls.c; sourceTree = "<group>"; };
+		E205C3FC2324A8660003B8BB /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		E205C3FD2324A8660003B8BB /* consts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
+		E205C3FE2324A8660003B8BB /* bistromath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bistromath.c; sourceTree = "<group>"; };
+		E205C3FF2324A8660003B8BB /* broadcase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = broadcase.c; sourceTree = "<group>"; };
+		E205C4002324A8660003B8BB /* gate_isr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gate_isr.c; sourceTree = "<group>"; };
+		E205C4012324A8660003B8BB /* ISRSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISRSelector.h; sourceTree = "<group>"; };
+		E205C4022324A8660003B8BB /* shim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shim.h; sourceTree = "<group>"; };
 		E2154A2A229249AA00CEED2E /* PlaitsDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlaitsDSPKernel.hpp; sourceTree = "<group>"; };
 		E2154A2C229249AA00CEED2E /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
 		E2154A2F229249AA00CEED2E /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
@@ -835,6 +917,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E20F64492324B62900555ABC /* BurnsAudioFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E205C3CA2324A23B0003B8BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E205C3E02324A2510003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,6 +1028,7 @@
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
 				E205C34423244F6C0003B8BB /* BurnsAudioFramework */,
 				E205C3B623249DA60003B8BB /* OrgoneApp */,
+				E205C3CE2324A23B0003B8BB /* Orgone */,
 				91D3DA171B023C1E008FFFBB /* Products */,
 				E2154B322292523600CEED2E /* Frameworks */,
 			);
@@ -955,6 +1047,7 @@
 				E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */,
 				E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */,
 				E205C3B523249DA60003B8BB /* OrgoneApp.app */,
+				E205C3CD2324A23B0003B8BB /* Orgone.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1090,6 +1183,66 @@
 				E205C3C323249DA70003B8BB /* Info.plist */,
 			);
 			path = OrgoneApp;
+			sourceTree = "<group>";
+		};
+		E205C3CE2324A23B0003B8BB /* Orgone */ = {
+			isa = PBXGroup;
+			children = (
+				E205C3E22324A3A80003B8BB /* dsp */,
+				E205C3CF2324A23B0003B8BB /* OrgoneAudioUnit.h */,
+				E205C3D02324A23B0003B8BB /* OrgoneAudioUnit.mm */,
+				E205C3D22324A23B0003B8BB /* AudioUnitViewController.swift */,
+				E205C3D42324A23B0003B8BB /* MainInterface.storyboard */,
+				E205C3D72324A23B0003B8BB /* Info.plist */,
+				E205C3D82324A23B0003B8BB /* Orgone-Bridging-Header.h */,
+			);
+			path = Orgone;
+			sourceTree = "<group>";
+		};
+		E205C3E22324A3A80003B8BB /* dsp */ = {
+			isa = PBXGroup;
+			children = (
+				E205C3E32324A8660003B8BB /* orgone */,
+				E205C3E12324A3A00003B8BB /* OrgoneDSPKernel.hpp */,
+			);
+			path = dsp;
+			sourceTree = "<group>";
+		};
+		E205C3E32324A8660003B8BB /* orgone */ = {
+			isa = PBXGroup;
+			children = (
+				E205C3E42324A8660003B8BB /* common.c */,
+				E205C3E52324A8660003B8BB /* orgone.hpp */,
+				E205C3E62324A8660003B8BB /* osc_isr_spectrum.c */,
+				E205C3E72324A8660003B8BB /* consts.c */,
+				E205C3E82324A8660003B8BB /* util.c */,
+				E205C3E92324A8660003B8BB /* update_controls.h */,
+				E205C3EA2324A8660003B8BB /* config.h */,
+				E205C3EB2324A8660003B8BB /* osc_irs_del.c */,
+				E205C3EC2324A8660003B8BB /* detuning.c */,
+				E205C3ED2324A8660003B8BB /* assign_increments.h */,
+				E205C3EE2324A8660003B8BB /* bistromath.h */,
+				E205C3F02324A8660003B8BB /* osc_isr_dists.c */,
+				E205C3F12324A8660003B8BB /* shim.c */,
+				E205C3F22324A8660003B8BB /* osc_isrs_twin.c */,
+				E205C3F32324A8660003B8BB /* osc_irs_detune.c */,
+				E205C3F42324A8660003B8BB /* osc_isr_drum.c */,
+				E205C3F52324A8660003B8BB /* main_loop.c */,
+				E205C3F62324A8660003B8BB /* Bounce.hpp */,
+				E205C3F72324A8660003B8BB /* orgone.c */,
+				E205C3F82324A8660003B8BB /* IntervalTimer.h */,
+				E205C3F92324A8660003B8BB /* common.h */,
+				E205C3FA2324A8660003B8BB /* assign_increments.c */,
+				E205C3FB2324A8660003B8BB /* update_controls.c */,
+				E205C3FC2324A8660003B8BB /* util.h */,
+				E205C3FD2324A8660003B8BB /* consts.h */,
+				E205C3FE2324A8660003B8BB /* bistromath.c */,
+				E205C3FF2324A8660003B8BB /* broadcase.c */,
+				E205C4002324A8660003B8BB /* gate_isr.c */,
+				E205C4012324A8660003B8BB /* ISRSelector.h */,
+				E205C4022324A8660003B8BB /* shim.h */,
+			);
+			path = orgone;
 			sourceTree = "<group>";
 		};
 		E2154A2B229249AA00CEED2E /* plaits */ = {
@@ -1919,15 +2072,36 @@
 				E205C3B123249DA60003B8BB /* Sources */,
 				E205C3B223249DA60003B8BB /* Frameworks */,
 				E205C3B323249DA60003B8BB /* Resources */,
+				E205C3DF2324A23B0003B8BB /* Embed App Extensions */,
+				E20F64522324B62900555ABC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E205C3DA2324A23B0003B8BB /* PBXTargetDependency */,
+				E20F644C2324B62900555ABC /* PBXTargetDependency */,
 			);
 			name = OrgoneApp;
 			productName = OrgoneApp;
 			productReference = E205C3B523249DA60003B8BB /* OrgoneApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E205C3CC2324A23B0003B8BB /* Orgone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E205C3DC2324A23B0003B8BB /* Build configuration list for PBXNativeTarget "Orgone" */;
+			buildPhases = (
+				E205C3C92324A23B0003B8BB /* Sources */,
+				E205C3CA2324A23B0003B8BB /* Frameworks */,
+				E205C3CB2324A23B0003B8BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Orgone;
+			productName = Orgone;
+			productReference = E205C3CD2324A23B0003B8BB /* Orgone.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		E2184AA2229F03A500CA4DFE /* ModalAudioUnit */ = {
 			isa = PBXNativeTarget;
@@ -2068,6 +2242,11 @@
 						DevelopmentTeam = YC8HZ62228;
 						ProvisioningStyle = Automatic;
 					};
+					E205C3CC2324A23B0003B8BB = {
+						CreatedOnToolsVersion = 10.2;
+						DevelopmentTeam = YC8HZ62228;
+						ProvisioningStyle = Automatic;
+					};
 					E2184AA2229F03A500CA4DFE = {
 						CreatedOnToolsVersion = 10.2;
 						DevelopmentTeam = YC8HZ62228;
@@ -2163,6 +2342,7 @@
 				E22C341522C63F8D00185BB5 /* ResonatorEffect */,
 				E205C34223244F6C0003B8BB /* BurnsAudioFramework */,
 				E205C3B423249DA60003B8BB /* OrgoneApp */,
+				E205C3CC2324A23B0003B8BB /* Orgone */,
 			);
 		};
 /* End PBXProject section */
@@ -2237,6 +2417,14 @@
 			files = (
 				E205C3C223249DA70003B8BB /* LaunchScreen.storyboard in Resources */,
 				E205C3BF23249DA70003B8BB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E205C3CB2324A23B0003B8BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E205C3D62324A23B0003B8BB /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2410,6 +2598,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E205C3C92324A23B0003B8BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E205C4052324A8670003B8BB /* consts.c in Sources */,
+				E205C3D12324A23B0003B8BB /* OrgoneAudioUnit.mm in Sources */,
+				E205C3D32324A23B0003B8BB /* AudioUnitViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2184A9F229F03A500CA4DFE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2486,6 +2684,16 @@
 			target = E205C34223244F6C0003B8BB /* BurnsAudioFramework */;
 			targetProxy = E205C34823244F6D0003B8BB /* PBXContainerItemProxy */;
 		};
+		E205C3DA2324A23B0003B8BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E205C3CC2324A23B0003B8BB /* Orgone */;
+			targetProxy = E205C3D92324A23B0003B8BB /* PBXContainerItemProxy */;
+		};
+		E20F644C2324B62900555ABC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E205C34223244F6C0003B8BB /* BurnsAudioFramework */;
+			targetProxy = E20F644B2324B62900555ABC /* PBXContainerItemProxy */;
+		};
 		E2184AB0229F03A500CA4DFE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E2184AA2229F03A500CA4DFE /* ModalAudioUnit */;
@@ -2538,6 +2746,14 @@
 				E205C3C123249DA70003B8BB /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		E205C3D42324A23B0003B8BB /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E205C3D52324A23B0003B8BB /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		E2184AAA229F03A500CA4DFE /* MainInterface.storyboard */ = {
@@ -3000,6 +3216,7 @@
 		E205C3C523249DA70003B8BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -3032,7 +3249,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.orgone.OrgoneApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.orgone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3045,6 +3262,7 @@
 		E205C3C623249DA70003B8BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -3072,9 +3290,97 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.orgone.OrgoneApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.orgone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E205C3DD2324A23B0003B8BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YC8HZ62228;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/BurnsAudioFramework/**";
+				INFOPLIST_FILE = Orgone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.orgone.Orgone;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "Orgone/Orgone-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E205C3DE2324A23B0003B8BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YC8HZ62228;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/BurnsAudioFramework/**";
+				INFOPLIST_FILE = Orgone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.orgone.Orgone;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Orgone/Orgone-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -3717,6 +4023,15 @@
 			buildConfigurations = (
 				E205C3C523249DA70003B8BB /* Debug */,
 				E205C3C623249DA70003B8BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E205C3DC2324A23B0003B8BB /* Build configuration list for PBXNativeTarget "Orgone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E205C3DD2324A23B0003B8BB /* Debug */,
+				E205C3DE2324A23B0003B8BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

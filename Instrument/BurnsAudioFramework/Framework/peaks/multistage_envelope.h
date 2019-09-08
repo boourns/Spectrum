@@ -291,6 +291,7 @@ class MultistageEnvelope {
     
     float value;
     int16_t value_;
+    bool done;
 
  private:
   int16_t level_[kMaxNumSegments];
@@ -307,6 +308,7 @@ class MultistageEnvelope {
   uint16_t sustain_point_;
   uint16_t loop_start_;
   uint16_t loop_end_;
+    
     
 bool gate_high;
   
