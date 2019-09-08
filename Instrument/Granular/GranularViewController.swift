@@ -9,6 +9,7 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 import SpectrumFramework
+import BurnsAudioFramework
 
 enum CloudsParam: AUParameterAddress {
     case PadX = 0

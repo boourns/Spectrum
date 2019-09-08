@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         convenience init(_ image: String, _ url: String) {
             self.init(frame: CGRect.zero)
             setImage(UIImage(named: image), for: .normal)
-
+            
             layer.cornerRadius = 10
             clipsToBounds = true
             widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
                     UIApplication.shared.open(url)
                 }
             }
-
+            
         }
     }
     
@@ -70,9 +70,9 @@ class ViewController: UIViewController {
     }
     
     // MARK: View Life Cycle
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		view.backgroundColor = UIColor.init(hex: "#111111ff")!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.init(hex: "#111111ff")!
         navigationController?.view.backgroundColor = UIColor.init(hex: "#111111ff")!
         
         title = "Spectrum"
@@ -88,15 +88,15 @@ class ViewController: UIViewController {
         scroll.addSubview(stack)
         scroll.translatesAutoresizingMaskIntoConstraints = false
         stack.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate(scroll.constraints(safelyFilling: view))
         
         let constraints = [
-          stack.topAnchor.constraint(equalToSystemSpacingBelow: scroll.topAnchor, multiplier: 1.0),
-          stack.leadingAnchor.constraint(equalToSystemSpacingAfter: scroll.leadingAnchor, multiplier: 1.0),
-          scroll.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 1.0),
-          stack.bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: scroll.bottomAnchor, multiplier: 1.0),
-          view.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 1.0)
+            stack.topAnchor.constraint(equalToSystemSpacingBelow: scroll.topAnchor, multiplier: 1.0),
+            stack.leadingAnchor.constraint(equalToSystemSpacingAfter: scroll.leadingAnchor, multiplier: 1.0),
+            scroll.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 1.0),
+            stack.bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: scroll.bottomAnchor, multiplier: 1.0),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 1.0)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -107,17 +107,17 @@ class ViewController: UIViewController {
     func ui() -> [UIView] {
         return [
             Text("Spectrum", font: UIFont.preferredFont(forTextStyle: .title1)),
-          Text("Spectrum Audio Units are now installed."),
-          Text("To use Spectrum you need an Audio Unit Host or DAW like AUM or Garageband."),
-          Button("Spectrum Manual", "https://burns.ca/spectrum.html"),
-          Text("Spectrum is based on Eurorack modules by Mutable Instruments.  If you like it, support Mutable Instruments by buying their hardware."),
-          Button("Mutable Instruments Home", "https://mutable-instruments.net"),
-          Text("Spectrum Audio Units have been built by Tom Burns.  If you want to support my work consider buying one of my other apps.  Thanks!"),
-          Button("App Store", "https://apps.apple.com/ca/developer/thomas-burns/id522224284"),
-          Text("Follow Burns Audio to keep up to date with my latest software and music releases"),
-          HStack([ImageButton("Instagram", "https://www.instagram.com/gravitronic/"),
-          ImageButton("Youtube", "https://www.youtube.com/channel/UCbZ29esNP4GrR2zkUdScFNw"),
-          ImageButton("Email", "https://burns.ca/newsletter.html")])
+            Text("Spectrum Audio Units are now installed."),
+            Text("To use Spectrum you need an Audio Unit Host or DAW like AUM or Garageband."),
+            Button("Spectrum Manual", "https://burns.ca/spectrum.html"),
+            Text("Spectrum is based on Eurorack modules by Mutable Instruments.  If you like it, support Mutable Instruments by buying their hardware."),
+            Button("Mutable Instruments Home", "https://mutable-instruments.net"),
+            Text("Spectrum Audio Units have been built by Tom Burns.  If you want to support my work consider buying one of my other apps.  Thanks!"),
+            Button("App Store", "https://apps.apple.com/ca/developer/thomas-burns/id522224284"),
+            Text("Follow Burns Audio to keep up to date with my latest software and music releases"),
+            HStack([ImageButton("Instagram", "https://www.instagram.com/gravitronic/"),
+                    ImageButton("Youtube", "https://www.youtube.com/channel/UCbZ29esNP4GrR2zkUdScFNw"),
+                    ImageButton("Email", "https://burns.ca/newsletter.html")])
         ]
     }
 }

@@ -1,10 +1,9 @@
-/*
-	Copyright (C) 2016 Apple Inc. All Rights Reserved.
-	See LICENSE.txt for this sample’s licensing information
-	
-	Abstract:
-	Main entry point to the application.
-*/
+//
+//  ViewController.swift
+//  OrgoneApp
+//
+//  Created by tom on 2019-09-07.
+//
 
 import UIKit
 import UserNotifications
@@ -13,7 +12,7 @@ import BurnsAudioFramework
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Properties
-	var window: UIWindow?
+    var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -26,9 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let aps = notification["aps"] as? [String: AnyObject],
             let link = aps["link"] as? String,
             let url = URL(string: link) {
-                UIApplication.shared.open(url)
+            UIApplication.shared.open(url)
         }
-
+        
         return true
     }
     
@@ -80,4 +79,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Silver.report(status: .Unauthorized)
     }
 }
+
 

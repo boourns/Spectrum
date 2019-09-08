@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-class Silver {
+open class Silver {
     static var REGISTRATION_URL = "https://silver.burns.ca/token"
     
-    enum Status {
+    public enum Status {
         case Authorized(token: String)
         case Unauthorized
     }
     
-    class func report(status: Status) {
+    public class func report(status: Status) {
         guard let uuid = UIDevice.current.identifierForVendor?.uuidString else {
             NSLog("Could not get identifierForVendor")
             return

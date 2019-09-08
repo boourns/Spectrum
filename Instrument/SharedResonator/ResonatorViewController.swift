@@ -8,7 +8,7 @@
 import UIKit
 import AVFoundation
 import CoreAudioKit
-import SpectrumFramework
+import BurnsAudioFramework
 
 enum RingsParam: AUParameterAddress {
     case PadX = 0
