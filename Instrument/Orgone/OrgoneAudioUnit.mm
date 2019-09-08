@@ -67,10 +67,35 @@
                                                                           min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameter *positionParam = [AUParameterTree createParameterWithIdentifier:@"position" name:@"Position"
+                                                                      address:OrgoneParamPosition
+                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *effectParam = [AUParameterTree createParameterWithIdentifier:@"effect" name:@"Effect"
+                                                                        address:OrgoneParamEffect
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *waveLowParam = [AUParameterTree createParameterWithIdentifier:@"waveLow" name:@"Low Wave"
+                                                                        address:OrgoneParamWaveLow
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *waveMidParam = [AUParameterTree createParameterWithIdentifier:@"waveMid" name:@"Mid Wave"
+                                                                       address:OrgoneParamWaveMid
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *waveHighParam = [AUParameterTree createParameterWithIdentifier:@"waveHigh" name:@"High Wave"
+                                                                       address:OrgoneParamWaveHigh
+                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                         flags: flags valueStrings:nil dependentParameters:nil];
+    
+    
     //AUParameterGroup *lpgGroup = [AUParameterTree createGroupWithIdentifier:@"main2" name:@"Main" children:@[pitchParam, detuneParam]];
     
-    //AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[primaryGroup, lpgGroup]];
-    
+    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[pitchParam, detuneParam, positionParam, effectParam, waveLowParam, waveMidParam, waveHighParam]];
     
     // LFO
     
@@ -243,7 +268,7 @@
     DEBUG_LOG(@"registering parameter tree")
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[lfoPage, envPage, ampPage, modMatrixPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, modMatrixPage, settingsPage]];
     
     // Make a local pointer to the kernel to avoid capturing self.
     __block OrgoneDSPKernel *instrumentKernel = &_kernel;
@@ -353,7 +378,6 @@
                            @"Gate",
                            @"Modwheel",
                            @"Out",
-                           @"Aux",
                            @"Pad X",
                            @"Pad Y",
                            @"Pad Gate",
@@ -367,14 +391,12 @@
                             @"Disabled",
                             @"Tune",
                             @"Frequency",
-                            @"Harmonics",
-                            @"Timbre",
-                            @"Morph",
-                            @"Engine",
+                            @"Position",
+                            @"Effect",
+                            @"Modulation",
+                            @"Index",
                             @"LFORate",
                             @"LFOAmount",
-                            @"Source",
-                            @"SourceSpread",
                             @"Pan",
                             @"Level",
                             @"Portamento",

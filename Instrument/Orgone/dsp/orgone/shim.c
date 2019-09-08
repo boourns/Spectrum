@@ -3,19 +3,6 @@
 orgone_patch_t patch;
 int written;
 
-void init_patch() {
-	patch.freq = 512;
-	patch.index = 100;
-	patch.effect = 100;
-	patch.mod = 0;
-	patch.waveHi = 1023;
-	patch.waveMid = 500;
-	patch.waveLo = 300;
-	patch.pos = 200;
-	patch.tuneFine = 512;
-	patch.tune = 512;
-}
-
 /*
 NAME                     ACTUAL INDEX        ANALOGREAD INDEX
 #define POT_FREQ         analogControls[0]   13
@@ -58,26 +45,26 @@ uint16_t analogRead(int pin) {
 	case 9:
 		return patch.tune;
 	default:
-		printf("UNKNOWN analogRead %d\n", pin);
+		//printf("UNKNOWN analogRead %d\n", pin);
 		break;
 	}
 	return 0;
 }
 
 void analogWrite(int pin, int value) {
-	printf("analogWrite %d, %d\n", pin, value);
+	//printf("analogWrite %d, %d\n", pin, value);
 	if (pin == 0) {
 		written = value;
 	}
 }
 
 uint8_t digitalReadFast(int pin) {
-	printf("digitalReadFast %d\n", pin);
+	//printf("digitalReadFast %d\n", pin);
 	return 0;
 }
 
 void digitalWriteFast(int pin, uint8_t value) {
-	printf("digitalWriteFast %d, %d\n", pin, value);
+	//printf("digitalWriteFast %d, %d\n", pin, value);
 }
 
 int millis() {

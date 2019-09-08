@@ -70,17 +70,15 @@ void ARMED_FX() {
 void READ_POTS() {
 
   if (IsHW2 == 0) {
-     analogControls[8] = analogRead(potPinTable_DIY[8]);
-    analogControls[ARC] = analogRead(potPinTable_DIY[ARC]);
-    analogControls[5] = analogRead(potPinTable_DIY[5]);
-    analogControls[4] = analogRead(potPinTable_DIY[4]);
+      for (int i = 0; i <= 9; i++) {
+          analogControls[i] = analogRead(potPinTable_DIY[i]);
+      }
   }//step through control knob readings one per cycle, humans are slow
   else
   {
-    analogControls[8] = analogRead(potPinTable_ret[8]);
-    analogControls[ARC] = analogRead(potPinTable_ret[ARC]);
-    analogControls[5] = analogRead(potPinTable_ret[5]);
-    analogControls[4] = analogRead(potPinTable_ret[4]);
+      for (int i = 0; i <= 9; i++) {
+          analogControls[i] = analogRead(potPinTable_ret[i]);
+      }
   }
 }
 
@@ -118,77 +116,16 @@ void TUNELOCK_TOGGLE()
 }
 
 void FX_TOGGLES() {
-  if (IsHW2 == 0) {
-    EffectEnOn_A = digitalReadFast(effectSwitch_A);
-    EffectEnOn_B = !digitalReadFast(effectSwitch_B);
-    EffectEnOn_C = !digitalReadFast(effectSwitch_C);
-  }
-  else if (FXSelArmed[0] == 0) {
-
-    if (effectEnButton_A.update()) {
-      if (effectEnButton_A.fallingEdge()) {
-        EffectEnOn_A = !EffectEnOn_A;
-        QUIET_MCD = QUIET_MST;
+  if (FXSelArmed[0] == 0) {
+      if (patch.pulsar != pulsarOn) {
+          pulsarOn = patch.pulsar;
+          SELECT_ISRS();
       }
-    }
-
-    if (effectEnButton_B.update()) {
-      if (effectEnButton_B.fallingEdge()) {
-        EffectEnOn_B = !EffectEnOn_B;
-        QUIET_MCD = QUIET_MST;
-      }
-    }
-
-    if (effectEnButton_C.update()) {
-      if (effectEnButton_C.fallingEdge()) {
-        EffectEnOn_C = !EffectEnOn_C;
-        QUIET_MCD = QUIET_MST;
-      }
-    }
-
-    if (pulsarButton.update()) {
-      if (pulsarButton.fallingEdge()) {
-        pulsarOn = ! pulsarOn;
-        QUIET_MCD = QUIET_MST;
-        SELECT_ISRS();
-      }
-    }
-
   }
 }
 
 void OSC_MODE_TOGGLES() {
-  if (IsHW2 == 0) {
-    FMFixedOn = digitalReadFast(FMFixedSwitch);
-    xModeOn = !(digitalReadFast(xModeSwitch));
-    FMmodeOn = !(digitalReadFast(FMmodeSwitch));
-  }
-
-  else if (FXSelArmed[0] == 0) {
-    if (FMFixedButton.update()) {
-      if (FMFixedButton.fallingEdge()) {
-        FMFixedOn = !FMFixedOn;
-        QUIET_MCD = QUIET_MST;
-      }
-    }
-
-    if (FMmodeButton.update()) {
-      if (FMmodeButton.fallingEdge()) {
-        FMmodeOn = !FMmodeOn;
-        QUIET_MCD = QUIET_MST;
-      }
-    }
-
-    if (xModeButton.update()) {
-      if (xModeButton.fallingEdge()) {
-        xModeOn = !xModeOn;
-        QUIET_MCD = QUIET_MST;
-      }
-    }
-
-    
-  }
-  oscMode = ((xModeOn) << 1) + (!FMmodeOn);
+  oscMode = ((patch.xMode) << 1) + (!patch.fmMode);
 }
 
 void SELECT_ISRS() {

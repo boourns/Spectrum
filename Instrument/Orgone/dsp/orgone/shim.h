@@ -10,9 +10,18 @@ typedef struct {
 	uint16_t waveHi;
 	uint16_t waveMid;
 	uint16_t pos;
-	uint16_t tuneFine;
 	uint16_t waveLo;
 	uint16_t tune;
+    uint16_t tuneFine;
+    bool effectA;
+    bool effectB;
+    bool effectC;
+    bool pulsar;
+    bool fixedFM;
+    bool fmMode;
+    bool xMode;
+    float note;
+    int fx;
 } orgone_patch_t;
 
 extern orgone_patch_t patch;

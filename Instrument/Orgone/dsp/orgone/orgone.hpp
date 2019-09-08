@@ -234,8 +234,6 @@ public:
     pulsarOn = 0;
     oscMode = 0;
     FinalOut = 0;
-    FMFixedOn = 0;
-
 
     //Arrays assign wavetables to wave slots on low[0], & medium and high positions
     //CZ
@@ -757,7 +755,6 @@ public:
   float aInModRatio;
   float ModRatioCubing;
   int32_t aInModIndex;
-  int32_t aInPos;
 
   //detuning
   float aInModEffect;
@@ -841,11 +838,7 @@ public:
   int32_t FXMixOut;
   int32_t CZMix;
   int32_t CZMixDn;
-  uint8_t EffectEnOn_A;
-  uint8_t EffectEnOn_B;
-  uint8_t EffectEnOn_C;
-  uint8_t xModeOn;
-  uint8_t FMmodeOn;
+
   int32_t envVal;
   int chordArrayOffset;
   float tuner;
@@ -878,7 +871,6 @@ public:
   uint16_t FMIndex; //FM index (not scaled like a real fm synth)
   uint32_t AMIndex;
   uint8_t oscMode;
-  uint8_t FMFixedOn;
   uint8_t pulsarOn;
   uint8_t FMFixedOnToggle;
   uint8_t oscSync;

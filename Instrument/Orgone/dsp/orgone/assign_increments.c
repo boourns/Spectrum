@@ -22,7 +22,7 @@ void ASSIGNINCREMENTS() { //----------------------------------------------------
       }
       else aInModRatio = (averageaInRAv / 4096.0); //down direction dont go past zero, or divide by zero could happen
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         avgcubing = (float)(averageratio / 500.0); //change to adjust "LFO" in fm fixed
         FMMult = ((((float)(avgcubing * avgcubing * avgcubing))) + 0.001) * (aInModRatio * 8.0); //FM+fixed mult control
         //Serial.println(FMMult);
@@ -76,7 +76,7 @@ void ASSIGNINCREMENTS() { //----------------------------------------------------
       else aInModRatio = (averageaInRAv / 4096.0); //down direction dont go past zero, or divide by zero could happen
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         float avgcubing = averageratio / 500.0; //change to adjust "LFO" in fm fixed
         FMMult = ((((float)(avgcubing * avgcubing * avgcubing))) + 0.001) * (aInModRatio * 8.0); //FM+fixed mult control
         osc_mult[0] = FMMult;
@@ -123,7 +123,7 @@ void ASSIGNINCREMENTS() { //----------------------------------------------------
       else aInModRatio = (averageaInRAv / 4096.0); //down direction dont go past zero, or divide by zero could happen
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         FMMult = (float)((((averageratio >> 3) / 1.1)) + 1.0) * aInModRatio; 
         osc_mult[0] = 4;
         osc_mult[1] = FMMult;
@@ -170,7 +170,7 @@ void ASSIGNINCREMENTS() { //----------------------------------------------------
 
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         FMMult = (float)((((averageratio >> 3) / 1.1)) + 1.0) * aInModRatio; //CZ + fixed + free
         osc_mult[0] = 4;
         osc_mult[1] = FMMult;
@@ -257,8 +257,8 @@ void ASSIGNINCREMENTS_P() { //--------------------------------------------for pu
   else aInModRatio = (averageaInRAv / 4096.0); 
 
   
-   if (FMmodeOn){
-  if (FMFixedOn) {
+   if (patch.fmMode){
+  if (patch.fixedFM) {
     
     if (FX == 6) FMMult = (float)((((analogControls[3]) * 1.5 )) + 1.0);
     else FMMult = (float)((((averageratio) >>1 )) + 1.0) * aInModRatio;
@@ -325,7 +325,7 @@ void ASSIGNINCREMENTS_P() { //--------------------------------------------for pu
   }
    }
    else{
-  if (FMFixedOn) {
+  if (patch.fixedFM) {
     
     if (FX == 6) FMMult = (float)((((analogControls[3]) * 1.5 )) + 1.0);
     else FMMult = (float)((((averageratio) >>1 )) + 1.0) * aInModRatio;
@@ -406,7 +406,7 @@ void ASSIGNINCREMENTS_D() { //--------------------------------------------------
       FMIndex = (uint32_t)((float)(((FMIndexContCubing * FMIndexContCubing * FMIndexContCubing) + (averageaInIAvCubing * averageaInIAvCubing * averageaInIAvCubing)) * (inputVOct / 2.0)));
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         avgcubing = (float)(analogControls[3] / 500.0); //change to adjust "LFO" in fm fixed
         FMMult = ((((float)(avgcubing * avgcubing * avgcubing))) + 0.001); 
         //Serial.println(FMMult);
@@ -436,7 +436,7 @@ void ASSIGNINCREMENTS_D() { //--------------------------------------------------
 
 FMX_HiOffset = (float)(1.0 + ((float)(mixHi) * FMX_HiOffsetCont)/2048.0);
     
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         float avgcubing = analogControls[3] / 500.0; //change to adjust "LFO" in fm fixed
         FMMult = ((((float)(avgcubing * avgcubing * avgcubing))) + 0.001); //FM+fixed mult control
         osc_mult[0] = FMMult;
@@ -462,7 +462,7 @@ FMX_HiOffset = (float)(1.0 + ((float)(mixHi) * FMX_HiOffsetCont)/2048.0);
 
       UPDATECONTROLS_CZ();
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         FMMult = (float)((((analogControls[3] >> 3) / 1.1)) + 1.0); //CZ + fixed + free
         osc_mult[0] = 4;
         osc_mult[1] = FMMult;
@@ -487,7 +487,7 @@ FMX_HiOffset = (float)(1.0 + ((float)(mixHi) * FMX_HiOffsetCont)/2048.0);
       UPDATECONTROLS_CZALT();
 FMX_HiOffset = (float)(1.0 + ((float)(mixHi) * FMX_HiOffsetCont)/2048.0);
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         FMMult = (float)((((analogControls[3] >> 3) / 1.1)) + 1.0); 
         osc_mult[0] = 4;
         osc_mult[1] = FMMult;
@@ -524,7 +524,7 @@ void ASSIGNINCREMENTS_DRUM() { //-----------------------------------------------
   CZMix = envVal>>1;
 
   
-  if (FMFixedOn) {
+  if (patch.fixedFM) {
     osc_mult[0] = 250.0;
     osc_mult[1] = 4.0;
     o1.phase_increment = inputConverter * osc_mult[1]  ;
@@ -577,7 +577,7 @@ void ASSIGNINCREMENTS_SPECTRUM() { //-------------------------------------------
       FMIndex = (uint32_t)((float)(((FMIndexContCubing * FMIndexContCubing * FMIndexContCubing) + (averageaInIAvCubing * averageaInIAvCubing * averageaInIAvCubing)) * (inputVOct / 2.0)));
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         avgcubing = (float)(averageratio / 500.0); //change to adjust "LFO" in fm fixed
         FMMult = ((((float)(avgcubing * avgcubing * avgcubing))) + 0.001) * (aInModRatio * 8.0); //FM+fixed mult control
         //Serial.println(FMMult);
@@ -611,7 +611,7 @@ void ASSIGNINCREMENTS_SPECTRUM() { //-------------------------------------------
 
       FMX_HiOffset = (float)(1.0 + ((float)(mixHi) * FMX_HiOffsetCont)/2048.0);
       
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         float avgcubing = averageratio / 500.0; //change to adjust "LFO" in fm fixed
         FMMult = ((((float)(avgcubing * avgcubing * avgcubing))) + 0.001) * (aInModRatio * 8.0); //FM+fixed mult control
         osc_mult[0] = FMMult;
@@ -637,7 +637,7 @@ void ASSIGNINCREMENTS_SPECTRUM() { //-------------------------------------------
       o10.index = (((HARM_LEVELS[8 + Lbuh]) * mixLo) + ((HARM_LEVELS[8 + Mbuh]) * mixMid) + ((HARM_LEVELS[8 + Hbuh]) * mixHi)) >> 11;
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         FMMult = (float)((((averageratio >> 2) / 1.1)) + 1.0) * aInModRatio; //CZ + fixed + free
         osc_mult[0] = FMMult;
       }
@@ -665,7 +665,7 @@ void ASSIGNINCREMENTS_SPECTRUM() { //-------------------------------------------
       o10.index = (((HARM_LEVELS[8 + Lbuh]) * mixLo) + ((HARM_LEVELS[8 + Mbuh]) * (mixMid + mixHi))) >> 11;
 
 
-      if (FMFixedOn) {
+      if (patch.fixedFM) {
         FMMult = (float)((((averageratio >> 2) / 1.1)) + 1.0) * aInModRatio; //CZ + fixed + free
         osc_mult[0] = FMMult;
       }
@@ -679,7 +679,7 @@ void ASSIGNINCREMENTS_SPECTRUM() { //-------------------------------------------
       break;
   }
 
-  if (FMFixedOn){o1.phase_increment = inputConverterF * osc_mult[0] ;
+  if (patch.fixedFM){o1.phase_increment = inputConverterF * osc_mult[0] ;
   lfo.phase_increment = inputConverterF * (osc_mult[0] / 20.0);}
   else {o1.phase_increment = inputConverter * osc_mult[0] ;
   lfo.phase_increment = inputConverter * (osc_mult[0] / 4.0);}

@@ -3,8 +3,8 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#define TUNEMULT 93000 
-//#define TUNEMULT 5900000
+//#define TUNEMULT 93000
+#define TUNEMULT 59000
 //this is the base frequency. halving it will lower the entire oscillator by 1 octave 
 //real frequency is sent to the broadcast application for tuning
 

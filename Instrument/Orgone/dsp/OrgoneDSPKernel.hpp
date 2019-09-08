@@ -8,6 +8,8 @@
 #ifndef OrgoneDSPKernel_h
 #define OrgoneDSPKernel_h
 
+#define INPUT_FACTOR 8191.0f
+
 #import <vector>
 #import "orgone.hpp"
 #import "peaks/multistage_envelope.h"
@@ -36,8 +38,13 @@ enum {
     OrgoneParamPadX = 0,
     OrgoneParamPadY = 1,
     OrgoneParamPadGate = 2,
+    OrgoneParamPosition = 3,
+    OrgoneParamEffect = 4,
     OrgoneParamPitch = 5,
     OrgoneParamDetune = 6,
+    OrgoneParamWaveLow = 7,
+    OrgoneParamWaveMid = 8,
+    OrgoneParamWaveHigh = 9,
     OrgoneParamVolume = 11,
     OrgoneParamPan = 14,
     OrgoneParamPanSpread = 15,
@@ -75,7 +82,6 @@ enum {
     ModInGate,
     ModInModwheel,
     ModInOut,
-    ModInAux,
     ModInPadX,
     ModInPadY,
     ModInPadGate,
@@ -90,14 +96,12 @@ enum {
     ModOutDisabled = 0,
     ModOutTune,
     ModOutFrequency,
-    ModOutHarmonics,
-    ModOutTimbre,
-    ModOutMorph,
-    ModOutEngine,
+    ModOutPosition,
+    ModOutEffect,
+    ModOutModulation,
+    ModOutIndex,
     ModOutLFORate,
     ModOutLFOAmount,
-    ModOutSource,
-    ModOutSourceSpread,
     ModOutPan,
     ModOutLevel,
     ModOutPortamento,
@@ -151,7 +155,24 @@ public:
         
         void Init(ModulationEngineRuleList *rules) {
             KERNEL_DEBUG_LOG("kernel voice Init")
-            orgone.init_patch();
+            
+            orgone.patch.freq = 512;
+            orgone.patch.index = 100;
+            orgone.patch.effect = 0;
+            orgone.patch.mod = 100;
+            orgone.patch.waveHi = 200;
+            orgone.patch.waveMid = 100;
+            orgone.patch.waveLo = 400;
+            orgone.patch.pos = 500;
+            orgone.patch.tuneFine = 512;
+            orgone.patch.tune = 512;
+            orgone.patch.fx = 4;
+            orgone.patch.fixedFM = false;
+            orgone.patch.fmMode = false;
+            orgone.patch.effectA = true;
+//            orgone.patch.effectB = true;
+//            orgone.patch.effectC = true;
+
             orgone.setup();
             for (int i = 0; i < 20; i++) {
                 orgone.loop();
@@ -250,7 +271,7 @@ public:
             
             panSpread = kernel->nextPanSpread();
             
-            noteTarget = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
+            noteTarget = float(noteNumber) + kernel->randomSignedFloat(kernel->slop);
             
             note = noteNumber;
             modEngine.in[ModInNote] = ((float) note) / 127.0f;
@@ -291,7 +312,7 @@ public:
                 updatePortamento(0.0f);
             }
             
-            //ONE_POLE(modulations.note, noteTarget, 1.0f - portamento);
+            ONE_POLE(orgone.patch.note, noteTarget, 1.0f - portamento);
             ONE_POLE(modEngine.in[ModInAftertouch], aftertouchTarget, 0.1f);
             
             modEngine.run();
@@ -304,6 +325,14 @@ public:
                 lfo.updateRate(0.0f);
             }
             
+            orgone.patch.note += bendAmount + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
+            
+            orgone.patch.pos = clamp(kernel->patch.pos + (modEngine.out[ModOutPosition] * 4095.0f), 0.0f, 4095.0f);
+            orgone.patch.effect = clamp(kernel->patch.effect + (modEngine.out[ModOutEffect] * 4095.0f), 0.0f, 4095.0f);
+            orgone.patch.waveHi = kernel->patch.waveHi;
+            orgone.patch.waveMid = kernel->patch.waveMid;
+            orgone.patch.waveLo = kernel->patch.waveLo;
+            
             /*
             modulations.engine = modEngine.out[ModOutEngine];
             modulations.frequency = kernel->modulations.frequency + bendAmount + modEngine.out[ModOutTune] + (modEngine.out[ModOutFrequency] * 120.0f);
@@ -314,17 +343,17 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph];
             
-            modulations.level = clamp(ampEnvelope.value + modEngine.out[ModOutLevel], 0.0f, 1.0f);
-            
              */
             
+            float gain = clamp(ampEnvelope.value + modEngine.out[ModOutLevel], 0.0f, 1.0f);
             float pan = clamp(kernel->pan + modEngine.out[ModOutPan] + panSpread, -1.0f, 1.0f);
+            
             if (pan > 0) {
-                rightGainTarget = 1.0f;
-                leftGainTarget = 1.0f - pan;
+                rightGainTarget = 1.0f * gain;
+                leftGainTarget = (1.0f - pan) * gain;
             } else {
-                leftGainTarget = 1.0f;
-                rightGainTarget = 1.0f + pan;
+                leftGainTarget = 1.0f * gain;
+                rightGainTarget = (1.0f + pan) * gain;
             }
         }
         
@@ -335,7 +364,7 @@ public:
             while (framesRemaining) {
                 if (orgoneFramesIndex >= kAudioBlockSize) {
                     
-                    if (state == NoteStateReleasing && !ampEnvelope.done) {
+                    if (state == NoteStateReleasing && ampEnvelope.done) {
                         state = NoteStateUnused;
                     }
                     
@@ -361,7 +390,7 @@ public:
                     }
                 }
                 
-                out = orgone.written;
+                out = ((float) frames[orgoneFramesIndex] - 32000)/ 32000.0;
                 
                 ONE_POLE(leftGain, leftGainTarget, 0.01);
                 ONE_POLE(rightGain, rightGainTarget, 0.01);
@@ -429,7 +458,22 @@ public:
         }
         
         switch (address) {
-            
+            case OrgoneParamPosition:
+                patch.pos = clamp(value, 0.0f, 1.0f) * 4095;
+                break;
+            case OrgoneParamEffect:
+                patch.effect = clamp(value, 0.0f, 1.0f) * 4095;
+                break;
+            case OrgoneParamWaveLow:
+                patch.waveLo = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+            case OrgoneParamWaveMid:
+                patch.waveMid = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+            case OrgoneParamWaveHigh:
+                patch.waveHi = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+                
             case OrgoneParamPolyphony: {
                 int newPolyphony = 1 + round(clamp(value, 0.0f, 7.0f));
                 if (newPolyphony != midiProcessor.noteStack.getActivePolyphony()) {
@@ -596,6 +640,21 @@ public:
         }
         
         switch (address) {
+            case OrgoneParamPosition:
+                return ((float) patch.pos / 4095.0);
+                break;
+            case OrgoneParamEffect:
+                return ((float) patch.effect / 4095.0);
+                break;
+            case OrgoneParamWaveLow:
+                return ((float) patch.waveLo / INPUT_FACTOR);
+                break;
+            case OrgoneParamWaveMid:
+                return ((float) patch.waveMid / INPUT_FACTOR);
+                break;
+            case OrgoneParamWaveHigh:
+                return ((float) patch.waveHi / INPUT_FACTOR);
+                break;
             case OrgoneParamPitch:
                 return (float) pitch;
                 
@@ -772,6 +831,7 @@ private:
     
 public:
     MIDIProcessor midiProcessor;
+    orgone_patch_t patch;
     
     ModulationEngineRuleList modulationEngineRules;
     KernelTransportState transportState;

@@ -31,7 +31,7 @@ void FASTRUN outUpdateISR_PULSAR_TWIN(void) {
       o4.phaseOld = o4.phase;
       
 
-      o2.phase = o2.phase +  o2.phase_increment + ((o10.wave<<10) * FMmodeOn);
+      o2.phase = o2.phase +  o2.phase_increment + ((o10.wave<<10) * patch.fmMode);
       o2.phaseRemain = (o2.phase << 9) >> 17; //used for fake interpolation
      
 
@@ -51,7 +51,7 @@ void FASTRUN outUpdateISR_PULSAR_TWIN(void) {
       o3.phaseRemain = (o3.phase << 9) >> 17;
 
 
-      o5.phase = o5.phase +  o2.phase_increment + ((o10.wave<<10) * FMmodeOn);
+      o5.phase = o5.phase +  o2.phase_increment + ((o10.wave<<10) * patch.fmMode);
       o5.phaseRemain = (o5.phase << 9) >> 17; //used for fake interpolation
       //o4.phaseRemain = (o4.phase << 9) >> 17;
 

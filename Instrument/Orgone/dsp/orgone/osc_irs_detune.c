@@ -478,7 +478,7 @@ if (o12.phase >> 31 == 0) {
 
 
 
-  if (xModeOn) {
+  if (patch.xMode) {
     o2.wave = (((waveTableLoLink[o2.phase >> 23] * mixLo) + (waveTableMidLink[o2.phase >> 23] * (mixMid + mixHi)))) >> 11;
     o5.wave = (((waveTableLoLink[o5.phase >> 23] * mixLo) + (waveTableMidLink[o5.phase >> 23] * (mixMid + mixHi)))) >> 11;
     o8.wave = (((waveTableLoLink[o8.phase >> 23] * mixLo) + (waveTableMidLink[o8.phase >> 23] * (mixMid + mixHi)))) >> 11;

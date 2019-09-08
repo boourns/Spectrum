@@ -121,10 +121,9 @@ void FASTRUN outUpdateISR_DRUM(void) {
   
   //o1.wave = o1.wave * (drum_envVal[0] >> 14) >> 15;
 
+  o6.phase =  patch.effectC * ((o1.amp * drum_envTemp[1])); //borrowed unused osc 6 variable for drum pitch. turns on env 2 > pitch > oscs 2
   
-  o6.phase =  EffectEnOn_C * ((o1.amp * drum_envTemp[1])); //borrowed unused osc 6 variable for drum pitch. turns on env 2 > pitch > oscs 2
-  
-  if (FMmodeOn) o9.phase_increment = multiply_32x32_rshift32(drum_envVal[1], (o6.phase_increment<<2)); //make the envelope modulate the complexity amount with FM pressed.
+  if (patch.fmMode) o9.phase_increment = multiply_32x32_rshift32(drum_envVal[1], (o6.phase_increment<<2)); //make the envelope modulate the complexity amount with FM pressed.
   else o9.phase_increment = o6.phase_increment;
 
   //oscs 2------------------------------------------

@@ -19,12 +19,6 @@ void loop() {
     NT3Rate = (randomVal(-7, 8)) - (noiseTable3[0] / 4198); //LF noise (noiseTable3)
     SWC = 0;
   }
-
-  ARC ++;
-  if ((ARC == 7 || ARC == 9) && tuneLockOn) ARC ++; //skip reading tuning knobs if tunelock is on.
-  if (ARC > 9) {
-    ARC = 0;
-  }  //cycle through analog controls. skip tuning controls if tunelock is on.
   
   //--------------------------------------------------------
   inCVraw = (float)(analogRead(A0)); //main v/oct CV in. only use 13 bits of analog in SEPERATE AINS WITH CODE  
@@ -37,7 +31,9 @@ void loop() {
   //tuner = inCV+(analogControls[9]>>1)+(analogControls[7]>>4);
   //_____________END TUNINGOPTIONS
 
-  inputScaler = float(tuner / octaveSize);
+    inputScaler = patch.note / 12;
+    
+  //inputScaler = float(tuner / octaveSize);
 
   //______________________________CONVERSION OPTIONS
   //digitalWriteFast (oSQout,0);//temp testing OC
@@ -48,7 +44,7 @@ void loop() {
 
 
   //inputVOct = sq(inputScaler);
-  inputConverter = inputVOct * conf_TuneMult; //<-----------------------------number is MASTER TUNING also affected by ISR speed
+  inputConverter = inputVOct * conf_TuneMult; //-----------------------------number is MASTER TUNING also affected by ISR speed
   //divide by 2 if you want it play 1 octave lower, 4 for 2 octaves etc.
   //you can also fine tune it to just how you like it by tweaking the number up and down.
 
@@ -81,20 +77,18 @@ void loop() {
   averageaInIAvCubing = (4095 - (totalaInIAv / numreadingsaInRAv)) / 512.0;
   averageaInIAv = totalaInIAv / numreadingsaInRAv;
   inCV = totalInCV / numreadingsCV;
-
-  //------------------------------Position CV---------------------
-  aInPos = 4095 - ((analogRead(A16))) ;
+    
   //------------------------------------------------------------------
   loopReset = 0;
-  envVal = constrain((aInPos + mixPos), 0, 4095); //mix the position knob with the modulation from the CV input (fix for bipolar)
+  envVal = constrain(patch.pos, 0, 4095); //mix the position knob with the modulation from the CV input (fix for bipolar)
 
   mixMid = constrain((2047 - abs(envVal - 2047)), 0, 2047); //sets the level of the midpoint wave
   mixHi = constrain((((envVal)) - 2047), 0, 2047); //sets the level of the high wave
   mixLo = constrain((2047 - ((envVal))), 0, 2047); //sets the level of the low wave
-  mixEffect = (mixLo * EffectEnOn_A) + (mixMid * EffectEnOn_B) + (mixHi * EffectEnOn_C);
+    mixEffect = (mixLo * patch.effectA) + (mixMid * patch.effectB) + (mixHi * patch.effectC);
 
   //---------------------------Detune CV----------------
-  aInEffectReading = analogRead(A12);
+    aInEffectReading = 4095 - patch.effect;
   aInModEffect = ((4095 - aInEffectReading) << 1);
   //--------------------------------------------------
 
@@ -139,57 +133,15 @@ void loop() {
    ASSIGNINCREMENTS();
    }
 
-
 //TODO
   //UPDATE_POSITION_LEDS();
   
   //UPDATE_prog_LEDS();
 
-  if (IsHW2) {
-    
-    
- if (FXSelArmed[0] == 0){  
-    if (FXCycleButton.update()) {
-      if (FXCycleButton.fallingEdge()) {
-          FXSelArmed[0] = 1; //arm effect selection          
-          LED_MCD = LED_MST;
-      }
-    }   
-  }
-  else ARMED_FX();
-
-  }
-
-  else {//DIY FX button cycle move
-    if (FXCycleButton.update()) {
-      if (tuneLockOn) {
-        if (FXCycleButton.fallingEdge()) {
-          FX = FX - 1;
-          if (FX < 0) FX = FX_Count;         
-          SELECT_ISRS();
-        }
-        if (FXSw == 1 && FXCycleButton.risingEdge()) {
-          FX = FX - 1;
-          if (FX < 0) FX = FX_Count;         
-          SELECT_ISRS();
-        }
-      }
-
-
-      else {
-        if (FXCycleButton.fallingEdge()) {
-          FX = FX + 1;
-          if (FX > FX_Count) FX = 0;         
-          SELECT_ISRS();
-        }
-        if (FXSw == 1 && FXCycleButton.risingEdge()) {
-          FX = FX + 1;
-          if (FX > FX_Count) FX = 0;         
-          SELECT_ISRS();
-        }
-      }
+    if (patch.fx != FX) {
+        FX = patch.fx;
+        SELECT_ISRS();
     }
-  }//end of DIY FX button cycle
   
   // ----------------------------------
   // monitorSerialReception();

@@ -177,7 +177,7 @@ void DODETUNING() {
         else  {
           drum_dB = 0;
         }
-        if (xModeOn) {
+        if (patch.xMode) {
           drum_d2B = 2 ;
         }
         else {
@@ -195,7 +195,7 @@ void DODETUNING() {
           floats[0] = (float)(analogControls[1] / 8192.0);
           drum_d = map((constrain(((4095 - aInModIndex)  + analogControls[5]), 0, 8191)), 1, 8191, 24000, 24); //decay 2
         }
-        if (!xModeOn) {
+        if (!patch.xMode) {
           o1.amp = (constrain(((AInRawFilter - 4095) + analogControls[0]), 0, 8191)) >> 3; //amount of pbend on fm freq pot
           drum_d2 = map( analogControls[3], 1, 8191, 32000, 24); //decay 2
         }
@@ -211,9 +211,9 @@ void DODETUNING() {
       floats[0] =  (floats[0] * floats[0] * floats[0]) * 524288.0;
       o6.phase_increment = ((int32_t)floats[0]) >> 5; //the amount of xmod
 
-      drum_a = EffectEnOn_B * (analogControls[5] << 10); //drum hold time
+      drum_a = patch.effectB * (analogControls[5] << 10); //drum hold time
 
-      if (EffectEnOn_A) drum_d = drum_d + (o1.phase_increment >> 12);
+      if (patch.effectA) drum_d = drum_d + (o1.phase_increment >> 12);
       drum_d = signed_multiply_32x16t((drum_d * drum_d), drum_d << 13) + (32 << 10);
 
       drum_d2 = signed_multiply_32x16t((drum_d2 * drum_d2), drum_d2 << 12) + (32 << 10);

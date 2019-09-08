@@ -87,7 +87,7 @@
 		E205C3C223249DA70003B8BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E205C3C023249DA70003B8BB /* LaunchScreen.storyboard */; };
 		E205C3C723249ECD0003B8BB /* Silver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234605D22C8ED7400C9D005 /* Silver.swift */; };
 		E205C3D12324A23B0003B8BB /* OrgoneAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E205C3D02324A23B0003B8BB /* OrgoneAudioUnit.mm */; };
-		E205C3D32324A23B0003B8BB /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3D22324A23B0003B8BB /* AudioUnitViewController.swift */; };
+		E205C3D32324A23B0003B8BB /* OrgoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3D22324A23B0003B8BB /* OrgoneViewController.swift */; };
 		E205C3D62324A23B0003B8BB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E205C3D42324A23B0003B8BB /* MainInterface.storyboard */; };
 		E205C3DB2324A23B0003B8BB /* Orgone.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E205C3CD2324A23B0003B8BB /* Orgone.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E205C3E02324A2510003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
@@ -562,7 +562,7 @@
 		E205C3CD2324A23B0003B8BB /* Orgone.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Orgone.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E205C3CF2324A23B0003B8BB /* OrgoneAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrgoneAudioUnit.h; sourceTree = "<group>"; };
 		E205C3D02324A23B0003B8BB /* OrgoneAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OrgoneAudioUnit.mm; sourceTree = "<group>"; };
-		E205C3D22324A23B0003B8BB /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
+		E205C3D22324A23B0003B8BB /* OrgoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgoneViewController.swift; sourceTree = "<group>"; };
 		E205C3D52324A23B0003B8BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E205C3D72324A23B0003B8BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E205C3D82324A23B0003B8BB /* Orgone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Orgone-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -593,7 +593,6 @@
 		E205C3FC2324A8660003B8BB /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		E205C3FD2324A8660003B8BB /* consts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = consts.h; sourceTree = "<group>"; };
 		E205C3FE2324A8660003B8BB /* bistromath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bistromath.c; sourceTree = "<group>"; };
-		E205C3FF2324A8660003B8BB /* broadcase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = broadcase.c; sourceTree = "<group>"; };
 		E205C4002324A8660003B8BB /* gate_isr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gate_isr.c; sourceTree = "<group>"; };
 		E205C4012324A8660003B8BB /* ISRSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISRSelector.h; sourceTree = "<group>"; };
 		E205C4022324A8660003B8BB /* shim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shim.h; sourceTree = "<group>"; };
@@ -1191,7 +1190,7 @@
 				E205C3E22324A3A80003B8BB /* dsp */,
 				E205C3CF2324A23B0003B8BB /* OrgoneAudioUnit.h */,
 				E205C3D02324A23B0003B8BB /* OrgoneAudioUnit.mm */,
-				E205C3D22324A23B0003B8BB /* AudioUnitViewController.swift */,
+				E205C3D22324A23B0003B8BB /* OrgoneViewController.swift */,
 				E205C3D42324A23B0003B8BB /* MainInterface.storyboard */,
 				E205C3D72324A23B0003B8BB /* Info.plist */,
 				E205C3D82324A23B0003B8BB /* Orgone-Bridging-Header.h */,
@@ -1237,7 +1236,6 @@
 				E205C3FC2324A8660003B8BB /* util.h */,
 				E205C3FD2324A8660003B8BB /* consts.h */,
 				E205C3FE2324A8660003B8BB /* bistromath.c */,
-				E205C3FF2324A8660003B8BB /* broadcase.c */,
 				E205C4002324A8660003B8BB /* gate_isr.c */,
 				E205C4012324A8660003B8BB /* ISRSelector.h */,
 				E205C4022324A8660003B8BB /* shim.h */,
@@ -2604,7 +2602,7 @@
 			files = (
 				E205C4052324A8670003B8BB /* consts.c in Sources */,
 				E205C3D12324A23B0003B8BB /* OrgoneAudioUnit.mm in Sources */,
-				E205C3D32324A23B0003B8BB /* AudioUnitViewController.swift in Sources */,
+				E205C3D32324A23B0003B8BB /* OrgoneViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,7 +24,7 @@ void FASTRUN outUpdateISR_SPECTRUM(void) {
       o2.phase = o2.phase +  (o2.phase_increment + o1.index) ;
        if (o1.phaseOld > o2.phase) {
         //lfo.phase = 0; 
-        if(!FMmodeOn)o1.phase=0;
+        if(!patch.fmMode)o1.phase=0;
       }     
       o1.phaseOld = o2.phase;
       o2.phaseRemain = (o2.phase << 9) >> 17; //ROOT
@@ -121,7 +121,7 @@ void FASTRUN outUpdateISR_SPECTRUM(void) {
      else o4.wave = (o10.wave + o4.wave + o6.wave + o8.wave + o12.wave + o3.wave + o5.wave + o7.wave + o9.wave); //main out and mix detune
 //     
      
-     if (!FMmodeOn){ o4.wave = (o4.wave*(2047-CZMix)>>11)+((((o4.wave*o1.wave)>>13) * CZMix) >> 13);}
+     if (!patch.fmMode){ o4.wave = (o4.wave*(2047-CZMix)>>11)+((((o4.wave*o1.wave)>>13) * CZMix) >> 13);}
      o1.index = (FMIndex * o1.wave);
      //else o1.phaseOffset = (int32_t)((o4.wave * CZMix) >> 11) ; //FM modulator
     
