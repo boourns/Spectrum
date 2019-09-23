@@ -223,10 +223,10 @@ void GRADUALWAVE_D() {
  GremLo = (uint32_t)(map((analogControls[8]%546),0,545,0,511)); //get remainder for mix amount
  GremHi = (uint32_t)(map((analogControls[4]%546),0,545,0,511));
       GWTlo1 = drumWT[analogControls[8]/ 546];
-      GWTlo2 = drumWT[((analogControls[8]/ 546) + 1)];      
+      GWTlo2 = drumWT[((analogControls[8]/ 546) + 1)];
 
       GWThi1 = drumWT2[analogControls[4]/ 546];
-      GWThi2 = drumWT2[((analogControls[4]/ 546) + 1)];   
+      GWThi2 = drumWT2[((analogControls[4]/ 546) + 1)];
 }
 
 

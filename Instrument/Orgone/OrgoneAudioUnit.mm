@@ -92,10 +92,27 @@
                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                          flags: flags valueStrings:nil dependentParameters:nil];
     
+    AUParameter *modulationParam = [AUParameterTree createParameterWithIdentifier:@"modulation" name:@"Modulation"
+                                                                        address:OrgoneParamModulation
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *indexParam = [AUParameterTree createParameterWithIdentifier:@"index" name:@"Index"
+                                                                        address:OrgoneParamIndex
+                                                                            min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                          flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *freqParam = [AUParameterTree createParameterWithIdentifier:@"freq" name:@"Freq"
+                                                                     address:OrgoneParamFreq
+                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *fxParam = [AUParameterTree createParameterWithIdentifier:@"fxAlgorithm" name:@"FX Algorithm" address:OrgoneParamFXAlgorithm min:0.0 max:7.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"Detune", @"Twin", @"Dist1", @"Dist2", @"Detune?", @"Spectrum", @"Delay", @"Drum"]
+                                                             dependentParameters:nil];
     
     //AUParameterGroup *lpgGroup = [AUParameterTree createGroupWithIdentifier:@"main2" name:@"Main" children:@[pitchParam, detuneParam]];
     
-    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[pitchParam, detuneParam, positionParam, effectParam, waveLowParam, waveMidParam, waveHighParam]];
+    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[pitchParam, detuneParam, positionParam, effectParam, waveLowParam, waveMidParam, waveHighParam, modulationParam, indexParam, freqParam, fxParam]];
     
     // LFO
     
@@ -395,6 +412,7 @@
                             @"Effect",
                             @"Modulation",
                             @"Index",
+                            @"Freq",
                             @"LFORate",
                             @"LFOAmount",
                             @"Pan",

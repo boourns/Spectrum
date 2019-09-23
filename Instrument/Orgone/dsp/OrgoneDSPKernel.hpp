@@ -45,7 +45,10 @@ enum {
     OrgoneParamWaveLow = 7,
     OrgoneParamWaveMid = 8,
     OrgoneParamWaveHigh = 9,
+    OrgoneParamFreq = 10,
     OrgoneParamVolume = 11,
+    OrgoneParamModulation = 12,
+    OrgoneParamIndex = 13,
     OrgoneParamPan = 14,
     OrgoneParamPanSpread = 15,
     OrgoneParamLfoRate = 16,
@@ -67,6 +70,7 @@ enum {
     OrgoneParamLfoTempoSync = 36,
     OrgoneParamLfoResetPhase = 37,
     OrgoneParamLfoKeyReset = 38,
+    OrgoneParamFXAlgorithm = 39,
     
     OrgoneParamModMatrixStart = 400,
     OrgoneParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 39 + 48 = 87
@@ -100,6 +104,7 @@ enum {
     ModOutEffect,
     ModOutModulation,
     ModOutIndex,
+    ModOutFreq,
     ModOutLFORate,
     ModOutLFOAmount,
     ModOutPan,
@@ -170,8 +175,9 @@ public:
             orgone.patch.fixedFM = false;
             orgone.patch.fmMode = false;
             orgone.patch.effectA = true;
-//            orgone.patch.effectB = true;
-//            orgone.patch.effectC = true;
+            orgone.patch.effectB = true;
+            orgone.patch.effectC = true;
+            orgone.patch.trigger = false;
 
             orgone.setup();
             for (int i = 0; i < 20; i++) {
@@ -189,13 +195,11 @@ public:
         // ================ MIDIProcessor
         
         virtual void midiAllNotesOff() override {
-            //modulations.trigger = 0.0f;
+            orgone.patch.trigger = false;
             modEngine.in[ModInGate] = 0.0f;
-            envelope.value = 0;
-            ampEnvelope.value = 0;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
-            state = NoteStateUnused;
+            state = NoteStateReleasing;
             bendAmount = 0.0f;
             modEngine.in[ModInModwheel] = 0.0f;
             modEngine.in[ModInAftertouch] = 0.0f;
@@ -205,7 +209,7 @@ public:
         
         // linked list management
         virtual void midiNoteOff(uint8_t vel) override {
-            //modulations.trigger = 0.0f;
+            orgone.patch.trigger = false;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
             modEngine.in[ModInGate] = 0.0f;
@@ -246,7 +250,7 @@ public:
         
         void add() {
             if (state == NoteStateUnused) {
-                //modulations.trigger = 1.0f;
+                orgone.patch.trigger = true;
                 envelope.TriggerHigh();
                 ampEnvelope.TriggerHigh();
                 lfo.trigger();
@@ -271,7 +275,7 @@ public:
             
             panSpread = kernel->nextPanSpread();
             
-            noteTarget = float(noteNumber) + kernel->randomSignedFloat(kernel->slop);
+            noteTarget = float(noteNumber) + kernel->randomSignedFloat(kernel->slop) - 48.0f;
             
             note = noteNumber;
             modEngine.in[ModInNote] = ((float) note) / 127.0f;
@@ -332,6 +336,10 @@ public:
             orgone.patch.waveHi = kernel->patch.waveHi;
             orgone.patch.waveMid = kernel->patch.waveMid;
             orgone.patch.waveLo = kernel->patch.waveLo;
+            orgone.patch.mod = clamp(kernel->patch.mod + (modEngine.out[ModOutModulation] * INPUT_FACTOR), 0.0f, INPUT_FACTOR);
+            orgone.patch.index = clamp(kernel->patch.index + (modEngine.out[ModOutIndex] * INPUT_FACTOR), 0.0f, INPUT_FACTOR);
+            orgone.patch.freq = clamp(kernel->patch.freq + (modEngine.out[ModOutFreq] * INPUT_FACTOR), 0.0f, INPUT_FACTOR);
+            orgone.patch.fx = kernel->patch.fx;
             
             /*
             modulations.engine = modEngine.out[ModOutEngine];
@@ -369,8 +377,9 @@ public:
                     }
                     
                     runModulations(kAudioBlockSize);
-                    orgone.loop();
                     
+                    orgone.gateISR();
+                    orgone.loop();
                     for (int i = 0; i < kAudioBlockSize; i++) {
                         orgone.interrupt();
                         frames[i] = orgone.written;
@@ -462,7 +471,7 @@ public:
                 patch.pos = clamp(value, 0.0f, 1.0f) * 4095;
                 break;
             case OrgoneParamEffect:
-                patch.effect = clamp(value, 0.0f, 1.0f) * 4095;
+                patch.effect = clamp(value, 0.0f, 1.0f) * 2047;
                 break;
             case OrgoneParamWaveLow:
                 patch.waveLo = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
@@ -472,6 +481,18 @@ public:
                 break;
             case OrgoneParamWaveHigh:
                 patch.waveHi = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+            case OrgoneParamModulation:
+                patch.mod = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+            case OrgoneParamIndex:
+                patch.index = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+            case OrgoneParamFreq:
+                patch.freq = clamp(value, 0.0f, 1.0f) * INPUT_FACTOR;
+                break;
+            case OrgoneParamFXAlgorithm:
+                patch.fx = round(clamp(value, 0.0f, 9.0f));
                 break;
                 
             case OrgoneParamPolyphony: {
@@ -642,19 +663,31 @@ public:
         switch (address) {
             case OrgoneParamPosition:
                 return ((float) patch.pos / 4095.0);
-                break;
+
             case OrgoneParamEffect:
-                return ((float) patch.effect / 4095.0);
-                break;
+                return ((float) patch.effect / 2047.0);
+
             case OrgoneParamWaveLow:
                 return ((float) patch.waveLo / INPUT_FACTOR);
-                break;
+
             case OrgoneParamWaveMid:
                 return ((float) patch.waveMid / INPUT_FACTOR);
-                break;
+
             case OrgoneParamWaveHigh:
                 return ((float) patch.waveHi / INPUT_FACTOR);
-                break;
+
+            case OrgoneParamModulation:
+                return ((float) patch.mod / INPUT_FACTOR);
+
+            case OrgoneParamIndex:
+                return ((float) patch.index / INPUT_FACTOR);
+
+            case OrgoneParamFreq:
+                return ((float) patch.freq / INPUT_FACTOR);
+
+            case OrgoneParamFXAlgorithm:
+                return patch.fx;
+                
             case OrgoneParamPitch:
                 return (float) pitch;
                 

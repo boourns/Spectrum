@@ -58,9 +58,17 @@ void analogWrite(int pin, int value) {
 	}
 }
 
+bool oldTrigger;
+
 uint8_t digitalReadFast(int pin) {
-	//printf("digitalReadFast %d\n", pin);
-	return 0;
+    bool ret = false;
+    if (pin == gateIn) {
+        if (!oldTrigger && patch.trigger) {
+            ret = true;
+        }
+        oldTrigger = patch.trigger;
+    }
+	return ret;
 }
 
 void digitalWriteFast(int pin, uint8_t value) {
@@ -70,3 +78,4 @@ void digitalWriteFast(int pin, uint8_t value) {
 int millis() {
 	return 0;
 }
+

@@ -25,7 +25,10 @@ enum OrgoneParam: AUParameterAddress {
     case WaveLow = 7
     case WaveMid = 8
     case WaveHigh = 9
+    case Freq = 10
     case Volume = 11
+    case Modulation = 12
+    case Index = 13
     
     case Pan = 14
     case PanSpread = 15
@@ -48,6 +51,8 @@ enum OrgoneParam: AUParameterAddress {
     case LfoTempoSync = 36
     case LfoResetPhase = 37
     case LfoKeyReset = 38
+    case FXAlgorithm = 39
+
     case ModMatrixStart = 400
     case ModMatrixEnd = 448
 };
@@ -93,8 +98,9 @@ class OrgoneViewController: BaseAudioUnitViewController {
                     Stack([
                         panel(HStack([
                             knob(OrgoneParam.Position.rawValue),
-                            intKnob(OrgoneParam.Pitch.rawValue),
-                            knob(OrgoneParam.Detune.rawValue),
+                            knob(OrgoneParam.Effect.rawValue),
+                            knob(OrgoneParam.Modulation.rawValue),
+                            knob(OrgoneParam.Index.rawValue),
                             ])),
                         Stack([panel2(HStack([
                             knob(OrgoneParam.WaveLow.rawValue, size: big),
@@ -102,9 +108,9 @@ class OrgoneViewController: BaseAudioUnitViewController {
                             knob(OrgoneParam.WaveHigh.rawValue, size: big),
                             ])),
                                panel2(HStack([
-                                knob(OrgoneParam.Effect.rawValue, size: small),
-                                knob(OrgoneParam.Portamento.rawValue, size: small),
-                                intKnob(OrgoneParam.PitchBendRange.rawValue, size: small),
+                                knob(OrgoneParam.Freq.rawValue, size: small),
+                                picker(OrgoneParam.FXAlgorithm.rawValue),
+
                                 ])),
                             ]),
                         ]),

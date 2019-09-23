@@ -365,7 +365,6 @@ void FASTRUN outUpdateISR_MAIN(void) {//original detuning with stepped wave sele
   o9.wave = (-((o9.wave * o9.wave *o9.wave)>>15))+(o3.wave+(o3.wave>>1));//soft clipping replaces AGC
 
   o1.wave = ((o9.wave*(int)(mixEffectUp))>>7) + (((o1.wave * ((int)mixEffectDn)) >> 8)); //main out and mix detune
- 
   
   FinalOut = declickValue + ((o1.wave * declickRampIn) >> 12);
   analogWrite(aout2, FinalOut + 32000);

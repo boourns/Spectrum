@@ -13,6 +13,7 @@ typedef struct {
 	uint16_t waveLo;
 	uint16_t tune;
     uint16_t tuneFine;
+    bool trigger;
     bool effectA;
     bool effectB;
     bool effectC;

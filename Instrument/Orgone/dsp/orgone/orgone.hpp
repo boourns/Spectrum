@@ -38,6 +38,8 @@ Orgone Accumulator 2.0
 #include <string.h>
 #include <stdlib.h>
 
+#include "stmlib/dsp/units.h"
+
 #include "Bounce.hpp"
 #include "config.h"
 //#include <Arduino.h>
@@ -162,7 +164,6 @@ public:
 
     //from config file
     conf_LED_comp = 0;//LED_COMP; //see config.h for explanations
-    conf_TuneMult = TUNEMULT;
     
     WTShiftHi = 23;
     WTShiftLo = 23;
@@ -719,7 +720,6 @@ public:
 
   //from config file
   uint16_t conf_LED_comp; //see config.h for explanations
-  uint32_t conf_TuneMult;
 
   //uint32_t conf_LFOBase;
   float conf_NoteSize;

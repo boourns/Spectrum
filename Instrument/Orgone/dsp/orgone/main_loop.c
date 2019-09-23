@@ -33,24 +33,37 @@ void loop() {
 
     inputScaler = patch.note / 12;
     
+    float midi_note = patch.note - 9.0f;
+    static const float kCorrectedSampleRate = 48000.0f;
+    const float a0 = (440.0f / 8.0f) / kCorrectedSampleRate;
+    
+    inputVOct = stmlib::SemitonesToRatio(midi_note);
+    
   //inputScaler = float(tuner / octaveSize);
 
   //______________________________CONVERSION OPTIONS
   //digitalWriteFast (oSQout,0);//temp testing OC
   //inputVOct = powf(2.0,inputScaler); //uncomment for slightly more accurate v/oct conversion (but it is slower)
-  inputVOct = fastpow2(inputScaler); //"real time" exponentiation of CV input! (powf is single precision float power function) comment out if using powf version above
+  //inputVOct = fastpow2(inputScaler); //"real time" exponentiation of CV input! (powf is single precision float power function) comment out if using powf version above
   //digitalWriteFast (oSQout,1);//temp testing OC
   //______________________________END CONVERSION OPTIONS
 
 
   //inputVOct = sq(inputScaler);
-  inputConverter = inputVOct * conf_TuneMult; //-----------------------------number is MASTER TUNING also affected by ISR speed
+  inputConverter = inputVOct * a0 * 0.5f * UINT32_MAX;
+    
+  //-----------------------------number is MASTER TUNING also affected by ISR speed
   //divide by 2 if you want it play 1 octave lower, 4 for 2 octaves etc.
   //you can also fine tune it to just how you like it by tweaking the number up and down.
 
   //---------------------------------------------------------------------
 
   READ_POTS();
+    
+    if (patch.fx != FX) {
+        FX = patch.fx;
+        SELECT_ISRS();
+    }
 
   //----------------------------------------------------------------------
 
@@ -85,10 +98,11 @@ void loop() {
   mixMid = constrain((2047 - abs(envVal - 2047)), 0, 2047); //sets the level of the midpoint wave
   mixHi = constrain((((envVal)) - 2047), 0, 2047); //sets the level of the high wave
   mixLo = constrain((2047 - ((envVal))), 0, 2047); //sets the level of the low wave
-    mixEffect = (mixLo * patch.effectA) + (mixMid * patch.effectB) + (mixHi * patch.effectC);
+  mixEffect = (mixLo * patch.effectA) + (mixMid * patch.effectB) + (mixHi * patch.effectC);
 
   //---------------------------Detune CV----------------
-    aInEffectReading = 4095 - patch.effect;
+    
+  aInEffectReading = 4095 - patch.effect;
   aInModEffect = ((4095 - aInEffectReading) << 1);
   //--------------------------------------------------
 
@@ -138,10 +152,7 @@ void loop() {
   
   //UPDATE_prog_LEDS();
 
-    if (patch.fx != FX) {
-        FX = patch.fx;
-        SELECT_ISRS();
-    }
+
   
   // ----------------------------------
   // monitorSerialReception();
