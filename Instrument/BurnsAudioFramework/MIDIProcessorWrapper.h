@@ -27,6 +27,9 @@
 - (bool) mpeEnabled;
 - (void) setMPEEnabled: (bool) enabled;
 
+- (int) mpeMasterChannel;
+- (void) setMPEMasterChannel: (int) channel;
+
 @end
 
 #endif /* MIDIProcessorWrapper_h */

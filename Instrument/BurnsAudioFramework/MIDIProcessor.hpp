@@ -73,6 +73,12 @@ class MIDIProcessor {
             return (masterChannel == 0 && ch <= lowChannels) || (masterChannel == 15 && ch >= 15-highChannels);
         }
         
+        void setMasterChannel(int ch) {
+            if (ch == 0 || ch == 15) {
+                masterChannel = ch;
+            }
+        }
+        
         bool enabled = false;
         uint8_t masterChannel = 0;
         uint8_t lowChannels = 15;
@@ -483,9 +489,16 @@ public:
                 } else if (num == 1) {
                     modCoarse[channel] = midiEvent.data[2];
                     sendModwheel(channel);
+                } else if (num == 6) {
+                    // RPN MSB
+                    rpnValue = (rpnValue & 0x007f) | (midiEvent.data[2] << 7);
+                    sendRPN(channel);
                 } else if (num == 32) {
                     modFine[channel] = midiEvent.data[2];
                     sendModwheel(channel);
+                } else if (num == 38) {
+                    rpnValue = (rpnValue & 0x3f80) | midiEvent.data[2];
+                    sendRPN(channel);
                 } else if (num == 64) {
                     if (!mpe.enabled || isMasterChannel) {
                         // TODO: all message
@@ -508,8 +521,22 @@ public:
                     } else {
                         noteStack.channelMessage(channel, MIDIControlMessage::Slide, midiEvent.data[2]);
                     }
-                } else if (num >= 98 && num <= 101) {
-                    // TODO: RPN / NRPM for MPE
+                } else if (num == 98) {
+                    nrpnAddress = (nrpnAddress & 0x3f80) | midiEvent.data[2];
+                    rpnValue = 0;
+                    isRPN = false;
+                } else if (num == 99) {
+                    nrpnAddress = (nrpnAddress & 0x007f) | (midiEvent.data[2] << 7);
+                    rpnValue = 0;
+                    isRPN = false;
+                } else if (num == 100) {
+                    rpnAddress = (rpnAddress & 0x3f80) | midiEvent.data[2];
+                    rpnValue = 0;
+                    isRPN = true;
+                } else if (num == 101) {
+                    rpnAddress = (rpnAddress & 0x007f) | (midiEvent.data[2] << 7);
+                    rpnValue = 0;
+                    isRPN = true;
                 } else {
                     if (automation) {
                         std::map<uint8_t, std::vector<MIDICCTarget>>::iterator params = ccMap.find(num);
@@ -571,6 +598,18 @@ public:
         noteStack.channelMessage(channel, MIDIControlMessage::Modwheel, wheel);
     }
     
+    inline void sendRPN(int channel) {
+        if (mpe.enabled) {
+            if (isRPN && rpnAddress == 6) {
+                if (channel == 0) {
+                    mpe.lowChannels = rpnValue >> 7;
+                } else if (channel == 0xf) {
+                    mpe.highChannels = rpnValue >> 7;
+                }
+            }
+        }
+    }
+    
     void setChannel(int chan) {
         if (chan != channelSetting) {
             channelSetting = chan;
@@ -605,7 +644,11 @@ public:
     
     uint8_t modCoarse[16];
     uint8_t modFine[16];
-    
+    uint16_t rpnAddress = 0;
+    uint16_t nrpnAddress = 0;
+    uint16_t rpnValue;
+    bool isRPN;
+
     static bool noteSort (MIDINote i, MIDINote j) { return (i.note > j.note); }
 };
 

@@ -56,6 +56,7 @@ enum {
     PlaitsParamEnvSustain = 22,
     PlaitsParamEnvRelease = 23,
     PlaitsParamPitchBendRange = 24,
+    PlaitsParamVelocityDepth = 27,
     PlaitsParamAmpEnvAttack = 28,
     PlaitsParamAmpEnvDecay = 29,
     PlaitsParamAmpEnvSustain = 30,
@@ -184,11 +185,9 @@ public:
         virtual void midiAllNotesOff() override {
             modulations.trigger = 0.0f;
             modEngine.in[ModInGate] = 0.0f;
-            envelope.value = 0;
-            ampEnvelope.value = 0;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
-            state = NoteStateUnused;
+            state = NoteStateReleasing;
             bendAmount = 0.0f;
             modEngine.in[ModInModwheel] = 0.0f;
             modEngine.in[ModInAftertouch] = 0.0f;
@@ -333,7 +332,11 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph];
             
-            modulations.level = clamp(ampEnvelope.value + modEngine.out[ModOutLevel], 0.0f, 1.0f);
+            float level = ((1.0 - kernel->velocityDepth) * ampEnvelope.value) +
+                (kernel->velocityDepth * ampEnvelope.value * modEngine.in[ModInVelocity]) +
+                modEngine.out[ModOutLevel];
+            
+            modulations.level = clamp(level, 0.0f, 1.0f);
             
             float source = kernel->source + modEngine.out[ModOutSource];
             float sourceSpread = kernel->sourceSpread + modEngine.out[ModOutSourceSpread];
@@ -632,6 +635,10 @@ public:
                 break;
             }
                 
+            case PlaitsParamVelocityDepth:
+                velocityDepth = clamp(value, 0.0f, 1.0f);
+                break;
+                
             case PlaitsParamAmpEnvAttack: {
                 uint16_t newValue = (uint16_t) (clamp(value, 0.0f, 1.0f) * (float) UINT16_MAX);
                 if (newValue != ampEnvParameters[0]) {
@@ -772,6 +779,9 @@ public:
                 
             case PlaitsParamEnvRelease:
                 return ((float) envParameters[3]) / (float) UINT16_MAX;
+                
+            case PlaitsParamVelocityDepth:
+                return velocityDepth;
                 
             case PlaitsParamAmpEnvAttack:
                 return ((float) ampEnvParameters[0]) / (float) UINT16_MAX;
@@ -937,6 +947,7 @@ public:
     float pan = 0.0f;
     float panSpread = 0.0f;
     double portamento = 0.0f;
+    float velocityDepth = 1.0f;
     
     int pitch = 0;
     float detune = 0;

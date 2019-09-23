@@ -27,6 +27,8 @@
     settings[@"channel"] = @(processor->channelSetting);
     settings[@"automation"] = @(processor->automation ? 1 : 0);
     settings[@"mpeEnabled"] = @(processor->mpe.enabled ? 1 : 0);
+    settings[@"mpeMasterChannel"] = @(processor->mpe.masterChannel);
+
     return settings;
 }
 
@@ -46,6 +48,11 @@
     value = (NSNumber *) settings[@"mpeEnabled"];
     if (value != nil) {
         processor->setMPEEnabled(value.intValue == 1);
+    }
+    
+    value = (NSNumber *) settings[@"mpeMasterChannel"];
+    if (value != nil) {
+        processor->mpe.setMasterChannel(value.intValue);
     }
     
     if (settingsUpdateCallback != nil) {
@@ -76,5 +83,15 @@
 - (void) setMPEEnabled: (bool) enabled {
     processor->setMPEEnabled(enabled);
 }
+
+- (int) mpeMasterChannel {
+    return processor->mpe.masterChannel;
+}
+
+- (void) setMPEMasterChannel: (int) channel {
+    processor->mpe.setMasterChannel(channel);
+}
+
+
 
 @end

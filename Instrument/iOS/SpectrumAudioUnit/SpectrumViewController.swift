@@ -37,6 +37,7 @@ enum PlaitsParam: AUParameterAddress {
     case EnvSustain = 22
     case EnvRelease = 23
     case PitchBendRange = 24
+    case VelocityDepth = 27
     case AmpEnvAttack = 28
     case AmpEnvDecay = 29
     case AmpEnvSustain = 30
@@ -119,6 +120,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                                 panel2(Stack([
                                     HStack([
                                         knob(PlaitsParam.Volume.rawValue),
+                                        knob(PlaitsParam.VelocityDepth.rawValue),
                                         knob(PlaitsParam.LPGColour.rawValue),
                                         ]),
                                     ])),
@@ -178,14 +180,20 @@ class SpectrumViewController: BaseAudioUnitViewController {
         }
         
         let mpe = Picker(name: "MPE", value: processor.mpeEnabled() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
-        midiCC.addControlEvent(.valueChanged) {
+        mpe.addControlEvent(.valueChanged) {
             processor.setMPEEnabled(mpe.value > 0.9)
+        }
+        
+        let zone = Picker(name: "MPE Zone", value: processor.mpeMasterChannel() == 0 ? 0.0 : 1.0, valueStrings: ["Lower", "Upper"], horizontal: true)
+        zone.addControlEvent(.valueChanged) {
+            processor.setMPEMasterChannel(zone.value < 0.5 ? 0 : 15)
         }
         
         processor.onSettingsUpdate() {
             midiChannel.value = Float(processor.channel() + 1)
             midiCC.value = processor.automation() ? 1.0 : 0.0
             mpe.value = processor.mpeEnabled() ? 1.0 : 0.0
+            zone.value = processor.mpeMasterChannel() == 0 ? 0.0 : 1.0
         }
         
         let loadDefault = SettingsButton()
@@ -226,6 +234,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
             midiChannel,
             midiCC,
             mpe,
+            zone,
             HStack([loadDefault, saveDefault]),
             ]), requiresScroll: true)
     }
