@@ -187,7 +187,9 @@ public:
             modEngine.in[ModInGate] = 0.0f;
             envelope.TriggerLow();
             ampEnvelope.TriggerLow();
-            state = NoteStateReleasing;
+            if (state != NoteStateUnused) {
+                state = NoteStateReleasing;
+            }
             bendAmount = 0.0f;
             modEngine.in[ModInModwheel] = 0.0f;
             modEngine.in[ModInAftertouch] = 0.0f;
@@ -215,7 +217,7 @@ public:
         virtual void midiControlMessage(MIDIControlMessage msg, int16_t val) override {
             switch(msg) {
                 case MIDIControlMessage::Pitchbend:
-                    bendAmount = (clamp((float) val, -8192.0f, 8192.0f) / 8192.0f) * kernel->bendRange;
+                    bendAmount = (clamp((float) val, -8192.0f, 8192.0f) / 8192.0f) * kernel->midiProcessor.currentBendRange();
                     break;
                 case MIDIControlMessage::Modwheel:
                     modEngine.in[ModInModwheel] = clamp((float) val, 0.0f, 16384.0f) / 16384.0f;
@@ -588,7 +590,7 @@ public:
                 break;
                 
             case PlaitsParamPitchBendRange:
-                bendRange = round(clamp(value, 0.0f, 12.0f));
+                midiProcessor.bendRange = round(clamp(value, 0.0f, 12.0f));
                 break;
             
             case PlaitsParamEnvAttack: {
@@ -766,7 +768,7 @@ public:
                 return panSpread;
                 
             case PlaitsParamPitchBendRange:
-                return (float) bendRange;
+                return midiProcessor.bendRange;
                 
             case PlaitsParamEnvAttack:
                 return ((float) envParameters[0]) / (float) UINT16_MAX;
@@ -937,7 +939,6 @@ public:
     
     bool lastPanSpreadWasNegative = 0;
     
-    float bendRange = 0.0f;
     float slop = 0.0f;
     float volume = 1.0f;
     float gainCoefficient = 0.1f;

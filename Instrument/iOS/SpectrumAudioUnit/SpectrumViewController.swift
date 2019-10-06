@@ -189,11 +189,19 @@ class SpectrumViewController: BaseAudioUnitViewController {
             processor.setMPEMasterChannel(zone.value < 0.5 ? 0 : 15)
         }
         
-        processor.onSettingsUpdate() {
+        let bendRange = Picker(name: "MPE Bend Range", value: semitonesToBendRangeSetting(range: processor.mpePitchbendRange()), valueStrings: ["+/- 12", "+/- 24", "+/- 48", "+/- 96"], horizontal: true)
+        zone.addControlEvent(.valueChanged) { [weak self] in
+            guard let this = self else { return }
+            processor.setMPEPitchbendRange(this.bendRangeSettingToSemitones(setting: bendRange.value))
+        }
+        
+        processor.onSettingsUpdate() { [weak self] in
+            guard let this = self else { return }
             midiChannel.value = Float(processor.channel() + 1)
             midiCC.value = processor.automation() ? 1.0 : 0.0
             mpe.value = processor.mpeEnabled() ? 1.0 : 0.0
             zone.value = processor.mpeMasterChannel() == 0 ? 0.0 : 1.0
+            bendRange.value = this.semitonesToBendRangeSetting(range: processor.mpePitchbendRange())
         }
         
         let loadDefault = SettingsButton()
@@ -235,8 +243,26 @@ class SpectrumViewController: BaseAudioUnitViewController {
             midiCC,
             mpe,
             zone,
+            bendRange,
             HStack([loadDefault, saveDefault]),
             ]), requiresScroll: true)
+    }
+    
+    fileprivate func bendRangeSettingToSemitones(setting: Float) -> Int32 {
+        let ranges: [Int32] = [12, 24, 48, 96]
+        let setting = Int(setting)
+        guard setting >= 0 && setting < ranges.count else { return 12 }
+        return ranges[setting]
+    }
+    
+    fileprivate func semitonesToBendRangeSetting(range: Int32) -> Float {
+        let ranges: [Int32] = [12, 24, 48, 96]
+        for i in 0...ranges.count - 1 {
+            if ranges[i] == range {
+                return Float(i)
+            }
+        }
+        return 0.0
     }
 }
 

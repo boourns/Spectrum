@@ -30,6 +30,9 @@
 - (int) mpeMasterChannel;
 - (void) setMPEMasterChannel: (int) channel;
 
+- (int) mpePitchbendRange;
+- (void) setMPEPitchbendRange: (int) range;
+
 @end
 
 #endif /* MIDIProcessorWrapper_h */

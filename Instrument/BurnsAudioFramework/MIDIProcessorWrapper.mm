@@ -28,6 +28,7 @@
     settings[@"automation"] = @(processor->automation ? 1 : 0);
     settings[@"mpeEnabled"] = @(processor->mpe.enabled ? 1 : 0);
     settings[@"mpeMasterChannel"] = @(processor->mpe.masterChannel);
+    settings[@"mpeBendRange"] = @(processor->mpe.bendRange);
 
     return settings;
 }
@@ -53,6 +54,11 @@
     value = (NSNumber *) settings[@"mpeMasterChannel"];
     if (value != nil) {
         processor->mpe.setMasterChannel(value.intValue);
+    }
+    
+    value = (NSNumber *) settings[@"mpeBendRange"];
+    if (value != nil) {
+        processor->setMPEPitchbendRange(value.intValue);
     }
     
     if (settingsUpdateCallback != nil) {
@@ -89,7 +95,15 @@
 }
 
 - (void) setMPEMasterChannel: (int) channel {
-    processor->mpe.setMasterChannel(channel);
+    processor->setMPEMasterChannel(channel);
+}
+
+- (int) mpePitchbendRange {
+    return processor->mpe.bendRange;
+}
+
+- (void) setMPEPitchbendRange: (int) range {
+    processor->setMPEPitchbendRange(range);
 }
 
 

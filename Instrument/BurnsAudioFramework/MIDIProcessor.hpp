@@ -73,6 +73,10 @@ class MIDIProcessor {
             return (masterChannel == 0 && ch <= lowChannels) || (masterChannel == 15 && ch >= 15-highChannels);
         }
         
+        bool isAMasterChannel(uint8_t ch) {
+            return ch == 0 || ch == 15;
+        }
+        
         void setMasterChannel(int ch) {
             if (ch == 0 || ch == 15) {
                 masterChannel = ch;
@@ -83,6 +87,7 @@ class MIDIProcessor {
         uint8_t masterChannel = 0;
         uint8_t lowChannels = 15;
         uint8_t highChannels = 0;
+        int bendRange = 48;
     };
     
     class NoteStack {
@@ -339,7 +344,6 @@ class MIDIProcessor {
                 for (int i = 0; i < 5; i++) {
                     modulations[ch][i] = 0;
                 }
-                modulations[ch][1] = 8192;
             }
         }
         
@@ -415,8 +419,10 @@ public:
         uint8_t status = midiEvent.data[0] & 0xF0;
         uint8_t channel = midiEvent.data[0] & 0x0F;
         
-        if ((mpe.enabled && mpe.channelInZone(channel)) ||
-             (!mpe.enabled && channelSetting != -1 && channelSetting != channel)) {
+        if (
+            (mpe.enabled && !(mpe.channelInZone(channel) || mpe.isAMasterChannel(channel))) ||
+            (!mpe.enabled && channelSetting != -1 && channelSetting != channel)
+           ) {
             return;
         }
         
@@ -441,6 +447,9 @@ public:
                 break;
             }
             case 0x90 : { // note on
+                if (mpe.enabled && !mpe.channelInZone(channel)) {
+                    break;
+                }
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
@@ -516,7 +525,7 @@ public:
                         }
                     }
                 } else if (num == 74) {
-                    if (mpe.enabled) {
+                    if (mpe.enabled && isMasterChannel) {
                         noteStack.zoneMessage(MIDIControlMessage::Slide, midiEvent.data[2]);
                     } else {
                         noteStack.channelMessage(channel, MIDIControlMessage::Slide, midiEvent.data[2]);
@@ -629,10 +638,33 @@ public:
     }
     
     void setMPEEnabled(bool mpe) {
-        this->mpe.enabled = mpe;
+        if (mpe != this->mpe.enabled) {
+            this->mpe.enabled = mpe;
+            noteStack.reset();
+        }
+    }
+    
+    void setMPEMasterChannel(int ch) {
+        if (ch != mpe.masterChannel) {
+            mpe.setMasterChannel(ch);
+            noteStack.reset();
+        }
+    }
+    
+    void setMPEPitchbendRange(int range) {
+        mpe.bendRange = range;
+    }
+    
+    float currentBendRange() {
+        if (mpe.enabled) {
+            return mpe.bendRange;
+        } else {
+            return bendRange;
+        }
     }
     
     int channelSetting = -1;
+    float bendRange = 0.0f;
     bool automation = true;
     bool sustainSetting = true;
     bool sustainPressed = false;
