@@ -166,13 +166,10 @@
                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                       flags: flags valueStrings:inputs dependentParameters:nil];
     
-    AUParameterGroup *bowGroup = [AUParameterTree createGroupWithIdentifier:@"bow" name:@"Bow" children:@[exciterEnvShape, bowLevel, bowTimbre]];
-    
-    AUParameterGroup *blowGroup = [AUParameterTree createGroupWithIdentifier:@"blow" name:@"Blow" children:@[blowLevel, blowMeta, blowTimbre]];
-    
-    AUParameterGroup *strikeGroup = [AUParameterTree createGroupWithIdentifier:@"strike" name:@"Strike" children:@[strikeLevel, strikeMeta, strikeTimbre]];
-    
-    AUParameterGroup *exciterPage = [AUParameterTree createGroupWithIdentifier:@"exciter" name:@"Exciter" children:@[bowGroup, blowGroup, strikeGroup, inputGain, inputDest]];
+    AUParameterGroup *exciterPage = [AUParameterTree createGroupWithIdentifier:@"exciter" name:@"Exciter" children:@[exciterEnvShape, bowLevel, bowTimbre,
+                                                                                                                     blowLevel, blowMeta, blowTimbre,
+                                                                                                                     strikeLevel, strikeMeta, strikeTimbre,
+                                                                                                                     inputGain, inputDest]];
     
     AUParameter *geometry = [AUParameterTree createParameterWithIdentifier:@"geometry" name:@"Geometry"
                                                                        address:ElementsParamResonatorGeometry
@@ -204,9 +201,28 @@
                                                                     min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                   flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *resonatorGroup = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[geometry, brightness, position, damping, space, volume]];
+    AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
+                                                                    address:ElementsParamMode min:0.0 max:4.0
+                                                                       unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags:flags valueStrings:@[
+                                                                                                 @"Modal",
+                                                                                                 @"Non-linear",
+                                                                                                 @"Chords",
+                                                                                                 @"Ominous",
+                                                                                                 ]
+                                                        dependentParameters:nil];
     
-    AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[resonatorGroup]];
+    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
+                                                                     address:ElementsParamPitch
+                                                                         min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
+                                                                      address:ElementsParamDetune
+                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *resonatorPage = [AUParameterTree createGroupWithIdentifier:@"resonator" name:@"Resonator" children:@[modeParam, pitchParam, detuneParam, geometry, brightness, position, damping, space, volume]];
     
     // LFO
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
@@ -241,13 +257,7 @@
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    
-    AUParameterGroup *lfoSettings = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset]];
-    
-    
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoSettings]];
-
-    
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset]];
 
     
     // Env
@@ -271,8 +281,6 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *envSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[envAttack, envDecay, envSustain, envRelease]];
-    
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
                                                                         children:@[[self modMatrixRule:0 parameterOffset:ElementsParamModMatrixStart],
                                                                                    [self modMatrixRule:1 parameterOffset:ElementsParamModMatrixStart],
@@ -288,36 +296,10 @@
     
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
     
-    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envSettings]];
-    
-    
-    AUParameter *modeParam = [AUParameterTree createParameterWithIdentifier:@"mode" name:@"Mode"
-                                                                       address:ElementsParamMode min:0.0 max:4.0
-                                                                          unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                         flags:flags valueStrings:@[
-                                                                                                    @"Modal",
-                                                                                                    @"Non-linear",
-                                                                                                    @"Chords",
-                                                                                                    @"Ominous",
-                                                                                                    ]
-                                                           dependentParameters:nil];
-    
-    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
-                                                                     address:ElementsParamPitch
-                                                                         min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
-                                                                      address:ElementsParamDetune
-                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[modeParam, pitchParam, detuneParam]];
-    
-    AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
+    AUParameterGroup *envPage = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children:@[envAttack, envDecay, envSustain, envRelease]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, lfoPage, envPage, modMatrixPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[exciterPage, resonatorPage, lfoPage, envPage, modMatrixPage]];
     
     // Make a local pointer to the kernel to avoid capturing self.
     __block ElementsDSPKernel *instrumentKernel = &_kernel;

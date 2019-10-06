@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "StateManager.h"
+#include <stdio.h>
 
 //typedef struct {
 //    NSString *name;
@@ -50,7 +51,7 @@
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSLog(@"===========START============");
-    NSLog([jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]);
+    printf("\n%s\n", [[jsonString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""] UTF8String]);
     NSLog(@"===========END============");
     
     state[@"data"] = [NSKeyedArchiver archivedDataWithRootObject:params];

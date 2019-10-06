@@ -105,12 +105,45 @@
                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                        flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *primaryGroup = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[algorithmParam, harmonicsParam, timbreParam, morphParam]];
+    AUParameter *slopParam = [AUParameterTree createParameterWithIdentifier:@"slop" name:@"Slop"
+                                                                    address:PlaitsParamSlop
+                                                                        min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                      flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *lpgGroup = [AUParameterTree createGroupWithIdentifier:@"main2" name:@"Main" children:@[pitchParam, detuneParam]];
+    
+    AUParameter *polyphonyParam = [AUParameterTree createParameterWithIdentifier:@"polyphony" name:@"Polyphony" address:PlaitsParamPolyphony min:0.0 max:7.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8"]
+                                                             dependentParameters:nil];
+    
+    AUParameter *unisonParam = [AUParameterTree createParameterWithIdentifier:@"unison" name:@"Unison" address:PlaitsParamUnison min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"Off", @"On"]
+                                                          dependentParameters:nil];
+    
+    AUParameter *pitchBendRangeParam = [AUParameterTree createParameterWithIdentifier:@"pitchRange" name:@"Bend Range"
+                                                                              address:PlaitsParamPitchBendRange
+                                                                                  min:0.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                                flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *portamento = [AUParameterTree createParameterWithIdentifier:@"portamento" name:@"Portamento"
+                                                                     address:PlaitsParamPortamento
+                                                                         min:0.0 max:0.9995 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
+                                                               address:PlaitsParamPadX
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
+                                                               address:PlaitsParamPadY
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
+                                                                  address:PlaitsParamPadGate
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
 
-    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[primaryGroup, lpgGroup]];
-
+    
+    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[pitchParam, detuneParam, algorithmParam, harmonicsParam, timbreParam, morphParam, unisonParam, polyphonyParam, slopParam, pitchBendRangeParam, portamento, padX, padY, padGate]];
     
     // LFO
     
@@ -197,53 +230,11 @@
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *ampEnvSettings = [AUParameterTree createGroupWithIdentifier:@"env" name:@"Env" children: @[ampEnvAttack, ampEnvDecay, ampEnvSustain, ampEnvRelease, colourParam, velocityDepth]];
-    
-    AUParameterGroup *outGroup = [AUParameterTree createGroupWithIdentifier:@"out" name:@"Out" children:@[volumeParam, leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
-    
-    AUParameterGroup *ampPage = [AUParameterTree createGroupWithIdentifier:@"amp" name:@"Amp" children:@[ampEnvSettings, outGroup]];
+    AUParameterGroup *ampPage = [AUParameterTree createGroupWithIdentifier:@"amp" name:@"Amp" children:@[ampEnvAttack, ampEnvDecay, ampEnvSustain, ampEnvRelease, colourParam, velocityDepth, volumeParam, leftSourceParam, rightSourceParam, panParam, panSpreadParam]];
 
     // Voice Settings
 
     
-    AUParameter *slopParam = [AUParameterTree createParameterWithIdentifier:@"slop" name:@"Slop"
-                                                                      address:PlaitsParamSlop
-                                                                          min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    
-    
-    
-    AUParameter *polyphonyParam = [AUParameterTree createParameterWithIdentifier:@"polyphony" name:@"Polyphony" address:PlaitsParamPolyphony min:0.0 max:7.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8"]
-                                                             dependentParameters:nil];
-    
-    AUParameter *unisonParam = [AUParameterTree createParameterWithIdentifier:@"unison" name:@"Unison" address:PlaitsParamUnison min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil flags:flags valueStrings:@[@"Off", @"On"]
-                                                          dependentParameters:nil];
-    
-    AUParameter *pitchBendRangeParam = [AUParameterTree createParameterWithIdentifier:@"pitchRange" name:@"Bend Range"
-                                                                     address:PlaitsParamPitchBendRange
-                                                                         min:0.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                                flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *portamento = [AUParameterTree createParameterWithIdentifier:@"portamento" name:@"Portamento"
-                                                                     address:PlaitsParamPortamento
-                                                                         min:0.0 max:0.9995 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
-                                                                     address:PlaitsParamPadX
-                                                                         min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
-                                                               address:PlaitsParamPadY
-                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                 flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
-                                                               address:PlaitsParamPadGate
-                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                 flags: flags valueStrings:nil dependentParameters:nil];
     
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
                                                                          address:PlaitsParamLfoRate
@@ -278,10 +269,7 @@
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
     
-    AUParameterGroup *voiceGroup = [AUParameterTree createGroupWithIdentifier:@"voice" name:@"Voice" children:@[unisonParam, polyphonyParam, slopParam, pitchBendRangeParam, portamento]];
-    
-    
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"modulation" name:@"Modulation" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset, padX, padY, padGate]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset]];
     
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
                                                                         children:@[[self modMatrixRule:0 parameterOffset:PlaitsParamModMatrixStart],
@@ -297,13 +285,11 @@
                                                                                                                                                             [self modMatrixRule:10 parameterOffset:PlaitsParamModMatrixStart],
                                                                                                                                                                       [self modMatrixRule:11 parameterOffset:PlaitsParamModMatrixStart],
                                                                                    ]];
-                                                                                   
-    AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[voiceGroup]];
     
     DEBUG_LOG(@"registering parameter tree")
 
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, modMatrixPage, settingsPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, ampPage, modMatrixPage]];
     
     // Make a local pointer to the kernel to avoid capturing self.
     __block PlaitsDSPKernel *instrumentKernel = &_kernel;
@@ -366,6 +352,7 @@
     
     _stateManager = [[StateManager alloc] initWithParameterTree:_parameterTree presets:@[NewAUPreset(0, spectrumPresets[0].name),
                                                                                          NewAUPreset(1, spectrumPresets[1].name),
+                                                                                         NewAUPreset(2, spectrumPresets[2].name),
                                                                                          ]
                                                      presetData: &spectrumPresets[0]];
     
@@ -550,7 +537,7 @@
     };
 }
 
-static const UInt8 kSpectrumNumPresets = 2;
+static const UInt8 kSpectrumNumPresets = 3;
 static const FactoryPreset spectrumPresets[kSpectrumNumPresets] =
 {
     {
@@ -560,6 +547,10 @@ static const FactoryPreset spectrumPresets[kSpectrumNumPresets] =
     {
         @"Blank",
     @"{\"414\":0,\"421\":0,\"407\":0,\"408\":0,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":0,\"0\":0,\"417\":0,\"424\":0,\"1\":0,\"431\":0,\"2\":0,\"418\":0,\"4\":0,\"425\":0,\"432\":0,\"5\":0,\"6\":0,\"419\":0,\"7\":0,\"426\":0,\"10\":0,\"8\":0,\"433\":0,\"440\":0,\"9\":0,\"11\":1,\"427\":0,\"434\":0,\"441\":0,\"12\":0,\"13\":0,\"400\":0,\"20\":0,\"428\":0,\"435\":0,\"21\":0,\"14\":0,\"442\":0,\"429\":0,\"401\":0,\"22\":0,\"15\":0,\"436\":0,\"443\":0,\"30\":0,\"23\":0.29999238252639771,\"16\":0,\"437\":0,\"402\":0,\"31\":0,\"17\":0,\"444\":0,\"24\":12,\"18\":0,\"32\":0,\"438\":0,\"403\":0,\"410\":0,\"445\":0,\"33\":0,\"34\":7,\"439\":0,\"404\":0,\"411\":0,\"446\":0,\"28\":0,\"35\":0,\"29\":0,\"405\":0,\"412\":0,\"447\":0,\"420\":0,\"406\":0,\"413\":0}",
+    },
+    {
+       @"Basic MPE",
+    @"{\"414\":0,\"421\":0,\"407\":0,\"408\":2,\"415\":0,\"422\":0,\"409\":0,\"416\":0,\"423\":0,\"430\":1.140000581741333,\"0\":0.52847683429718018,\"417\":0,\"1\":0.41480207443237305,\"424\":12,\"431\":9,\"2\":0,\"418\":0,\"4\":3,\"425\":1,\"432\":4,\"5\":0,\"6\":0,\"419\":0,\"7\":0.72499948740005493,\"426\":0.3200002908706665,\"10\":0,\"8\":0,\"433\":0,\"440\":10,\"9\":0.30000019073486328,\"11\":1,\"427\":4,\"434\":0.19000011682510376,\"441\":0,\"12\":-1,\"13\":0.27000004053115845,\"400\":1,\"20\":0.88545054197311401,\"428\":14,\"435\":5,\"21\":0,\"14\":0,\"442\":0.70999979972839355,\"429\":0,\"401\":0,\"22\":1,\"15\":0.17749997973442078,\"436\":9,\"443\":3,\"30\":1,\"23\":0.65999847650527954,\"16\":0.51249998807907104,\"437\":0,\"402\":0,\"31\":0.42363637685775757,\"17\":0,\"444\":0,\"24\":12,\"18\":0,\"32\":0.082459814846515656,\"438\":0.67999988794326782,\"403\":3,\"410\":0,\"445\":0,\"33\":0,\"27\":0.56000006198883057,\"439\":9,\"404\":1,\"411\":0,\"446\":0,\"28\":0,\"34\":7,\"35\":0.062500067055225372,\"36\":0,\"405\":0,\"29\":0.25999847054481506,\"412\":2,\"447\":0,\"37\":0,\"420\":0,\"38\":0,\"406\":0,\"413\":0}"
     }
 };
 

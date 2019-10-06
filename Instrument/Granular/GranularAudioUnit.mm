@@ -107,7 +107,32 @@
                                                                                                                                                                                                                                                                                                                             min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                                                                                                                                                                                                                                                                           flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, position, size, density, texture, inputGain, freeze, trigger]];
+    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
+                                                                     address:CloudsParamPitch
+                                                                         min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                       flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
+                                                                      address:CloudsParamDetune
+                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                        flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
+                                                               address:CloudsParamPadX
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
+                                                               address:CloudsParamPadY
+                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
+                                                                  address:CloudsParamPadGate
+                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                    flags: flags valueStrings:nil dependentParameters:nil];
+    
+    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, position, size, density, texture, inputGain, freeze, trigger, pitchParam, detuneParam, padX, padY, padGate]];
 
     AUParameter *wet = [AUParameterTree createParameterWithIdentifier:@"wet" name:@"Dry/Wet"
                                                                   address:CloudsParamWet
@@ -136,7 +161,6 @@
     
     AUParameterGroup *blend = [AUParameterTree createGroupWithIdentifier:@"blend" name:@"Blend" children:@[wet, stereo, feedback, reverb, volume]];
 
-    AUParameterGroup *mainPage = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[main, blend]];
     
     // LFO
     AUParameter *lfoRate = [AUParameterTree createParameterWithIdentifier:@"lfoRate" name:@"LFO Rate"
@@ -171,22 +195,7 @@
                                                                           min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                         flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *padX = [AUParameterTree createParameterWithIdentifier:@"padX" name:@"Pad X"
-                                                               address:CloudsParamPadX
-                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                 flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *padY = [AUParameterTree createParameterWithIdentifier:@"padY" name:@"Pad Y"
-                                                               address:CloudsParamPadY
-                                                                   min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                 flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *padGate = [AUParameterTree createParameterWithIdentifier:@"padGate" name:@"Pad Gate"
-                                                                  address:CloudsParamPadGate
-                                                                      min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                    flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset, padX, padY, padGate]];
+    AUParameterGroup *lfoPage = [AUParameterTree createGroupWithIdentifier:@"lfo" name:@"LFO" children:@[lfoRate, lfoShape, lfoShapeMod, lfoTempoSync, lfoResetPhase, lfoKeyReset]];
     
     // Env
     AUParameter *envAttack = [AUParameterTree createParameterWithIdentifier:@"envAttack" name:@"Attack"
@@ -213,20 +222,6 @@
     
     //AUParameterGroup *envModulations = [AUParameterTree createGroupWithIdentifier:@"envMod" name:@"Modulations" children: @[envAmountFM, envAmountHarmonics, envAmountTimbre, envAmountMorph, envAmountLFORate, envAmountLFOAmount]];
     
-    AUParameter *pitchParam = [AUParameterTree createParameterWithIdentifier:@"pitch" name:@"Pitch"
-                                                                     address:CloudsParamPitch
-                                                                         min:-12.0 max:12.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                       flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameter *detuneParam = [AUParameterTree createParameterWithIdentifier:@"detune" name:@"Detune"
-                                                                      address:CloudsParamDetune
-                                                                          min:-1.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
-                                                                        flags: flags valueStrings:nil dependentParameters:nil];
-    
-    AUParameterGroup *settingsGroup = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[ pitchParam, detuneParam]];
-    
-    AUParameterGroup *settingsPage = [AUParameterTree createGroupWithIdentifier:@"settings" name:@"Settings" children:@[settingsGroup]];
-    
     AUParameterGroup *modMatrixPage = [AUParameterTree createGroupWithIdentifier:@"modMatrix" name:@"Matrix"
                                                                         children:@[[self modMatrixRule:0 parameterOffset:CloudsParamModMatrixStart],
                                                                                    [self modMatrixRule:1 parameterOffset:CloudsParamModMatrixStart],
@@ -242,7 +237,13 @@
                                                                                    ]];
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[mainPage, lfoPage, envPage, settingsPage, modMatrixPage]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[
+                                                               main,
+                                                               blend,
+                                                               lfoPage,
+                                                               envPage,
+                                                               modMatrixPage]];
+
     
     // Make a local pointer to the kernel to avoid capturing self.
     __block CloudsDSPKernel *instrumentKernel = &_kernel;

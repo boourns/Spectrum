@@ -61,7 +61,6 @@
 		E205C39A2324996E0003B8BB /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37E2324996E0003B8BB /* random.h */; };
 		E205C39B2324996E0003B8BB /* stmlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37F2324996E0003B8BB /* stmlib.h */; };
 		E205C39C2324996E0003B8BB /* shy_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3812324996E0003B8BB /* shy_fft.h */; };
-		E205C39D2324996E0003B8BB /* atan_approximations.py in Resources */ = {isa = PBXBuildFile; fileRef = E205C3832324996E0003B8BB /* atan_approximations.py */; };
 		E205C39E2324996E0003B8BB /* atan.cc in Sources */ = {isa = PBXBuildFile; fileRef = E205C3842324996E0003B8BB /* atan.cc */; };
 		E205C39F2324996E0003B8BB /* parameter_interpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3852324996E0003B8BB /* parameter_interpolator.h */; };
 		E205C3A02324996E0003B8BB /* sample_rate_converter.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3862324996E0003B8BB /* sample_rate_converter.h */; };
@@ -2405,7 +2404,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E205C39D2324996E0003B8BB /* atan_approximations.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
