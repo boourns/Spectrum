@@ -334,9 +334,13 @@ public:
             
             modulations.morph = kernel->modulations.morph + modEngine.out[ModOutMorph];
             
-            float level = ((1.0 - kernel->velocityDepth) * ampEnvelope.value) +
-                (kernel->velocityDepth * ampEnvelope.value * modEngine.in[ModInVelocity]) +
-                modEngine.out[ModOutLevel];
+            float levelModulation = 1.0;
+            if (kernel->modulationEngineRules.isPatched(ModOutLevel)) {
+                levelModulation = modEngine.out[ModOutLevel];
+            }
+            
+            float level = (((1.0 - kernel->velocityDepth) * ampEnvelope.value) +
+                           (kernel->velocityDepth * ampEnvelope.value * modEngine.in[ModInVelocity])) * levelModulation;
             
             modulations.level = clamp(level, 0.0f, 1.0f);
             
