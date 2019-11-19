@@ -65,6 +65,13 @@
                            @"Spectral",
                            ];
     
+    NSArray *qualityStrings = @[
+                             @"Hi / 2ch",
+                             @"Hi / Mono",
+                             @"Lo / 2ch",
+                             @"Lo / Mono",
+                             ];
+    
     // Main
     AUParameter *position = [AUParameterTree createParameterWithIdentifier:@"position" name:@"Position"
                                                                   address:CloudsParamPosition
@@ -76,6 +83,10 @@
                                                                        min:0.0 max:3.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                      flags: flags valueStrings:modeStrings dependentParameters:nil];
     
+    AUParameter *quality = [AUParameterTree createParameterWithIdentifier:@"quality" name:@"Quality"
+                                                               address:CloudsParamQuality
+                                                                   min:0.0 max:3.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
+                                                                 flags: flags valueStrings:qualityStrings dependentParameters:nil];
     
     AUParameter *size = [AUParameterTree createParameterWithIdentifier:@"size" name:@"Size"
                                                                    address:CloudsParamSize
@@ -132,7 +143,7 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, position, size, density, texture, inputGain, freeze, trigger, pitchParam, detuneParam, padX, padY, padGate]];
+    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, quality, position, size, density, texture, inputGain, freeze, trigger, pitchParam, detuneParam, padX, padY, padGate]];
 
     AUParameter *wet = [AUParameterTree createParameterWithIdentifier:@"wet" name:@"Dry/Wet"
                                                                   address:CloudsParamWet

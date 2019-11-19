@@ -55,6 +55,7 @@ enum {
     CloudsParamLfoTempoSync = 27,
     CloudsParamLfoResetPhase = 28,
     CloudsParamLfoKeyReset = 29,
+    CloudsParamQuality = 30,
     CloudsParamModMatrixStart = 400,
     CloudsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 26 + 40 = 66
     
@@ -226,6 +227,12 @@ public:
                 break;
             }
                 
+            case CloudsParamQuality: {
+                quality = round(clamp(value, 0.0f, 3.0f));
+                
+                break;
+            }
+                
             case CloudsParamPadX: {
                 float val = clamp(value, 0.0f, 1.0f);
                 modEngine.in[ModInPadX] = val;
@@ -330,6 +337,9 @@ public:
                 
             case CloudsParamMode:
                 return (float) playback_mode;
+                
+            case CloudsParamQuality:
+                return (float) quality;
                 
             case CloudsParamPadX:
                 return modEngine.in[ModInPadX];
@@ -517,6 +527,10 @@ public:
         int outputFramesRemaining = frameCount;
         int inputFramesRemaining = frameCount;
         
+        if (quality != processor.quality()) {
+            processor.set_quality(quality);
+        }
+        
         if (playback_mode != processor.playback_mode()) {
             processor.set_playback_mode((clouds::PlaybackMode) playback_mode);
         }
@@ -654,6 +668,7 @@ public:
     float previousGain;
     float trigger;
     float freeze;
+    int32_t quality;
 };
 
 #endif /* CloudsDSPKernel_h */

@@ -121,6 +121,10 @@ class GranularProcessor {
   }
   
   inline PlaybackMode playback_mode() const { return playback_mode_; }
+    
+    inline int32_t quality() {
+        return (low_fidelity_ ? 2 : 0) + (num_channels_ & 0x01);
+    }
   
   inline void set_quality(int32_t quality) {
     set_num_channels(quality & 1 ? 1 : 2);
