@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../BurnsAudio/BurnsAudio.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Instrument/Spectrum.xcodeproj">
    </FileRef>
 </Workspace>

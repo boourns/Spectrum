@@ -8,10 +8,11 @@
 #import "GranularAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
 #import "CloudsDSPKernel.hpp"
-#import "BufferedAudioBus.hpp"
-#import "AudioBuffers.h"
-#import "StateManager.h"
-#import "HostTransport.h"
+
+#import <BurnsAudio/BufferedAudioBus.hpp>
+#import <BurnsAudio/AudioBuffers.h>
+#import <BurnsAudio/StateManager.h>
+#import <BurnsAudio/HostTransport.h>
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);

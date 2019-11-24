@@ -15,16 +15,9 @@
 		92A10D051B9527D10081EA80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C841B9517A50081EA80 /* ViewController.swift */; };
 		92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C7B1B9517A50081EA80 /* AppDelegate.swift */; };
 		92A10D081B95285A0081EA80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92A10C7D1B9517A50081EA80 /* LaunchScreen.storyboard */; };
-		92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
-		92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
 		E205C34723244F6D0003B8BB /* BurnsAudioFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C34523244F6D0003B8BB /* BurnsAudioFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E205C34A23244F6D0003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
 		E205C34B23244F6D0003B8BB /* BurnsAudioFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E205C35423244FC40003B8BB /* AudioBuffers.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A2D07B22DDFF4F0062FB57 /* AudioBuffers.mm */; };
-		E205C35523244FC40003B8BB /* PresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AEEC482316F8BD001729D8 /* PresetManager.swift */; };
-		E205C35623244FC40003B8BB /* MIDIProcessorWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2388E542302658A0019AEB5 /* MIDIProcessorWrapper.mm */; };
-		E205C35723244FC40003B8BB /* StateManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A2D08322DE3A0E0062FB57 /* StateManager.mm */; };
-		E205C35823244FC40003B8BB /* HostTransport.mm in Sources */ = {isa = PBXBuildFile; fileRef = E252330522DFA17600C437DA /* HostTransport.mm */; };
 		E205C359232450630003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
 		E205C35A232450680003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
 		E205C35B2324506C0003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
@@ -50,36 +43,6 @@
 		E205C36F2324959B0003B8BB /* TouchPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216B03C22B9DDEE00467133 /* TouchPad.swift */; };
 		E205C3702324959B0003B8BB /* LFOImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F45C1722F141C500668AC5 /* LFOImage.swift */; };
 		E205C3732324982A0003B8BB /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C371232497FC0003B8BB /* Dummy.swift */; };
-		E205C3922324996E0003B8BB /* ring_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3762324996E0003B8BB /* ring_buffer.h */; };
-		E205C3932324996E0003B8BB /* gate_flags.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3772324996E0003B8BB /* gate_flags.h */; };
-		E205C3942324996E0003B8BB /* stream_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3782324996E0003B8BB /* stream_buffer.h */; };
-		E205C3952324996E0003B8BB /* random.cc in Sources */ = {isa = PBXBuildFile; fileRef = E205C3792324996E0003B8BB /* random.cc */; };
-		E205C3962324996E0003B8BB /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37A2324996E0003B8BB /* dsp.h */; };
-		E205C3972324996E0003B8BB /* murmurhash3.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37B2324996E0003B8BB /* murmurhash3.h */; };
-		E205C3982324996E0003B8BB /* buffer_allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37C2324996E0003B8BB /* buffer_allocator.h */; };
-		E205C3992324996E0003B8BB /* crc32.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37D2324996E0003B8BB /* crc32.h */; };
-		E205C39A2324996E0003B8BB /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37E2324996E0003B8BB /* random.h */; };
-		E205C39B2324996E0003B8BB /* stmlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C37F2324996E0003B8BB /* stmlib.h */; };
-		E205C39C2324996E0003B8BB /* shy_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3812324996E0003B8BB /* shy_fft.h */; };
-		E205C39E2324996E0003B8BB /* atan.cc in Sources */ = {isa = PBXBuildFile; fileRef = E205C3842324996E0003B8BB /* atan.cc */; };
-		E205C39F2324996E0003B8BB /* parameter_interpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3852324996E0003B8BB /* parameter_interpolator.h */; };
-		E205C3A02324996E0003B8BB /* sample_rate_converter.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3862324996E0003B8BB /* sample_rate_converter.h */; };
-		E205C3A12324996E0003B8BB /* rsqrt.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3872324996E0003B8BB /* rsqrt.h */; };
-		E205C3A22324996E0003B8BB /* hysteresis_quantizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3882324996E0003B8BB /* hysteresis_quantizer.h */; };
-		E205C3A32324996E0003B8BB /* atan.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3892324996E0003B8BB /* atan.h */; };
-		E205C3A42324996E0003B8BB /* polyblep.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C38A2324996E0003B8BB /* polyblep.h */; };
-		E205C3A52324996E0003B8BB /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C38B2324996E0003B8BB /* dsp.h */; };
-		E205C3A62324996E0003B8BB /* delay_line.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C38C2324996E0003B8BB /* delay_line.h */; };
-		E205C3A72324996E0003B8BB /* cosine_oscillator.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C38D2324996E0003B8BB /* cosine_oscillator.h */; };
-		E205C3A82324996E0003B8BB /* filter.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C38E2324996E0003B8BB /* filter.h */; };
-		E205C3A92324996E0003B8BB /* limiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C38F2324996E0003B8BB /* limiter.h */; };
-		E205C3AA2324996E0003B8BB /* units.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C3902324996E0003B8BB /* units.h */; };
-		E205C3AB2324996E0003B8BB /* units.cc in Sources */ = {isa = PBXBuildFile; fileRef = E205C3912324996E0003B8BB /* units.cc */; };
-		E205C3AC232499A60003B8BB /* multistage_envelope.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */; };
-		E205C3AD232499A60003B8BB /* lfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22AFAFA2298795F00679F99 /* lfo.cpp */; };
-		E205C3AE232499A60003B8BB /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E22AFB04229881F900679F99 /* resources.cc */; };
-		E205C3AF232499A60003B8BB /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = E2495044229F82DF0073FBDC /* resample.c */; };
-		E205C3B0232499A60003B8BB /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
 		E205C3B823249DA60003B8BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3B723249DA60003B8BB /* AppDelegate.swift */; };
 		E205C3BA23249DA60003B8BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3B923249DA60003B8BB /* ViewController.swift */; };
 		E205C3BF23249DA70003B8BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E205C3BE23249DA70003B8BB /* Assets.xcassets */; };
@@ -265,8 +228,6 @@
 		E225106E22B1FC7400DD88E8 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E225107B22B57B1D00DD88E8 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */; };
 		E227A5C222C0625600152A79 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E227A5C122C0625600152A79 /* Settings.bundle */; };
-		E22AFB05229881F900679F99 /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB03229881F900679F99 /* resources.h */; };
-		E22AFB0E2299D33E00679F99 /* multistage_envelope.h in Headers */ = {isa = PBXBuildFile; fileRef = E22AFB0C2299D33D00679F99 /* multistage_envelope.h */; };
 		E22C33FE22C5B9F900185BB5 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E22C33FC22C5B9F900185BB5 /* MainInterface.storyboard */; };
 		E22C340322C5B9F900185BB5 /* Resonator.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E22C33F522C5B9F900185BB5 /* Resonator.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E22C340722C5BA1200185BB5 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
@@ -274,11 +235,6 @@
 		E22C341F22C63F8D00185BB5 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E22C341D22C63F8D00185BB5 /* MainInterface.storyboard */; };
 		E22C342422C63F8D00185BB5 /* ResonatorEffect.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E22C342822C63FC700185BB5 /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
-		E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495041229F82DF0073FBDC /* speex_resampler.h */; };
-		E2495053229F82DF0073FBDC /* frame.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E2495046229F82DF0073FBDC /* frame.hpp */; };
-		E2495054229F82DF0073FBDC /* resample_sse.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495047229F82DF0073FBDC /* resample_sse.h */; };
-		E2495056229F83E30073FBDC /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495055229F83E30073FBDC /* arch.h */; };
-		E2495058229F84730073FBDC /* stack_alloc.h in Headers */ = {isa = PBXBuildFile; fileRef = E2495057229F84730073FBDC /* stack_alloc.h */; };
 		E290DD1322DECC0800948C48 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2184A99229E294B00CA4DFE /* ModalViewController.swift */; };
 		E290DD1422DECC0800948C48 /* ModalAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2184A9B229E29C300CA4DFE /* ModalAudioUnit.mm */; };
 		E290DD1522DECC0800948C48 /* ElementsDSPKernel.hpp in Sources */ = {isa = PBXBuildFile; fileRef = E2184A9E229E2AAC00CA4DFE /* ElementsDSPKernel.hpp */; };
@@ -329,6 +285,14 @@
 		E2ABBC3B22C573C8001FA69B /* limiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF722C573C7001FA69B /* limiter.h */; };
 		E2ABBC3C22C573C8001FA69B /* resonator.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF822C573C7001FA69B /* resonator.h */; };
 		E2ABBC3D22C573C8001FA69B /* rings_string.h in Headers */ = {isa = PBXBuildFile; fileRef = E2ABBBF922C573C7001FA69B /* rings_string.h */; };
+		E2C540C6238A35C800143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540C5238A35C800143B00 /* BurnsAudio.framework */; };
+		E2C540C7238A35C800143B00 /* BurnsAudio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540C5238A35C800143B00 /* BurnsAudio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E2C540C9238A363600143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540C8238A363600143B00 /* BurnsAudio.framework */; };
+		E2C540CB238A363B00143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540CA238A363B00143B00 /* BurnsAudio.framework */; };
+		E2C540CD238A364000143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540CC238A364000143B00 /* BurnsAudio.framework */; };
+		E2C540CF238A364600143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540CE238A364600143B00 /* BurnsAudio.framework */; };
+		E2C540D1238A364B00143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540D0238A364B00143B00 /* BurnsAudio.framework */; };
+		E2C540D3238A364F00143B00 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C540D2238A364F00143B00 /* BurnsAudio.framework */; };
 		E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60617229CE9E0004B33CB /* MainInterface.storyboard */; };
@@ -460,6 +424,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				92A10CE91B9521B00081EA80 /* SpectrumFramework.framework in Embed Frameworks */,
+				E2C540C7238A35C800143B00 /* BurnsAudio.framework in Embed Frameworks */,
 				E205C34B23244F6D0003B8BB /* BurnsAudioFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -515,9 +480,6 @@
 		92A10C841B9517A50081EA80 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		92A10C8E1B9517A50081EA80 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92A10C921B9517A50081EA80 /* SpectrumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpectrumViewController.swift; sourceTree = "<group>"; };
-		92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
-		92A10CA71B951C660081EA80 /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
-		92A10CA81B951C660081EA80 /* DSPKernel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		92A10CC51B9521320081EA80 /* SpectrumApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpectrumApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpectrumFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5234C821CA0966600902296 /* SpectrumAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectrumAudioUnit.h; sourceTree = "<group>"; };
@@ -526,32 +488,6 @@
 		E205C34523244F6D0003B8BB /* BurnsAudioFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BurnsAudioFramework.h; sourceTree = "<group>"; };
 		E205C34623244F6D0003B8BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E205C371232497FC0003B8BB /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
-		E205C3762324996E0003B8BB /* ring_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ring_buffer.h; sourceTree = "<group>"; };
-		E205C3772324996E0003B8BB /* gate_flags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gate_flags.h; sourceTree = "<group>"; };
-		E205C3782324996E0003B8BB /* stream_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream_buffer.h; sourceTree = "<group>"; };
-		E205C3792324996E0003B8BB /* random.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = random.cc; sourceTree = "<group>"; };
-		E205C37A2324996E0003B8BB /* dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
-		E205C37B2324996E0003B8BB /* murmurhash3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = murmurhash3.h; sourceTree = "<group>"; };
-		E205C37C2324996E0003B8BB /* buffer_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer_allocator.h; sourceTree = "<group>"; };
-		E205C37D2324996E0003B8BB /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32.h; sourceTree = "<group>"; };
-		E205C37E2324996E0003B8BB /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = random.h; sourceTree = "<group>"; };
-		E205C37F2324996E0003B8BB /* stmlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stmlib.h; sourceTree = "<group>"; };
-		E205C3812324996E0003B8BB /* shy_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shy_fft.h; sourceTree = "<group>"; };
-		E205C3832324996E0003B8BB /* atan_approximations.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = atan_approximations.py; sourceTree = "<group>"; };
-		E205C3842324996E0003B8BB /* atan.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = atan.cc; sourceTree = "<group>"; };
-		E205C3852324996E0003B8BB /* parameter_interpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameter_interpolator.h; sourceTree = "<group>"; };
-		E205C3862324996E0003B8BB /* sample_rate_converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sample_rate_converter.h; sourceTree = "<group>"; };
-		E205C3872324996E0003B8BB /* rsqrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rsqrt.h; sourceTree = "<group>"; };
-		E205C3882324996E0003B8BB /* hysteresis_quantizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hysteresis_quantizer.h; sourceTree = "<group>"; };
-		E205C3892324996E0003B8BB /* atan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atan.h; sourceTree = "<group>"; };
-		E205C38A2324996E0003B8BB /* polyblep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = polyblep.h; sourceTree = "<group>"; };
-		E205C38B2324996E0003B8BB /* dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
-		E205C38C2324996E0003B8BB /* delay_line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = delay_line.h; sourceTree = "<group>"; };
-		E205C38D2324996E0003B8BB /* cosine_oscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cosine_oscillator.h; sourceTree = "<group>"; };
-		E205C38E2324996E0003B8BB /* filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filter.h; sourceTree = "<group>"; };
-		E205C38F2324996E0003B8BB /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
-		E205C3902324996E0003B8BB /* units.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = units.h; sourceTree = "<group>"; };
-		E205C3912324996E0003B8BB /* units.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = units.cc; sourceTree = "<group>"; };
 		E205C3B523249DA60003B8BB /* OrgoneApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OrgoneApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E205C3B723249DA60003B8BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E205C3B923249DA60003B8BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -789,19 +725,12 @@
 		E225107A22B57B1D00DD88E8 /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		E2268B102294C3650061A753 /* ActionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionKit.swift; sourceTree = "<group>"; };
 		E227A5C122C0625600152A79 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		E227A5C322C068C000152A79 /* converter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = converter.hpp; sourceTree = "<group>"; };
 		E22973B723142AC40074DFC0 /* SpectrumAudioUnit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpectrumAudioUnit.entitlements; sourceTree = "<group>"; };
 		E22973B823142AD00074DFC0 /* ModalAudioUnit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ModalAudioUnit.entitlements; path = ModalAudioUnit/ModalAudioUnit.entitlements; sourceTree = "<group>"; };
 		E22973B923142AD70074DFC0 /* Granular.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Granular.entitlements; path = Granular/Granular.entitlements; sourceTree = "<group>"; };
 		E22973BA23142AE10074DFC0 /* ModalEffect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ModalEffect.entitlements; path = ModalEffect/ModalEffect.entitlements; sourceTree = "<group>"; };
 		E22973BB23142AE90074DFC0 /* Resonator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Resonator.entitlements; path = Resonator/Resonator.entitlements; sourceTree = "<group>"; };
 		E22973BC23142AF30074DFC0 /* ResonatorEffect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ResonatorEffect.entitlements; path = ResonatorEffect/ResonatorEffect.entitlements; sourceTree = "<group>"; };
-		E22AFAFA2298795F00679F99 /* lfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lfo.cpp; sourceTree = "<group>"; };
-		E22AFAFB2298795F00679F99 /* lfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lfo.hpp; sourceTree = "<group>"; };
-		E22AFB03229881F900679F99 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
-		E22AFB04229881F900679F99 /* resources.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cc; sourceTree = "<group>"; };
-		E22AFB0C2299D33D00679F99 /* multistage_envelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multistage_envelope.h; sourceTree = "<group>"; };
-		E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = multistage_envelope.cc; sourceTree = "<group>"; };
 		E22AFB11229C42C600679F99 /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
 		E22AFB13229C4AA100679F99 /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
 		E22AFB15229C5A2D00679F99 /* UIImage+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extensions.swift"; sourceTree = "<group>"; };
@@ -824,26 +753,8 @@
 		E235623B22B5E0E100762D39 /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		E235624422B6804E00762D39 /* AKTouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTouchPad.swift; sourceTree = "<group>"; };
 		E235624622B6FCC300762D39 /* ModTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModTarget.swift; sourceTree = "<group>"; };
-		E2388E542302658A0019AEB5 /* MIDIProcessorWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIProcessorWrapper.mm; sourceTree = "<group>"; };
-		E2388E56230265A70019AEB5 /* MIDIProcessorWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIProcessorWrapper.h; sourceTree = "<group>"; };
-		E2495041229F82DF0073FBDC /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
-		E2495044229F82DF0073FBDC /* resample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = resample.c; sourceTree = "<group>"; };
-		E2495046229F82DF0073FBDC /* frame.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = frame.hpp; sourceTree = "<group>"; };
-		E2495047229F82DF0073FBDC /* resample_sse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resample_sse.h; sourceTree = "<group>"; };
-		E2495055229F83E30073FBDC /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arch.h; sourceTree = "<group>"; };
-		E2495057229F84730073FBDC /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_alloc.h; sourceTree = "<group>"; };
-		E252330522DFA17600C437DA /* HostTransport.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HostTransport.mm; sourceTree = "<group>"; };
-		E252330C22DFA18800C437DA /* HostTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HostTransport.h; sourceTree = "<group>"; };
-		E252330D22E0C1A500C437DA /* KernelTransportState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KernelTransportState.h; sourceTree = "<group>"; };
-		E252330E22E0E02900C437DA /* LFOKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LFOKernel.hpp; sourceTree = "<group>"; };
 		E265FF14229CCF9700340255 /* iOSSpectrumFramework-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOSSpectrumFramework-Bridging-Header.h"; sourceTree = "<group>"; };
 		E27AD076229395240003C69C /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
-		E2A2D07B22DDFF4F0062FB57 /* AudioBuffers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioBuffers.mm; sourceTree = "<group>"; };
-		E2A2D08222DDFF760062FB57 /* AudioBuffers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioBuffers.h; sourceTree = "<group>"; };
-		E2A2D08322DE3A0E0062FB57 /* StateManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StateManager.mm; sourceTree = "<group>"; };
-		E2A2D08522DE3A6D0062FB57 /* StateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateManager.h; sourceTree = "<group>"; };
-		E2A6ABFF22A1B3F2007B38DD /* MIDIProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MIDIProcessor.hpp; sourceTree = "<group>"; };
-		E2A6AC0522A1C8DE007B38DD /* ModulationEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ModulationEngine.hpp; sourceTree = "<group>"; };
 		E2ABBB9622C47827001FA69B /* ModalEffect.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ModalEffect.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2ABBB9E22C47827001FA69B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E2ABBBA022C47827001FA69B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -877,7 +788,13 @@
 		E2ABBBF722C573C7001FA69B /* limiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = limiter.h; sourceTree = "<group>"; };
 		E2ABBBF822C573C7001FA69B /* resonator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resonator.h; sourceTree = "<group>"; };
 		E2ABBBF922C573C7001FA69B /* rings_string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rings_string.h; sourceTree = "<group>"; };
-		E2AEEC482316F8BD001729D8 /* PresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetManager.swift; sourceTree = "<group>"; };
+		E2C540C5238A35C800143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C540C8238A363600143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C540CA238A363B00143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C540CC238A364000143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C540CE238A364600143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C540D0238A364B00143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C540D2238A364F00143B00 /* BurnsAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpectrumAudioUnit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E60618229CE9E0004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -891,6 +808,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A10CE81B9521B00081EA80 /* SpectrumFramework.framework in Frameworks */,
+				E2C540C6238A35C800143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C34A23244F6D0003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -931,6 +849,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C540CB238A363B00143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C35A232450680003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 				E2184AB7229F040700CA4DFE /* SpectrumFramework.framework in Frameworks */,
 			);
@@ -940,6 +859,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C540CD238A364000143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C35B2324506C0003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 				E225106E22B1FC7400DD88E8 /* SpectrumFramework.framework in Frameworks */,
 			);
@@ -949,6 +869,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C540D1238A364B00143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C35D232450770003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 				E22C340722C5BA1200185BB5 /* SpectrumFramework.framework in Frameworks */,
 			);
@@ -958,6 +879,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C540D3238A364F00143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C35E2324507B0003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 				E22C342822C63FC700185BB5 /* SpectrumFramework.framework in Frameworks */,
 			);
@@ -967,6 +889,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C540CF238A364600143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C35C232450710003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 				E2ABBBAB22C478A4001FA69B /* SpectrumFramework.framework in Frameworks */,
 			);
@@ -976,6 +899,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C540C9238A363600143B00 /* BurnsAudio.framework in Frameworks */,
 				E205C359232450630003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 				E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */,
 			);
@@ -1013,6 +937,7 @@
 		91D3DA0B1B023C03008FFFBB = {
 			isa = PBXGroup;
 			children = (
+				E2C540C5238A35C800143B00 /* BurnsAudio.framework */,
 				E22973BC23142AF30074DFC0 /* ResonatorEffect.entitlements */,
 				E22973BB23142AE90074DFC0 /* Resonator.entitlements */,
 				E22973BA23142AE10074DFC0 /* ModalEffect.entitlements */,
@@ -1093,82 +1018,11 @@
 			isa = PBXGroup;
 			children = (
 				E22AFB10229C415E00679F99 /* UI */,
-				E2A2D08922DEC8260062FB57 /* Framework */,
 				E205C34523244F6D0003B8BB /* BurnsAudioFramework.h */,
 				E205C34623244F6D0003B8BB /* Info.plist */,
-				E2A6ABFF22A1B3F2007B38DD /* MIDIProcessor.hpp */,
-				E2A6AC0522A1C8DE007B38DD /* ModulationEngine.hpp */,
-				E2A2D07B22DDFF4F0062FB57 /* AudioBuffers.mm */,
-				E2A2D08222DDFF760062FB57 /* AudioBuffers.h */,
-				E2A2D08522DE3A6D0062FB57 /* StateManager.h */,
-				E2A2D08322DE3A0E0062FB57 /* StateManager.mm */,
-				E252330522DFA17600C437DA /* HostTransport.mm */,
-				E252330C22DFA18800C437DA /* HostTransport.h */,
-				E252330D22E0C1A500C437DA /* KernelTransportState.h */,
-				E252330E22E0E02900C437DA /* LFOKernel.hpp */,
-				E2388E542302658A0019AEB5 /* MIDIProcessorWrapper.mm */,
-				E2388E56230265A70019AEB5 /* MIDIProcessorWrapper.h */,
 				E234605D22C8ED7400C9D005 /* Silver.swift */,
-				E2AEEC482316F8BD001729D8 /* PresetManager.swift */,
 			);
 			path = BurnsAudioFramework;
-			sourceTree = "<group>";
-		};
-		E205C3742324996E0003B8BB /* stmlib */ = {
-			isa = PBXGroup;
-			children = (
-				E205C3752324996E0003B8BB /* utils */,
-				E205C37F2324996E0003B8BB /* stmlib.h */,
-				E205C3802324996E0003B8BB /* fft */,
-				E205C3822324996E0003B8BB /* dsp */,
-			);
-			path = stmlib;
-			sourceTree = "<group>";
-		};
-		E205C3752324996E0003B8BB /* utils */ = {
-			isa = PBXGroup;
-			children = (
-				E205C3762324996E0003B8BB /* ring_buffer.h */,
-				E205C3772324996E0003B8BB /* gate_flags.h */,
-				E205C3782324996E0003B8BB /* stream_buffer.h */,
-				E205C3792324996E0003B8BB /* random.cc */,
-				E205C37A2324996E0003B8BB /* dsp.h */,
-				E205C37B2324996E0003B8BB /* murmurhash3.h */,
-				E205C37C2324996E0003B8BB /* buffer_allocator.h */,
-				E205C37D2324996E0003B8BB /* crc32.h */,
-				E205C37E2324996E0003B8BB /* random.h */,
-			);
-			path = utils;
-			sourceTree = "<group>";
-		};
-		E205C3802324996E0003B8BB /* fft */ = {
-			isa = PBXGroup;
-			children = (
-				E205C3812324996E0003B8BB /* shy_fft.h */,
-			);
-			path = fft;
-			sourceTree = "<group>";
-		};
-		E205C3822324996E0003B8BB /* dsp */ = {
-			isa = PBXGroup;
-			children = (
-				E205C3832324996E0003B8BB /* atan_approximations.py */,
-				E205C3842324996E0003B8BB /* atan.cc */,
-				E205C3852324996E0003B8BB /* parameter_interpolator.h */,
-				E205C3862324996E0003B8BB /* sample_rate_converter.h */,
-				E205C3872324996E0003B8BB /* rsqrt.h */,
-				E205C3882324996E0003B8BB /* hysteresis_quantizer.h */,
-				E205C3892324996E0003B8BB /* atan.h */,
-				E205C38A2324996E0003B8BB /* polyblep.h */,
-				E205C38B2324996E0003B8BB /* dsp.h */,
-				E205C38C2324996E0003B8BB /* delay_line.h */,
-				E205C38D2324996E0003B8BB /* cosine_oscillator.h */,
-				E205C38E2324996E0003B8BB /* filter.h */,
-				E205C38F2324996E0003B8BB /* limiter.h */,
-				E205C3902324996E0003B8BB /* units.h */,
-				E205C3912324996E0003B8BB /* units.cc */,
-			);
-			path = dsp;
 			sourceTree = "<group>";
 		};
 		E205C3B623249DA60003B8BB /* OrgoneApp */ = {
@@ -1461,6 +1315,12 @@
 		E2154B322292523600CEED2E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2C540D2238A364F00143B00 /* BurnsAudio.framework */,
+				E2C540D0238A364B00143B00 /* BurnsAudio.framework */,
+				E2C540CE238A364600143B00 /* BurnsAudio.framework */,
+				E2C540CC238A364000143B00 /* BurnsAudio.framework */,
+				E2C540CA238A363B00143B00 /* BurnsAudio.framework */,
+				E2C540C8238A363600143B00 /* BurnsAudio.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1614,19 +1474,6 @@
 			path = Granular;
 			sourceTree = "<group>";
 		};
-		E22AFB02229881F900679F99 /* peaks */ = {
-			isa = PBXGroup;
-			children = (
-				E22AFB0D2299D33E00679F99 /* multistage_envelope.cc */,
-				E22AFB0C2299D33D00679F99 /* multistage_envelope.h */,
-				E22AFAFA2298795F00679F99 /* lfo.cpp */,
-				E22AFAFB2298795F00679F99 /* lfo.hpp */,
-				E22AFB03229881F900679F99 /* resources.h */,
-				E22AFB04229881F900679F99 /* resources.cc */,
-			);
-			path = peaks;
-			sourceTree = "<group>";
-		};
 		E22AFB10229C415E00679F99 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1680,20 +1527,6 @@
 			path = Vendor;
 			sourceTree = "<group>";
 		};
-		E249503F229F82DF0073FBDC /* resampler */ = {
-			isa = PBXGroup;
-			children = (
-				E2495055229F83E30073FBDC /* arch.h */,
-				E2495057229F84730073FBDC /* stack_alloc.h */,
-				E2495041229F82DF0073FBDC /* speex_resampler.h */,
-				E227A5C322C068C000152A79 /* converter.hpp */,
-				E2495044229F82DF0073FBDC /* resample.c */,
-				E2495046229F82DF0073FBDC /* frame.hpp */,
-				E2495047229F82DF0073FBDC /* resample_sse.h */,
-			);
-			path = resampler;
-			sourceTree = "<group>";
-		};
 		E290DD1222DECB8C00948C48 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
@@ -1714,19 +1547,6 @@
 				E22C340F22C5BB3200185BB5 /* RingsDSPKernel.hpp */,
 			);
 			path = SharedResonator;
-			sourceTree = "<group>";
-		};
-		E2A2D08922DEC8260062FB57 /* Framework */ = {
-			isa = PBXGroup;
-			children = (
-				E205C3742324996E0003B8BB /* stmlib */,
-				E22AFB02229881F900679F99 /* peaks */,
-				E249503F229F82DF0073FBDC /* resampler */,
-				92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */,
-				92A10CA71B951C660081EA80 /* DSPKernel.hpp */,
-				92A10CA81B951C660081EA80 /* DSPKernel.mm */,
-			);
-			path = Framework;
 			sourceTree = "<group>";
 		};
 		E2ABBB9722C47827001FA69B /* ModalEffect */ = {
@@ -1816,7 +1636,6 @@
 				E2154B11229249AA00CEED2E /* atan.h in Headers */,
 				E2154AE4229249AA00CEED2E /* fm_engine.h in Headers */,
 				E2154B0F229249AA00CEED2E /* rsqrt.h in Headers */,
-				92A10D1C1B9529250081EA80 /* BufferedAudioBus.hpp in Headers */,
 				E2184A91229E1F9200CA4DFE /* ominous_voice.h in Headers */,
 				E225104122B1F3B800DD88E8 /* pitch_shifter.h in Headers */,
 				E2ABBC2A22C573C8001FA69B /* reverb.h in Headers */,
@@ -1847,19 +1666,16 @@
 				E2154AD8229249AA00CEED2E /* modal_voice.h in Headers */,
 				E2184A90229E1F9200CA4DFE /* dsp.h in Headers */,
 				E2154AF6229249AA00CEED2E /* hi_hat_engine.h in Headers */,
-				E2495058229F84730073FBDC /* stack_alloc.h in Headers */,
 				E2154B08229249AA00CEED2E /* crc32.h in Headers */,
 				E2ABBC3222C573C8001FA69B /* note_filter.h in Headers */,
 				E2184A95229E1F9200CA4DFE /* resonator.h in Headers */,
 				E2ABBC2B22C573C8001FA69B /* fx_engine.h in Headers */,
 				E2154AF9229249AA00CEED2E /* bass_drum_engine.h in Headers */,
-				E22AFB05229881F900679F99 /* resources.h in Headers */,
 				E225104322B1F3B800DD88E8 /* sample_rate_converter.h in Headers */,
 				E2154ADC229249AA00CEED2E /* resonator.h in Headers */,
 				E2184A93229E1F9200CA4DFE /* part.h in Headers */,
 				E2184A8F229E1F9200CA4DFE /* patch.h in Headers */,
 				E2154AC4229249AA00CEED2E /* smooth_random_generator.h in Headers */,
-				E2495053229F82DF0073FBDC /* frame.hpp in Headers */,
 				E2ABBC3A22C573C8001FA69B /* part.h in Headers */,
 				E2154AC2229249AA00CEED2E /* lpc_speech_synth_words.h in Headers */,
 				E2154AE6229249AA00CEED2E /* chord_engine.h in Headers */,
@@ -1886,11 +1702,9 @@
 				E2154ACE229249AA00CEED2E /* formant_oscillator.h in Headers */,
 				E225103F22B1F3B800DD88E8 /* reverb.h in Headers */,
 				E2154AFB229249AA00CEED2E /* grain_engine.h in Headers */,
-				E2495056229F83E30073FBDC /* arch.h in Headers */,
 				E2154AB1229249AA00CEED2E /* sample_rate_reducer.h in Headers */,
 				E2154AD3229249AA00CEED2E /* vosim_oscillator.h in Headers */,
 				E2154AE3229249AA00CEED2E /* wavetable_engine.h in Headers */,
-				E2495054229F82DF0073FBDC /* resample_sse.h in Headers */,
 				E2154AE2229249AA00CEED2E /* speech_engine.h in Headers */,
 				E2154AFE229249AA00CEED2E /* waveshaping_engine.h in Headers */,
 				E225102E22B1F3B800DD88E8 /* meter.h in Headers */,
@@ -1925,7 +1739,6 @@
 				E225104522B1F3B800DD88E8 /* wsola_sample_player.h in Headers */,
 				E2ABBC2522C573C8001FA69B /* string_synth_part.h in Headers */,
 				E2154B02229249AA00CEED2E /* gate_flags.h in Headers */,
-				92A10D191B9529200081EA80 /* DSPKernel.hpp in Headers */,
 				E2154AC6229249AA00CEED2E /* clocked_noise.h in Headers */,
 				E2ABBC2D22C573C8001FA69B /* ensemble.h in Headers */,
 				E225104722B1F3B800DD88E8 /* parameters.h in Headers */,
@@ -1946,7 +1759,6 @@
 				E225104E22B1F3B800DD88E8 /* mu_law.h in Headers */,
 				E2154AB5229249AA00CEED2E /* synthetic_bass_drum.h in Headers */,
 				E2154AED229249AA00CEED2E /* virtual_analog_engine.h in Headers */,
-				E22AFB0E2299D33E00679F99 /* multistage_envelope.h in Headers */,
 				E2ABBC3622C573C8001FA69B /* fm_voice.h in Headers */,
 				E2154ACF229249AA00CEED2E /* variable_saw_oscillator.h in Headers */,
 				E2154B10229249AA00CEED2E /* hysteresis_quantizer.h in Headers */,
@@ -1959,7 +1771,6 @@
 				E2154ACD229249AA00CEED2E /* oscillator.h in Headers */,
 				E225104222B1F3B800DD88E8 /* diffuser.h in Headers */,
 				E2ABBC3522C573C8001FA69B /* dsp.h in Headers */,
-				E249504E229F82DF0073FBDC /* speex_resampler.h in Headers */,
 				E2154ABA229249AA00CEED2E /* naive_speech_synth.h in Headers */,
 				E2184A87229E1F9200CA4DFE /* reverb.h in Headers */,
 				E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */,
@@ -1970,29 +1781,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E205C3A32324996E0003B8BB /* atan.h in Headers */,
-				E205C3A72324996E0003B8BB /* cosine_oscillator.h in Headers */,
-				E205C3972324996E0003B8BB /* murmurhash3.h in Headers */,
-				E205C3A02324996E0003B8BB /* sample_rate_converter.h in Headers */,
-				E205C3A42324996E0003B8BB /* polyblep.h in Headers */,
-				E205C3922324996E0003B8BB /* ring_buffer.h in Headers */,
-				E205C39A2324996E0003B8BB /* random.h in Headers */,
-				E205C3992324996E0003B8BB /* crc32.h in Headers */,
-				E205C3A62324996E0003B8BB /* delay_line.h in Headers */,
-				E205C3A92324996E0003B8BB /* limiter.h in Headers */,
-				E205C3A12324996E0003B8BB /* rsqrt.h in Headers */,
-				E205C3982324996E0003B8BB /* buffer_allocator.h in Headers */,
-				E205C39F2324996E0003B8BB /* parameter_interpolator.h in Headers */,
-				E205C39C2324996E0003B8BB /* shy_fft.h in Headers */,
 				E205C34723244F6D0003B8BB /* BurnsAudioFramework.h in Headers */,
-				E205C3AA2324996E0003B8BB /* units.h in Headers */,
-				E205C3A82324996E0003B8BB /* filter.h in Headers */,
-				E205C3A52324996E0003B8BB /* dsp.h in Headers */,
-				E205C3962324996E0003B8BB /* dsp.h in Headers */,
-				E205C3942324996E0003B8BB /* stream_buffer.h in Headers */,
-				E205C3932324996E0003B8BB /* gate_flags.h in Headers */,
-				E205C39B2324996E0003B8BB /* stmlib.h in Headers */,
-				E205C3A22324996E0003B8BB /* hysteresis_quantizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2550,11 +2339,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E205C3AC232499A60003B8BB /* multistage_envelope.cc in Sources */,
-				E205C3AD232499A60003B8BB /* lfo.cpp in Sources */,
-				E205C3AE232499A60003B8BB /* resources.cc in Sources */,
-				E205C3AF232499A60003B8BB /* resample.c in Sources */,
-				E205C3B0232499A60003B8BB /* DSPKernel.mm in Sources */,
 				E205C35F2324959B0003B8BB /* LiveKnob.swift in Sources */,
 				E205C3602324959B0003B8BB /* ActionKit.swift in Sources */,
 				E205C3612324959B0003B8BB /* AKTouchPad.swift in Sources */,
@@ -2568,20 +2352,12 @@
 				E205C3692324959B0003B8BB /* BaseAudioUnitViewController.swift in Sources */,
 				E205C36A2324959B0003B8BB /* UIColor+extensions.swift in Sources */,
 				E205C36B2324959B0003B8BB /* SpectrumUI.swift in Sources */,
-				E205C3AB2324996E0003B8BB /* units.cc in Sources */,
 				E205C36C2324959B0003B8BB /* UIView+extensions.swift in Sources */,
 				E205C36D2324959B0003B8BB /* Knob.swift in Sources */,
 				E205C36E2324959B0003B8BB /* ModTarget.swift in Sources */,
 				E205C36F2324959B0003B8BB /* TouchPad.swift in Sources */,
 				E205C3702324959B0003B8BB /* LFOImage.swift in Sources */,
-				E205C35523244FC40003B8BB /* PresetManager.swift in Sources */,
-				E205C35823244FC40003B8BB /* HostTransport.mm in Sources */,
-				E205C35623244FC40003B8BB /* MIDIProcessorWrapper.mm in Sources */,
-				E205C35423244FC40003B8BB /* AudioBuffers.mm in Sources */,
 				E205C3C723249ECD0003B8BB /* Silver.swift in Sources */,
-				E205C39E2324996E0003B8BB /* atan.cc in Sources */,
-				E205C3952324996E0003B8BB /* random.cc in Sources */,
-				E205C35723244FC40003B8BB /* StateManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3417,6 +3193,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = ModalAudioUnit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3464,6 +3241,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = ModalAudioUnit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3515,6 +3293,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = Granular/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3562,6 +3341,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = Granular/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3613,6 +3393,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio/**",
 				);
 				INFOPLIST_FILE = Resonator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3660,6 +3441,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio/**",
 				);
 				INFOPLIST_FILE = Resonator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3712,6 +3494,7 @@
 					Instrument/Shared,
 					Shared,
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio/**",
 				);
 				INFOPLIST_FILE = ResonatorEffect/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3760,6 +3543,7 @@
 					Instrument/Shared,
 					Shared,
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio/**",
 				);
 				INFOPLIST_FILE = ResonatorEffect/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3811,6 +3595,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = ModalEffect/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3858,6 +3643,7 @@
 					"Instrument/Shared/**",
 					"Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = ModalEffect/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3910,6 +3696,7 @@
 					"Shared/**",
 					"Instrument/Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = iOS/SpectrumAudioUnit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3958,6 +3745,7 @@
 					"Shared/**",
 					"Instrument/Shared/**",
 					"$(SRCROOT)/BurnsAudioFramework/**",
+					"$(SRCROOT)/../BurnsAudio",
 				);
 				INFOPLIST_FILE = iOS/SpectrumAudioUnit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -11,14 +11,14 @@
 #import <vector>
 
 #import "plaits/dsp/voice.h"
-#import "peaks/multistage_envelope.h"
 #import "stmlib/dsp/parameter_interpolator.h"
-#import "converter.hpp"
-#import "DSPKernel.hpp"
+#import <BurnsAudio/multistage_envelope.h>
+#import <BurnsAudio/DSPKernel.hpp>
+#import <BurnsAudio/converter.hpp>
 
-#import "MIDIProcessor.hpp"
-#import "ModulationEngine.hpp"
-#import "LFOKernel.hpp"
+#import <BurnsAudio/MIDIProcessor.hpp>
+#import <BurnsAudio/ModulationEngine.hpp>
+#import <BurnsAudio/LFOKernel.hpp>
 
 #ifdef DEBUG
 #define KERNEL_DEBUG_LOG(...) printf(__VA_ARGS__);
