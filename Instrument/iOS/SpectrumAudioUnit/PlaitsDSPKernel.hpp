@@ -12,13 +12,13 @@
 
 #import "plaits/dsp/voice.h"
 #import "stmlib/dsp/parameter_interpolator.h"
-#import <BurnsAudio/multistage_envelope.h>
-#import <BurnsAudio/DSPKernel.hpp>
-#import <BurnsAudio/converter.hpp>
+#import <BurnsAudioUnit/multistage_envelope.h>
+#import <BurnsAudioUnit/DSPKernel.hpp>
+#import <BurnsAudioUnit/converter.hpp>
 
-#import <BurnsAudio/MIDIProcessor.hpp>
-#import <BurnsAudio/ModulationEngine.hpp>
-#import <BurnsAudio/LFOKernel.hpp>
+#import <BurnsAudioUnit/MIDIProcessor.hpp>
+#import <BurnsAudioUnit/ModulationEngine.hpp>
+#import <BurnsAudioUnit/LFOKernel.hpp>
 
 #ifdef DEBUG
 #define KERNEL_DEBUG_LOG(...) printf(__VA_ARGS__);

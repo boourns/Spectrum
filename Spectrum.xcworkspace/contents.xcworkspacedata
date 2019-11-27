@@ -5,6 +5,9 @@
       location = "group:../BurnsAudio/BurnsAudio.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../BurnsAudioUnit/BurnsAudioUnit.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Instrument/Spectrum.xcodeproj">
    </FileRef>
 </Workspace>

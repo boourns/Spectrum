@@ -8,21 +8,21 @@
 #ifndef RingsDSPKernel_h
 #define RingsDSPKernel_h
 
-#import <BurnsAudio/KernelTransportState.h>
+#import <BurnsAudioUnit/KernelTransportState.h>
 
-#import <BurnsAudio/multistage_envelope.h>
-#import <BurnsAudio/DSPKernel.hpp>
-#import <BurnsAudio/converter.hpp>
+#import <BurnsAudioUnit/multistage_envelope.h>
+#import <BurnsAudioUnit/DSPKernel.hpp>
+#import <BurnsAudioUnit/converter.hpp>
 
 #import <vector>
 
 #import "rings/dsp/strummer.h"
 #import "rings/dsp/string_synth_part.h"
 #import "rings/dsp/part.h"
-#import <BurnsAudio/LFOKernel.hpp>
+#import <BurnsAudioUnit/LFOKernel.hpp>
 
-#import <BurnsAudio/MIDIProcessor.hpp>
-#import <BurnsAudio/ModulationEngine.hpp>
+#import <BurnsAudioUnit/MIDIProcessor.hpp>
+#import <BurnsAudioUnit/ModulationEngine.hpp>
 
 const size_t kAudioBlockSize = 16;
 const size_t kPolyphony = 1;

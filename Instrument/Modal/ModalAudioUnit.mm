@@ -8,10 +8,10 @@
 #import "ModalAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
 #import "ElementsDSPKernel.hpp"
-#import <BurnsAudio/BufferedAudioBus.hpp>
-#import <BurnsAudio/AudioBuffers.h>
-#import <BurnsAudio/StateManager.h>
-#import <BurnsAudio/HostTransport.h>
+#import <BurnsAudioUnit/BufferedAudioBus.hpp>
+#import <BurnsAudioUnit/AudioBuffers.h>
+#import <BurnsAudioUnit/StateManager.h>
+#import <BurnsAudioUnit/HostTransport.h>
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);

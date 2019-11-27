@@ -8,17 +8,17 @@
 #ifndef ElementsDSPKernel_h
 #define ElementsDSPKernel_h
 
-#import <BurnsAudio/multistage_envelope.h>
-#import <BurnsAudio/DSPKernel.hpp>
+#import <BurnsAudioUnit/multistage_envelope.h>
+#import <BurnsAudioUnit/DSPKernel.hpp>
 #import "stmlib/dsp/parameter_interpolator.h"
 
 #import <vector>
 #import "elements/dsp/part.h"
-#import <BurnsAudio/LFOKernel.hpp>
-#import <BurnsAudio/converter.hpp>
+#import <BurnsAudioUnit/LFOKernel.hpp>
+#import <BurnsAudioUnit/converter.hpp>
 
-#import <BurnsAudio/MIDIProcessor.hpp>
-#import <BurnsAudio/ModulationEngine.hpp>
+#import <BurnsAudioUnit/MIDIProcessor.hpp>
+#import <BurnsAudioUnit/ModulationEngine.hpp>
 
 const size_t kAudioBlockSize = 16;
 const size_t kPolyphony = 1;

@@ -2,7 +2,7 @@
 #define SpectrumAudioUnit_h
 
 #import <AudioToolbox/AudioToolbox.h>
-#import <BurnsAudio/MIDIProcessorWrapper.h>
+#import <BurnsAudioUnit/MIDIProcessorWrapper.h>
 
 @interface SpectrumAudioUnit : AUAudioUnit
 - (NSArray<NSNumber *> *)drawLFO;

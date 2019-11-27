@@ -8,18 +8,18 @@
 #ifndef CloudsDSPKernel_h
 #define CloudsDSPKernel_h
 
-#import <BurnsAudio/KernelTransportState.h>
+#import <BurnsAudioUnit/KernelTransportState.h>
 
 #import "clouds/dsp/granular_processor.h"
-#import <BurnsAudio/multistage_envelope.h>
-#import <BurnsAudio/DSPKernel.hpp>
-#import <BurnsAudio/converter.hpp>
+#import <BurnsAudioUnit/multistage_envelope.h>
+#import <BurnsAudioUnit/DSPKernel.hpp>
+#import <BurnsAudioUnit/converter.hpp>
 #import "stmlib/dsp/parameter_interpolator.h"
 #import <vector>
 
-#import <BurnsAudio/MIDIProcessor.hpp>
-#import <BurnsAudio/ModulationEngine.hpp>
-#import <BurnsAudio/LFOKernel.hpp>
+#import <BurnsAudioUnit/MIDIProcessor.hpp>
+#import <BurnsAudioUnit/ModulationEngine.hpp>
+#import <BurnsAudioUnit/LFOKernel.hpp>
 
 const size_t kAudioBlockSize = 32;
 const size_t kPolyphony = 1;

@@ -9,7 +9,7 @@
 #define ModalAudioUnit_h
 
 #import <AudioToolbox/AudioToolbox.h>
-#import <BurnsAudio/MIDIProcessorWrapper.h>
+#import <BurnsAudioUnit/MIDIProcessorWrapper.h>
 
 @interface ModalAudioUnit : AUAudioUnit
 - (NSArray<NSNumber *> *)drawLFO;

@@ -2,11 +2,11 @@
 #import "SpectrumAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
 #import "PlaitsDSPKernel.hpp"
-#import <BurnsAudio/BufferedAudioBus.hpp>
-#import <BurnsAudio/AudioBuffers.h>
-#import <BurnsAudio/StateManager.h>
-#import <BurnsAudio/HostTransport.h>
-#import <BurnsAudio/MIDIProcessor.hpp>
+#import <BurnsAudioUnit/BufferedAudioBus.hpp>
+#import <BurnsAudioUnit/AudioBuffers.h>
+#import <BurnsAudioUnit/StateManager.h>
+#import <BurnsAudioUnit/HostTransport.h>
+#import <BurnsAudioUnit/MIDIProcessor.hpp>
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);

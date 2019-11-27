@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 import SpectrumFramework
-import BurnsAudioFramework
+import BurnsAudio
 
 // TODO:  HACK :( having to copy params enum into swift land
 enum PlaitsParam: AUParameterAddress {

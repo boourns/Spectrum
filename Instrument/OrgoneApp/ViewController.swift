@@ -1,5 +1,5 @@
 import UIKit
-import BurnsAudioFramework
+import BurnsAudio
 
 class ViewController: UIViewController {
     class Text: UILabel {

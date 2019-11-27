@@ -7,7 +7,7 @@
 
 import UIKit
 import UserNotifications
-import BurnsAudioFramework
+import BurnsAudio
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

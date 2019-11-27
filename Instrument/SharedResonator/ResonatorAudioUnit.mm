@@ -8,9 +8,9 @@
 #import "ResonatorAudioUnit.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RingsDSPKernel.hpp"
-#import <BurnsAudio/AudioBuffers.h>
-#import <BurnsAudio/StateManager.h>
-#import <BurnsAudio/HostTransport.h>
+#import <BurnsAudioUnit/AudioBuffers.h>
+#import <BurnsAudioUnit/StateManager.h>
+#import <BurnsAudioUnit/HostTransport.h>
 
 #ifdef DEBUG
 #define DEBUG_LOG(...) NSLog(__VA_ARGS__);
