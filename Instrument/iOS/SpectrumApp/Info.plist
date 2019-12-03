@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SILVER_APPNAME</key>
+	<string>$(SILVER_APPNAME)</string>
+	<key>SILVER_API_ENDPOINT</key>
+	<string>$(SILVER_API_ENDPOINT)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

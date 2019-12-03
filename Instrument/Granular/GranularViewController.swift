@@ -40,7 +40,8 @@ enum CloudsParam: AUParameterAddress {
     case LfoTempoSync = 27
     case LfoResetPhase = 28
     case LfoKeyReset = 29
-    
+    case Quality = 30
+
     case ModMatrixStart = 400
     case ModMatrixEnd = 440
 };
@@ -100,7 +101,8 @@ class GranularViewController: BaseAudioUnitViewController {
                  cStack([
                     Stack([
                         panel(HStack([
-                            picker(CloudsParam.Mode.rawValue)
+                            picker(CloudsParam.Mode.rawValue),
+                            picker(CloudsParam.Quality.rawValue)
                             ])),
                         panel2(HStack([
                             knob(CloudsParam.Wet.rawValue),

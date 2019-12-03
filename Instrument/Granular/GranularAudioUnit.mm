@@ -67,9 +67,9 @@
                            ];
     
     NSArray *qualityStrings = @[
-                             @"Hi / 2ch",
+                             @"Hi / Stereo",
                              @"Hi / Mono",
-                             @"Lo / 2ch",
+                             @"Lo / Stereo",
                              @"Lo / Mono",
                              ];
     

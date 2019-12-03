@@ -15,8 +15,6 @@
 		92A10D051B9527D10081EA80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C841B9517A50081EA80 /* ViewController.swift */; };
 		92A10D061B9528480081EA80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A10C7B1B9517A50081EA80 /* AppDelegate.swift */; };
 		92A10D081B95285A0081EA80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92A10C7D1B9517A50081EA80 /* LaunchScreen.storyboard */; };
-		E205C34723244F6D0003B8BB /* BurnsAudioFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = E205C34523244F6D0003B8BB /* BurnsAudioFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E205C34B23244F6D0003B8BB /* BurnsAudioFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E205C3732324982A0003B8BB /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C371232497FC0003B8BB /* Dummy.swift */; };
 		E205C3B823249DA60003B8BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3B723249DA60003B8BB /* AppDelegate.swift */; };
 		E205C3BA23249DA60003B8BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3B923249DA60003B8BB /* ViewController.swift */; };
@@ -26,10 +24,7 @@
 		E205C3D32324A23B0003B8BB /* OrgoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205C3D22324A23B0003B8BB /* OrgoneViewController.swift */; };
 		E205C3D62324A23B0003B8BB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E205C3D42324A23B0003B8BB /* MainInterface.storyboard */; };
 		E205C3DB2324A23B0003B8BB /* Orgone.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E205C3CD2324A23B0003B8BB /* Orgone.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E205C3E02324A2510003B8BB /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
 		E205C4052324A8670003B8BB /* consts.c in Sources */ = {isa = PBXBuildFile; fileRef = E205C3E72324A8660003B8BB /* consts.c */; };
-		E20F64492324B62900555ABC /* BurnsAudioFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; };
-		E20F644A2324B62900555ABC /* BurnsAudioFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2154AA9229249AA00CEED2E /* resources.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A2C229249AA00CEED2E /* resources.h */; };
 		E2154AAC229249AA00CEED2E /* resources.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2154A2F229249AA00CEED2E /* resources.cc */; };
 		E2154AAD229249AA00CEED2E /* pot_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = E2154A30229249AA00CEED2E /* pot_controller.h */; };
@@ -289,26 +284,12 @@
 			remoteGlobalIDString = 92A10CE01B9521B00081EA80;
 			remoteInfo = InstrumentDemoFramework;
 		};
-		E205C34823244F6D0003B8BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E205C34223244F6C0003B8BB;
-			remoteInfo = BurnsAudioFramework;
-		};
 		E205C3D92324A23B0003B8BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = E205C3CC2324A23B0003B8BB;
 			remoteInfo = Orgone;
-		};
-		E20F644B2324B62900555ABC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91D3DA0C1B023C03008FFFBB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E205C34223244F6C0003B8BB;
-			remoteInfo = BurnsAudioFramework;
 		};
 		E2154B2C2292522200CEED2E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -406,7 +387,6 @@
 				E288BA53238A3F85004380E4 /* BurnsAudio.framework in Embed Frameworks */,
 				E288BA00238A3E02004380E4 /* BurnsAudioUnit.framework in Embed Frameworks */,
 				92A10CE91B9521B00081EA80 /* SpectrumFramework.framework in Embed Frameworks */,
-				E205C34B23244F6D0003B8BB /* BurnsAudioFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,7 +424,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E20F644A2324B62900555ABC /* BurnsAudioFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,9 +444,6 @@
 		92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpectrumFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5234C821CA0966600902296 /* SpectrumAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpectrumAudioUnit.h; sourceTree = "<group>"; };
 		B5234C831CA0966600902296 /* SpectrumAudioUnit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpectrumAudioUnit.mm; sourceTree = "<group>"; };
-		E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BurnsAudioFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E205C34523244F6D0003B8BB /* BurnsAudioFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BurnsAudioFramework.h; sourceTree = "<group>"; };
-		E205C34623244F6D0003B8BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E205C371232497FC0003B8BB /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E205C3B523249DA60003B8BB /* OrgoneApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OrgoneApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E205C3B723249DA60003B8BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -797,18 +773,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E205C34023244F6C0003B8BB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E205C3B223249DA60003B8BB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E20F64492324B62900555ABC /* BurnsAudioFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,7 +784,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E205C3E02324A2510003B8BB /* BurnsAudioFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -925,7 +892,6 @@
 				E2154B262292522200CEED2E /* FunctionalTableData.xcodeproj */,
 				30AEE0F81BA3510D00302EB1 /* Instrument (iOS) */,
 				9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */,
-				E205C34423244F6C0003B8BB /* BurnsAudioFramework */,
 				E205C3B623249DA60003B8BB /* OrgoneApp */,
 				E205C3CE2324A23B0003B8BB /* Orgone */,
 				91D3DA171B023C1E008FFFBB /* Products */,
@@ -944,7 +910,6 @@
 				E2ABBB9622C47827001FA69B /* ModalEffect.appex */,
 				E22C33F522C5B9F900185BB5 /* Resonator.appex */,
 				E22C341622C63F8D00185BB5 /* ResonatorEffect.appex */,
-				E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */,
 				E205C3B523249DA60003B8BB /* OrgoneApp.app */,
 				E205C3CD2324A23B0003B8BB /* Orgone.appex */,
 			);
@@ -988,15 +953,6 @@
 			);
 			name = Shared;
 			path = ../../Shared;
-			sourceTree = "<group>";
-		};
-		E205C34423244F6C0003B8BB /* BurnsAudioFramework */ = {
-			isa = PBXGroup;
-			children = (
-				E205C34523244F6D0003B8BB /* BurnsAudioFramework.h */,
-				E205C34623244F6D0003B8BB /* Info.plist */,
-			);
-			path = BurnsAudioFramework;
 			sourceTree = "<group>";
 		};
 		E205C3B623249DA60003B8BB /* OrgoneApp */ = {
@@ -1730,14 +1686,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E205C33E23244F6C0003B8BB /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E205C34723244F6D0003B8BB /* BurnsAudioFramework.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -1761,7 +1709,6 @@
 				E2ABBBA322C47827001FA69B /* PBXTargetDependency */,
 				E22C340222C5B9F900185BB5 /* PBXTargetDependency */,
 				E22C342322C63F8D00185BB5 /* PBXTargetDependency */,
-				E205C34923244F6D0003B8BB /* PBXTargetDependency */,
 			);
 			name = iOSSpectrumApp;
 			productName = iOSSpectrumApp;
@@ -1786,24 +1733,6 @@
 			productReference = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E205C34223244F6C0003B8BB /* BurnsAudioFramework */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E205C35323244F6D0003B8BB /* Build configuration list for PBXNativeTarget "BurnsAudioFramework" */;
-			buildPhases = (
-				E205C33E23244F6C0003B8BB /* Headers */,
-				E205C33F23244F6C0003B8BB /* Sources */,
-				E205C34023244F6C0003B8BB /* Frameworks */,
-				E205C34123244F6C0003B8BB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BurnsAudioFramework;
-			productName = BurnsAudioFramework;
-			productReference = E205C34323244F6C0003B8BB /* BurnsAudioFramework.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		E205C3B423249DA60003B8BB /* OrgoneApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E205C3C423249DA70003B8BB /* Build configuration list for PBXNativeTarget "OrgoneApp" */;
@@ -1818,7 +1747,6 @@
 			);
 			dependencies = (
 				E205C3DA2324A23B0003B8BB /* PBXTargetDependency */,
-				E20F644C2324B62900555ABC /* PBXTargetDependency */,
 			);
 			name = OrgoneApp;
 			productName = OrgoneApp;
@@ -1971,11 +1899,6 @@
 						CreatedOnToolsVersion = 7.0;
 						ProvisioningStyle = Manual;
 					};
-					E205C34223244F6C0003B8BB = {
-						CreatedOnToolsVersion = 10.2;
-						DevelopmentTeam = YC8HZ62228;
-						ProvisioningStyle = Automatic;
-					};
 					E205C3B423249DA60003B8BB = {
 						CreatedOnToolsVersion = 10.2;
 						DevelopmentTeam = YC8HZ62228;
@@ -2079,7 +2002,6 @@
 				E2ABBB9522C47827001FA69B /* ModalEffect */,
 				E22C33F422C5B9F900185BB5 /* Resonator */,
 				E22C341522C63F8D00185BB5 /* ResonatorEffect */,
-				E205C34223244F6C0003B8BB /* BurnsAudioFramework */,
 				E205C3B423249DA60003B8BB /* OrgoneApp */,
 				E205C3CC2324A23B0003B8BB /* Orgone */,
 			);
@@ -2136,13 +2058,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		92A10CDF1B9521B00081EA80 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E205C34123244F6C0003B8BB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2287,13 +2202,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E205C33F23244F6C0003B8BB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E205C3B123249DA60003B8BB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2383,20 +2291,10 @@
 			target = 92A10CE01B9521B00081EA80 /* iOSSpectrumFramework */;
 			targetProxy = 92A10CE61B9521B00081EA80 /* PBXContainerItemProxy */;
 		};
-		E205C34923244F6D0003B8BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E205C34223244F6C0003B8BB /* BurnsAudioFramework */;
-			targetProxy = E205C34823244F6D0003B8BB /* PBXContainerItemProxy */;
-		};
 		E205C3DA2324A23B0003B8BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E205C3CC2324A23B0003B8BB /* Orgone */;
 			targetProxy = E205C3D92324A23B0003B8BB /* PBXContainerItemProxy */;
-		};
-		E20F644C2324B62900555ABC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E205C34223244F6C0003B8BB /* BurnsAudioFramework */;
-			targetProxy = E20F644B2324B62900555ABC /* PBXContainerItemProxy */;
 		};
 		E2184AB0229F03A500CA4DFE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2542,6 +2440,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SILVER_API_ENDPOINT = "https://silver.burns.ca/token";
+				SILVER_APPNAME = SpectrumDev;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -2575,6 +2475,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				SILVER_API_ENDPOINT = "https://silver.burns.ca/token";
+				SILVER_APPNAME = Spectrum;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};
@@ -2807,108 +2709,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/iOSSpectrumFramework-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		E205C34C23244F6D0003B8BB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = YC8HZ62228;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/BurnsAudioFramework/Framework/**";
-				INFOPLIST_FILE = BurnsAudioFramework/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.BurnsAudioFramework;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		E205C34D23244F6D0003B8BB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = YC8HZ62228;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/BurnsAudioFramework/Framework/**";
-				INFOPLIST_FILE = BurnsAudioFramework/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.burnsaudio.BurnsAudioFramework;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -3721,15 +3521,6 @@
 			buildConfigurations = (
 				92A10CEB1B9521B00081EA80 /* Debug */,
 				92A10CEC1B9521B00081EA80 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E205C35323244F6D0003B8BB /* Build configuration list for PBXNativeTarget "BurnsAudioFramework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E205C34C23244F6D0003B8BB /* Debug */,
-				E205C34D23244F6D0003B8BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

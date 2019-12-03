@@ -11,23 +11,26 @@ import UserNotifications
 import BurnsAudio
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     // MARK: Properties
 	var window: UIWindow?
+    var silverAppName: String?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = ViewController()
         window!.makeKeyAndVisible()
         
-        registerForPushNotifications()
+        configurePushNotifications()
         
         if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject],
-            let aps = notification["aps"] as? [String: AnyObject],
-            let link = aps["link"] as? String,
-            let url = URL(string: link) {
-                UIApplication.shared.open(url)
-        }
+                   let aps = notification["aps"] as? [String: AnyObject],
+                   let link = aps["link"] as? String,
+                   let url = URL(string: link) {
+                       UIApplication.shared.open(url)
+               }
+               
+        UNUserNotificationCenter.current().delegate = self
 
         return true
     }
@@ -72,12 +75,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenParts.joined()
         print("Device Token: \(token)")
-        Silver.report(status: .Authorized(token: token))
+        
+        Silver.report(appName: silverAppName!, status: .Authorized(token: token))
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
-        Silver.report(status: .Unauthorized)
+        
+        Silver.report(appName: silverAppName!, status: .Unauthorized)
+    }
+    
+    // This method will be called when app received push notifications in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            if let notification =  response.notification.request.content.userInfo as? [String: AnyObject], let aps = notification["aps"] as? [String: AnyObject],
+                let link = aps["link"] as? String,
+                let url = URL(string: link) {
+                    UIApplication.shared.open(url)
+            }
+        }
+    }
+    
+    func configurePushNotifications() {
+        guard let appName = Bundle.main.infoDictionary?["SILVER_APPNAME"] as? String,
+            let apiEndpoint = Bundle.main.infoDictionary?["SILVER_API_ENDPOINT"] as? String else {
+                fatalError("Add SILVER_APPNAME and SILVER_API_ENDPOINT to Info.plist")
+        }
+        
+        Silver.setRegistrationUrl(apiEndpoint)
+        silverAppName = appName
+        
+        registerForPushNotifications()
     }
 }
 
