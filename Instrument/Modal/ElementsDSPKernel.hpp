@@ -410,7 +410,6 @@ public:
             delayed_trigger = true;
         }
         state = NoteStatePlaying;
-        printf("note state playing");
     }
     
     virtual void retrigger() override {
