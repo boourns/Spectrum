@@ -37,7 +37,6 @@ enum PlaitsParam: AUParameterAddress {
     case EnvSustain = 22
     case EnvRelease = 23
     case PitchBendRange = 24
-    case VelocityDepth = 27
     case AmpEnvAttack = 28
     case AmpEnvDecay = 29
     case AmpEnvSustain = 30
@@ -49,6 +48,7 @@ enum PlaitsParam: AUParameterAddress {
     case LfoTempoSync = 36
     case LfoResetPhase = 37
     case LfoKeyReset = 38
+    case VelocityDepth = 39
     case ModMatrixStart = 400
     case ModMatrixEnd = 448
 };

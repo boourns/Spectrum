@@ -70,6 +70,10 @@ struct PersistentBlock {
   void* data;
 };
 
+typedef struct {
+    
+} ReverbState;
+
 class GranularProcessor {
  public:
   GranularProcessor() { }

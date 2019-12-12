@@ -56,7 +56,6 @@ enum {
     PlaitsParamEnvSustain = 22,
     PlaitsParamEnvRelease = 23,
     PlaitsParamPitchBendRange = 24,
-    PlaitsParamVelocityDepth = 27,
     PlaitsParamAmpEnvAttack = 28,
     PlaitsParamAmpEnvDecay = 29,
     PlaitsParamAmpEnvSustain = 30,
@@ -68,6 +67,7 @@ enum {
     PlaitsParamLfoTempoSync = 36,
     PlaitsParamLfoResetPhase = 37,
     PlaitsParamLfoKeyReset = 38,
+    PlaitsParamVelocityDepth = 39,
 
     PlaitsParamModMatrixStart = 400,
     PlaitsParamModMatrixEnd = 400 + (kNumModulationRules * 4), // 39 + 48 = 87

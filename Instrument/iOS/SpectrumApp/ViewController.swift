@@ -21,9 +21,8 @@ class ViewController: UIViewController {
             setTitle(text, for: .normal)
             backgroundColor = UIColor.black
             setTitleColor(.white, for: .normal)
-            layer.borderColor = UIColor.white.cgColor
             contentEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
-            
+            layer.borderColor = UIColor.white.cgColor
             layer.borderWidth = 1.0
             layer.cornerRadius = 10
             clipsToBounds = true

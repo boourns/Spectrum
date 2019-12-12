@@ -421,7 +421,7 @@
     @"LFORate",
     @"LFOAmount",
     @"Source",
-    @"SourceSpread",
+    @"Src Spread",
     @"Pan",
     @"Level",
     @"Portamento",
