@@ -24,7 +24,7 @@ class ViewController: UIViewController {
             contentEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
             layer.borderColor = UIColor.white.cgColor
             layer.borderWidth = 1.0
-            layer.cornerRadius = 10
+            layer.cornerRadius = 5
             clipsToBounds = true
             
             addControlEvent(.touchUpInside) {
