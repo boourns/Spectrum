@@ -93,7 +93,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
                  cStack([
                    Stack([
                      panel(HStack([
-                        picker(PlaitsParam.Algorithm.rawValue),
+                        menuPicker(PlaitsParam.Algorithm.rawValue),
                         intKnob(PlaitsParam.Pitch.rawValue),
                         knob(PlaitsParam.Detune.rawValue),
                      ])),

@@ -125,7 +125,7 @@ class ModalViewController: BaseAudioUnitViewController {
                         HStack([
                             intKnob(ElementsParam.Pitch.rawValue),
                             knob(ElementsParam.Detune.rawValue),
-                            picker(ElementsParam.Mode.rawValue)
+                            menuPicker(ElementsParam.Mode.rawValue)
                             ]),
                         HStack([
                             knob(ElementsParam.ResonatorGeometry.rawValue, size: 70),

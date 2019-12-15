@@ -101,8 +101,8 @@ class GranularViewController: BaseAudioUnitViewController {
                  cStack([
                     Stack([
                         panel(HStack([
-                            picker(CloudsParam.Mode.rawValue),
-                            picker(CloudsParam.Quality.rawValue)
+                            menuPicker(CloudsParam.Mode.rawValue),
+                            menuPicker(CloudsParam.Quality.rawValue)
                             ])),
                         panel2(HStack([
                             knob(CloudsParam.Wet.rawValue),

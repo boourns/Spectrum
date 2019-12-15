@@ -84,7 +84,7 @@ class ResonatorViewController: BaseAudioUnitViewController {
                         panel(HStack([
                             intKnob(RingsParam.Pitch.rawValue),
                             knob(RingsParam.Detune.rawValue),
-                            picker(RingsParam.Mode.rawValue)
+                            menuPicker(RingsParam.Mode.rawValue)
                             ])),
                         panel(HStack(main)),
                         panel(cStack([
