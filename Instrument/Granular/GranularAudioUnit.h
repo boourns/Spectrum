@@ -19,6 +19,10 @@
 - (MIDIProcessorWrapper *) midiProcessor;
 - (void) saveDefaults;
 - (void) loadFromDefaults;
+
+- (void) reloadCloudsBufferFromState:(NSDictionary *)state;
+- (void) storeCloudsBufferInState:(NSMutableDictionary *)state;
+
 @end
 
 #endif /* GranularAudioUnit_h */

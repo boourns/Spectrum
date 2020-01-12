@@ -139,7 +139,7 @@ public:
         float rightGain, leftGain, rightGainTarget, leftGainTarget;
         float leftSource, rightSource, leftSourceTarget, rightSourceTarget;
 
-        plaits::Voice *voice;
+        plaits::Voice *voice = nil;
         plaits::Modulations modulations;
         ModulationEngine modEngine;
         double portamento = 0.0;
@@ -164,11 +164,18 @@ public:
         
         VoiceState() : modEngine(NumModulationInputs, NumModulationOutputs),
         lfo(PlaitsParamLfoRate, PlaitsParamLfoShape, PlaitsParamLfoShapeMod, PlaitsParamLfoTempoSync, PlaitsParamLfoResetPhase, PlaitsParamLfoKeyReset) {
-            
+        }
+        
+        ~VoiceState() {
+            KERNEL_DEBUG_LOG("kernel voice delete\n")
+
+            if (voice != nil) {
+                delete voice;
+            }
         }
         
         void Init(ModulationEngineRuleList *rules) {
-            KERNEL_DEBUG_LOG("kernel voice Init")
+            KERNEL_DEBUG_LOG("kernel voice Init\n")
             voice = new plaits::Voice();
             stmlib::BufferAllocator allocator(ram_block, 16384);
             voice->Init(&allocator);
@@ -484,6 +491,13 @@ public:
         modulations.morph_patched = true;
         modulations.trigger_patched = true;
         modulations.level_patched = true;
+    }
+    
+    ~PlaitsDSPKernel() {
+        KERNEL_DEBUG_LOG("PlaitsDSPKernel destructor")
+        if (outputSrc != nil) {
+            delete outputSrc;
+        }
     }
     
     void init(int channelCount, double inSampleRate) {

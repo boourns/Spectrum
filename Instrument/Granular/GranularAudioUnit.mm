@@ -20,6 +20,9 @@
 #define DEBUG_LOG(...)
 #endif
 
+#define CLOUDS_SMALLBUFFER_LEN (65536 - 128)
+#define CLOUDS_LARGEBUFFER_LEN 118784
+
 @interface GranularAudioUnit ()
 
 @property AudioBuffers *audioBuffers;
@@ -34,6 +37,7 @@
 @implementation GranularAudioUnit {
     // C++ members need to be ivars; they would be copied on access if they were properties.
     CloudsDSPKernel _kernel;
+    AUParameter *freezeParameter;
 }
 
 @synthesize parameterTree = _parameterTree;
@@ -109,7 +113,7 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameter *freeze = [AUParameterTree createParameterWithIdentifier:@"freeze" name:@"Freeze"
+    freezeParameter = [AUParameterTree createParameterWithIdentifier:@"freeze" name:@"Freeze"
                                                                                                                                                                                              address:CloudsParamFreeze
                                                                                                                                                                                                  min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                                                                                                                                                flags: flags valueStrings:nil dependentParameters:nil];
@@ -144,7 +148,7 @@
                                                                       min:0.0 max:1.0 unit:kAudioUnitParameterUnit_Generic unitName:nil
                                                                     flags: flags valueStrings:nil dependentParameters:nil];
     
-    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, quality, position, size, density, texture, inputGain, freeze, trigger, pitchParam, detuneParam, padX, padY, padGate]];
+    AUParameterGroup *main = [AUParameterTree createGroupWithIdentifier:@"main" name:@"Main" children:@[mode, quality, position, size, density, texture, inputGain, freezeParameter, trigger, pitchParam, detuneParam, padX, padY, padGate]];
 
     AUParameter *wet = [AUParameterTree createParameterWithIdentifier:@"wet" name:@"Dry/Wet"
                                                                   address:CloudsParamWet
@@ -540,19 +544,27 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 }
 
 - (NSDictionary *)fullState {
-    return [_stateManager fullStateWithDictionary:[super fullState]];
+    NSMutableDictionary *parentState = [_stateManager fullStateWithDictionary:[super fullState]];
+    
+    [self storeCloudsBufferInState:parentState];
+
+    return parentState;
 }
 
 - (void)setFullState:(NSDictionary *)fullState {
     [_stateManager setFullState:fullState];
     
     _kernel.setupModulationRules();
+    [self reloadCloudsBufferFromState:fullState];
 }
 
 - (NSDictionary *)fullStateForDocument {
     DEBUG_LOG(@"fullStateForDocument")
+    NSMutableDictionary *parentState = [_stateManager fullStateForDocumentWithDictionary:[super fullStateForDocument]];
+     
+    [self storeCloudsBufferInState:parentState];
     
-    return [_stateManager fullStateForDocumentWithDictionary:[super fullStateForDocument]];
+    return parentState;
 }
 
 - (void)setFullStateForDocument:(NSDictionary *)fullStateForDocument {
@@ -562,8 +574,27 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [super setFullStateForDocument:fullStateForDocument];
     
     _kernel.setupModulationRules();
+    [self reloadCloudsBufferFromState:fullStateForDocument];
+
     DEBUG_LOG(@"setFullStateForDocument end")
-    
+}
+
+- (void) reloadCloudsBufferFromState:(NSDictionary *)state {
+    NSData *smallBuffer = state[@"smallBuffer"];
+    NSData *largeBuffer = state[@"largeBuffer"];
+    if (smallBuffer != nil && largeBuffer != nil && smallBuffer.length == CLOUDS_SMALLBUFFER_LEN && largeBuffer.length == CLOUDS_LARGEBUFFER_LEN) {
+        DEBUG_LOG(@"reloading Clouds buffer from State")
+        
+        memcpy(_kernel.small_buffer, smallBuffer.bytes, CLOUDS_SMALLBUFFER_LEN);
+        memcpy(_kernel.large_buffer, largeBuffer.bytes, CLOUDS_LARGEBUFFER_LEN);
+    }
+}
+
+- (void) storeCloudsBufferInState:(NSMutableDictionary *)state {
+    if (freezeParameter.value > 0.9f) {
+        state[@"largeBuffer"] = [NSData dataWithBytes:_kernel.large_buffer length:CLOUDS_LARGEBUFFER_LEN];
+        state[@"smallBuffer"] = [NSData dataWithBytes:_kernel.small_buffer length:CLOUDS_SMALLBUFFER_LEN];
+    }
 }
 
 - (void) saveDefaults {

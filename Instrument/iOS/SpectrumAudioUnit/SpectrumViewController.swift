@@ -65,6 +65,7 @@ class SpectrumViewController: BaseAudioUnitViewController {
     let big = CGFloat(70.0)
     let small = CGFloat(50.0)
     var lfoImage: LFOImage!
+    var displayLink: CADisplayLink? = nil
     
     @objc func step(displaylink: CADisplayLink) {
         guard let audioUnit = audioUnit as? SpectrumAudioUnit else { return }
@@ -73,20 +74,34 @@ class SpectrumViewController: BaseAudioUnitViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if (displayLink == nil) {
+            displayLink = CADisplayLink(target: self,
+                                        selector: #selector(step))
+
+            displayLink?.add(to: .current,
+                            forMode: RunLoop.Mode.default)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
     override func buildUI() -> UI {
         state.colours = SpectrumUI.purple
         
-        lfoImage = LFOImage(
-            renderLfo: { [weak self] in
-            guard let this = self else { return nil }
-            return (this.audioUnit as? SpectrumAudioUnit)?.drawLFO()
-        })
+        let au = audioUnit as? SpectrumAudioUnit
         
-        let displaylink = CADisplayLink(target: self,
-                                        selector: #selector(step))
-            
-        displaylink.add(to: .current,
-                        forMode: RunLoop.Mode.default)
+        lfoImage = LFOImage(
+            renderLfo: { [weak au] in
+                return au?.drawLFO()
+        })
 
         return UI(state: state, [
             Page("Spectrum",
@@ -159,7 +174,6 @@ class SpectrumViewController: BaseAudioUnitViewController {
             modMatrixPage(modStart: PlaitsParam.ModMatrixStart.rawValue + 24, numberOfRules: 6),
             
             settingsPage()
-
             ]) // ui page list
         
     }
@@ -170,33 +184,34 @@ class SpectrumViewController: BaseAudioUnitViewController {
         
         let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" }, horizontal: true)
         
-        midiChannel.addControlEvent(.valueChanged) {
-            processor.setChannel(Int32(midiChannel.value - 1))
+        midiChannel.addControlEvent(.valueChanged) { [weak processor] in
+            processor?.setChannel(Int32(midiChannel.value - 1))
         }
         
         let midiCC = Picker(name: "MIDI CC Control", value: processor.automation() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
-        midiCC.addControlEvent(.valueChanged) {
-            processor.setAutomation(midiCC.value > 0.9)
+        midiCC.addControlEvent(.valueChanged) { [weak processor] in
+            processor?.setAutomation(midiCC.value > 0.9)
         }
         
         let mpe = Picker(name: "MPE", value: processor.mpeEnabled() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
-        mpe.addControlEvent(.valueChanged) {
-            processor.setMPEEnabled(mpe.value > 0.9)
+        mpe.addControlEvent(.valueChanged) { [weak processor] in
+            processor?.setMPEEnabled(mpe.value > 0.9)
         }
         
         let zone = Picker(name: "MPE Zone", value: processor.mpeMasterChannel() == 0 ? 0.0 : 1.0, valueStrings: ["Lower", "Upper"], horizontal: true)
-        zone.addControlEvent(.valueChanged) {
-            processor.setMPEMasterChannel(zone.value < 0.5 ? 0 : 15)
+        zone.addControlEvent(.valueChanged) { [weak processor] in
+            processor?.setMPEMasterChannel(zone.value < 0.5 ? 0 : 15)
         }
         
         let bendRange = Picker(name: "MPE Bend Range", value: semitonesToBendRangeSetting(range: processor.mpePitchbendRange()), valueStrings: ["+/- 12", "+/- 24", "+/- 48", "+/- 96"], horizontal: true)
-        zone.addControlEvent(.valueChanged) { [weak self] in
+        zone.addControlEvent(.valueChanged) { [weak self, weak processor] in
             guard let this = self else { return }
-            processor.setMPEPitchbendRange(this.bendRangeSettingToSemitones(setting: bendRange.value))
+            processor?.setMPEPitchbendRange(this.bendRangeSettingToSemitones(setting: bendRange.value))
         }
         
-        processor.onSettingsUpdate() { [weak self] in
+        processor.onSettingsUpdate() { [weak self, weak processor] in
             guard let this = self else { return }
+            guard let processor = processor else { return }
             midiChannel.value = Float(processor.channel() + 1)
             midiCC.value = processor.automation() ? 1.0 : 0.0
             mpe.value = processor.mpeEnabled() ? 1.0 : 0.0
@@ -206,16 +221,16 @@ class SpectrumViewController: BaseAudioUnitViewController {
         
         let loadDefault = SettingsButton()
         loadDefault.button.setTitle("Load Defaults", for: .normal)
-        loadDefault.button.addControlEvent(.touchUpInside) { [weak self] in
-            guard let this = self else { return }
+        loadDefault.button.addControlEvent(.touchUpInside) { [weak self, weak audioUnit] in
+            guard let this = self, let audioUnit = audioUnit else { return }
             audioUnit.loadFromDefaults()
             this.showToast(message: "Settings loaded", font: UIFont.preferredFont(forTextStyle: .subheadline))
         }
         
         let saveDefault = SettingsButton()
         saveDefault.button.setTitle("Save as Default", for: .normal)
-        saveDefault.button.addControlEvent(.touchUpInside) {[weak self] in
-            guard let this = self else { return }
+        saveDefault.button.addControlEvent(.touchUpInside) {[weak self, weak audioUnit] in
+            guard let this = self, let audioUnit = audioUnit else { return }
             audioUnit.saveDefaults()
             this.showToast(message: "Settings saved", font: UIFont.preferredFont(forTextStyle: .subheadline))
         }

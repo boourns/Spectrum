@@ -31,6 +31,7 @@
 }
 
 @synthesize parameterTree = _parameterTree;
+AUMIDIOutputEventBlock _outputEventBlock;
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
@@ -375,6 +376,8 @@
 
 -(void)dealloc {
     // Deallocate resources as required.
+    DEBUG_LOG(@"dealloc called!")
+
 }
 
 -(NSString*) audioUnitShortName {
@@ -497,16 +500,30 @@
         [_hostTransport setTransportStateBlock: self.transportStateBlock];
     }
     
+    if (self.MIDIOutputEventBlock) {
+      _outputEventBlock = self.MIDIOutputEventBlock;
+    }
+    
     return YES;
 }
 
 - (void)deallocateRenderResources {
     [_audioBuffers deallocateRenderResources];
-
+    _audioBuffers = nil;
     _hostTransport = nil;
+    _stateManager = nil;
+    _midiProcessor = nil;
+    _outputEventBlock = nil;
+    _parameterTree = nil;
+    
+    DEBUG_LOG(@"deallocateRenderResources")
 
     [super deallocateRenderResources];
 }
+
+//- (NSArray<NSString *>*)MIDIOutputNames {
+//  return @[@"Spectrum MIDI Out"];
+//}
 
 #pragma mark - AUAudioUnit (AUAudioUnitImplementation)
 
@@ -517,6 +534,7 @@
      */
     __block PlaitsDSPKernel *state = &_kernel;
     __block HostTransport *hostTransport = _hostTransport;
+   // __block AUMIDIOutputEventBlock midiOutputCapture = self.MIDIOutputEventBlock;
     
     return ^AUAudioUnitStatus(
                               AudioUnitRenderActionFlags *actionFlags,
