@@ -50,46 +50,65 @@ enum ElementsParam: AUParameterAddress {
 class ModalViewController: BaseAudioUnitViewController {
     var loadAsEffect = false
     
-    var lfoImage: LFOImage!
+    var lfoImage: LFOImage? = nil
+    var displayLink: CADisplayLink? = nil
+    
+    deinit {
+        NSLog("ModalViewController deinit")
+    }
     
     @objc func step(displaylink: CADisplayLink) {
         guard let audioUnit = audioUnit as? ModalAudioUnit else { return }
         if audioUnit.lfoDrawingDirty() {
-            lfoImage.setNeedsDisplay()
+            lfoImage?.setNeedsDisplay()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if (displayLink == nil) {
+            displayLink = CADisplayLink(target: self,
+                                        selector: #selector(step))
+
+            displayLink?.add(to: .current,
+                            forMode: RunLoop.Mode.default)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        displayLink?.invalidate()
+        displayLink = nil
+        
+        super.viewWillDisappear(animated)
     }
     
     override func buildUI() -> UI {
         state.colours = SpectrumUI.blue
         
+        let au = audioUnit as? ModalAudioUnit
+        
         lfoImage = LFOImage(
-            renderLfo: { [weak self] in
-                guard let this = self else { return nil }
-                return (this.audioUnit as? ModalAudioUnit)?.drawLFO()
+            renderLfo: { [weak au] in
+                return au?.drawLFO()
         })
-        
-        let displaylink = CADisplayLink(target: self,
-                                        selector: #selector(step))
-        
-        displaylink.add(to: .current,
-                        forMode: RunLoop.Mode.default)
         
         var main = [
             knob(ElementsParam.BlowMeta.rawValue, size: 70),
             knob(ElementsParam.StrikeMeta.rawValue, size: 70),
             ]
-        
+
         var timbre: UIView = HStack([
             knob(ElementsParam.BowTimbre.rawValue),
             knob(ElementsParam.BlowTimbre.rawValue),
             knob(ElementsParam.StrikeTimbre.rawValue),
         ])
-        
+
         if loadAsEffect {
             main = [
                 knob(ElementsParam.InputGain.rawValue, size: 70),
             ] + main
-            
+
             timbre = cStack([
                 HStack([
                     picker(ElementsParam.InputResonator.rawValue),
@@ -100,9 +119,9 @@ class ModalViewController: BaseAudioUnitViewController {
                     knob(ElementsParam.StrikeTimbre.rawValue),
                     ]),
                 ])
-            
+
         }
-        
+
         
         return UI(state: state, [
             Page("Main",
@@ -162,32 +181,33 @@ class ModalViewController: BaseAudioUnitViewController {
         
         let midiChannel = Picker(name: "MIDI Channel", value: Float(processor.channel() + 1), valueStrings: ["Omni"] + (1...16).map { "Ch \($0)" }, horizontal: true)
         
-        midiChannel.addControlEvent(.valueChanged) {
-            processor.setChannel(Int32(midiChannel.value - 1))
+        midiChannel.addControlEvent(.valueChanged) { [weak processor] in
+            processor?.setChannel(Int32(midiChannel.value - 1))
         }
         
         let midiCC = Picker(name: "MIDI CC Control", value: processor.automation() ? 1.0 : 0.0, valueStrings: ["Disabled", "Enabled"], horizontal: true)
-        midiCC.addControlEvent(.valueChanged) {
-            processor.setAutomation(midiCC.value > 0.9)
+        midiCC.addControlEvent(.valueChanged) { [weak processor] in
+            processor?.setAutomation(midiCC.value > 0.9)
         }
         
         let loadDefault = SettingsButton()
         loadDefault.button.setTitle("Load Defaults", for: .normal)
-        loadDefault.button.addControlEvent(.touchUpInside) { [weak self] in
+        loadDefault.button.addControlEvent(.touchUpInside) { [weak self, weak audioUnit] in
             guard let this = self else { return }
-            audioUnit.loadFromDefaults()
+            audioUnit?.loadFromDefaults()
             this.showToast(message: "Settings loaded", font: UIFont.preferredFont(forTextStyle: .subheadline))
         }
         
         let saveDefault = SettingsButton()
         saveDefault.button.setTitle("Save as Default", for: .normal)
-        saveDefault.button.addControlEvent(.touchUpInside) {[weak self] in
+        saveDefault.button.addControlEvent(.touchUpInside) {[weak self, weak audioUnit] in
             guard let this = self else { return }
-            audioUnit.saveDefaults()
+            audioUnit?.saveDefaults()
             this.showToast(message: "Settings saved", font: UIFont.preferredFont(forTextStyle: .subheadline))
         }
         
-        processor.onSettingsUpdate() {
+        processor.onSettingsUpdate() { [weak processor] in
+            guard let processor = processor else { return }
             midiChannel.value = Float(processor.channel() + 1)
             midiCC.value = processor.automation() ? 1.0 : 0.0
         }

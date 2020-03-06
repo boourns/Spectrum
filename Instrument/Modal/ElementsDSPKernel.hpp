@@ -8,6 +8,12 @@
 #ifndef ElementsDSPKernel_h
 #define ElementsDSPKernel_h
 
+#ifdef DEBUG
+#define KERNEL_DEBUG_LOG(...) printf(__VA_ARGS__);
+#else
+#define KERNEL_DEBUG_LOG(...)
+#endif
+
 #import <BurnsAudioUnit/multistage_envelope.h>
 #import <BurnsAudioUnit/DSPKernel.hpp>
 #import "stmlib/dsp/parameter_interpolator.h"
@@ -136,6 +142,17 @@ public:
         basePatch.resonator_damping = 0.8f;
         basePatch.resonator_position = 0.3f;
         basePatch.space = 0.1f;
+    }
+    
+    ~ElementsDSPKernel() {
+        KERNEL_DEBUG_LOG("kernel voice delete\n")
+        
+        if (inputSrc) {
+            delete inputSrc;
+        }
+        if (outputSrc) {
+            delete outputSrc;
+        }
     }
     
     void init(int channelCount, double inSampleRate) {
