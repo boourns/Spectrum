@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import CoreAudioKit
 import SpectrumFramework
-import BurnsAudio
+import BurnsAudioCore
 
 enum ElementsParam: AUParameterAddress {
     case ExciterEnvShape = 0

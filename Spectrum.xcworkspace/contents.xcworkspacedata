@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../BurnsAudio/BurnsAudio.xcodeproj">
+      location = "group:../BurnsAudioCore/BurnsAudioCore.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../BurnsAudioUnit/BurnsAudioUnit.xcodeproj">

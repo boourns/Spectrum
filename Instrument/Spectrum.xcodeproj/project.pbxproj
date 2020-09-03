@@ -211,14 +211,6 @@
 		E288BA08238A3E18004380E4 /* BurnsAudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA07238A3E18004380E4 /* BurnsAudioUnit.framework */; };
 		E288BA0A238A3E1D004380E4 /* BurnsAudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA09238A3E1D004380E4 /* BurnsAudioUnit.framework */; };
 		E288BA0C238A3E21004380E4 /* BurnsAudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA0B238A3E21004380E4 /* BurnsAudioUnit.framework */; };
-		E288BA52238A3F85004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA51238A3F85004380E4 /* BurnsAudio.framework */; };
-		E288BA53238A3F85004380E4 /* BurnsAudio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA51238A3F85004380E4 /* BurnsAudio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E288BA55238A3F8A004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA54238A3F8A004380E4 /* BurnsAudio.framework */; };
-		E288BA57238A3F9E004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA56238A3F9E004380E4 /* BurnsAudio.framework */; };
-		E288BA59238A3FA8004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA58238A3FA8004380E4 /* BurnsAudio.framework */; };
-		E288BA5B238A3FAF004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA5A238A3FAF004380E4 /* BurnsAudio.framework */; };
-		E288BA5D238A3FB6004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA5C238A3FB6004380E4 /* BurnsAudio.framework */; };
-		E288BA5F238A3FBE004380E4 /* BurnsAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E288BA5E238A3FBE004380E4 /* BurnsAudio.framework */; };
 		E290DD1322DECC0800948C48 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2184A99229E294B00CA4DFE /* ModalViewController.swift */; };
 		E290DD1422DECC0800948C48 /* ModalAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2184A9B229E29C300CA4DFE /* ModalAudioUnit.mm */; };
 		E290DD1522DECC0800948C48 /* ElementsDSPKernel.hpp in Sources */ = {isa = PBXBuildFile; fileRef = E2184A9E229E2AAC00CA4DFE /* ElementsDSPKernel.hpp */; };
@@ -272,6 +264,18 @@
 		E2E6060E229CE577004B33CB /* SpectrumAudioUnit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2E60600229CE577004B33CB /* SpectrumAudioUnit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A10CE11B9521B00081EA80 /* SpectrumFramework.framework */; };
 		E2E6061C229CE9E0004B33CB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E60617229CE9E0004B33CB /* MainInterface.storyboard */; };
+		E2EA1B652501712400D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B642501712400D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B662501712400D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B642501712400D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E2EA1B6A250173A000D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B69250173A000D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B6E250173B700D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B6D250173B700D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B72250173C400D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B71250173C400D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B73250173C400D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B71250173C400D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E2EA1B76250173CD00D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B75250173CD00D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B77250173CD00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B75250173CD00D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E2EA1B7A250173D600D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B79250173D600D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B7B250173D600D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B79250173D600D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E2EA1B7E250173DE00D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B7D250173DE00D5F4BE /* BurnsAudioCore.framework */; };
+		E2EA1B7F250173DE00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B7D250173DE00D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2F494D222DECA7000A1D487 /* GranularAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E225106A22B1F8E900DD88E8 /* GranularAudioUnit.mm */; };
 		E2F494D322DECA8400A1D487 /* GranularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107122B1FCE700DD88E8 /* GranularViewController.swift */; };
 /* End PBXBuildFile section */
@@ -384,9 +388,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E288BA53238A3F85004380E4 /* BurnsAudio.framework in Embed Frameworks */,
 				E288BA00238A3E02004380E4 /* BurnsAudioUnit.framework in Embed Frameworks */,
 				92A10CE91B9521B00081EA80 /* SpectrumFramework.framework in Embed Frameworks */,
+				E2EA1B662501712400D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,6 +428,50 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2EA1B74250173C400D5F4BE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E2EA1B73250173C400D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2EA1B78250173CD00D5F4BE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E2EA1B77250173CD00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2EA1B7C250173D600D5F4BE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E2EA1B7B250173D600D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2EA1B80250173DE00D5F4BE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E2EA1B7F250173DE00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -751,6 +799,13 @@
 		E2E60618229CE9E0004B33CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E2E60619229CE9E0004B33CB /* SpectrumAudioUnit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpectrumAudioUnit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E2E6061B229CE9E0004B33CB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2EA1B642501712400D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EA1B69250173A000D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EA1B6D250173B700D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EA1B71250173C400D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EA1B75250173CD00D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EA1B79250173D600D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EA1B7D250173DE00D5F4BE /* BurnsAudioCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BurnsAudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -758,9 +813,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA52238A3F85004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288B9FF238A3E02004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				92A10CE81B9521B00081EA80 /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B652501712400D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,9 +846,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA57238A3F9E004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288BA04238A3E0E004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				E2184AB7229F040700CA4DFE /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B6E250173B700D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,9 +856,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA59238A3FA8004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288BA06238A3E13004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				E225106E22B1FC7400DD88E8 /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B72250173C400D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,9 +866,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA5D238A3FB6004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288BA0A238A3E1D004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				E22C340722C5BA1200185BB5 /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B7A250173D600D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -821,9 +876,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA5F238A3FBE004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288BA0C238A3E21004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				E22C342822C63FC700185BB5 /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B7E250173DE00D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,9 +886,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA5B238A3FAF004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288BA08238A3E18004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				E2ABBBAB22C478A4001FA69B /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B76250173CD00D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,9 +896,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E288BA55238A3F8A004380E4 /* BurnsAudio.framework in Frameworks */,
 				E288BA02238A3E09004380E4 /* BurnsAudioUnit.framework in Frameworks */,
 				E2E60612229CE585004B33CB /* SpectrumFramework.framework in Frameworks */,
+				E2EA1B6A250173A000D5F4BE /* BurnsAudioCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1245,6 +1300,13 @@
 		E2154B322292523600CEED2E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2EA1B7D250173DE00D5F4BE /* BurnsAudioCore.framework */,
+				E2EA1B79250173D600D5F4BE /* BurnsAudioCore.framework */,
+				E2EA1B75250173CD00D5F4BE /* BurnsAudioCore.framework */,
+				E2EA1B71250173C400D5F4BE /* BurnsAudioCore.framework */,
+				E2EA1B6D250173B700D5F4BE /* BurnsAudioCore.framework */,
+				E2EA1B69250173A000D5F4BE /* BurnsAudioCore.framework */,
+				E2EA1B642501712400D5F4BE /* BurnsAudioCore.framework */,
 				E288BA5E238A3FBE004380E4 /* BurnsAudio.framework */,
 				E288BA5C238A3FB6004380E4 /* BurnsAudio.framework */,
 				E288BA5A238A3FAF004380E4 /* BurnsAudio.framework */,
@@ -1794,6 +1856,7 @@
 				E225105422B1F6DF00DD88E8 /* Sources */,
 				E225105522B1F6DF00DD88E8 /* Frameworks */,
 				E225105622B1F6DF00DD88E8 /* Resources */,
+				E2EA1B74250173C400D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1811,6 +1874,7 @@
 				E22C33F122C5B9F900185BB5 /* Sources */,
 				E22C33F222C5B9F900185BB5 /* Frameworks */,
 				E22C33F322C5B9F900185BB5 /* Resources */,
+				E2EA1B7C250173D600D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1828,6 +1892,7 @@
 				E22C341222C63F8D00185BB5 /* Sources */,
 				E22C341322C63F8D00185BB5 /* Frameworks */,
 				E22C341422C63F8D00185BB5 /* Resources */,
+				E2EA1B80250173DE00D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1845,6 +1910,7 @@
 				E2ABBB9222C47827001FA69B /* Sources */,
 				E2ABBB9322C47827001FA69B /* Frameworks */,
 				E2ABBB9422C47827001FA69B /* Resources */,
+				E2EA1B78250173CD00D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
