@@ -483,6 +483,8 @@ AUMIDIOutputEventBlock _outputEventBlock;
         return NO;
     }
     
+    DEBUG_LOG(@"allocateRenderResourcesAndReturnError")
+    
     if (![_audioBuffers allocateRenderResourcesAndReturnError:outError withMaximumFrames:self.maximumFramesToRender]) {
         self.renderResourcesAllocated = NO;
         

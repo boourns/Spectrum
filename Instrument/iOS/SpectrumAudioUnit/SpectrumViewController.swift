@@ -64,13 +64,18 @@ extension UILabel {
 class SpectrumViewController: BaseAudioUnitViewController {
     let big = CGFloat(70.0)
     let small = CGFloat(50.0)
-    var lfoImage: LFOImage!
+    var lfoImage: LFOImage?
     var displayLink: CADisplayLink? = nil
+    
+    deinit {
+            NSLog("SpectrumViewController deinit")
+    }
+
     
     @objc func step(displaylink: CADisplayLink) {
         guard let audioUnit = audioUnit as? SpectrumAudioUnit else { return }
         if audioUnit.lfoDrawingDirty() {
-            lfoImage.setNeedsDisplay()
+            lfoImage?.setNeedsDisplay()
         }
     }
     
