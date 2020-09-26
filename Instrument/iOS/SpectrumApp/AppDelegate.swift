@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window!.rootViewController = ViewController()
         window!.makeKeyAndVisible()
         
-        configurePushNotifications()
+        //configurePushNotifications()
         
         if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject],
                    let aps = notification["aps"] as? [String: AnyObject],
