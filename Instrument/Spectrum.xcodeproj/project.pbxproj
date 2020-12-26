@@ -269,13 +269,9 @@
 		E2EA1B6A250173A000D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B69250173A000D5F4BE /* BurnsAudioCore.framework */; };
 		E2EA1B6E250173B700D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B6D250173B700D5F4BE /* BurnsAudioCore.framework */; };
 		E2EA1B72250173C400D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B71250173C400D5F4BE /* BurnsAudioCore.framework */; };
-		E2EA1B73250173C400D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B71250173C400D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2EA1B76250173CD00D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B75250173CD00D5F4BE /* BurnsAudioCore.framework */; };
-		E2EA1B77250173CD00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B75250173CD00D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2EA1B7A250173D600D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B79250173D600D5F4BE /* BurnsAudioCore.framework */; };
-		E2EA1B7B250173D600D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B79250173D600D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2EA1B7E250173DE00D5F4BE /* BurnsAudioCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B7D250173DE00D5F4BE /* BurnsAudioCore.framework */; };
-		E2EA1B7F250173DE00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2EA1B7D250173DE00D5F4BE /* BurnsAudioCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2F494D222DECA7000A1D487 /* GranularAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E225106A22B1F8E900DD88E8 /* GranularAudioUnit.mm */; };
 		E2F494D322DECA8400A1D487 /* GranularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225107122B1FCE700DD88E8 /* GranularViewController.swift */; };
 /* End PBXBuildFile section */
@@ -428,50 +424,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2EA1B74250173C400D5F4BE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E2EA1B73250173C400D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2EA1B78250173CD00D5F4BE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E2EA1B77250173CD00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2EA1B7C250173D600D5F4BE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E2EA1B7B250173D600D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2EA1B80250173DE00D5F4BE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E2EA1B7F250173DE00D5F4BE /* BurnsAudioCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1856,7 +1808,6 @@
 				E225105422B1F6DF00DD88E8 /* Sources */,
 				E225105522B1F6DF00DD88E8 /* Frameworks */,
 				E225105622B1F6DF00DD88E8 /* Resources */,
-				E2EA1B74250173C400D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1874,7 +1825,6 @@
 				E22C33F122C5B9F900185BB5 /* Sources */,
 				E22C33F222C5B9F900185BB5 /* Frameworks */,
 				E22C33F322C5B9F900185BB5 /* Resources */,
-				E2EA1B7C250173D600D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1892,7 +1842,6 @@
 				E22C341222C63F8D00185BB5 /* Sources */,
 				E22C341322C63F8D00185BB5 /* Frameworks */,
 				E22C341422C63F8D00185BB5 /* Resources */,
-				E2EA1B80250173DE00D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1910,7 +1859,6 @@
 				E2ABBB9222C47827001FA69B /* Sources */,
 				E2ABBB9322C47827001FA69B /* Frameworks */,
 				E2ABBB9422C47827001FA69B /* Resources */,
-				E2EA1B78250173CD00D5F4BE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
