@@ -511,12 +511,7 @@ AUMIDIOutputEventBlock _outputEventBlock;
 
 - (void)deallocateRenderResources {
     [_audioBuffers deallocateRenderResources];
-    _audioBuffers = nil;
     _hostTransport = nil;
-    _stateManager = nil;
-    _midiProcessor = nil;
-    _outputEventBlock = nil;
-    _parameterTree = nil;
     
     DEBUG_LOG(@"deallocateRenderResources")
 

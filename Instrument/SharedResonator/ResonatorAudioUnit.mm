@@ -64,7 +64,6 @@
     _kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
     _kernel.useAudioInput = loadAsEffect;
     
-    // Create a parameter object for the attack time.
     AudioUnitParameterOptions flags = kAudioUnitParameterFlag_IsWritable |
     kAudioUnitParameterFlag_IsReadable;
     
@@ -290,6 +289,7 @@
         }
     };
     
+    // initialize parameter values
     for(int i = 0; i < _parameterTree.allParameters.count; i++) {
         AUParameter *param = _parameterTree.allParameters[i];
         
@@ -450,17 +450,18 @@
         // MARK - setup buffers
         AudioUnitRenderActionFlags pullFlags = 0;
         AudioBufferList *inAudioBufferList = nil;
+        AudioBufferList *outAudioBufferList = outputData;
+
         if (isEffect) {
             AUAudioUnitStatus err = input->pullInput(&pullFlags, timestamp, frameCount, 0, pullInputBlock);
             if (err != 0) { return err; }
             
             inAudioBufferList = input->mutableAudioBufferList;
-        }
         
-        AudioBufferList *outAudioBufferList = outputData;
-        if (outAudioBufferList->mBuffers[0].mData == nullptr) {
-            for (UInt32 i = 0; i < outAudioBufferList->mNumberBuffers; ++i) {
-                outAudioBufferList->mBuffers[i].mData = inAudioBufferList->mBuffers[i].mData;
+            if (outAudioBufferList->mBuffers[0].mData == nullptr) {
+                for (UInt32 i = 0; i < outAudioBufferList->mNumberBuffers; ++i) {
+                    outAudioBufferList->mBuffers[i].mData = inAudioBufferList->mBuffers[i].mData;
+                }
             }
         }
         
