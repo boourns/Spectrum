@@ -1,4 +1,7 @@
 # Spectrum
+
+<img src="https://github.com/boourns/Spectrum/raw/master/marketing/screenshots/spectrum-main.jpg" width=400/>
+
 AudioUnit ports of popular open source eurorack modules
 
 Available on App Store for iOS: https://apps.apple.com/us/app/spectrum-synthesizer-bundle/id1467384251
