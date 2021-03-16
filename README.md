@@ -5,7 +5,7 @@ Available on App Store for iOS: https://apps.apple.com/us/app/spectrum-synthesiz
 
 # Building
 
-Spectrum depends on two other git repositories to build: BurnsAudioCore and BurnsAudioUnit.  The Spectrum xcode workspace expects these three git repositories to all be siblings in a directory.  So for example,
+Spectrum depends on two other git repositories to build: [BurnsAudioCore](https://github.com/boourns/burnsaudiocore) and [BurnsAudioUnit](https://github.com/boourns/burnsaudiounit).  The Spectrum xcode workspace expects these three git repositories to all be siblings in a directory.  So for example,
 
 ```Bash
 mkdir auv3
