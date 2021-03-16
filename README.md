@@ -29,5 +29,7 @@ Provides the UI for the Audio Unit.  The parent class, `BaseAudioUnitViewControl
 ### Kernel (C++)
 The exciting DSP code.  Reads/writes parameter values into the C++ engine, contains the DSP render block.  In our case it mostly manages the Mutable Instruments code and calls those DSP engines.
 
+There are many independent, reusable components available in the other repositories, for example helper classes for initializing AudioUnit buffers, a tempo-synced LFO, or a MPE-capable MIDI processor / voice manager in [BurnsAudioUnit](https://github.com/boourns/BurnsAudioUnit).
+
 # License
 MIT
